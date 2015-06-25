@@ -4,7 +4,7 @@ import os
 # Initialize the Flask application
 app = Flask(__name__)
 
-@app.route('/totalnumberofhits')
+@app.route('/')
 def index():
     json_data = open("data-2014.json")
     data = json.load(json_data)
