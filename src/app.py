@@ -3,7 +3,7 @@ import json
 app = Flask(__name__)
 
 @app.route('/numberofhits')
-def index():
+def numberofhits():
     json_data = open("data-2014.json")
     data = json.load(json_data)
     json_string = json.dumps(data)
