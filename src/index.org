@@ -146,7 +146,7 @@ def extract_aws_data(year):
     z = 0
     for key in dictionary:
         z += dictionary[key]
-    print "total aws",z
+#    print "total aws",z
     return z
 
 def extract_iiit_data(year):
@@ -173,7 +173,7 @@ def extract_iiit_data(year):
     z = 0
     for key in dictionary:
         z += dictionary[key]
-    print "total iiit",z
+#    print "total iiit",z
     return z
 
 def grand_total():
@@ -181,7 +181,10 @@ def grand_total():
     tot_pages=0
     for i in year:
         tot_pages += extract_iiit_data(i) + extract_aws_data(i)
-        print tot_pages
+    dict_tot_pages = {}
+    dict_tot_pages["total-pages"]=tot_pages
+#    print dict_tot_pages
+
 grand_total()
 #+END_SRC
 
