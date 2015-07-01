@@ -1,6 +1,9 @@
 #+TITLE:     Building a basic service to display the Analytics of Virtual Labs
 #+AUTHOR:    M.S.Soumya
 #+DATE:      2015-06-09 Tue
+#+PROPERTY: results output
+#+PROPERTY: exports code
+#+SETUPFILE: org-templates/level-0.org
 
 *NOTE:* This document is not yet complete though it is committed ! It
 is being worked on continuously.
@@ -31,6 +34,9 @@ is being worked on continuously.
   statistics must be incorporated by the service.
 
 * Implementation
+** Requirement
+   The pages views count from both AWS and local deployment must be
+   displayed continuously on vlab.co.in
 ** Background
    Awstats generates parsed text files which contain the statistics in
    text format. The required data from these text files needs to be
@@ -56,6 +62,12 @@ is being worked on continuously.
 
 ** Decisions
 *** Collation of statistics
+    The statistics are present in two different locations AWS and on
+    the local reverseproxy at VLEAD. To get numbers the data is
+    required from both these locations. It was decided that on an AWS
+    VM the data from both locations would be collated. The awstats
+    data will be transferred on an hourly basis to this VM. 
+
 *** Where the service will run
     There were concerns on where the service should run. Initially it
     was being assumed that the service would run on the reverse proxy
@@ -93,6 +105,109 @@ is being worked on continuously.
    [[./diagrams/file-flow-diagram.png]]
 
 ** Impediments
+
+** Data collation
+** Data extraction
+   The code below is written to extract certain fields from the
+   awstats text files.
+#+BEGIN_SRC python :tangle extract_data.py
+import sys
+import re
+import json
+import os
+import fnmatch
+
+def get_file_names(year):
+    list_of_files = []
+    for file in os.listdir('.'):
+        if fnmatch.fnmatch(file, '*'+ re.escape(year) + '*.txt'):
+            list_of_files.append(file)
+    return list_of_files
+
+def extract_aws_data(year):
+    files = get_file_names(year);
+    dictionary = {}
+    dict_tot_pages = {}
+    for i in files:
+        f = open(i)
+        for line in f:
+            if re.match(r'^BEGIN_DAY',line):
+                n = int((line.strip('BEGIN_DAY ')).rstrip())
+                x = 0
+                p = 0
+                for page_line in f:
+                    if (x >= n):
+                        break
+                    p += int(page_line.split()[1])
+                    x += 1
+                f.close()
+                dictionary[(i.lstrip('awstats.')).rstrip('.txt')] = p
+                break
+    z = 0
+    for key in dictionary:
+        z += dictionary[key]
+    print "total aws",z
+    return z
+
+def extract_iiit_data(year):
+    files = get_file_names(year);
+    dictionary = {}
+    dict_tot_pages = {}
+    for i in files:
+        if re.search(r'awstats\d+.virtual-labs.ac.in.txt$',i):
+            print i
+            f = open(i)
+            for line in f:
+                if re.match(r'^BEGIN_DAY',line):
+                    n = int((line.strip('BEGIN_DAY ')).rstrip())
+                    x = 0
+                    p = 0
+                    for page_line in f:
+                        if (x >= n):
+                            break
+                        p += int(page_line.split()[1])
+                        x += 1
+                    f.close()
+                    dictionary[(i.lstrip('awstats.')).rstrip('.txt')] = p
+                    break
+    z = 0
+    for key in dictionary:
+        z += dictionary[key]
+    print "total iiit",z
+    return z
+
+def grand_total():
+    year = ['2013', '2014', '2015' ]
+    tot_pages=0
+    for i in year:
+        tot_pages += extract_iiit_data(i) + extract_aws_data(i)
+        print tot_pages
+grand_total()
+#+END_SRC
+
+** Display of data
+#+BEGIN_SRC python :tangle app.py
+from flask import Flask, render_template, request, jsonify, make_response
+import json
+app = Flask(__name__)
+
+@app.route('/numberofhits')
+def index():
+    json_data = open("data-2014.json")
+    data = json.load(json_data)
+    json_string = json.dumps(data)
+    response = make_response(json_string)
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    response.headers['Access-Control-Allow-Credentials'] = 'true'
+    return response
+    #return jsonify(data=json_string)
+
+if __name__ == '__main__':
+    app.run(
+        debug=True
+    )
+#+END_SRC
+
 
 * Work Plan
 ** TODO Prepare the document
