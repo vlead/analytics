@@ -107,40 +107,43 @@ is being worked on continuously.
 ** Impediments
 
 ** Data collation
-*** On AWS
-**** Generate ssh keypair on Ansible(DONE committed code to imp.)
-**** Copy the new id_rsa.pub generated with ansible access to analytics server(DONE comit to imp.)
-**** Move the generated key pair from ansible to reverse proxy under its .ssh dir(DONE comit to imp.)
-**** Changed the firewall rules on reverse proxy to allow outgoing ssh to analytics(DONE)
-**** Added cron jobs for hourly rsync preserving the relative path
- + @hourly rsync -arR /var/lib/awstats root@10.100.1.12:/root/aws/
- - skipped syncing the logs as Soumay reported she needed the flat
- stats file, another reason was chances of file corruption when the
- log is open.
 
-**** To rsync from base to analytics on the AWS cluster
- - Need to port forward TCP 2222 from router to analytics server on
- TCP 22(added to ansible imp.)
- - Also a outgoing rule from AWS router to port 22 of analytics
- - Copied a separate id_rsa.pub from http container from base into
- authorized_key of the analytics server, this is for passwordless
- rsync of stats file
-**** pending(**WIP** Adding to implementation, test remains)
- - Firewall rules on analytics server to allow ssh only from specific
- hosts(depends on the analytics server role)
+   We have two different sources, a reverse proxy on AWS
+cluster(Source 1) and a reverse proxy on the base machines in IIIT-H
+(Source 2). These sources are geographically located in different
+continents and are on different networks.
 
-**** AWS router has additional iptables rules (**DONE** - added this to the imp.)
-#Forward incoming SSH connection on TCP port 2222 to Analytics server
--A PREROUTING -d 10.100.1.1 -p tcp -m tcp --dport 2222 -j DNAT --to-destination 10.100.1.12:22
-#Allow outgoing tcp on 22 to analytics server, port forwarding
--A OUTPUT -p tcp -m tcp id {{analytics_server_ip}} --dport 22 -j ACCEPT
+   We need a way of transferring the data(statistics) to the analytics
+server where it will be processed. We have used =rsync= to transfer,
+and have setup periodic transfer jobs using =cronie= which executes
+every hour.
 
-*** On BASE(**Manual** update the wiki)
-**** Setup cron on http container to rsync the stats file to stats.vlabs.ac.in on AWS cluster
- + @hourly rsync -azR -e "ssh -p 2222" /var/www/awstats/awstats* stats.vlabs.ac.in:/root/base/
+As this task involves collecting data from different sources, like a
+cluster which is managed with configuration management tool =Ansible=
+and another one a manually configured server, data collation is also a
+mix of automation and manual steps.
+
+We now present the configuration procedure of both.
+
+*** Configuring AWS cluster
+ Here we need the following:
+ - Analytics server configured to accept =rsync= over =TCP=
+ - Reverse Proxy(Source 1) configured to push the generated statistics
+   to =Analytics= server at regular intervals
+ - Router cofigured to allow incoming =rsync= connections from Source
+   2 to Analytics server
+ 
+ As AWS cluster is configured by =Ansible=, we have scripts to achieve
+ the above via =Ansible=.
+
+*** On BASE
+ Here we manually setup:
+ - Reverse Proxy(Source 2) configued to push generated statistics to
+   =Analytics= server every hour
 
 *** TODO
-**** Find a way to rsync after/before awstats update script, so the chances of file corruption are minimized
+ -  Find a way to rsync after/before awstats update script, so the
+    chances of file corruption are minimized.
 
 ** Data extraction
    The code below is written to extract certain fields from the
