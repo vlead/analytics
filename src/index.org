@@ -36,7 +36,7 @@ is being worked on continuously.
 * Implementation
 ** Requirement
    The pages views count from both AWS and local deployment must be
-   displayed continuously on vlab.co.in
+   displayed on vlab.co.in
 ** Background
    Awstats generates parsed text files which contain the statistics in
    text format. The required data from these text files needs to be
@@ -189,26 +189,43 @@ grand_total()
 #+END_SRC
 
 ** Display of data
+ Following code dipicts the implementation of python-flask application as a service with endpoint =/numberofhits=. 
+ this code will parse the data and extracts aws-stats and calculates the total numer of visits and return the value.
 #+BEGIN_SRC python :tangle app.py
+#flask imports
 from flask import Flask, render_template, request, jsonify, make_response
 import json
+import os
+#import config
+from data import extract_data
+
+# import the flask extension
+from flask.ext.cache import Cache
+
 app = Flask(__name__)
 
+# define the cache config keys
+app.config['CACHE_TYPE'] = 'simple'
+
+# register the cache instance and binds it on to your app 
+app.cache = Cache(app)
+
 @app.route('/numberofhits')
-def index():
-    json_data = open("data-2014.json")
-    data = json.load(json_data)
-    json_string = json.dumps(data)
-    response = make_response(json_string)
+@app.cache.cached(timeout=60)  # cache this view for 1 minute
+def numberofhits():
+    #curr_dir = os.path.dirname(os.path.realpath(__file__))
+    #json_data = open(os.path.join(curr_dir, "data-2014.json"))
+    #data = json.load(json_data)
+    #json_string = json.dumps(data)
+    numberofhits  = extract_data.grand_total()
+    response = make_response(numberofhits)
     response.headers['Access-Control-Allow-Origin'] = '*'
     response.headers['Access-Control-Allow-Credentials'] = 'true'
     return response
     #return jsonify(data=json_string)
 
 if __name__ == '__main__':
-    app.run(
-        debug=True
-    )
+    app.run(port=5000, debug=True)
 #+END_SRC
 
 
