@@ -227,8 +227,8 @@ grand_total()
 #+END_SRC
 
 ** Display of data
- Following code dipicts the implementation of python-flask application as a service with endpoint =/numberofhits=. 
- this code will parse the data and extracts aws-stats and calculates the total numer of visits and return the value.
+ Following code shows the implementation of python-flask application as a service with endpoint =/numberofhits=. 
+ this code will parse the data and extracts aws-stats and calculates and returns the total number of visits.
 #+BEGIN_SRC python :tangle app.py
 #flask imports
 from flask import Flask, render_template, request, jsonify, make_response

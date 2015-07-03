@@ -2,6 +2,10 @@ from flask import Flask, render_template, request, jsonify, make_response
 # import the flask extension
 from flask.ext.cache import Cache
 import json
+#from data import extract_data
+from data.extract_data import *
+
+#import config
 app = Flask(__name__)
 
 # define the cache config keys, remember that it can be done in a settings file
@@ -12,11 +16,11 @@ app.cache = Cache(app)
 
 @app.route('/numberofhits')
 @app.cache.cached(timeout=100)  # cache this view for 5 minutes
-
 def numberofhits():
-    json_data = open("data-2014.json")
-    data = json.load(json_data)
-    json_string = json.dumps(data)
+   # json_data = open("data-2014.json")
+   # data = json.load(json_data)
+    #json_string = json.dumps(data)
+    json_string = grand_total()
     response = make_response(json_string)
     response.headers['Access-Control-Allow-Origin'] = '*'
     response.headers['Access-Control-Allow-Credentials'] = 'true'
