@@ -1,5 +1,5 @@
 # Defaults start from here.
-*.py[cod]
+.py[cod]
 *.swp
 *~
 *#*
@@ -50,6 +50,6 @@ aws_config.py
 *.pem
 
 #literate
-*.py
+.py
 *.html
 sitemap.org
