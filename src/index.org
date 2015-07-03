@@ -267,7 +267,10 @@ if __name__ == '__main__':
 #+END_SRC
 
 * Test Cases
-** Test Case 1:
+  
+** Test Case:
+   Following code will test the endpoint =/numberofhits=. The reponse will be tested against the  
+   value given in =config.py= file.
 #+BEGIN_SRC python :tangle test_app.py
 import unittest
 from flask.ext.testing import TestCase
@@ -288,6 +291,13 @@ class AnalyticsTestCase(unittest.TestCase):
 if __name__ == '__main__':
     unittest.main()
 #+END_SRC
+ Following code will return the userdefined value when =grand_toal()= function is called.
+#+BEGIN_SRC python:tangle config.py
+#!/usr/bin/python
+def grand_total():
+  dict = {'numberofhits':'1234'};
+  return dict['numberofhits']
+#+END_SRC
 * Work Plan
 ** TODO Prepare the document
 ** DONE Discuss on how to meet the requirement
@@ -303,7 +313,7 @@ if __name__ == '__main__':
         done and the decision taken has been mentioned in the [[Present%20scenario%20of%20statistics][Present
         scenario of statistics]])
 
-** TODO Build the scripts
-** TODO Test the scripts.
+** DONE Build the scripts
+** DONE Test the scripts.
 ** TODO Updation of vlab.co.in
    
