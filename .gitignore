@@ -51,5 +51,5 @@ aws_config.py
 
 #literate
 .py
-*.html
+.html
 sitemap.org
