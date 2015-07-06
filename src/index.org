@@ -228,73 +228,138 @@ grand_total()
  Following code shows the implementation of python-flask application as a service with endpoint =/numberofhits=. 
  This code will parse the data, extracts aws-stats, calculates and returns the total number of visits.
 #+BEGIN_SRC python :tangle app.py
-#flask imports
 from flask import Flask, render_template, request, jsonify, make_response
+#+END_SRC
+First we imported the Flask class. An instance of this class will be our Web Server Gateway Interface(WSGI) application.
+#+BEGIN_SRC 
 import json
 import os
 #import config
 from data import extract_data
-
 # import the flask extension
 from flask.ext.cache import Cache
-
+#+END_SRC
+#+BEGIN_SRC 
 app = Flask(__name__)
-
-# define the cache config keys
+#+END_SRC
+Next, create an instance of the class(Flask). The first argument is the name of the application’s module or package. 
+If you are using a single module, you should use *__name__* because depending on if it’s started as 
+application or imported as module the name will be different. 
+This is needed so that Flask knows where to look for templates, static files, and so on. 
+#+BEGIN_SRC
 app.config['CACHE_TYPE'] = 'simple'
-
-# register the cache instance and binds it on to your app 
+#+END_SRC
+ define the cache config keys
+#+BEGIN_SRC 
 app.cache = Cache(app)
-
+#+END_SRC
+register the cache instance and binds it on to your app 
+#+BEGIN_SRC 
 @app.route('/numberofhits')
-@app.cache.cached(timeout=60)  # cache this view for 1 minute
+#+END_SRC
+Then use the =route()= decorator to tell Flask what URL should trigger our function.
+#+BEGIN_SRC 
+@app.cache.cached(timeout=60)  
+#+END_SRC
+cache this view for 1 minute
+#+BEGIN_SRC 
 def numberofhits():
-    #curr_dir = os.path.dirname(os.path.realpath(__file__))
-    #json_data = open(os.path.join(curr_dir, "data-2014.json"))
-    #data = json.load(json_data)
-    #json_string = json.dumps(data)
+#+END_SRC
+The function is given a name which is also used to generate URLs for that particular function, 
+and returns the value we want to display in the browser.
+#+BEGIN_SRC 
     numberofhits  = extract_data.grand_total()
+#+END_SRC
+call the function =grand_total()= which is defined in =extract_data.py= to get the total number of hits.
+#+BEGIN_SRC
     response = make_response(numberofhits)
     response.headers['Access-Control-Allow-Origin'] = '*'
     response.headers['Access-Control-Allow-Credentials'] = 'true'
     return response
-    #return jsonify(data=json_string)
-
+#+END_SRC
+=make_response()= function can be called instead of using a return 
+and will get a response object which can be used to attach headers.
+=Access-Control-Allow-Origin= is a CORS (Cross-Origin Resource Sharing) header.
+When Site A tries to fetch content from Site B, Site B can send an =Access-Control-Allow-Origin= 
+response header to tell the browser that the content of this page is accessible to certain origins.
+By default, Site B's pages are not accessible to any other origin, using the =Access-Control-Allow-Origin= 
+header opens a door for cross-origin access by specific requesting origins.
+The server can give permission to include cookies by setting the =Access-Control-Allow-Credentials= header.
+#+BEGIN_SRC 
 if __name__ == '__main__':
     app.run(port=5000, debug=True)
 #+END_SRC
+Finally we use the =run()= function to run the local server with our application. The if *__name__ == '__main__':* 
+makes sure the server only runs if the script is executed directly from the Python interpreter and not 
+used as an imported module.
+*Note:* To stop the server, hit control-C
 
 * Test Cases
-  
-** Test Case:
-   Following code will test the endpoint =/numberofhits=. The reponse will be tested against the  
-   value given in =config.py= file.
+A test case is a document, which has a set of test data, preconditions, expected results and postconditions, 
+developed for a particular test scenario in order to verify compliance against a specific requirement.  
+** Test case ID: TC01
+*** Objective
+    The objective of this test case is to test whether the application is running or not by sending HTTP GET request and 
+    also to test the return value of the response.
+*** Apparatus
+    - A machine installed with =Flask-Testing=.
+*** Theory
+    This test case will test the funtionality of endpoint =/numberofhits= where it will return the total number of pages visited.
+*** Procedure.
+    - Run =python test_app.py= in terminal.
+    - Check the output of this command =Ran 1 test in 0.034s= and =OK=.
+    - If the above output is found then test is passed.
+*** Experiment
 #+BEGIN_SRC python :tangle test_app.py
 import unittest
 from flask.ext.testing import TestCase
 import config
 from app import app
-
+#+END_SRC
+A testcase is created by subclassing =unittest.TestCase=. 
+#+BEGIN_SRC 
 class AnalyticsTestCase(unittest.TestCase):
-
+#+END_SRC
+The tests are defined with methods whose names start with the letters =test=. 
+This naming convention informs the test runner about which methods represent tests.
+To start testing the functionality of the application, add a new test method to our class, 
+like =test_numberofhits()=.Similarly, other test methods can be added.
+#+BEGIN_SRC 
     def test_numberofhits(self):
         json_string = config.grand_total()
         print json_string
-
+#+END_SRC
+ 
+Each test is a call to =assertEqual()= to check for an expected result.
+#+BEGIN_SRC 
         tester = app.test_client(self)
         response = tester.get('http://localhost:5000/numberofhits')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(json_string,  response.data)
-               
+
+#+END_SRC            
+The final block shows a simple way to run the tests. =unittest.main()= 
+provides a command-line interface to the test script. 
+When run from the command line, the above script produces an output.   
+#+BEGIN_SRC 
 if __name__ == '__main__':
     unittest.main()
 #+END_SRC
- Following code will return the userdefined value when =grand_toal()= function is called.
+Following code will return the userdefined value when =grand_toal()= function is called.
 #+BEGIN_SRC python:tangle config.py
 #!/usr/bin/python
 def grand_total():
   dict = {'numberofhits':'1234'};
   return dict['numberofhits']
+#+END_SRC
+*** Result
+ #+BEGIN_SRC 
+$ python test_app.py
+.
+----------------------------------------------------------------------
+Ran 1 test in 0.034s
+
+OK
 #+END_SRC
 * Work Plan
 ** TODO Prepare the document
