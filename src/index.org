@@ -225,8 +225,8 @@ grand_total()
 #+END_SRC
 
 ** Display of data
- Following code shows the implementation of python-flask application as a service with endpoint =/numberofhits=. 
- This code will parse the data, extracts aws-stats, calculates and returns the total number of visits.
+ Following code shows the implementation of a service with endpoint =/numberofhits=. 
+ This code will parse the data, extract aws-stats, calculate and returns the total number of visits.
 #+BEGIN_SRC python :tangle app.py
 from flask import Flask, make_response
 #+END_SRC
@@ -242,9 +242,7 @@ from flask.ext.cache import Cache
 #+BEGIN_SRC 
 app = Flask(__name__)
 #+END_SRC
-Next, create an instance of the class(Flask). The first argument is the name of the application’s module or package. 
-If single module is used then, use *__name__* because it depends on if it’s started as 
-application or imported as module the name will be different. 
+Next, create an instance of the class(Flask). The argument is the name of the application’s module or package. 
 This is needed so that Flask knows where to look for templates, static files, and so on. 
 #+BEGIN_SRC
 app.config['CACHE_TYPE'] = 'simple'
