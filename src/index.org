@@ -140,8 +140,7 @@ mix of automation and manual steps.
 
 We now present the configuration procedure of both.
 
-*** Configuring AWS cluster
-    Here we need the following:
+*** Re-configuring AWS cluster, requirements of analytics node
  - Analytics server configured to accept =rsync= over =TCP=
  - Reverse Proxy(Source 1) configured to push the generated statistics
    to =Analytics= server at regular intervals
