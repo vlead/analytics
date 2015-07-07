@@ -160,8 +160,7 @@ mix of automation and manual steps.
 
 We now present the configuration procedure of both.
 
-*** Configuring AWS cluster
-    Here we need the following:
+*** Re-configuring AWS cluster, requirements of analytics node
  - Analytics server configured to accept =rsync= over =TCP=
  - Reverse Proxy(Source 1) configured to push the generated statistics
    to =Analytics= server at regular intervals
@@ -258,17 +257,13 @@ def grand_total():
     dict_tot_pages["total-pages"]=tot_pages
 grand_total()
 #+END_SRC
-
-** Building the service
-   Following code shows the implementation of python-flask application
-   as a service with endpoint =/numberofhits=.  This code will parse
-   the data, extracts aws-stats, calculates and returns the total
-   number of visits.
-
+** Building the Service
+ Following code shows the implementation of a service with endpoint =/numberofhits=. 
+ This code will parse the data, extract aws-stats, calculate and returns the total number of visits.
 #+BEGIN_SRC python :tangle app.py
 from flask import Flask, make_response
 #+END_SRC
-   First import the Flask class. An instance of this class will be our
+   First import the Flask class. An instance of this class will be 
    Web Server Gateway Interface(WSGI) application.
 #+BEGIN_SRC 
 import json
@@ -281,21 +276,16 @@ from flask.ext.cache import Cache
 #+BEGIN_SRC 
 app = Flask(__name__)
 #+END_SRC
-   Next, create an instance of the class(Flask). The first argument is
-   the name of the application’s module or package.  If single module
-   is used then, use *__name__* because it depends on if it’s started
-   as application or imported as module the name will be different.
-   This is needed so that Flask knows where to look for templates,
-   static files, and so on.
-
+Next, create an instance of the class(Flask). The argument is the name of the application’s module or package. 
+This is needed so that Flask knows where to look for templates, static files, and so on. 
 #+BEGIN_SRC
 app.config['CACHE_TYPE'] = 'simple'
 #+END_SRC
-   define the cache config keys
+   Define the cache config keys.
 #+BEGIN_SRC 
 app.cache = Cache(app)
 #+END_SRC
-   register the cache instance and binds it on to your app 
+   Register the cache instance and bind it to app 
 #+BEGIN_SRC 
 @app.route('/numberofhits')
 #+END_SRC
@@ -304,7 +294,7 @@ app.cache = Cache(app)
 #+BEGIN_SRC 
 @app.cache.cached(timeout=60)  
 #+END_SRC
-   cache this view for 1 minute
+   Cache this view for 1 minute.
 #+BEGIN_SRC 
 def numberofhits():
 #+END_SRC
@@ -315,7 +305,7 @@ def numberofhits():
 #+BEGIN_SRC 
     numberofhits  = extract_data.grand_total()
 #+END_SRC
-   call the function =grand_total()= which is defined in
+   Call the function =grand_total()= which is defined in
    =extract_data.py= to get the total number of hits.
 
 #+BEGIN_SRC
@@ -346,7 +336,7 @@ if __name__ == '__main__':
    server only runs if the script is executed directly from the Python
    interpreter and not used as an imported module.  
 
-   *Note:* To stop the server, hit control-C
+   *Note:* To stop the server, hit control-C.
 
 * Test Cases
   A test case is a document, which has a set of test data,
@@ -357,7 +347,7 @@ if __name__ == '__main__':
 ** Test case ID: TC01
 *** Objective
     The objective of this test case is to test whether the application
-    is running or not by sending HTTP GET request and also to test the
+    is running or not, by sending HTTP GET request and also to test the
     return value of the response.
 *** Apparatus
     - A machine installed with =Flask-Testing=.
