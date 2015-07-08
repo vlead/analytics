@@ -124,7 +124,6 @@
     future a button / hyperlink could also be incorporated which would
     display a page that shows slightly more details.
     
-
 * Implementation
 ** Procedure
    After a discussion (which also involved exchange of mails) the
@@ -353,6 +352,7 @@ if __name__ == '__main__':
    update parts of a web page, without reloading the whole page. The code snippet
    below will call the enpoint =/numberofhits=, where it will return the total number of pages
    visited as a response and displays on browser.
+
 #+BEGIN_SRC 
 <html>
    <head>
@@ -373,6 +373,9 @@ if __name__ == '__main__':
    </body>
 </html>
 #+END_SRC
+
+   Note: If you want to display the total number of page visits on vlab.co.in, 
+   then Add the above code snippet in =index.html= file. 
 
 * Test Cases
   A test case is a document, which has a set of test data,
