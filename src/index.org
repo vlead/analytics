@@ -19,13 +19,12 @@
       local deployment must be displayed on vlab.co.in
    2. The "visitor page views" count must be updated every one hour.
 ** Requirement #2
-   Display the total usage of virtual-labs. Usage can be defined as:
-
-   - 1 usage (instance) :: loading content of 1 experiment + loading
-                           simulation of 1 experiment
+   Display the total =usage= of virtual-labs. 
+    - Definition of =usage= :: 1 usage (instance) is loading content
+         and simulation of one experiment.
 
 ** Requirement #3
-   Display the total number of experiments.
+   Display the usage at an experiment level.
    
 ** Requirement #4
    Display the lab-wise analytics.
@@ -44,6 +43,9 @@
    + Extraction of data
    + Service to provide data
    + Presentation
+   
+   The design of the architecture is depicted in the diagram below.
+   
    #+CAPTION:  Design diagram
    #+LABEL:  Design diagram
    [[./diagrams/analytics.png]]
@@ -70,8 +72,13 @@
 
     #+CAPTION:  data collation design diagram
     #+LABEL:  data collation design diagram
-    [[./diagrams/file-flow-diagram.png]]
-    
+    [[./diagrams/file-flow-diagram.png]] 
+
+    The diagram above shows the two platforms and how the data is
+    collated form them into a single VM. The required files from the
+    reverse proxy on both the platforms is transferred to the VM
+    running the analytics service every one hour.
+
 *** Extraction of data
     During lab usage all the traffic ends up at the reverse
     proxy. Awstats is configured on the reverse proxy. All the lab
@@ -118,9 +125,9 @@
     this machine. By doing so it would reduce the overhead of
     transferring the stats files into another location and also the
     data that the service would use might be stale.  Setting up the
-    service on the reverse proxy had its own security threats.  So,
-    after a lot of discussion it was decided that the service will run
-    on a separate VM on AW on
+    service on the reverse proxy had its own security threats.  So, it
+    was decided that the service will be setup on a VM which belongs
+    to the AWS cluster.
 *** Setup of the service
     As mentioned in the [[Where%20the%20service%20will%20run][Where the service will run]], a VM on AWS will
     be created to run the service. The VM will be a part of the AWS
@@ -129,10 +136,11 @@
     ansible scripts need to be written. Manual entry of the FQDN and
     IP into some servers like reverse proxy and DNS may work
     temporarily but when the scripts are run, this information will be
-    erased.
+    erased. To avoid this, this VM should be modelled as a node and
+    added to the systems-model with the necessary modifications
+    involved in setting up this VM.
 
 * Implementation
-
 ** Data collation
    
    We have two different sources, a reverse proxy on AWS
@@ -170,6 +178,7 @@
 *** TODO
  -  Find a way to rsync after/before awstats update script, so the
     chances of file corruption are minimized.
+
 ** Data extraction
    The purpose of the script is described in [[How%20the%20data%20is%20processed][How the data is
    processed]]. The python script is as described below.  The necessary
@@ -196,7 +205,11 @@ def get_file_names(year):
     return list_of_files
 #+END_SRC
    From the data collected from AWS, the awstats are lab specific. In
-   AWS, no statistics
+   AWS, awstats is not configured to collect the analytics for all the
+   labs together. So, all the awstats data files need to be parsed to
+   obtain the page views. The function below looks through all the
+   files and adds the page views. It returns the total page views of
+   labs deployed on AWS infrastructure.
 #+BEGIN_SRC python :tangle extract_data.py
 def extract_aws_data(year):
     files = get_file_names(year);
@@ -223,7 +236,12 @@ def extract_aws_data(year):
 #   print "total aws",z
     return z
 #+END_SRC
-
+   Awstats on the reverse proxy is configured to capture the analytics
+   of all the labs at a single place. These files are named as
+   =awstats'month-year'virtual-labs.ac.in.txt=. The page views from
+   these files are only required. The function below looks through
+   only the specified files to obtain the page views. It returns the
+   total page views of labs deployed on IIIT infrastructure.
 #+BEGIN_SRC python :tangle extract_data.py
 def extract_iiit_data(year):
     files = get_file_names(year);
@@ -251,6 +269,12 @@ def extract_iiit_data(year):
         z += dictionary[key]
 #    print "total iiit",z
     return z
+#+END_SRC
+   The total page views from both the platforms is obtained from the
+   function below. The statistics were collected from the year
+   2013-2015 hence the years are passed as parameters to the above
+   functions.
+#+BEGIN_SRC python :tangle extract_data.py
 def grand_total():
     global __dict_tot_pages__
     year = [ '2013','2014', '2015' ]
@@ -261,11 +285,7 @@ def grand_total():
     return __dict_tot_pages__["total-pages"]
 #    print __dict_tot_pages__["total-pages"]
 #grand_total()
-
 #+END_SRC
-
-  The awstats data files have the page view details listed date
-  wise. The page views from each day 
 
 ** Building the Service
    The service exposes all the end points. Currently it exposes one
@@ -560,25 +580,37 @@ OK
 #+END_SRC
 
 
-* Work Plan
-** Work plan for simple application
-*** TODO Prepare the document
-*** DONE Discuss on how to meet the requirement
-         There was a discussion on [2015-06-23 Tue] with the
-         participants as Saurabh, Thirumal, Anon, Zubair, Soumya and
-         the other VLEAD members. The task division and the process to
-         bring up the service was also discussed which is mentioned in
-         the [[Process%20for%20implementation][Process for implementation]] section.
-*** DONE Figure out the various location of the labs
-         There are several locations the labs are situated namely AWS,
-         deploy, separate containers. How to display the combined
-         output of all the labs is yet to be decided.  (This has been
-         done and the decision taken has been mentioned in the [[Present%20scenario%20of%20statistics][Present
-         scenario of statistics]])
+* Releases
+** Release v1.0.0
+   This release realizes [[Requirement #1]].
+   The release date is [2015-07-08 Wed]
+*** Work Plan
+**** TODO Prepare the document
+**** DONE Discuss on how to meet the requirement
+          There was a discussion on [2015-06-23 Tue] with the
+          participants as Saurabh, Thirumal, Anon, Zubair, Soumya and
+          the other VLEAD members. The task division and the process to
+          bring up the service was also discussed which is mentioned in
+          the [[Process%20for%20implementation][Process for implementation]] section.
+**** DONE Figure out the various location of the labs
+          There are several locations the labs are situated namely AWS,
+          deploy, separate containers. How to display the combined
+          output of all the labs is yet to be decided.  (This has been
+          done and the decision taken has been mentioned in the [[Present%20scenario%20of%20statistics][Present
+          scenario of statistics]])
 
-*** DONE Build the scripts
-*** DONE Test the scripts.
-*** TODO Updation of vlab.co.in
+**** DONE Build the scripts
+**** DONE Test the scripts.
+**** TODO Updation of vlab.co.in
+     
+
+
+
+
+
+
+
+
 
 
 * COMMENT  introduction
