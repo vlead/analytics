@@ -288,7 +288,11 @@ def grand_total():
 #+END_SRC
 
 ** Building the Service
-   This service, in its present state, will parse the data, extract
+   + For building the service, python-flask is used.
+   Flask is a micro web application framework written in Python.
+   more details about flask can be found [[http://flask.pocoo.org/docs/0.10/][here]].
+
+   + This service, in its present state, will parse the data, extract
    aws-stats, calculate and return the total number of page visits.
    It exposes one endpoint =/numberofhits=.  An "endpoint" is an 
    identifier that is used in determining what logical unit of code
@@ -454,7 +458,8 @@ sys.path.insert(0, '/path/to/the/application')
   
 ** Presenting the data
    For presenting the data, AJAX (Asynchronous JavaScript and
-   XML) is used. AJAX allows web pages to be updated asynchronously by
+   XML)and HTML(HyperText Markup Language) is used. 
+   AJAX allows web pages to be updated asynchronously by
    exchanging small amounts of data with the server. This means that
    it is possible to update parts of a web page, without reloading the
    whole page. The code snippet below will call the enpoint
@@ -483,7 +488,7 @@ sys.path.insert(0, '/path/to/the/application')
 #+END_SRC
 
    Note: If you want to display the total number of page visits on vlab.co.in, 
-   then Add the above code snippet in =index.html= file. 
+   then add the above code snippet in =index.html= file. 
 ** Impediments
 
 * Test Cases
