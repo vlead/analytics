@@ -353,7 +353,7 @@ if __name__ == '__main__':
    below will call the enpoint =/numberofhits=, where it will return the total number of pages
    visited as a response and displays on browser.
 
-#+BEGIN_SRC 
+#+BEGIN_SRC html :tangle index.html 
 <html>
    <head>
       <title>Analytics</title>
