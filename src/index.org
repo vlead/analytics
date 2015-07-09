@@ -288,10 +288,11 @@ def grand_total():
 #+END_SRC
 
 ** Building the Service
-   The service exposes all the end points. Currently it exposes one
-   endpoint =/numberofhits=.  This service will parse the data,
-   extract aws-stats, calculate and returns the total number of page
-   visits.
+   This service, in its present state, will parse the data, extract
+   aws-stats, calculate and return the total number of page visits.
+   It exposes one endpoint =/numberofhits=.  An "endpoint" is an 
+   identifier that is used in determining what logical unit of code
+   should handle the request. 
 
 #+BEGIN_SRC python :tangle app.py
 from flask import Flask, make_response
@@ -317,13 +318,13 @@ app = Flask(__name__)
 app.config['CACHE_TYPE'] = 'simple'
 #+END_SRC
 
-  Register the cache instance and bind it to app 
+  Register the cache instance and bind it to app. 
 
 #+BEGIN_SRC python :tangle app.py
 app.cache = Cache(app)
 #+END_SRC
 
-  Register the cache instance and bind it to app 
+  Register the cache instance and bind it to app. 
 
 Use the =route()= decorator to tell Flask what URL should trigger the
 function.
@@ -452,8 +453,8 @@ sys.path.insert(0, '/path/to/the/application')
 #+END_SRC
   
 ** Presenting the data
-   For presenting the data, we used AJAX (Asynchronous JavaScript and
-   XML) AJAX allows web pages to be updated asynchronously by
+   For presenting the data, AJAX (Asynchronous JavaScript and
+   XML) is used. AJAX allows web pages to be updated asynchronously by
    exchanging small amounts of data with the server. This means that
    it is possible to update parts of a web page, without reloading the
    whole page. The code snippet below will call the enpoint
@@ -499,8 +500,6 @@ sys.path.insert(0, '/path/to/the/application')
 ** Test case description:
    In this test case, end point =/numberofhits= is tested, where it 
    will return the total number of pages visited.
-** Pre condition:
-    Service is build and endpoint is exposed.
 ** Test data/Input data:
    The Input data is required to test the test case. 
    Input data is to verify that a given set of 
@@ -525,7 +524,7 @@ from app import app
 #+END_SRC
 *** Step 2:
  A testcase is created by subclassing =unittest.TestCase=.
-#+BEGIN_SRC :tangle test_app.py 
+#+BEGIN_SRC python :tangle test_app.py 
 class AnalyticsTestCase(unittest.TestCase):
 #+END_SRC
 *** Step 3:
@@ -535,7 +534,7 @@ class AnalyticsTestCase(unittest.TestCase):
     functionality of the application, add a new test method to our
     class, like =test_numberofhits()=.Similarly, other test methods
     can be added. 
-#+BEGIN_SRC :tangle test_app.py 
+#+BEGIN_SRC python :tangle test_app.py 
     def test_numberofhits(self):
         json_string = config.grand_total()
         print json_string
@@ -549,7 +548,7 @@ class AnalyticsTestCase(unittest.TestCase):
    with the response.
    - The data which is returned in the form of response is compared against
      the Input data.
-#+BEGIN_SRC :tangle test_app.py 
+#+BEGIN_SRC python :tangle test_app.py 
         tester = app.test_client(self)
         response = tester.get('http://localhost:5000/numberofhits')
         self.assertEqual(response.status_code, 200)
@@ -561,7 +560,7 @@ class AnalyticsTestCase(unittest.TestCase):
     tests. =unittest.main()= provides a command-line interface to the
     test script.  When run from the command line, the script
     produces an output.
-#+BEGIN_SRC :tangle test_app.py 
+#+BEGIN_SRC python :tangle test_app.py 
 if __name__ == '__main__':
     unittest.main()
 #+END_SRC
