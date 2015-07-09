@@ -471,7 +471,74 @@ Ran 1 test in 0.034s
 OK
 #+END_SRC
 
+* Provisioning 
+** Machine Configuration:
+   + Operating System: ubuntu-12.04
+   + Architecture: x86_64
+   + Memory: 256 MB
+   + Disk space: 10 GB
+   + Interface: venet0
+** Steps to manually create a container
+#+BEGIN_SRC 
+    vzctl create 101 --ostemplate ubuntu-12.04-custom-x86_64 --ipadd x.x.x.x --diskspace 10G:15.0G --hostname analytics-ajax.vlabs.ac.in
+    vzctl start 101
+    vzctl set 101 --nameserver inherit --ram 256M --swap 512M --onboot yes --save
+#+END_SRC
+    
+** Prepare the System for Deployment:
+*** Update the System
+    In order to have a stable deployment server, it is crucial to keep things up-to-date and well maintained.
+    To ensure that we have the latest available versions of default applications, we need to update our system.
+    Run the following to update your system:
+#+BEGIN_SRC 
+sudo apt-get update
+#+END_SRC
+*** Install virtualenv.
+    Run the following command to download and install virtualenv using pip.
+    =virtualenv= is a tool to create isolated Python environments.
+#+BEGIN_SRC 
+sudo apt-get install python-virtualenv
+#+END_SRC
+*** Install Flask
+   Enter the following command to get Flask activated in your virtualenv
+#+BEGIN_SRC 
+ pip install Flask
+#+END_SRC
+*** Install mod_wsgi.
+   WSGI(Web Server Gateway Interface) is an interface between a web server 
+   and the application itself. It exists to ensure a standardised way 
+   between various servers and applications (frameworks) to work with each 
+   other, allowing interchangeability when necessary (e.g. switching from 
+   development to production environment).
+#+BEGIN_SRC 
+apt-get install libapache2-mod-wsgi
+#+END_SRC
+*** Create a =.wsgi= file
+    To run your application you need a =yourapplication.wsgi= file. 
+    This file contains the code =mod_wsgi= is executing on startup to get the application object. 
+    The object called application in that file is then used as application.
+#+BEGIN_SRC 
+from yourapplication import app as application
+import sys
+sys.path.insert(0, '/path/to/the/application')
+#+END_SRC
+*** Configure Apache
+    Create an Apache configuration file for your application.
+#+BEGIN_SRC 
+<VirtualHost *>
+    ServerName example.com
 
+    WSGIDaemonProcess yourapplication user=user1 group=group1 threads=5
+    WSGIScriptAlias / /var/www/yourapplication/yourapplication.wsgi
+
+    <Directory /var/www/yourapplication>
+        WSGIProcessGroup yourapplication
+        WSGIApplicationGroup %{GLOBAL}
+        Order deny,allow
+        Allow from all
+    </Directory>
+</VirtualHost>
+#+END_SRC
 * Work Plan
 ** Work plan for simple application
 *** TODO Prepare the document
