@@ -433,8 +433,8 @@ sys.path.insert(0, '/path/to/the/application')
 #+END_SRC
   
 ** Presenting the data
-   For presenting the data, we used AJAX (Asynchronous JavaScript and
-   XML) AJAX allows web pages to be updated asynchronously by
+   For presenting the data, AJAX (Asynchronous JavaScript and
+   XML) is used. AJAX allows web pages to be updated asynchronously by
    exchanging small amounts of data with the server. This means that
    it is possible to update parts of a web page, without reloading the
    whole page. The code snippet below will call the enpoint
