@@ -268,10 +268,11 @@ def grand_total():
   wise. The page views from each day 
 
 ** Building the Service
-   The service exposes all the end points. Currently it exposes one
-   endpoint =/numberofhits=.  This service will parse the data,
-   extract aws-stats, calculate and returns the total number of page
-   visits.
+   This service, in its present state, will parse the data, extract
+   aws-stats, calculate and return the total number of page visits.
+   It exposes one endpoint =/numberofhits=.  An "endpoint" is an 
+   identifier that is used in determining what logical unit of code
+   should handle the request. 
 
 #+BEGIN_SRC python :tangle app.py
 from flask import Flask, make_response
@@ -297,13 +298,13 @@ app = Flask(__name__)
 app.config['CACHE_TYPE'] = 'simple'
 #+END_SRC
 
-  Register the cache instance and bind it to app 
+  Register the cache instance and bind it to app. 
 
 #+BEGIN_SRC python :tangle app.py
 app.cache = Cache(app)
 #+END_SRC
 
-  Register the cache instance and bind it to app 
+  Register the cache instance and bind it to app. 
 
 Use the =route()= decorator to tell Flask what URL should trigger the
 function.
