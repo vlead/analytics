@@ -11,7 +11,7 @@
   number of page views, resources downloaded etc. This model describes
   a simple web application which displays the analytics of
   virtual-labs.
-
+  
 * Requirements
 ** Requirement #1
    1. The "visitor page views" count of the labs deployed on Amazon
@@ -422,7 +422,7 @@ sudo apt-get install python-virtualenv
 #+END_SRC
 ***** Install mod_wsgi.
    WSGI(Web Server Gateway Interface) is an interface between a web server 
-   and the application itself. It exists to ensure a standardised way 
+   and the application itself. It exists to ensure a standardized way 
    between various servers and applications (frameworks) to work with each 
    other, allowing interchangeability when necessary (e.g. switching from 
    development to production environment).
@@ -462,7 +462,7 @@ sys.path.insert(0, '/path/to/the/application')
    AJAX allows web pages to be updated asynchronously by
    exchanging small amounts of data with the server. This means that
    it is possible to update parts of a web page, without reloading the
-   whole page. The code snippet below will call the enpoint
+   whole page. The code snippet below will call the endpoint
    =/numberofhits=, where it will return the total number of pages
    visited as a response and displays on browser.
 
@@ -493,7 +493,7 @@ sys.path.insert(0, '/path/to/the/application')
 
 * Test Cases
   A test case is a document, which has a set of test data,
-  preconditions, expected results and postconditions, developed for a
+  preconditions, expected results and post-conditions, developed for a
   particular test scenario in order to verify compliance against a
   specific requirement.
 ** Objective:
@@ -510,8 +510,8 @@ sys.path.insert(0, '/path/to/the/application')
    Input data is to verify that a given set of 
    input to a given function/program produces some expected result. 
    Input can be valid data or invalid data.
-   Here, the input data will return the userdefined value when
-    =grand_toal()= function is called. 
+   Here, the input data will return the user-defined value when
+    =grand_total()= function is called. 
 #+BEGIN_SRC python:tangle config.py
 #!/usr/bin/python
 def grand_total():
@@ -528,7 +528,7 @@ import config
 from app import app
 #+END_SRC
 *** Step 2:
- A testcase is created by subclassing =unittest.TestCase=.
+ A test case is created by sub-classing =unittest.TestCase=.
 #+BEGIN_SRC python :tangle test_app.py 
 class AnalyticsTestCase(unittest.TestCase):
 #+END_SRC
