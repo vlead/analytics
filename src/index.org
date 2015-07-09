@@ -37,7 +37,7 @@
    awstats. A four tier architecture is built with the following
    components :
    - data : the specific data based on the requirement.
-   - service : processing and service to provide data
+   - service : data processing and service to provide data
    - view : presentation of data.
    The tiers in the architecture are :
    + Collation of data
@@ -78,7 +78,7 @@
     usage data is captured by the reverse proxy in the form of logs.
 
 **** How data is generated
-     Awstats is a log analyser which parses the logs and generates the
+     Awstats is a log analyzer which parses the logs and generates the
      analytics.  Since the logs are stored in the reverse proxy,
      awstats is installed on the same machine.  Awstats generates text
      files which contain the statistics in text format.  For each lab,
@@ -99,6 +99,8 @@
     is exposed provides total number of pages. To provide this data
     the service invokes the logic built into the data extraction.
 *** Presentation
+    To display the endpoints of the service scripts are required which
+    fetches the data from the service.
 
 ** Design decisions
 *** Collation of statistics
@@ -108,7 +110,7 @@
     that on an AWS VM the data from both locations would be
     collated. The awstats data from both platforms will be transferred
     on an hourly basis to this VM.
-
+    
 *** Where the service will run
     There were concerns on where the service should run. Initially it
     was being assumed that the service would run on the reverse proxy
@@ -120,49 +122,35 @@
     after a lot of discussion it was decided that the service will run
     on a separate VM on AW on
 *** Setup of the service
-    As discussed in the Where the service will run, a VM on AWS will
+    As mentioned in the [[Where%20the%20service%20will%20run][Where the service will run]], a VM on AWS will
     be created to run the service. The VM will be a part of the AWS
     cluster. The concern in setting up this VM is that the other VM’s
     in the cluster are setup by ansible scripts. To setup this service
     ansible scripts need to be written. Manual entry of the FQDN and
     IP into some servers like reverse proxy and DNS may work
     temporarily but when the scripts are run, this information will be
-    erased. Note: Yet to be discussed.
-
+    erased.
 
 * Implementation
-** Procedure
-   After a discussion (which also involved exchange of mails) the
-   process of implementation was decided as follows:
-   1. Pull all the data from deploy and AWS
-      - Collate data from deploy and AWS
-      - This data that will be used by the service using helper functions.
-   2. Serving the data. 
-      - Define end points based on the requirements
-      - Build a service that implements these end points.
-   3. Rendering of the data on vlab.co.in
-      - Insert the JavaScript snippet in vlab.co.in
-   4. Backup of all the statistics
-      
-** Impediments
-** Data collation
 
+** Data collation
+   
    We have two different sources, a reverse proxy on AWS
-cluster(Source 1) and a reverse proxy on the base machines in IIIT-H
-(Source 2). These sources are geographically located in different
-continents and are on different networks.
+   cluster(Source 1) and a reverse proxy on the base machines in IIIT-H
+   (Source 2). These sources are geographically located in different
+   continents and are on different networks.
 
    We need a way of transferring the data(statistics) to the analytics
-server where it will be processed. We have used =rsync= to transfer,
-and have setup periodic transfer jobs using =cronie= which executes
-every hour.
+   server where it will be processed. We have used =rsync= to transfer,
+   and have setup periodic transfer jobs using =cronie= which executes
+   every hour.
 
-As this task involves collecting data from different sources, like a
-cluster which is managed with configuration management tool =Ansible=
-and another one a manually configured server, data collation is also a
-mix of automation and manual steps.
+   As this task involves collecting data from different sources, like a
+   cluster which is managed with configuration management tool =Ansible=
+   and another one a manually configured server, data collation is also a
+   mix of automation and manual steps.
 
-We now present the configuration procedure of both.
+   We now present the configuration procedure of both.
 
 *** Re-configuring AWS cluster, requirements of analytics node
  - Analytics server configured to accept =rsync= over =TCP=
@@ -171,38 +159,45 @@ We now present the configuration procedure of both.
  - Router cofigured to allow incoming =rsync= connections from Source
    2 to Analytics server
  
- As AWS cluster is configured by =Ansible=, we have scripts to achieve
- the above via =Ansible=.
+    As AWS cluster is configured by =Ansible=, we have scripts to achieve
+    the above via =Ansible=.
 
 *** On BASE
- Here we manually setup:
+    Here we manually setup:
  - Reverse Proxy(Source 2) configued to push generated statistics to
    =Analytics= server every hour
-
+   
 *** TODO
  -  Find a way to rsync after/before awstats update script, so the
     chances of file corruption are minimized.
-
 ** Data extraction
-   The code below is written to extract certain page views from the
-   awstats text files. The purpose of the script is described in
-   [[Extraction%20of%20data][Extraction of data]]. This script has to be placed in the same
-   directory as the data files.
-
+   The purpose of the script is described in [[How%20the%20data%20is%20processed][How the data is
+   processed]]. The python script is as described below.  The necessary
+   packages are imported and some global variables are declared:
 #+BEGIN_SRC python :tangle extract_data.py
 import sys
 import re
 import json
 import os
 import fnmatch
-
+__dict_tot_pages__ = {}
+all = [__dict_tot_pages__ ]
+#+END_SRC
+   There are several awstats files. Some are ".bkp" files and some are
+   ".txt" files. We only require the ".txt" files. The following
+   function gets all the required awstats text files from the
+   specified directory.
+#+BEGIN_SRC python :tangle extract_data.py
 def get_file_names(year):
     list_of_files = []
-    for file in os.listdir('.'):
+    for file in os.listdir('/var/www/myapp/data/'):
         if fnmatch.fnmatch(file, '*'+ re.escape(year) + '*.txt'):
-            list_of_files.append(file)
+            list_of_files.append('/var/www/myapp/data/' + file)
     return list_of_files
-
+#+END_SRC
+   From the data collected from AWS, the awstats are lab specific. In
+   AWS, no statistics
+#+BEGIN_SRC python :tangle extract_data.py
 def extract_aws_data(year):
     files = get_file_names(year);
     dictionary = {}
@@ -225,14 +220,18 @@ def extract_aws_data(year):
     z = 0
     for key in dictionary:
         z += dictionary[key]
+#   print "total aws",z
     return z
+#+END_SRC
 
+#+BEGIN_SRC python :tangle extract_data.py
 def extract_iiit_data(year):
     files = get_file_names(year);
     dictionary = {}
     dict_tot_pages = {}
     for i in files:
         if re.search(r'awstats\d+.virtual-labs.ac.in.txt$',i):
+#            print i
             f = open(i)
             for line in f:
                 if re.match(r'^BEGIN_DAY',line):
@@ -250,26 +249,32 @@ def extract_iiit_data(year):
     z = 0
     for key in dictionary:
         z += dictionary[key]
+#    print "total iiit",z
     return z
-
 def grand_total():
-    year = ['2013', '2014', '2015' ]
+    global __dict_tot_pages__
+    year = [ '2013','2014', '2015' ]
     tot_pages=0
     for i in year:
-        tot_pages += extract_iiit_data(i) + extract_aws_data(i)
-    dict_tot_pages = {}
-    dict_tot_pages["total-pages"]=tot_pages
-grand_total()
+        tot_pages += extract_iiit_data(i) #+ extract_aws_data(i)
+    __dict_tot_pages__["total-pages"]=str(tot_pages)
+    return __dict_tot_pages__["total-pages"]
+#    print __dict_tot_pages__["total-pages"]
+#grand_total()
+
 #+END_SRC
+
+  The awstats data files have the page view details listed date
+  wise. The page views from each day 
+
 ** Building the Service
- Following code shows the implementation of a service with endpoint =/numberofhits=. 
- This code will parse the data, extract aws-stats, calculate and returns the total number of visits.
+   The service exposes all the end points. Currently it exposes one
+   endpoint =/numberofhits=.  This service will parse the data,
+   extract aws-stats, calculate and returns the total number of page
+   visits.
+
 #+BEGIN_SRC python :tangle app.py
 from flask import Flask, make_response
-#+END_SRC
-   First import the Flask class. An instance of this class will be 
-   Web Server Gateway Interface(WSGI) application.
-#+BEGIN_SRC 
 import json
 import os
 #import config
@@ -277,48 +282,57 @@ from data import extract_data
 # import the flask extension
 from flask.ext.cache import Cache
 #+END_SRC
+
+Create an instance of the class(Flask). The argument is the name of
+the application’s module or package.  This is needed so that Flask
+knows where to look for templates, static files, and so on.
+
 #+BEGIN_SRC 
 app = Flask(__name__)
 #+END_SRC
-Next, create an instance of the class(Flask). The argument is the name of the application’s module or package. 
-This is needed so that Flask knows where to look for templates, static files, and so on. 
+
+  Define the cache config keys.
+
 #+BEGIN_SRC
 app.config['CACHE_TYPE'] = 'simple'
 #+END_SRC
-   Define the cache config keys.
+
 #+BEGIN_SRC 
 app.cache = Cache(app)
 #+END_SRC
-   Register the cache instance and bind it to app 
+
+  Register the cache instance and bind it to app 
+
+Use the =route()= decorator to tell Flask what URL should trigger the
+function.
+
 #+BEGIN_SRC 
 @app.route('/numberofhits')
 #+END_SRC
-   Then use the =route()= decorator to tell Flask what URL should
-   trigger the function.
+
+ Cache this view for 1 hour. This is needed because the service must
+ display the updated count every one hour.
+
 #+BEGIN_SRC 
-@app.cache.cached(timeout=60)  
+@app.cache.cached(timeout=360)  
 #+END_SRC
-   Cache this view for 1 minute.
+
+ The function is given a name which is also used to generate URLs
+ for that particular function, and returns the value we want to
+ display in the browser.
+ 
 #+BEGIN_SRC 
 def numberofhits():
 #+END_SRC
-   The function is given a name which is also used to generate URLs
-   for that particular function, and returns the value we want to
-   display in the browser.
 
+ Call the function =grand_total()= which is defined in
+ =extract_data.py= to get the total number of hits.
+  
 #+BEGIN_SRC 
     numberofhits  = extract_data.grand_total()
 #+END_SRC
-   Call the function =grand_total()= which is defined in
-   =extract_data.py= to get the total number of hits.
 
-#+BEGIN_SRC
-    response = make_response(numberofhits)
-    response.headers['Access-Control-Allow-Origin'] = '*'
-    response.headers['Access-Control-Allow-Credentials'] = 'true'
-    return response
-#+END_SRC
-   =make_response()= function can be called instead of using a return
+   The =make_response()= function can be called instead of using a return
    and will get a response object which can be used to attach headers.
    =Access-Control-Allow-Origin= is a CORS (Cross-Origin Resource
    Sharing) header.  When Site A tries to fetch content from Site B,
@@ -330,18 +344,18 @@ def numberofhits():
    origins.  The server can give permission to include cookies by
    setting the =Access-Control-Allow-Credentials= header.
 
-#+BEGIN_SRC 
-if __name__ == '__main__':
-    app.run(port=5000, debug=True)
+#+BEGIN_SRC
+    response = make_response(numberofhits)
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    response.headers['Access-Control-Allow-Credentials'] = 'true'
+    return response
 #+END_SRC
 
-   Finally we use the =run()= function to run the local server with
+   Finally, use the =run()= function to run the local server with
    our application. The if *__name__ == '__main__':* makes sure the
    server only runs if the script is executed directly from the Python
    interpreter and not used as an imported module.  
 
-   *Note:* To stop the server, hit control-C.
-    
 
 *** Setup of the service
     As discussed in the [[Where%20the%20service%20will%20run][Where the service will run]], a VM on AWS will
@@ -353,51 +367,110 @@ if __name__ == '__main__':
     temporarily but when the scripts are run, this information will be
     
 
+#+BEGIN_SRC 
+if __name__ == '__main__':
+    app.run(port=5000, debug=True)
+#+END_SRC
+   
+** Presenting the data
+   For presenting the data, we used AJAX (Asynchronous JavaScript and
+   XML) AJAX allows web pages to be updated asynchronously by
+   exchanging small amounts of data with the server. This means that
+   it is possible to update parts of a web page, without reloading the
+   whole page. The code snippet below will call the enpoint
+   =/numberofhits=, where it will return the total number of pages
+   visited as a response and displays on browser.
+
+#+BEGIN_SRC 
+<html>
+   <head>
+      <title>Analytics</title>
+      <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+      <script type="text/javascript" language="javascript">
+         $(document).ready(function() {
+               $.getJSON('http://localhost:5000/numberofhits', function(data) {
+                  $("#analytics").html("<p> Total number of hits: " + data.numberofhits + "</p>");
+               });
+         });
+      </script>
+   </head>
+   <body>
+      <div id="analytics">
+         Analytics
+      </div>
+   </body>
+</html>
+#+END_SRC
+
+   Note: If you want to display the total number of page visits on vlab.co.in, 
+   then Add the above code snippet in =index.html= file. 
+** Impediments
+
+
 * Test Cases
   A test case is a document, which has a set of test data,
   preconditions, expected results and postconditions, developed for a
   particular test scenario in order to verify compliance against a
   specific requirement.
-
+** Objective:
+   The objective of this test cases is to test whether the application 
+   is running or not, by sending HTTP GET request and also to test 
+   the return value of the response. 
 ** Test case ID: TC01
-*** Objective
-    The objective of this test case is to test whether the application
-    is running or not, by sending HTTP GET request and also to test the
-    return value of the response.
-*** Apparatus
-    - A machine installed with =Flask-Testing=.
-*** Theory
-    This test case will test the funtionality of endpoint
-    =/numberofhits= where it will return the total number of pages
-    visited.
-*** Procedure.
-    - Run =python test_app.py= in terminal.
-    - Check the output of this command =Ran 1 test in 0.034s= and =OK=.
-    - If the above output is found then test is passed.
-*** Experiment
+** Test case name: Test Number of Page Visits
+** Test case description:
+   In this test case, end point =/numberofhits= is tested, where it 
+   will return the total number of pages visited.
+** Pre condition:
+    Service is build and endpoint is exposed.
+** Test data/Input data:
+   The Input data is required to test the test case. 
+   Input data is to verify that a given set of 
+   input to a given function/program produces some expected result. 
+   Input can be valid data or invalid data.
+   Here, the input data will return the userdefined value when
+    =grand_toal()= function is called. 
+#+BEGIN_SRC python:tangle config.py
+#!/usr/bin/python
+def grand_total():
+  dict = {'numberofhits':'1234'};
+  return dict['numberofhits']
+#+END_SRC
+** Step description/action
+*** Step 1:
+    Import the required packages used for testing.
 #+BEGIN_SRC python :tangle test_app.py
 import unittest
 from flask.ext.testing import TestCase
 import config
 from app import app
 #+END_SRC
-
+*** Step 2:
+ A testcase is created by subclassing =unittest.TestCase=.
 #+BEGIN_SRC 
 class AnalyticsTestCase(unittest.TestCase):
 #+END_SRC
-    A testcase is created by subclassing =unittest.TestCase=.
-#+BEGIN_SRC 
-    def test_numberofhits(self):
-        json_string = config.grand_total()
-        print json_string
-#+END_SRC
+*** Step 3:
     The tests are defined with methods whose names start with the
     letters =test=.  This naming convention informs the test runner
     about which methods represent tests.  To start testing the
     functionality of the application, add a new test method to our
     class, like =test_numberofhits()=.Similarly, other test methods
-    can be added.
-
+    can be added. 
+#+BEGIN_SRC 
+    def test_numberofhits(self):
+        json_string = config.grand_total()
+        print json_string
+#+END_SRC
+*** Step 4:
+   Each test is a call to =assertEqual()= function which will test
+   that first and second arguments are equal.  If the values do not
+   compare equal, then test will fail.
+   - The status code of the endpoint =/numberofhits= is equated to =200= 
+   which means =OK= (the request has succeeded). The endpoint returned 
+   with the response.
+   - The data which is returned in the form of response is compared against
+     the Input data.
 #+BEGIN_SRC 
         tester = app.test_client(self)
         response = tester.get('http://localhost:5000/numberofhits')
@@ -405,27 +478,20 @@ class AnalyticsTestCase(unittest.TestCase):
         self.assertEqual(json_string,  response.data)
 
 #+END_SRC            
-    Each test is a call to =assertEqual()= function which will test
-    that first and second arguments are equal.  If the values do not
-    compare equal, the test will fail.
+*** Step 5:
+    The final block shows a simple way to run the
+    tests. =unittest.main()= provides a command-line interface to the
+    test script.  When run from the command line, the script
+    produces an output.
 #+BEGIN_SRC 
 if __name__ == '__main__':
     unittest.main()
 #+END_SRC
-    The final block shows a simple way to run the
-    tests. =unittest.main()= provides a command-line interface to the
-    test script.  When run from the command line, the above script
-    produces an output.
 
-#+BEGIN_SRC python:tangle config.py
-#!/usr/bin/python
-def grand_total():
-  dict = {'numberofhits':'1234'};
-  return dict['numberofhits']
-#+END_SRC
-    The above code will return the userdefined value when
-    =grand_toal()= function is called.
-*** Result
+** Expected Result
+    - Run =python test_app.py= in terminal.
+    - Check the output, if it was like =Ran 1 test in 0.034s= and =OK=.
+    - If the output is found then test is passed.
  #+BEGIN_SRC 
 $ python test_app.py
 .
@@ -434,6 +500,7 @@ Ran 1 test in 0.034s
 
 OK
 #+END_SRC
+
 
 * Work Plan
 ** Work plan for simple application
@@ -480,6 +547,19 @@ OK
    locations, these files are transferred into the service machine.
   
 * COMMENT Implementation
+** Procedure
+   After a discussion (which also involved exchange of mails) the
+   process of implementation was decided as follows:
+   1. Pull all the data from deploy and AWS
+      - Collate data from deploy and AWS
+      - This data that will be used by the service using helper functions.
+   2. Serving the data. 
+      - Define end points based on the requirements
+      - Build a service that implements these end points.
+   3. Rendering of the data on vlab.co.in
+      - Insert the JavaScript snippet in vlab.co.in
+   4. Backup of all the statistics
+       
   A service needs to run which would invoke the script written above
   periodically to obtain the latest data. Also the service is required
   to display the data on a html page.
