@@ -480,8 +480,6 @@ sys.path.insert(0, '/path/to/the/application')
 ** Test case description:
    In this test case, end point =/numberofhits= is tested, where it 
    will return the total number of pages visited.
-** Pre condition:
-    Service is build and endpoint is exposed.
 ** Test data/Input data:
    The Input data is required to test the test case. 
    Input data is to verify that a given set of 
