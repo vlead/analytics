@@ -453,7 +453,7 @@ yum install mod_wsgi
     The object called application in that file is then used as application.
 #+BEGIN_SRC
 import sys
-sys.path.insert (0,'/var/www/html/myapp/')
+sys.path.insert (0,'/var/www/html/analytics/')
 
 from app import app as application
  #+END_SRC
@@ -461,9 +461,9 @@ from app import app as application
       Configure Apache to load =mod_wsgi= module and your project in VirtualHost
       Insert the following lines in =/etc/httpd/conf/httpd.conf=
 #+BEGIN_SRC 
-WSGIScriptAlias / /var/www/html/myapp/myapp.wsgi
+WSGIScriptAlias / /var/www/html/analytics/analytics.wsgi
 WSGIScriptReloading On
-<Directory /var/www/html/myapp>
+<Directory /var/www/html/analytics>
      Order deny,allow
      Allow from all
  </Directory>
