@@ -388,74 +388,96 @@ if __name__ == '__main__':
     app.run(port=5000, debug=True)
 #+END_SRC
 *** Provisioning the Service
-**** Machine Configuration:
-   + Operating System: ubuntu-12.04
+***** Machine Configuration:
+   + Operating System: centos-6.6
    + Architecture: x86_64
    + Memory: 256 MB
    + Disk space: 10 GB
    + Interface: venet0
-**** Steps to manually create a container
+***** Steps to manually create a centos container 
 #+BEGIN_SRC 
-    vzctl create 101 --ostemplate ubuntu-12.04-custom-x86_64 --ipadd x.x.x.x --diskspace 10G:15.0G --hostname analytics-ajax.vlabs.ac.in
-    vzctl start 101
-    vzctl set 101 --nameserver inherit --ram 256M --swap 512M --onboot yes --save
+vzctl create 16133 --ostemplate centos-6-x86_64-point6 --ipadd 10.4.15.133 
+--diskspace 10G:15.0G --hostname stats-demo.vlabs.ac.in
+vzctl start 16133
+vzctl set 16133 --nameserver inherit --ram 256M --swap 512M --onboot yes --save
 #+END_SRC
-    
-**** Prepare the Machine for Deployment:
+***** Export proxy 
+#+BEGIN_SRC 
+export http_proxy="proxy.iiit.ac.in:8080"
+export https_proxy="proxy.iiit.ac.in:8080"
+#+END_SRC    
 ***** Update the System
     In order to have a stable deployment server, it is crucial to keep things up-to-date and well maintained.
     To ensure that we have the latest available versions of default applications, we need to update our system.
     Run the following to update your system:
 #+BEGIN_SRC 
-sudo apt-get update
+sudo yum -y update
 #+END_SRC
 ***** Install virtualenv.
     Run the following command to download and install virtualenv using pip.
     =virtualenv= is a tool to create isolated Python environments.
 #+BEGIN_SRC 
-sudo apt-get install python-virtualenv
+sudo pip install virtualenv
+#+END_SRC
+***** Install epel For RHEL 6.x and CentOS 6.x (x86_64)
+#+BEGIN_SRC 
+rpm -ivh http://dl.fedoraproject.org/pub
+/epel/6/x86_64/epel-release-6-8.noarch.rpm
+#+END_SRC
+***** Install pip with yum command
+#+BEGIN_SRC 
+yum install -y python-pip
 #+END_SRC
 ***** Install Flask
    Enter the following command to get Flask activated in your virtualenv
 #+BEGIN_SRC 
  pip install Flask
 #+END_SRC
-***** Install mod_wsgi.
+***** Install Flask-Cache
+#+BEGIN_SRC 
+ pip install Flask-Cache
+#+END_SRC
+***** Install wsgi on CentOS using yum.
    WSGI(Web Server Gateway Interface) is an interface between a web server 
    and the application itself. It exists to ensure a standardized way 
    between various servers and applications (frameworks) to work with each 
    other, allowing interchangeability when necessary (e.g. switching from 
    development to production environment).
 #+BEGIN_SRC 
-apt-get install libapache2-mod-wsgi
+yum install mod_wsgi
 #+END_SRC
+
 ***** Create a =.wsgi= file
     To run your application you need a =yourapplication.wsgi= file. 
     This file contains the code =mod_wsgi= is executing on startup to get the application object. 
     The object called application in that file is then used as application.
-#+BEGIN_SRC 
-from yourapplication import app as application
+#+BEGIN_SRC
 import sys
-sys.path.insert(0, '/path/to/the/application')
-#+END_SRC
-***** Configure Apache
-    Create an Apache configuration file for your application.
+sys.path.insert (0,'/var/www/html/myapp/')
+
+from app import app as application
+ #+END_SRC
+***** Configure the Apache and deploy the service
+      Configure Apache to load =mod_wsgi= module and your project in VirtualHost
+      Insert the following lines in =/etc/httpd/conf/httpd.conf=
 #+BEGIN_SRC 
-<VirtualHost *>
-    ServerName example.com
+WSGIScriptAlias / /var/www/html/myapp/myapp.wsgi
+WSGIScriptReloading On
+<Directory /var/www/html/myapp>
+     Order deny,allow
+     Allow from all
+ </Directory>
 
-    WSGIDaemonProcess yourapplication user=user1 group=group1 threads=5
-    WSGIScriptAlias / /var/www/yourapplication/yourapplication.wsgi
-
-    <Directory /var/www/yourapplication>
-        WSGIProcessGroup yourapplication
-        WSGIApplicationGroup %{GLOBAL}
-        Order deny,allow
-        Allow from all
-    </Directory>
-</VirtualHost>
 #+END_SRC
-  
+***** Restart Apache
+#+BEGIN_SRC 
+service httpd restart
+#+END_SRC
+***** Test the service with end point.
+#+BEGIN_SRC 
+http://10.4.15.133/numberofhits
+#+END_SRC
+
 ** Presenting the data
    For presenting the data, AJAX (Asynchronous JavaScript and
    XML)and HTML(HyperText Markup Language) is used. 
@@ -489,8 +511,6 @@ sys.path.insert(0, '/path/to/the/application')
 
    Note: If you want to display the total number of page visits on vlab.co.in, 
    then add the above code snippet in =index.html= file. 
-** Impediments
-
 * Test Cases
   A test case is a document, which has a set of test data,
   preconditions, expected results and post-conditions, developed for a
