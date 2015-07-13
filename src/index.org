@@ -388,7 +388,7 @@ if __name__ == '__main__':
     app.run(port=5000, debug=True)
 #+END_SRC
 *** Provisioning the Service
-***** Machine Configuration:
+***** Machine Configuration
    + Operating System: centos-6.6
    + Architecture: x86_64
    + Memory: 256 MB
@@ -401,7 +401,7 @@ vzctl create 16133 --ostemplate centos-6-x86_64-point6 --ipadd 10.4.15.133
 vzctl start 16133
 vzctl set 16133 --nameserver inherit --ram 256M --swap 512M --onboot yes --save
 #+END_SRC
-***** Export proxy 
+***** Export proxy Settings
 #+BEGIN_SRC 
 export http_proxy="proxy.iiit.ac.in:8080"
 export https_proxy="proxy.iiit.ac.in:8080"
@@ -409,11 +409,11 @@ export https_proxy="proxy.iiit.ac.in:8080"
 ***** Update the System
     In order to have a stable deployment server, it is crucial to keep things up-to-date and well maintained.
     To ensure that we have the latest available versions of default applications, we need to update our system.
-    Run the following to update your system:
+    Run the following command to update your system
 #+BEGIN_SRC 
 sudo yum -y update
 #+END_SRC
-***** Install virtualenv.
+***** Install virtualenv
     Run the following command to download and install virtualenv using pip.
     =virtualenv= is a tool to create isolated Python environments.
 #+BEGIN_SRC 
@@ -429,7 +429,7 @@ rpm -ivh http://dl.fedoraproject.org/pub
 yum install -y python-pip
 #+END_SRC
 ***** Install Flask
-   Enter the following command to get Flask activated in your virtualenv
+   Enter the following command to get Flask activated in your =virtualenv=
 #+BEGIN_SRC 
  pip install Flask
 #+END_SRC
@@ -437,7 +437,7 @@ yum install -y python-pip
 #+BEGIN_SRC 
  pip install Flask-Cache
 #+END_SRC
-***** Install wsgi on CentOS using yum.
+***** Install wsgi on CentOS using yum
    WSGI(Web Server Gateway Interface) is an interface between a web server 
    and the application itself. It exists to ensure a standardized way 
    between various servers and applications (frameworks) to work with each 
@@ -495,7 +495,7 @@ http://10.4.15.133/numberofhits
       <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
       <script type="text/javascript" language="javascript">
          $(document).ready(function() {
-               $.getJSON('http://localhost:5000/numberofhits', function(data) {
+               $.getJSON('http://10.4.15.133/numberofhits', function(data) {
                   $("#analytics").html("<p> Total number of hits: " + data.numberofhits + "</p>");
                });
          });
