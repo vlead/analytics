@@ -561,7 +561,7 @@ class AnalyticsTestCase(unittest.TestCase):
     can be added. 
 #+BEGIN_SRC python :tangle tests/test_app.py 
     def test_numberofhits(self):
-        json_string = config.grand_total()
+        json_string = sample_data.grand_total()
         print json_string
 #+END_SRC
 *** Step 4:
