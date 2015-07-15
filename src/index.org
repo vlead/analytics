@@ -1,4 +1,4 @@
-#+TITLE:     Building an application for the Analytics of Virtual Labs
+x#+TITLE:     Building an application for the Analytics of Virtual Labs
 #+AUTHOR:    M.S.Soumya
 #+DATE:      2015-06-09 Tue
 #+PROPERTY: results output
@@ -197,11 +197,11 @@ all = [__dict_tot_pages__ ]
    function gets all the required awstats text files from the
    specified directory.
 #+BEGIN_SRC python :tangle src/analytics/extract_data.py
-def get_file_names(year):
+def get_file_names(year,location):
     list_of_files = []
-    for file in os.listdir('/var/www/html/analytics/data/'):
+    for file in os.listdir(location):
         if fnmatch.fnmatch(file, '*'+ re.escape(year) + '*.txt'):
-            list_of_files.append('/var/www/html/analytics/data/' + file)
+            list_of_files.append(location + file)
     return list_of_files
 #+END_SRC
    From the data collected from AWS, the awstats are lab specific. In
@@ -211,8 +211,8 @@ def get_file_names(year):
    files and adds the page views. It returns the total page views of
    labs deployed on AWS infrastructure.
 #+BEGIN_SRC python :tangle src/analytics/extract_data.py
-def extract_aws_data(year):
-    files = get_file_names(year);
+def extract_aws_data(year,location):
+    files = get_file_names(year,location);
     dictionary = {}
     dict_tot_pages = {}
     for i in files:
@@ -233,7 +233,6 @@ def extract_aws_data(year):
     z = 0
     for key in dictionary:
         z += dictionary[key]
-#   print "total aws",z
     return z
 #+END_SRC
    Awstats on the reverse proxy is configured to capture the analytics
@@ -243,13 +242,13 @@ def extract_aws_data(year):
    only the specified files to obtain the page views. It returns the
    total page views of labs deployed on IIIT infrastructure.
 #+BEGIN_SRC python :tangle src/analytics/extract_data.py
-def extract_iiit_data(year):
-    files = get_file_names(year);
+def extract_iiit_data(year, location):
+    files = get_file_names(year,location);
     dictionary = {}
     dict_tot_pages = {}
     for i in files:
         if re.search(r'awstats\d+.virtual-labs.ac.in.txt$',i):
-#            print i
+            print i
             f = open(i)
             for line in f:
                 if re.match(r'^BEGIN_DAY',line):
@@ -267,7 +266,6 @@ def extract_iiit_data(year):
     z = 0
     for key in dictionary:
         z += dictionary[key]
-#    print "total iiit",z
     return z
 #+END_SRC
    The total page views from both the platforms is obtained from the
@@ -278,13 +276,13 @@ def extract_iiit_data(year):
 def grand_total():
     global __dict_tot_pages__
     year = [ '2013','2014', '2015' ]
+    aws_location = '/var/www/html/analytics/aws/'
+    base_location = '/var/www/html/analytics/base/'
     tot_pages=0
     for i in year:
-        tot_pages += extract_iiit_data(i) #+ extract_aws_data(i)
+        tot_pages += extract_iiit_data(i,base_location) + extract_aws_data(i,aws_location)
     __dict_tot_pages__["total-pages"]=str(tot_pages)
     return __dict_tot_pages__["total-pages"]
-#    print __dict_tot_pages__["total-pages"]
-#grand_total()
 #+END_SRC
 
 ** Building the Service
