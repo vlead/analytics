@@ -297,13 +297,15 @@ def grand_total():
    should handle the request. 
 
 #+BEGIN_SRC python :tangle src/analytics/app.py
-from flask import Flask, make_response
-import json
-import os
-#import config
-from data import extract_data
+from flask import Flask, render_template, request, jsonify, make_response
 # import the flask extension
 from flask.ext.cache import Cache
+import json
+#import os
+#import config
+#from data import extract_data
+#from data.extract_data import *
+from extract_data import *
 #+END_SRC
 
 Create an instance of the class(Flask). The argument is the name of
@@ -354,7 +356,7 @@ def numberofhits():
  =extract_data.py= to get the total number of hits.
   
 #+BEGIN_SRC python :tangle src/analytics/app.py
-    numberofhits  = extract_data.grand_total()
+    numberofhits  = grand_total()
 #+END_SRC
 
    The =make_response()= function can be called instead of using a return
@@ -452,6 +454,9 @@ yum install mod_wsgi
 #+BEGIN_SRC  python :tangle src/analytics/analytics.wsgi
 import sys
 sys.path.insert (0,'/var/www/html/analytics/')
+
+import logging, sys
+logging.basicConfig(stream=sys.stderr)
 
 from app import app as application
  #+END_SRC
