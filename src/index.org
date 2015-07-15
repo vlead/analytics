@@ -276,8 +276,8 @@ def extract_iiit_data(year, location):
 def grand_total():
     global __dict_tot_pages__
     year = [ '2013','2014', '2015' ]
-    aws_location = '/var/www/html/analytics/aws/'
-    base_location = '/var/www/html/analytics/base/'
+    aws_location = '/root/aws/'
+    base_location = '/root/base/'
     tot_pages=0
     for i in year:
         tot_pages += extract_iiit_data(i,base_location) + extract_aws_data(i,aws_location)
