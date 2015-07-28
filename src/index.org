@@ -608,10 +608,22 @@ OK
 
 * Releases
 ** Release v1.0.0
-   This release realizes [[Requirement #1]].
-   The release date is [2015-07-08 Wed]
+ - This release realizes [[Requirement #1]].  
+ - The release date is [2015-07-16 Thu]
+ - The demo can be viewed from the link
+   [[stats-demo.virtual-labs.ac.in/test-stats/]]. This link displays the
+   sample vlab.co.in landing page with the page hits count which are
+   served from the demo container at VLEAD. The production service can
+   be viewed from [[stats.virtual-labs.ac.in/stats/]]. *These URL's are not*
+   *public and can be accessed only from within IIIT campus.*
+ - The demo container is located on Base4 (CTID 16133)
+ - To view just the number of page views by the service running off
+   the production VM use the URL
+   [[stats.virtual-labs.ac.in/numberofhits]]. This URL is publically
+   accessible from anywhere.
+
 *** Work Plan
-**** TODO Prepare the document
+**** DONE Prepare the document
 **** DONE Discuss on how to meet the requirement
           There was a discussion on [2015-06-23 Tue] with the
           participants as Saurabh, Thirumal, Anon, Zubair, Soumya and
