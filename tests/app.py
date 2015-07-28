@@ -5,7 +5,7 @@ import json
 #from data import extract_data
 #from data.extract_data import *
 
-import config
+import sample_data
 app = Flask(__name__)
 
 # define the cache config keys, remember that it can be done in a settings file
@@ -17,7 +17,7 @@ app.cache = Cache(app)
 @app.route('/numberofhits')
 @app.cache.cached(timeout=60)  # cache this view for 1 minutes
 def numberofhits():
-    json_string = config.grand_total()
+    json_string = sample_data.grand_total()
     response = make_response(json_string)
     response.headers['Access-Control-Allow-Origin'] = '*'
     response.headers['Access-Control-Allow-Credentials'] = 'true'
@@ -26,7 +26,7 @@ def numberofhits():
 @app.route('/usage')
 @app.cache.cached(timeout=60)  # cache this view for 1 minute
 def usagehits():
-    usage_count  = config.usage_hits()
+    usage_count  = sample_data.usage_hits()
     response = make_response(usage_count)
     response.headers['Access-Control-Allow-Origin'] = '*'
     response.headers['Access-Control-Allow-Credentials'] = 'true'
