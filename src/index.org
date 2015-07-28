@@ -425,6 +425,17 @@ def numberofhits():
     response.headers['Access-Control-Allow-Credentials'] = 'true'
     return response
 #+END_SRC
+Similary, usage count will get from the following end point.
+#+BEGIN_SRC python :tangle src/analytics/app.py
+@app.route('/usage')
+@app.cache.cached(timeout=360)  
+def usagehits():
+    usage_count  = usage_hits()
+    response = make_response(usage_count)
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    response.headers['Access-Control-Allow-Credentials'] = 'true'
+    return response
+#+END_SRC
 
    Finally, use the =run()= function to run the local server with
    our application. The if *__name__ == '__main__':* makes sure the
