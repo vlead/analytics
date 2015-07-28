@@ -695,10 +695,6 @@ OK
   the total views and hits of the site is required. This would help
   keep us informed on the usage of our labs.
 
-* COMMENT Objective
-  The objective of this exercise is to display the usage of
-  virtual-labs in terms of number of pages viewed on vlab.co.in.
-   
 * COMMENT Design
    The aim of this model is to build a web service which
    would display certain specific information from the statistics
