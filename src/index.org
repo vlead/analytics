@@ -572,6 +572,9 @@ http://10.4.15.133/numberofhits
       <div id="analytics">
          Analytics
       </div>
+      <div id="usage">
+         Usage
+      </div>
    </body>
 </html>
 #+END_SRC
