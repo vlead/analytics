@@ -547,22 +547,27 @@ http://10.4.15.133/numberofhits
    exchanging small amounts of data with the server. This means that
    it is possible to update parts of a web page, without reloading the
    whole page. The code snippet below will call the endpoint
-   =/numberofhits=, where it will return the total number of pages
-   visited as a response and displays on browser.
+   =/numberofhits= and =/usage=, where it will return the total number of pages 
+   visited and usage as a response and displays on browser.
 
-#+BEGIN_SRC html :tangle src/analytics/test-stats/index.html 
+#+BEGIN_SRC html :tangle src/analytics/vlab.co.in/index.html 
 <html>
    <head>
       <title>Analytics</title>
       <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
       <script type="text/javascript" language="javascript">
-         $(document).ready(function() {
-               $.getJSON('http://10.4.15.133/numberofhits', function(data) {
-                  $("#analytics").html("<p> Total number of Page Hits Since 2013: " + data.numberofhits + "</p>");
-               });
-         });
+         //$(document).ready(function() {
+         window.onload = function() {
+               $.getJSON('http://stats-demo.vlabs.ac.in/numberofhits', function(data) {
+                  $("#analytics").html("<p><b>Page hits since 2013: " + data + "</b></p>");
+                  });            
+                  $.getJSON('http://stats-demo.vlabs.ac.in/usagehits', function(data) {
+                  $("#usage").html("<p><b>Usage hits since 2013: " + data + "</b></p>");
+
+              });
+         };
       </script>
-   </head>
+     </head>
    <body>
       <div id="analytics">
          Analytics
@@ -571,7 +576,7 @@ http://10.4.15.133/numberofhits
 </html>
 #+END_SRC
 
-   Note: If you want to display the total number of page visits on vlab.co.in, 
+   Note: If you want to display the total number of page visits and usage on vlab.co.in, 
    then add the above code snippet in =index.html= file. 
 * Test Cases
   A test case is a document, which has a set of test data,
