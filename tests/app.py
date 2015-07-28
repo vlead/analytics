@@ -15,17 +15,22 @@ app.config['CACHE_TYPE'] = 'simple'
 app.cache = Cache(app)
 
 @app.route('/numberofhits')
-@app.cache.cached(timeout=100)  # cache this view for 5 minutes
+@app.cache.cached(timeout=60)  # cache this view for 1 minutes
 def numberofhits():
-   # json_data = open("data-2014.json")
-   # data = json.load(json_data)
-    #json_string = json.dumps(data)
     json_string = config.grand_total()
     response = make_response(json_string)
     response.headers['Access-Control-Allow-Origin'] = '*'
     response.headers['Access-Control-Allow-Credentials'] = 'true'
     return response
-    #return jsonify(data=json_string)
+
+@app.route('/usage')
+@app.cache.cached(timeout=60)  # cache this view for 1 minute
+def usagehits():
+    usage_count  = config.usage_hits()
+    response = make_response(usage_count)
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    response.headers['Access-Control-Allow-Credentials'] = 'true'
+    return response
 
 if __name__ == '__main__':
     app.run(port=5000,debug=True)

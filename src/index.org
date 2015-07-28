@@ -583,7 +583,7 @@ http://10.4.15.133/numberofhits
    Input can be valid data or invalid data.
    Here, the input data will return the user-defined value when
     =grand_total()= function is called. 
-#+BEGIN_SRC python:tangle tests/sample_data.py
+#+BEGIN_SRC 
 #!/usr/bin/python
 def grand_total():
   dict = {'numberofhits':'1234'};
@@ -592,7 +592,7 @@ def grand_total():
 ** Step description/action
 *** Step 1:
     Import the required packages used for testing.
-#+BEGIN_SRC python :tangle tests/test_app.py
+#+BEGIN_SRC 
 import unittest
 from flask.ext.testing import TestCase
 import sample_data
@@ -600,7 +600,7 @@ from app import app
 #+END_SRC
 *** Step 2:
  A test case is created by sub-classing =unittest.TestCase=.
-#+BEGIN_SRC python :tangle tests/test_app.py 
+#+BEGIN_SRC 
 class AnalyticsTestCase(unittest.TestCase):
 #+END_SRC
 *** Step 3:
@@ -610,7 +610,7 @@ class AnalyticsTestCase(unittest.TestCase):
     functionality of the application, add a new test method to our
     class, like =test_numberofhits()=.Similarly, other test methods
     can be added. 
-#+BEGIN_SRC python :tangle tests/test_app.py 
+#+BEGIN_SRC 
     def test_numberofhits(self):
         json_string = sample_data.grand_total()
         print json_string
@@ -624,7 +624,7 @@ class AnalyticsTestCase(unittest.TestCase):
    with the response.
    - The data which is returned in the form of response is compared against
      the Input data.
-#+BEGIN_SRC python :tangle tests/test_app.py 
+#+BEGIN_SRC 
         tester = app.test_client(self)
         response = tester.get('http://localhost:5000/numberofhits')
         self.assertEqual(response.status_code, 200)
@@ -636,7 +636,7 @@ class AnalyticsTestCase(unittest.TestCase):
     tests. =unittest.main()= provides a command-line interface to the
     test script.  When run from the command line, the script
     produces an output.
-#+BEGIN_SRC python :tangle tests/test_app.py 
+#+BEGIN_SRC 
 if __name__ == '__main__':
     unittest.main()
 #+END_SRC
