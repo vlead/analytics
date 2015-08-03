@@ -207,7 +207,7 @@ x#+TITLE:     Building an application for the Analytics of Virtual Labs
     processed]] for [[Requirement%20#1][requirement #1]]. The python script is as described
     below.  The necessary packages are imported and some global
     variables are declared:
-#+BEGIN_SRC python :tangle src/analytics/extract_data.py
+#+BEGIN_SRC python :tangle analytics/extract_data.py
 import sys
 import re
 import json
@@ -216,7 +216,7 @@ import fnmatch
 __dict_tot_pages__ = {}
 all = [__dict_tot_pages__ ]
 #+END_SRC
-#+BEGIN_SRC python :tangle src/analytics/extract_data.py
+#+BEGIN_SRC python :tangle analytics/extract_data.py
 def get_file_names(year,location):
     list_of_files = []
     for file in os.listdir(location):
@@ -234,7 +234,7 @@ def get_file_names(year,location):
     function below looks through all the files and adds the page
     views. It returns the total page views of labs deployed on AWS
     infrastructure.
-#+BEGIN_SRC python :tangle src/analytics/extract_data.py
+#+BEGIN_SRC python :tangle analytics/extract_data.py
 def extract_aws_data(year,location):
     files = get_file_names(year,location);
     dictionary = {}
@@ -266,7 +266,7 @@ def extract_aws_data(year,location):
     through only the specified files to obtain the page views. It
     returns the total page views of labs deployed on IIIT
     infrastructure.
-#+BEGIN_SRC python :tangle src/analytics/extract_data.py
+#+BEGIN_SRC python :tangle analytics/extract_data.py
 def extract_iiit_data(year, location):
     files = get_file_names(year,location);
     dictionary = {}
@@ -297,7 +297,7 @@ def extract_iiit_data(year, location):
     function below. The statistics were collected from the year
     2013-2015 hence the years are passed as parameters to the above
     functions.
-#+BEGIN_SRC python :tangle src/analytics/extract_data.py
+#+BEGIN_SRC python :tangle analytics/extract_data.py
 def grand_total():
     global __dict_tot_pages__
     year = [ '2013','2014', '2015' ]
@@ -400,7 +400,7 @@ filter(usage, exp_url)
    identifier that is used in determining what logical unit of code
    should handle the request. 
 
-#+BEGIN_SRC python :tangle src/analytics/app.py
+#+BEGIN_SRC python :tangle analytics/app.py
 from flask import Flask, render_template, request, jsonify, make_response
 # import the flask extension
 from flask.ext.cache import Cache
@@ -416,19 +416,19 @@ Create an instance of the class(Flask). The argument is the name of
 the application’s module or package.  This is needed so that Flask
 knows where to look for templates, static files, and so on.
 
-#+BEGIN_SRC python :tangle src/analytics/app.py
+#+BEGIN_SRC python :tangle analytics/app.py
 app = Flask(__name__)
 #+END_SRC
 
   Define the cache config keys.
 
-#+BEGIN_SRC python :tangle src/analytics/app.py
+#+BEGIN_SRC python :tangle analytics/app.py
 app.config['CACHE_TYPE'] = 'simple'
 #+END_SRC
 
   Register the cache instance and bind it to app. 
 
-#+BEGIN_SRC python :tangle src/analytics/app.py
+#+BEGIN_SRC python :tangle analytics/app.py
 app.cache = Cache(app)
 #+END_SRC
 
@@ -437,14 +437,14 @@ app.cache = Cache(app)
 Use the =route()= decorator to tell Flask what URL should trigger the
 function.
 
-#+BEGIN_SRC python :tangle src/analytics/app.py
+#+BEGIN_SRC python :tangle analytics/app.py
 @app.route('/numberofhits')
 #+END_SRC
 
  Cache this view for 1 hour. This is needed because the service must
  display the updated count every one hour.
 
-#+BEGIN_SRC python :tangle src/analytics/app.py
+#+BEGIN_SRC python :tangle analytics/app.py
 @app.cache.cached(timeout=360)  
 #+END_SRC
 
@@ -452,14 +452,14 @@ function.
  for that particular function, and returns the value we want to
  display in the browser.
  
-#+BEGIN_SRC python :tangle src/analytics/app.py
+#+BEGIN_SRC python :tangle analytics/app.py
 def numberofhits():
 #+END_SRC
 
  Call the function =grand_total()= which is defined in
  =extract_data.py= to get the total number of hits.
   
-#+BEGIN_SRC python :tangle src/analytics/app.py
+#+BEGIN_SRC python :tangle analytics/app.py
     numberofhits  = grand_total()
 #+END_SRC
 
@@ -475,7 +475,7 @@ def numberofhits():
    origins.  The server can give permission to include cookies by
    setting the =Access-Control-Allow-Credentials= header.
 
-#+BEGIN_SRC python :tangle src/analytics/app.py
+#+BEGIN_SRC python :tangle analytics/app.py
     response = make_response(numberofhits)
     response.headers['Access-Control-Allow-Origin'] = '*'
     response.headers['Access-Control-Allow-Credentials'] = 'true'
@@ -498,7 +498,7 @@ def usagehits():
    server only runs if the script is executed directly from the Python
    interpreter and not used as an imported module.  
 
-#+BEGIN_SRC python :tangle src/analytics/app.py
+#+BEGIN_SRC python :tangle analytics/app.py
 if __name__ == '__main__':
     app.run(port=5000, debug=True)
 #+END_SRC
@@ -566,7 +566,7 @@ yum install mod_wsgi
     To run your application you need a =analytics.wsgi= file. 
     This file contains the code =mod_wsgi= is executing on startup to get the application object. 
     The object called application in that file is then used as application.
-#+BEGIN_SRC  python :tangle src/analytics/analytics.wsgi
+#+BEGIN_SRC  python :tangle analytics/analytics.wsgi
 import sys
 sys.path.insert (0,'/var/www/html/analytics/')
 
@@ -606,7 +606,7 @@ http://10.4.15.133/numberofhits
    =/numberofhits= and =/usage=, where it will return the total number of pages 
    visited and usage as a response and displays on browser.
 
-#+BEGIN_SRC html :tangle src/analytics/html-code/index.html 
+#+BEGIN_SRC html :tangle analytics/html-code/index.html 
 <html>
    <head>
       <title>Analytics</title>
@@ -658,7 +658,7 @@ http://10.4.15.133/numberofhits
    Input can be valid data or invalid data.
    Here, the input data will return the user-defined value when
     =grand_total()= function is called. 
-#+BEGIN_SRC python :tangle src/analytics/test-cases/sample_data.py
+#+BEGIN_SRC python :tangle analytics/tests/sample_data.py
 #!/usr/bin/python
 def grand_total():
   dict = {'numberofhits':'1234'};
@@ -667,7 +667,7 @@ def grand_total():
 *** Step description/action
 **** Step 1:
     Import the required packages used for testing.
-#+BEGIN_SRC python :tangle src/analytics/test-cases/test_app.py
+#+BEGIN_SRC python :tangle analytics/tests/test_app.py
 import unittest
 from flask.ext.testing import TestCase
 import sample_data
@@ -675,7 +675,7 @@ from app import app
 #+END_SRC
 **** Step 2:
  A test case is created by sub-classing =unittest.TestCase=.
-#+BEGIN_SRC python :tangle src/analytics/test-cases/test_app.py
+#+BEGIN_SRC python :tangle analytics/tests/test_app.py
 class AnalyticsTestCase(unittest.TestCase):
 #+END_SRC
 **** Step 3:
@@ -685,7 +685,7 @@ class AnalyticsTestCase(unittest.TestCase):
     functionality of the application, add a new test method to our
     class, like =test_numberofhits()=.Similarly, other test methods
     can be added. 
-#+BEGIN_SRC python :tangle src/analytics/test-cases/test_app.py 
+#+BEGIN_SRC python :tangle analytics/tests/test_app.py 
     def test_numberofhits(self):
         json_string = sample_data.grand_total()
         print json_string
@@ -699,7 +699,7 @@ class AnalyticsTestCase(unittest.TestCase):
    with the response.
    - The data which is returned in the form of response is compared against
      the Input data.
-#+BEGIN_SRC python :tangle src/analytics/test-cases/test_app.py 
+#+BEGIN_SRC python :tangle analytics/tests/test_app.py 
         tester = app.test_client(self)
         response = tester.get('http://localhost:5000/numberofhits')
         self.assertEqual(response.status_code, 200)
@@ -741,7 +741,7 @@ OK
    Input can be valid data or invalid data.
    Here, the input data will return the user-defined value when
     =usage_hits()= function is called. 
-#+BEGIN_SRC python :tangle src/analytics/test-cases/sample_data.py 
+#+BEGIN_SRC python :tangle analytics/tests/sample_data.py 
 def usage_hits():
   dict = {'numberofusagehits':'1234'};
   return dict['numberofusagehits']
@@ -767,7 +767,7 @@ class AnalyticsTestCase(unittest.TestCase):
     functionality of the application, add a new test method to our
     class, like =test_usage()=.Similarly, other test methods
     can be added. 
-#+BEGIN_SRC python :tangle src/analytics/test-cases/test_app.py 
+#+BEGIN_SRC python :tangle analytics/tests/test_app.py 
     def test_usage(self):
         json_string = sample_data.usage_hits()
         print json_string
@@ -781,7 +781,7 @@ class AnalyticsTestCase(unittest.TestCase):
    with the response.
    - The data which is returned in the form of response is compared against
      the Input data.
-#+BEGIN_SRC python :tangle src/analytics/test-cases/test_app.py
+#+BEGIN_SRC python :tangle analytics/tests/test_app.py
         tester = app.test_client(self)
         response = tester.get('http://localhost:5000/usage')
         self.assertEqual(response.status_code, 200)
@@ -793,7 +793,7 @@ class AnalyticsTestCase(unittest.TestCase):
     tests. =unittest.main()= provides a command-line interface to the
     test script.  When run from the command line, the script
     produces an output.
-#+BEGIN_SRC python :tangle src/analytics/test-cases/test_app.py
+#+BEGIN_SRC python :tangle analytics/tests/test_app.py
 if __name__ == '__main__':
     unittest.main()
 #+END_SRC
@@ -818,7 +818,7 @@ OK
    This release realizes [[Requirement #1]].
    The release date is [2015-07-08 Wed]
 *** Work Plan
-**** TODO Prepare the document
+**** DONE Prepare the document
 **** DONE Discuss on how to meet the requirement
           There was a discussion on [2015-06-23 Tue] with the
           participants as Saurabh, Thirumal, Anon, Zubair, Soumya and
@@ -834,7 +834,7 @@ OK
 
 **** DONE Build the scripts
 **** DONE Test the scripts.
-**** TODO Updation of vlab.co.in
+**** DONE Updation of page view count in new landing page of vlab.co.in
 
 ** Release v1.0.2
    This release realizes [[Requirement%20#2][Requirement #2]].
@@ -851,6 +851,31 @@ OK
 **** TODO Write test cases [[https://github.com/vlead/analytics/issues/5][#5]]
 **** TODO Update model with test-cases [[https://github.com/vlead/analytics/issues/4][#4]]
 **** TODO Add usage definitions to pop-up page [[https://github.com/vlead/analytics/issues/14][#14]]
+**** DONE Add usage definitions to pop-up page [[https://github.com/vlead/analytics/issues/14][#14]]
+*** Estimated Effort
+ - Start on:20/07/2015
+ - End on:31/07/2015 
+ - Release Date: 01/08/2015
+ - Estimated Time: 120 Person Hours
+ - Hours in day = 6
+ - Total days = 120/6 = 20
+ - Persons = 2
+ - Clock days = 20/2 = 10 
+*** Actual Effort
+   Available hours:
+   - Soumya = 60 hours 
+   - Madhavi = 54 hours 
+   Time spent in meetings:
+   - Systems Meeting: Soumaya - 3 hours
+   - Data Services Meeting: Madhavi - 3 hours
+   - Weekly status update Meeting: Soumya, Madhavi - 3+3=6 Person Hours 
+   Actual Time:
+   - Soumya =
+   - Madhavi =
+
+
+
+
 * COMMENT  introduction
   The analytics of Virtual-labs are currently generated by awstats,
   which is an on-site web analytics technology. Awstats provides its
