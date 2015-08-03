@@ -319,50 +319,56 @@ import os
 import csv
 import fnmatch
 import re
+import config
+
 
 def separator():
+    global __log_as_csv__
     files_list = []
+    log_as_csv_files = []
     location = '/home/ms/systems/analytics/usage-service/logs/'
     #files_list.append(os.system('ls -d -1 $PWD/logs/*.*'))
     #files_list.pop(len(files_list) -1)
     for file in os.listdir(location):
         if fnmatch.fnmatch(file, '*'):
             files_list.append(location + file)
+            log_as_csv_files.append(file.split('.')[0]+'.csv')
     print files_list
-    csv_file = open('cse01.csv', 'wb')
-    open_csv = csv.writer(csv_file)
-    inputFile = open(files_list[1])
-    fileContent = inputFile.readlines()
-#    print fileContent
-    #csv_output = list()
-    for line in fileContent:
-        output = ','.join(shlex.split(line)) + '\n'
-#        print ','.join(shlex.split(line))
-        csv_file.write(output)
-#    print csv_output
-    csv_file.close()
+#    csv_file = open('cse01.csv', 'wb')
+#    open_csv = csv.writer(csv_file)
+    for i in range(len(files_list)):
+        input_file = open(files_list[i])
+        open_csv = open(log_as_csv_files[i],'wb')
+        fileContent = input_file.readlines()
+#        print fileContent
+        for line in fileContent:
+            output = ','.join(shlex.split(line)) + '\n'
+            # print ','.join(shlex.split(line))
+            open_csv.write(output)
+        open_csv.close()
+
+separator()
 
 def usage(x):
     exp_match_list = []
     tot_sim_count = 0
     sim_list = []
-    simulation_pattern="Experiment"
-    with open('test.csv', 'rb') as csv_file:
+#    simulation_pattern="Experiment"
+    simulation_pattern=x[1]
+    with open(x[2], 'rb') as csv_file:
         lines_in_file = csv.reader(csv_file, delimiter=',', quotechar='\n')
         for row in lines_in_file:
 #            print row[5]
-           if re.search(x,str(row[5])):
+            if re.search(x[0],str(row[5])):
                 exp_match_list.append(row)
     for i in range(len(exp_match_list)):
-        print exp_match_list[i][5]
-
-
-    for i in range(len(exp_match_list)):
+#        if re.search(simulation_pattern, str(exp_match_list[i])):
+#        if str(exp_match_list[i]).find(simulation_pattern) >=0:
         sim_match = re.search(simulation_pattern, exp_match_list[i][5])
         if sim_match:
             tot_sim_count+=1
             sim_list.append(exp_match_list[i])
-    req = False
+            req = False
     usage = 0
     for item in exp_match_list:
         sim = re.search(simulation_pattern, item[5])
@@ -372,21 +378,26 @@ def usage(x):
         elif not sim:
             req=True
     print "usage is %d" %(usage)
-
-#    for j in range(len(sim_list)):
-#        print sim_list[j][0]+ ' ' + sim_list[j][3]+ ' '+ sim_list[j][5]
-#    print count
-    print "%s is the number of records with exp1" %(len(exp_match_list))
+    print "%s is the number of records" %(len(exp_match_list))
     print "tot sim count is %s" %(tot_sim_count)
     print len(sim_list)
-    cont_list = []
-    cont_list = [item for item in exp_match_list if item not in sim_list]
-#    for k in range(len(cont_list)):
-#        print cont_list[k][5]
 
-#exp_url=[r'http://deploy.virtual-labs.ac.in/labs/cse04/exp1/index.php']
-exp_url=['/labs/cse04/exp1/index.php']
-filter(usage, exp_url)
+exp_url=[]
+def get_url():
+    for keys in config.url_sim:
+        for item in config.url_sim[keys]:
+            item.append(keys+'.csv')
+            exp_url.append(item)
+#    for i in range(len(config.url_sim)):
+#        exp_url.append(config.url_sim[i])
+#        print config.url_sim[i][0]
+#    print exp_url
+    return exp_url
+
+get_url()
+print exp_url
+
+filter(usage, exp_url)    
 #+END_SRC
     
 ** Building the Service
@@ -811,7 +822,6 @@ Ran 2 tests in 0.022s
 OK
 
 #+END_SRC
-
 
 * Releases
 ** Release v1.0.0
