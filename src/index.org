@@ -50,6 +50,11 @@ x#+TITLE:     Building an application for the Analytics of Virtual Labs
    #+LABEL:  Design diagram
    [[./diagrams/analytics.png]]
 
+   The analytics service as shown in the above diagram has inputs
+   coming from two sources
+
+
+
 *** Collation of data
     Initially all the labs were hosted from VLEAD infrastructure.  For
     scalability the hosting of labs shifted to Amazon Web Services
@@ -61,7 +66,8 @@ x#+TITLE:     Building an application for the Analytics of Virtual Labs
     Currently the labs are hosted in 3 different platforms namely:
     + AWS ( Currently 63 labs)
     + Containers at VLEAD (Around 20 labs) 
-    + Rest of the labs directed by vlab.co.in (either hosted by Amrita
+    + Rest of the labs directed by vlab.co.in (either hosted by
+      Amrita
       or individual institutes)
     
     The statistics of the labs hosted on AWS and the containers at
@@ -338,18 +344,48 @@ def separator():
 
 def usage(x):
     exp_match_list = []
-    csv_file = open('test.csv', 'r')
-    rows = csv_file.readlines()
-    for row in rows:
-        if re.search(x,row):
-#            print row
-            exp_match_list.append(row)
-    print exp_match_list
-#    return
+    tot_sim_count = 0
+    sim_list = []
+    simulation_pattern="Experiment"
+    with open('test.csv', 'rb') as csv_file:
+        lines_in_file = csv.reader(csv_file, delimiter=',', quotechar='\n')
+        for row in lines_in_file:
+#            print row[5]
+           if re.search(x,str(row[5])):
+                exp_match_list.append(row)
+    for i in range(len(exp_match_list)):
+        print exp_match_list[i][5]
 
-#    print exp_match_list
 
-exp_url=['http://deploy.virtual-labs.ac.in/labs/cse04/exp1/index.php']
+    for i in range(len(exp_match_list)):
+        sim_match = re.search(simulation_pattern, exp_match_list[i][5])
+        if sim_match:
+            tot_sim_count+=1
+            sim_list.append(exp_match_list[i])
+    req = False
+    usage = 0
+    for item in exp_match_list:
+        sim = re.search(simulation_pattern, item[5])
+        if sim and req==True:
+            usage+=1
+            req=False
+        elif not sim:
+            req=True
+    print "usage is %d" %(usage)
+
+#    for j in range(len(sim_list)):
+#        print sim_list[j][0]+ ' ' + sim_list[j][3]+ ' '+ sim_list[j][5]
+#    print count
+    print "%s is the number of records with exp1" %(len(exp_match_list))
+    print "tot sim count is %s" %(tot_sim_count)
+    print len(sim_list)
+    cont_list = []
+    cont_list = [item for item in exp_match_list if item not in sim_list]
+#    for k in range(len(cont_list)):
+#        print cont_list[k][5]
+
+#exp_url=[r'http://deploy.virtual-labs.ac.in/labs/cse04/exp1/index.php']
+exp_url=['/labs/cse04/exp1/index.php']
 filter(usage, exp_url)
 #+END_SRC
     
@@ -445,7 +481,7 @@ def numberofhits():
     response.headers['Access-Control-Allow-Credentials'] = 'true'
     return response
 #+END_SRC
-Similary, usage count will get from the following end point.
+   Similary, usage count will get from the following end point.
 #+BEGIN_SRC python :tangle src/analytics/app.py
 @app.route('/usage')
 @app.cache.cached(timeout=360)  
@@ -610,12 +646,12 @@ http://10.4.15.133/numberofhits
    The objective of this test cases is to test whether the application 
    is running or not, by sending HTTP GET request and also to test 
    the return value of the response. 
-* Test case ID: TC01
-** Test case name: Test Number of Page Visits
-** Test case description:
-   In this test case, end point =/numberofhits= is tested, where it 
-   will return the total number of pages visited.
-** Test data/Input data:
+** Test case ID: TC01
+*** Test case name: Test Number of Page Visits
+*** Test case description:
+    In this test case, end point =/numberofhits= is tested, where it 
+    will return the total number of pages visited.
+*** Test data/Input data:
    The Input data is required to test the test case. 
    Input data is to verify that a given set of 
    input to a given function/program produces some expected result. 
@@ -628,8 +664,8 @@ def grand_total():
   dict = {'numberofhits':'1234'};
   return dict['numberofhits']
 #+END_SRC
-** Step description/action
-*** Step 1:
+*** Step description/action
+**** Step 1:
     Import the required packages used for testing.
 #+BEGIN_SRC python :tangle src/analytics/test-cases/test_app.py
 import unittest
@@ -637,12 +673,12 @@ from flask.ext.testing import TestCase
 import sample_data
 from app import app
 #+END_SRC
-*** Step 2:
+**** Step 2:
  A test case is created by sub-classing =unittest.TestCase=.
 #+BEGIN_SRC python :tangle src/analytics/test-cases/test_app.py
 class AnalyticsTestCase(unittest.TestCase):
 #+END_SRC
-*** Step 3:
+**** Step 3:
     The tests are defined with methods whose names start with the
     letters =test=.  This naming convention informs the test runner
     about which methods represent tests.  To start testing the
@@ -654,7 +690,7 @@ class AnalyticsTestCase(unittest.TestCase):
         json_string = sample_data.grand_total()
         print json_string
 #+END_SRC
-*** Step 4:
+**** Step 4:
    Each test is a call to =assertEqual()= function which will test
    that first and second arguments are equal.  If the values do not
    compare equal, then test will fail.
@@ -670,7 +706,7 @@ class AnalyticsTestCase(unittest.TestCase):
         self.assertEqual(json_string,  response.data)
 
 #+END_SRC            
-*** Step 5:
+**** Step 5:
     The final block shows a simple way to run the
     tests. =unittest.main()= provides a command-line interface to the
     test script.  When run from the command line, the script
@@ -680,7 +716,7 @@ if __name__ == '__main__':
     unittest.main()
 #+END_SRC
 
-** Expected Result
+*** Expected Result
     - Run =python test_app.py= in terminal.
     - Check the output, if it was like =Ran 1 test in 0.034s= and =OK=.
     - If the output is found then test is passed.
@@ -693,12 +729,12 @@ Ran 1 test in 0.034s
 OK
 #+END_SRC
 
-* Test case ID: TC02
-** Test case name: Test Usage 
-** Test case description:
-   In this test case, end point =/usage= is tested, where it 
-   will return the total number of usage.
-** Test data/Input data:
+** Test case ID: TC02
+*** Test case name: Test Usage 
+*** Test case description:
+    In this test case, end point =/usage= is tested, where it 
+    will return the total number of usage.
+*** Test data/Input data:
    The Input data is required to test the test case. 
    Input data is to verify that a given set of 
    input to a given function/program produces some expected result. 
@@ -710,8 +746,8 @@ def usage_hits():
   dict = {'numberofusagehits':'1234'};
   return dict['numberofusagehits']
 #+END_SRC
-** Step description/action
-*** Step 1:
+*** Step description/action
+**** Step 1:
     Import the required packages used for testing.
 #+BEGIN_SRC  
 import unittest
@@ -719,12 +755,12 @@ from flask.ext.testing import TestCase
 import sample_data
 from app import app
 #+END_SRC
-*** Step 2:
+**** Step 2:
  A test case is created by sub-classing =unittest.TestCase=.
 #+BEGIN_SRC 
 class AnalyticsTestCase(unittest.TestCase):
 #+END_SRC
-*** Step 3:
+**** Step 3:
     The tests are defined with methods whose names start with the
     letters =test=.  This naming convention informs the test runner
     about which methods represent tests.  To start testing the
@@ -736,7 +772,7 @@ class AnalyticsTestCase(unittest.TestCase):
         json_string = sample_data.usage_hits()
         print json_string
 #+END_SRC
-*** Step 4:
+**** Step 4:
    Each test is a call to =assertEqual()= function which will test
    that first and second arguments are equal.  If the values do not
    compare equal, then test will fail.
@@ -752,7 +788,7 @@ class AnalyticsTestCase(unittest.TestCase):
         self.assertEqual(json_string,  response.data)
 
 #+END_SRC            
-*** Step 5:
+**** Step 5:
     The final block shows a simple way to run the
     tests. =unittest.main()= provides a command-line interface to the
     test script.  When run from the command line, the script
@@ -762,7 +798,7 @@ if __name__ == '__main__':
     unittest.main()
 #+END_SRC
 
-** Expected Result
+*** Expected Result
     - Run =python test_app.py= in terminal.
     - Check the output, if it was like =Ran 1 test in 0.034s= and =OK=.
     - If the output is found then test is passed.
@@ -802,7 +838,7 @@ OK
 
 ** Release v1.0.2
    This release realizes [[Requirement%20#2][Requirement #2]].
-   The release date is:
+   The release date is: [2015-08-01 Sat]
 *** Work Plan
 **** TODO Update model with usage design [[https://github.com/vlead/analytics/issues/2][#2]]
 **** TODO Write script  to convert logs into csv format [[https://github.com/vlead/analytics/issues/9][#9]]
@@ -815,7 +851,6 @@ OK
 **** TODO Write test cases [[https://github.com/vlead/analytics/issues/5][#5]]
 **** TODO Update model with test-cases [[https://github.com/vlead/analytics/issues/4][#4]]
 **** TODO Add usage definitions to pop-up page [[https://github.com/vlead/analytics/issues/14][#14]]
-
 * COMMENT  introduction
   The analytics of Virtual-labs are currently generated by awstats,
   which is an on-site web analytics technology. Awstats provides its
