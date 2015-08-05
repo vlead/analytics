@@ -878,8 +878,8 @@ OK
    Time spent in meetings:
    - Systems Meeting: Soumaya - 3 hours
    - Data Services Meeting: Madhavi - 3 hours
-   - Weekly status update Meeting(29/07/2015): Soumya, Madhavi - 3+3=6 Person Hours
-   - Weekly status update Meeting(05/08/2015): Soumya, Madhavi - 3+3=6 Person Hours
+   - Weekly status update Meeting(29/07/2015): Soumya, Madhavi = 3+3=6 Person Hours
+   - Weekly status update Meeting(05/08/2015): Soumya, Madhavi = 3+3=6 Person Hours
   
    Actual Time:
    - Soumya = 72-12 = 60 Hours
