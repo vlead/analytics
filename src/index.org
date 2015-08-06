@@ -427,7 +427,7 @@ filter(aws_usage, url_list)
     There are two different config files, one which enlists the labs
     on AWS and the other for deploy. The config file for labs on AWS
     is as below:
-#+BEGIN_SRC python: tangle analytics/aws_config.py
+#+BEGIN_SRC python :tangle analytics/aws_config.py
 url_sim = {
 'emt-iiith':[['Experiment.php\?code\=C001','T005\&code\=C001'],
              ['Experiment.php\?code\=C002','T005\&code\=C002'],
@@ -438,7 +438,7 @@ url_sim = {
 }
 #+END_SRC
     The config file for deploy is as below:
-#+BEGIN_SRC python: tangle analytics/deploy_config.py
+#+BEGIN_SRC python :tangle analytics/deploy_config.py
 url_sim = {
 'cse04':[['/labs/cse04/exp1/index.php','Experiment'],
          ['/labs/cse04/exp2/index.php','Experiment'],
