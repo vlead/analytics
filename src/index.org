@@ -325,23 +325,17 @@ import os
 import csv
 import fnmatch
 import re
-import config
-
+import aws_config
 
 def separator():
-    global __log_as_csv__
     files_list = []
     log_as_csv_files = []
-    location = '/home/ms/systems/analytics/usage-service/logs/'
-    #files_list.append(os.system('ls -d -1 $PWD/logs/*.*'))
-    #files_list.pop(len(files_list) -1)
+    location = '/home/ms/systems/analytics/usage-service/logs/aws/'
     for file in os.listdir(location):
         if fnmatch.fnmatch(file, '*'):
             files_list.append(location + file)
             log_as_csv_files.append(file.split('.')[0]+'.csv')
     print files_list
-#    csv_file = open('cse01.csv', 'wb')
-#    open_csv = csv.writer(csv_file)
     for i in range(len(files_list)):
         input_file = open(files_list[i])
         open_csv = open(log_as_csv_files[i],'wb')
@@ -355,11 +349,42 @@ def separator():
 
 separator()
 
-def usage(x):
+def aws_usage(x):
     exp_match_list = []
     tot_sim_count = 0
     sim_list = []
-#    simulation_pattern="Experiment"
+    simulation_pattern=x[1]
+    with open(x[2], 'rb') as csv_file:
+        lines_in_file = csv.reader(csv_file, delimiter=',', quotechar='\n')
+        for row in lines_in_file:
+#            print row[5]
+            if re.search(x[0],str(row[8])):
+                exp_match_list.append(row)
+    for i in range(len(exp_match_list)):
+        sim_match = re.search(simulation_pattern, exp_match_list[i][5])
+        if sim_match:
+            tot_sim_count+=1
+            sim_list.append(exp_match_list[i])
+            req = False
+    usage = 0
+    for item in exp_match_list:
+        sim = re.search(simulation_pattern, item[5])
+        if sim and req==True:
+            usage+=1
+            req=False
+        elif not sim:
+            req=True
+    print "usage is %d" %(usage)
+    print "%s is the number of records" %(len(exp_match_list))
+    print "tot sim count is %s" %(tot_sim_count)
+    print len(sim_list)
+#    for i in range(len(exp_match_list)):
+#        print exp_match_list[i][0] + exp_match_list[i][3] + exp_match_list[i][5] + " " + exp_match_list[i][8]
+
+def delpoy_usage(x):
+    exp_match_list = []
+    tot_sim_count = 0
+    sim_list = []
     simulation_pattern=x[1]
     with open(x[2], 'rb') as csv_file:
         lines_in_file = csv.reader(csv_file, delimiter=',', quotechar='\n')
@@ -368,8 +393,6 @@ def usage(x):
             if re.search(x[0],str(row[5])):
                 exp_match_list.append(row)
     for i in range(len(exp_match_list)):
-#        if re.search(simulation_pattern, str(exp_match_list[i])):
-#        if str(exp_match_list[i]).find(simulation_pattern) >=0:
         sim_match = re.search(simulation_pattern, exp_match_list[i][5])
         if sim_match:
             tot_sim_count+=1
@@ -388,24 +411,43 @@ def usage(x):
     print "tot sim count is %s" %(tot_sim_count)
     print len(sim_list)
 
-exp_url=[]
+
 def get_url():
-    for keys in config.url_sim:
-        for item in config.url_sim[keys]:
+    url= []
+    for keys in aws_config.url_sim:
+        for item in aws_config.url_sim[keys]:
             item.append(keys+'.csv')
-            exp_url.append(item)
-#    for i in range(len(config.url_sim)):
-#        exp_url.append(config.url_sim[i])
-#        print config.url_sim[i][0]
-#    print exp_url
-    return exp_url
+            url.append(item)
+    return url
 
-get_url()
-print exp_url
-
-filter(usage, exp_url)    
+url_list=get_url()
+print url_list
+filter(aws_usage, url_list)    
 #+END_SRC
-    
+    There are two different config files, one which enlists the labs
+    on AWS and the other for deploy. The config file for labs on AWS
+    is as below:
+#+BEGIN_SRC python: tangle analytics/aws_config.py
+url_sim = {
+'emt-iiith':[['Experiment.php\?code\=C001','T005\&code\=C001'],
+             ['Experiment.php\?code\=C002','T005\&code\=C002'],
+             ['Experiment.php\?code\=C009','T005\&code\=C009']], 
+'cse01-iiith':[['http://cse01-iiith.virtual-labs.ac.in/exp1/index.php','Simulation'],
+               ['http://cse01-iiith.virtual-labs.ac.in/exp2/index.php','Simulation'],
+               ['http://cse01-iiith.virtual-labs.ac.in/exp3/index.php','Simulation']]
+}
+#+END_SRC
+    The config file for deploy is as below:
+#+BEGIN_SRC python: tangle analytics/deploy_config.py
+url_sim = {
+'cse04':[['/labs/cse04/exp1/index.php','Experiment'],
+         ['/labs/cse04/exp2/index.php','Experiment'],
+         ['/labs/cse04/exp3/index.php','Experiment']], 
+'cse07':[['/labs/cse07/exp1/index.php','Experiment'],
+         ['/labs/cse07/exp2/index.php','Experiment'],
+         ['/labs/cse07/exp3/index.php','Experiment']]
+}
+#+END_SRC
 ** Building the Service
    + For building the service, python-flask is used.
    Flask is a micro web application framework written in Python.
@@ -499,7 +541,7 @@ def numberofhits():
     return response
 #+END_SRC
    Similary, usage count will get from the following end point.
-#+BEGIN_SRC python :tangle src/analytics/app.py
+#+BEGIN_SRC python :tangle analytics/app.py
 @app.route('/usage')
 @app.cache.cached(timeout=360)  
 def usagehits():
