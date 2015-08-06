@@ -326,6 +326,10 @@ import csv
 import fnmatch
 import re
 import aws_config
+import deploy_config
+
+__aws_tot_usage__ = 0
+__deploy_tot_usage__ = 0
 
 def separator():
     files_list = []
@@ -335,7 +339,7 @@ def separator():
         if fnmatch.fnmatch(file, '*'):
             files_list.append(location + file)
             log_as_csv_files.append(file.split('.')[0]+'.csv')
-    print files_list
+#    print files_list
     for i in range(len(files_list)):
         input_file = open(files_list[i])
         open_csv = open(log_as_csv_files[i],'wb')
@@ -347,9 +351,9 @@ def separator():
             open_csv.write(output)
         open_csv.close()
 
-separator()
 
 def aws_usage(x):
+    global __aws_tot_usage__
     exp_match_list = []
     tot_sim_count = 0
     sim_list = []
@@ -374,14 +378,18 @@ def aws_usage(x):
             req=False
         elif not sim:
             req=True
+    __aws_tot_usage__ += usage
     print "usage is %d" %(usage)
     print "%s is the number of records" %(len(exp_match_list))
     print "tot sim count is %s" %(tot_sim_count)
-    print len(sim_list)
+#    print __aws_tot_usage__
+#    print len(sim_list)
 #    for i in range(len(exp_match_list)):
 #        print exp_match_list[i][0] + exp_match_list[i][3] + exp_match_list[i][5] + " " + exp_match_list[i][8]
 
-def delpoy_usage(x):
+
+def deploy_usage(x):
+    global __deploy_tot_usage__
     exp_match_list = []
     tot_sim_count = 0
     sim_list = []
@@ -406,13 +414,14 @@ def delpoy_usage(x):
             req=False
         elif not sim:
             req=True
+    __deploy_tot_usage__ += usage
     print "usage is %d" %(usage)
     print "%s is the number of records" %(len(exp_match_list))
     print "tot sim count is %s" %(tot_sim_count)
     print len(sim_list)
+    
 
-
-def get_url():
+def get_url_aws():
     url= []
     for keys in aws_config.url_sim:
         for item in aws_config.url_sim[keys]:
@@ -420,10 +429,27 @@ def get_url():
             url.append(item)
     return url
 
-url_list=get_url()
-print url_list
-filter(aws_usage, url_list)    
+def get_url_deploy():
+    url= []
+    for keys in deploy_config.url_sim:
+        for item in deploy_config.url_sim[keys]:
+            item.append(keys+'.csv')
+            url.append(item)
+    return url
+
+if __name__ == "__main__":
+    separator()
+    aws_url=get_url_aws()
+    deploy_url=get_url_deploy()
+    print "the aws url list is : %s" %(aws_url)
+    #print deploy_url
+    filter(aws_usage, aws_url)    
+    #print "the aws usage is %d" %(Y)
+    filter(deploy_usage, deploy_url)
+    total_usage= __aws_tot_usage__ + __deploy_tot_usage__ 
+    print "the total usage accross all the labs is: %d" %(total_usage)
 #+END_SRC
+
     There are two different config files, one which enlists the labs
     on AWS and the other for deploy. The config file for labs on AWS
     is as below:
