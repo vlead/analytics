@@ -351,8 +351,9 @@ def logs_to_csv(path):
             # print ','.join(shlex.split(line))
             open_csv.write(output)
         open_csv.close()
+        input_file.close()
   
-  
+
 def usage(x):
     global __deploy_tot_usage__
     exp_match_list = []
