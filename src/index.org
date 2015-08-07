@@ -320,6 +320,7 @@ def grand_total():
     The purpose of this script is described in [[How%20the%20data%20is%20processed][How the data is
     processed]] for [[Requirement%20#2][requirement #2]]. The python script is as below.
 #+BEGIN_SRC python :tangle analytics/usage.py
+
 import shlex
 import os
 import csv
@@ -327,17 +328,17 @@ import fnmatch
 import re
 import aws_config
 import deploy_config
-
+import config
+  
 __aws_tot_usage__ = 0
 __deploy_tot_usage__ = 0
 
-def separator():
+def logs_to_csv(path):
     files_list = []
     log_as_csv_files = []
-    location = '/home/ms/systems/analytics/usage-service/logs/aws/'
-    for file in os.listdir(location):
+    for file in os.listdir(path):
         if fnmatch.fnmatch(file, '*'):
-            files_list.append(location + file)
+            files_list.append(path + file)
             log_as_csv_files.append(file.split('.')[0]+'.csv')
 #    print files_list
     for i in range(len(files_list)):
@@ -350,45 +351,9 @@ def separator():
             # print ','.join(shlex.split(line))
             open_csv.write(output)
         open_csv.close()
-
-
-def aws_usage(x):
-    global __aws_tot_usage__
-    exp_match_list = []
-    tot_sim_count = 0
-    sim_list = []
-    simulation_pattern=x[1]
-    with open(x[2], 'rb') as csv_file:
-        lines_in_file = csv.reader(csv_file, delimiter=',', quotechar='\n')
-        for row in lines_in_file:
-#            print row[5]
-            if re.search(x[0],str(row[8])):
-                exp_match_list.append(row)
-    for i in range(len(exp_match_list)):
-        sim_match = re.search(simulation_pattern, exp_match_list[i][5])
-        if sim_match:
-            tot_sim_count+=1
-            sim_list.append(exp_match_list[i])
-            req = False
-    usage = 0
-    for item in exp_match_list:
-        sim = re.search(simulation_pattern, item[5])
-        if sim and req==True:
-            usage+=1
-            req=False
-        elif not sim:
-            req=True
-    __aws_tot_usage__ += usage
-    print "usage is %d" %(usage)
-    print "%s is the number of records" %(len(exp_match_list))
-    print "tot sim count is %s" %(tot_sim_count)
-#    print __aws_tot_usage__
-#    print len(sim_list)
-#    for i in range(len(exp_match_list)):
-#        print exp_match_list[i][0] + exp_match_list[i][3] + exp_match_list[i][5] + " " + exp_match_list[i][8]
-
-
-def deploy_usage(x):
+  
+  
+def usage(x):
     global __deploy_tot_usage__
     exp_match_list = []
     tot_sim_count = 0
@@ -400,12 +365,13 @@ def deploy_usage(x):
 #            print row[5]
             if re.search(x[0],str(row[5])):
                 exp_match_list.append(row)
+
     for i in range(len(exp_match_list)):
         sim_match = re.search(simulation_pattern, exp_match_list[i][5])
         if sim_match:
             tot_sim_count+=1
             sim_list.append(exp_match_list[i])
-            req = False
+    req = False
     usage = 0
     for item in exp_match_list:
         sim = re.search(simulation_pattern, item[5])
@@ -419,8 +385,8 @@ def deploy_usage(x):
     print "%s is the number of records" %(len(exp_match_list))
     print "tot sim count is %s" %(tot_sim_count)
     print len(sim_list)
-    
-
+      
+  
 def get_url_aws():
     url= []
     for keys in aws_config.url_sim:
@@ -438,14 +404,14 @@ def get_url_deploy():
     return url
 
 if __name__ == "__main__":
-    separator()
+    logs_to_csv(config.path)
     aws_url=get_url_aws()
     deploy_url=get_url_deploy()
     print "the aws url list is : %s" %(aws_url)
     #print deploy_url
-    filter(aws_usage, aws_url)    
+    filter(usage, aws_url)    
     #print "the aws usage is %d" %(Y)
-    filter(deploy_usage, deploy_url)
+    filter(usage, deploy_url)
     total_usage= __aws_tot_usage__ + __deploy_tot_usage__ 
     print "the total usage accross all the labs is: %d" %(total_usage)
 #+END_SRC
@@ -473,6 +439,9 @@ url_sim = {
          ['/labs/cse07/exp2/index.php','Experiment'],
          ['/labs/cse07/exp3/index.php','Experiment']]
 }
+#+END_SRC
+#+BEGIN_SRC python :tangle analytics/config.py
+path = '/home/madhavi/logs/'
 #+END_SRC
 ** Building the Service
    + For building the service, python-flask is used.
