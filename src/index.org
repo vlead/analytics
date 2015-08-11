@@ -327,94 +327,104 @@ import csv
 import fnmatch
 import re
 import aws_config
-import deploy_config
+#import deploy_config
 import config
-  
-__aws_tot_usage__ = 0
-__deploy_tot_usage__ = 0
 
+__current_path__ = '/var/www/html/analytics/'
 def logs_to_csv(path):
+    global __current_path__
     files_list = []
     log_as_csv_files = []
     for file in os.listdir(path):
-        if fnmatch.fnmatch(file, '*'):
+#        print file
+        if fnmatch.fnmatch(file, '*access_log'):
             files_list.append(path + file)
             log_as_csv_files.append(file.split('.')[0]+'.csv')
 #    print files_list
     for i in range(len(files_list)):
         input_file = open(files_list[i])
-        open_csv = open(log_as_csv_files[i],'wb')
-        fileContent = input_file.readlines()
+        open_csv = open(__current_path__ + log_as_csv_files[i],'wb')
+        file_content = input_file.readlines()
 #        print fileContent
-        for line in fileContent:
+        for line in file_content:
             output = ','.join(shlex.split(line)) + '\n'
             # print ','.join(shlex.split(line))
             open_csv.write(output)
         open_csv.close()
         input_file.close()
-  
+    return log_as_csv_files
 
-def usage(x):
-    global __deploy_tot_usage__
-    exp_match_list = []
-    tot_sim_count = 0
-    sim_list = []
-    simulation_pattern=x[1]
-    with open(x[2], 'rb') as csv_file:
+def get_lab_list(lab_csv_file):
+    lab_usage_count = 0
+    lab_id = lab_csv_file.split('.')[0]
+#    print "the lab id is: %s" %(lab_id)
+    lab_exp_list = aws_config.url_sim.get(lab_id)
+#    print "this is the labs experiment and simulation list : %s" %(lab_exp_list)
+    lab_usage_count += match_exp(lab_exp_list, lab_csv_file)
+#    print "the lab usage count is: %s" %(lab_usage_count)
+    return lab_usage_count
+
+def match_exp(exp_and_sim_list, lab_csv_file):
+    global __current_path__
+    exp_usage =0
+    if exp_and_sim_list == None:
+        return 0
+    #print "lab csv file is: %s" %(lab_csv_file)
+    csv_file= open(__current_path__ + lab_csv_file, 'rb')
+    for item in exp_and_sim_list:
         lines_in_file = csv.reader(csv_file, delimiter=',', quotechar='\n')
+#        print "item is %s" %(item)
+        exp_url = item[0]
+#        print "the exp_url is : %s" %(exp_url)
+        sim_pattern = item[1]
+        experiment_list = []
         for row in lines_in_file:
-#            print row[5]
-            if re.search(x[0],str(row[5])):
-                exp_match_list.append(row)
+        #print "this is row %s" %(row)
+            request = row[5]
+            #print exp_url
+            #print "this is exp_url %s \n" %(exp_url)
+#            print "this is the request %s" %(request)
+            if re.search(exp_url, request):
+#                print "EEEEEEEEEEEEEEEEEEEEE"
+                experiment_list.append(request)
+        csv_file.seek(0)
+#        print "this is the matched list of experiments :%s" %(experiment_list)
+        exp_usage+=usage(experiment_list,sim_pattern)
+#        print "this is the experiment usage: %d" %(exp_usage)
+    return exp_usage
 
-    for i in range(len(exp_match_list)):
-        sim_match = re.search(simulation_pattern, exp_match_list[i][5])
-        if sim_match:
-            tot_sim_count+=1
-            sim_list.append(exp_match_list[i])
+def usage(experiment_list,sim_pattern):
     req = False
     usage = 0
-    for item in exp_match_list:
-        sim = re.search(simulation_pattern, item[5])
+    for item in experiment_list:
+        sim = re.search(sim_pattern,item)
+#        print type(sim)
         if sim and req==True:
+#            print "slnvoindbov"
             usage+=1
             req=False
         elif not sim:
             req=True
-    __deploy_tot_usage__ += usage
-    print "usage is %d" %(usage)
-    print "%s is the number of records" %(len(exp_match_list))
-    print "tot sim count is %s" %(tot_sim_count)
-    print len(sim_list)
-      
-  
-def get_url_aws():
-    url= []
-    for keys in aws_config.url_sim:
-        for item in aws_config.url_sim[keys]:
-            item.append(keys+'.csv')
-            url.append(item)
-    return url
+    return usage
 
-def get_url_deploy():
-    url= []
-    for keys in deploy_config.url_sim:
-        for item in deploy_config.url_sim[keys]:
-            item.append(keys+'.csv')
-            url.append(item)
-    return url
+#if __name__ == "__main__":
+def tot_usage():
+    dict_tot_usage = {}
+    total_usage = 0
+    csv_files_list=logs_to_csv(config.path)
+    #print "the csv file list is : %s" %(csv_files_list)
+    lab_usage = map(get_lab_list, csv_files_list)
+    for i in lab_usage:
+        total_usage += i
+    dict_tot_usage["total-usage"]=str(total_usage)
+    return dict_tot_usage["total-usage"]
+    #print "the total usage is: %s" %(total_usage)
 
-if __name__ == "__main__":
-    logs_to_csv(config.path)
-    aws_url=get_url_aws()
-    deploy_url=get_url_deploy()
-    print "the aws url list is : %s" %(aws_url)
-    #print deploy_url
-    filter(usage, aws_url)    
-    #print "the aws usage is %d" %(Y)
-    filter(usage, deploy_url)
-    total_usage= __aws_tot_usage__ + __deploy_tot_usage__ 
-    print "the total usage accross all the labs is: %d" %(total_usage)
+def usage_hits():
+    return "1234"
+
+print tot_usage()
+
 #+END_SRC
 
     There are two different config files, one which enlists the labs
@@ -442,7 +452,7 @@ url_sim = {
 }
 #+END_SRC
 #+BEGIN_SRC python :tangle analytics/config.py
-path = '/home/madhavi/logs/'
+path='/var/www/html/logs/'
 #+END_SRC
 ** Building the Service
    + For building the service, python-flask is used.
