@@ -319,8 +319,9 @@ def grand_total():
 *** Total usage extraction 
     The purpose of this script is described in [[How%20the%20data%20is%20processed][How the data is
     processed]] for [[Requirement%20#2][requirement #2]]. The python script is as below.
+    The python script is as described below. 
+    Import the necessary packages, files and variables.
 #+BEGIN_SRC python :tangle analytics/usage.py
-
 import shlex
 import os
 import csv
@@ -331,27 +332,35 @@ import aws_config
 import config
 
 __current_path__ = '/var/www/html/analytics/'
+#+END_SRC
+    The apache log files need to be converted into comma separated
+    format(csv files) for parsing the data easily.
+#+BEGIN_SRC 
 def logs_to_csv(path):
     global __current_path__
-    files_list = []
+    files_dict = {}
     log_as_csv_files = []
     for file in os.listdir(path):
 #        print file
-        if fnmatch.fnmatch(file, '*access_log'):
-            files_list.append(path + file)
-            log_as_csv_files.append(file.split('.')[0]+'.csv')
-#    print files_list
-    for i in range(len(files_list)):
-        input_file = open(files_list[i])
-        open_csv = open(__current_path__ + log_as_csv_files[i],'wb')
-        file_content = input_file.readlines()
-#        print fileContent
-        for line in file_content:
-            output = ','.join(shlex.split(line)) + '\n'
-            # print ','.join(shlex.split(line))
-            open_csv.write(output)
-        open_csv.close()
-        input_file.close()
+        if fnmatch.fnmatch(file, '*access_log*'):
+            lab_id = file.split('.')[0]
+            if not files_dict.has_key(lab_id):
+                files_dict[lab_id] = []
+                files_dict[lab_id].append(file)
+            else:
+                files_dict[lab_id].append(file)
+#    print files_dict 
+
+    for key in files_dict:
+        lab_log_files = files_dict[key]
+        lab_csv_file = key+'.csv'
+        log_as_csv_files.append(lab_csv_file)
+        with open(current_path + lab_csv_file, 'w') as csv_file:
+            for log in lab_log_files:
+                with open(path+log) as input:
+                    for line in input:
+                        output = ','.join(shlex.split(line)) + '\n'
+                        csv_file.write(output)
     return log_as_csv_files
 
 def get_lab_list(lab_csv_file):
@@ -430,7 +439,7 @@ print tot_usage()
     There are two different config files, one which enlists the labs
     on AWS and the other for deploy. The config file for labs on AWS
     is as below:
-#+BEGIN_SRC python :tangle analytics/aws_config.py
+#+BEGIN_SRC python :tangle analytics/config/aws_config.py
 url_sim = {
 'emt-iiith':[['Experiment.php\?code\=C001','T005\&code\=C001'],
              ['Experiment.php\?code\=C002','T005\&code\=C002'],
@@ -441,7 +450,7 @@ url_sim = {
 }
 #+END_SRC
     The config file for deploy is as below:
-#+BEGIN_SRC python :tangle analytics/deploy_config.py
+#+BEGIN_SRC python :tangle analytics/config/deploy_config.py
 url_sim = {
 'cse04':[['/labs/cse04/exp1/index.php','Experiment'],
          ['/labs/cse04/exp2/index.php','Experiment'],
@@ -451,7 +460,7 @@ url_sim = {
          ['/labs/cse07/exp3/index.php','Experiment']]
 }
 #+END_SRC
-#+BEGIN_SRC python :tangle analytics/config.py
+#+BEGIN_SRC python :tangle analytics/config/config.py
 path='/var/www/html/logs/'
 #+END_SRC
 *** Usage Script
