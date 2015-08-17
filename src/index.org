@@ -454,6 +454,39 @@ url_sim = {
 #+BEGIN_SRC python :tangle analytics/config.py
 path='/var/www/html/logs/'
 #+END_SRC
+*** Usage Script
+#+BEGIN_SRC 
+import os
+from aws_config import exp_sim_urls_for_labs 
+
+def filter():
+    files_dir = "/home/madhavi/demo/analytics/csv/"
+    for key in exp_sim_urls_for_labs.keys():
+        file_name = "%s%s.csv" % (files_dir, key)
+        pattern_list = exp_sim_urls_for_labs[key]
+        file = open(file_name, 'r')
+        new_file_name = "filtered_%s" % key
+        new_file = open(new_file_name, 'w')
+        columns = []
+        for line in file:
+            columns = line.split(',')
+            if (search_pattern(columns[5], pattern_list)):
+                new_file.write(columns[5] + "\n")
+
+                
+def search_pattern(get_field, pattern_list):
+    for experiment in pattern_list:
+        if experiment[0] in get_field or experiment[1] in get_field:
+            return True
+    
+    return False
+
+if __name__ == "__main__":
+    
+    filter()
+
+
+#+END_SRC
 ** Building the Service
    + For building the service, python-flask is used.
    Flask is a micro web application framework written in Python.
