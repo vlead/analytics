@@ -463,6 +463,59 @@ url_sim = {
 #+BEGIN_SRC python :tangle analytics/config/config.py
 path='/var/www/html/logs/'
 #+END_SRC
+*** Usage Script
+#+BEGIN_SRC 
+import os
+from aws_config import exp_sim_urls_for_labs 
+sim_count = 0
+ctx_count = 0
+def filter():
+    global sim_count 
+    global ctx_count 
+    usage = 0
+    files_dir = "/home/madhavi/demo/analytics/csv/"
+    for key in exp_sim_urls_for_labs.keys():
+        file_name = "%s%s.csv" % (files_dir, key)
+        pattern_list = exp_sim_urls_for_labs[key]
+        file = open(file_name, 'r')
+        new_file_name = "filtered_%s" % key
+        new_file = open(new_file_name, 'w+')
+        columns = []
+        for line in file:
+            columns = line.split(',')
+            if (search_pattern(columns[5], pattern_list)):
+                new_file.write(columns[5] + "\n")
+        new_file.write("Simulation count = %d" % sim_count)
+        new_file.write("Content count = %d" % (ctx_count - sim_count))
+        
+        if (ctx_count >= sim_count):
+            usage += sim_count
+        
+        ctx_count = 0
+        sim_count = 0
+
+    return usage
+
+def search_pattern(get_field, pattern_list):
+    ret_val = False
+    global ctx_count
+    global sim_count
+    for experiment in pattern_list:
+        if experiment[0] in get_field:
+            ctx_count += 1
+            ret_val = True
+        if experiment[1] in get_field:
+            sim_count += 1
+            ret_val = True
+
+    return ret_val
+
+
+if __name__ == "__main__":
+    
+    usage = filter()
+    print "Usage = %d" % usage
+#+END_SRC
 ** Building the Service
    + For building the service, python-flask is used.
    Flask is a micro web application framework written in Python.
