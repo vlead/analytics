@@ -711,6 +711,32 @@ http://10.4.15.133/numberofhits
 
    Note: If you want to display the total number of page visits and usage on vlab.co.in, 
    then add the above code snippet in =index.html= file. 
+* Impediments
+** Variety in URL patterns
+   While populating the config files with the experiment URLs and
+   Simulation patterns, it was observed that all the labs did not
+   follow a particular naming convention for their
+   experiments. Different labs had different naming conventions, which
+   made the automation of extracting the URL and Simulation pattern
+   from the logs difficult.  The extraction of the patterns from the
+   log files is done manually.
+** Separate logs for same labs
+   Apache generates an access log for each lab. Logrotate is is
+   triggered by Apache to digest the logs upto a certain limit
+   (ie. file size) into another file and tag it with the date when the
+   digest was made. Apache is reloaded once this change is
+   made. Because of this mechanism, each lab has several access logs
+   associated. All these logs have to be considered while calculating
+   the usage. All these logs should be collated into on single place
+   before matching the experiment and simulation patterns.
+** Different request for experiment/simulation
+   There were separate requests for the experiment and the
+   simulation. The experiment pattern was not a substring of the
+   simulation pattern. A separate module/function has to be written to
+   calculate usage for such labs. The patterns of such labs are put
+   into another config file. This would help in differentiating the
+   different types of labs.
+
 * Test Cases
   A test case is a document, which has a set of test data,
   preconditions, expected results and post-conditions, developed for a
