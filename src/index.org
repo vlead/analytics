@@ -493,21 +493,64 @@ url_sim = {
 path='/var/www/html/logs/'
 #+END_SRC
 *** Usage Script
+To convert logs to csv we use the following script:
+#+BEGIN_SRC python :tangle logs_to_csv.py 
+import os
+import csv
+import fnmatch
+import re
+import config
+
+#__current_path__ = '/var/www/html/analytics/deploy-csv/'
+def logs_to_csv(path_for_logs,path_for_csv_files):
+#    global __current_path__
+    files_dict = {}
+    log_as_csv_files = []
+    for file in os.listdir(path_for_logs):
+#        print file
+        if fnmatch.fnmatch(file, '*access_log*'):
+            lab_id = file.split('.')[0]
+            if not files_dict.has_key(lab_id):
+                files_dict[lab_id] = []
+                files_dict[lab_id].append(file)
+            else:
+                files_dict[lab_id].append(file)
+    print files_dict
+
+    for key in files_dict:
+        lab_log_files = files_dict[key]
+        lab_csv_file = key+'.csv'
+        log_as_csv_files.append(lab_csv_file)
+        with open(path_for_csv_files + lab_csv_file, 'w') as csv_file:
+            for log in lab_log_files:
+                with open(path_for_logs+log) as input:
+                    for line in input:
+                        output = ','.join(shlex.split(line)) + '\n'
+                        csv_file.write(output)
+
+
+if __name__ == "__main__":
+    logs_to_csv(config.aws_path, config.aws_csv_path)
+    logs_to_csv(config.deploy_path, config.deploy_csv_path)
+#+END_SRC
+To generate the usage count we use the following script:
 #+BEGIN_SRC 
 import os
-from aws_config import exp_sim_urls_for_labs 
+from aws_config import exp_sim_urls_for_labs
+import config
+
 sim_count = 0
 ctx_count = 0
-def filter():
-    global sim_count 
-    global ctx_count 
+def filter(csv_path,filter_path):
+    global sim_count
+    global ctx_count
     usage = 0
-    files_dir = "/home/madhavi/demo/analytics/csv/"
+    files_dir = csv_path
     for key in exp_sim_urls_for_labs.keys():
         file_name = "%s%s.csv" % (files_dir, key)
         pattern_list = exp_sim_urls_for_labs[key]
         file = open(file_name, 'r')
-        new_file_name = "filtered_%s" % key
+        new_file_name = filter_path + "filtered_%s" % key
         new_file = open(new_file_name, 'w+')
         columns = []
         for line in file:
@@ -516,14 +559,14 @@ def filter():
                 new_file.write(columns[5] + "\n")
         new_file.write("Simulation count = %d" % sim_count)
         new_file.write("Content count = %d" % (ctx_count - sim_count))
-        
+
         if (ctx_count >= sim_count):
             usage += sim_count
-        
+
         ctx_count = 0
         sim_count = 0
 
-    return usage
+    return str(usage)
 
 def search_pattern(get_field, pattern_list):
     ret_val = False
@@ -540,10 +583,27 @@ def search_pattern(get_field, pattern_list):
     return ret_val
 
 
+def total_usage():
+    aws_usage = filter(config.aws_csv_path, config.aws_filter_path)
+    deploy_usage = filter(config.deploy_csv_path, config.deploy_filter_path)
+    tot_usage = aws_usage + deploy_usage
+#    print "Usage = %s" % tot_usage
+    return str(tot_usage)
+
 if __name__ == "__main__":
-    
-    usage = filter()
-    print "Usage = %d" % usage
+    usage = total_usage()
+    print "Usage = %s" % usage
+#+END_SRC
+The config file:
+#+BEGIN_SRC python :tangle config.py
+aws_path = '/var/www/html/aws-logs/'
+deploy_path = '/var/www/html/deploy-logs/'
+
+aws_csv_path = '/var/www/html/analytics/aws-csv/'
+deploy_csv_path = '/var/www/html/analytics/deploy-csv/'
+
+aws_filter_path = '/var/www/html/analytics/aws-filter/'
+deploy_filter_path = '/var/www/html/analytics/deploy-filter/'
 #+END_SRC
 ** Building the Service
    + For building the service, python-flask is used.
