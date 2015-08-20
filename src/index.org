@@ -533,12 +533,11 @@ if __name__ == "__main__":
     logs_to_csv(config.aws_path, config.aws_csv_path)
     logs_to_csv(config.deploy_path, config.deploy_csv_path)
 #+END_SRC
-To generate the usage count we use the following script:
-#+BEGIN_SRC 
+To generate the usage count we use the following script: 
+#+BEGIN_SRC python :tangle build_exp_list.py 
 import os
 from aws_config import exp_sim_urls_for_labs
 import config
-
 sim_count = 0
 ctx_count = 0
 def filter(csv_path,filter_path):
@@ -567,7 +566,14 @@ def filter(csv_path,filter_path):
         sim_count = 0
 
     return str(usage)
+#+END_SRC
 
+This function will calculate the usage by taking the total count of
+content and simulations and calculates the usage only if simulation
+count is less than content count and takes the simulation count as
+usage.
+
+#+BEGIN_SRC python :tangle build_exp_list.py 
 def search_pattern(get_field, pattern_list):
     ret_val = False
     global ctx_count
@@ -594,6 +600,7 @@ if __name__ == "__main__":
     usage = total_usage()
     print "Usage = %s" % usage
 #+END_SRC
+
 The config file:
 #+BEGIN_SRC python :tangle config.py
 aws_path = '/var/www/html/aws-logs/'
@@ -605,6 +612,71 @@ deploy_csv_path = '/var/www/html/analytics/deploy-csv/'
 aws_filter_path = '/var/www/html/analytics/aws-filter/'
 deploy_filter_path = '/var/www/html/analytics/deploy-filter/'
 #+END_SRC
+
+*** Config Script
+#+BEGIN_SRC 
+import simplejson
+import os
+def filter():
+     
+     files_dir = "/home/madhavi/demo/test-filter/"
+     
+     for file in os.listdir(files_dir):
+        key = file.split('_')[1]
+        print key
+        filtered_file = open(files_dir+file, 'r')
+        #print filtered_file
+        get_urls=[]
+        for line in filtered_file:
+             #print line 
+             columns = line.split()
+             #print columns[1]
+             get_urls.append(columns[1])
+        #print get_urls
+        sim_cont_urls = set(get_urls)
+        #print sim_cont_urls
+        sim_list = []
+        match_list = ["section=Experiment","section=Simulation"]
+        for match in match_list:
+             for item in sim_cont_urls:
+                  if match in item:
+                       sim_list.append(item)
+        #print sim_list
+        cont_list= []
+        for item in sim_list:
+             #column = item.split('?')
+             cont_list.append(item.split('?')[0])
+        #print cont_list
+        lab_list = []
+        #print zip(cont_list,sim_list)
+        lab_list = zip(cont_list,sim_list)
+        print lab_list
+
+        config_file = open('deploy_config.py','a+')
+        config_file.write(key +':')
+        simplejson.dump(lab_list,config_file)
+    #for item in lab_list:
+    #    config_file.write(item)
+
+def csv_to_filtered_labs():
+    files_dir = "/home/madhavi/demo/deploy-csv/"
+    for file in os.listdir(files_dir):
+         lab_csv_file = open(files_dir+file, 'r')
+         #print file_name
+         filtered_file = "/home/madhavi/demo/test-filter/filtered_%s" % file
+         new_file = open(filtered_file, 'w+')
+         columns = []
+         for line in lab_csv_file:
+              columns = line.split(',')
+              #print columns[5]
+              if(columns[5]!='GET / HTTP/1.1'):
+                   new_file.write(columns[5] + "\n")
+
+    filter()
+
+csv_to_filtered_labs()
+#+END_SRC 
+
 ** Building the Service
    + For building the service, python-flask is used.
    Flask is a micro web application framework written in Python.
