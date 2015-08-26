@@ -1273,8 +1273,8 @@ exp_sim_urls_for_labs = {
 
 
 #+END_SRC
-*** Config Script
-#+BEGIN_SRC 
+*** Script to filter patterns from deploy logs
+#+BEGIN_SRC python : get_deploy_config_patterns.py 
 import simplejson
 import os
 def filter():
@@ -1285,56 +1285,44 @@ def filter():
         key = file.split('_')[1]
         print key
         filtered_file = open(files_dir+file, 'r')
-        #print filtered_file
         get_urls=[]
         for line in filtered_file:
-             #print line 
              columns = line.split()
-             #print columns[1]
              get_urls.append(columns[1])
-        #print get_urls
         sim_cont_urls = set(get_urls)
-        #print sim_cont_urls
         sim_list = []
         match_list = ["section=Experiment","section=Simulation"]
         for match in match_list:
              for item in sim_cont_urls:
                   if match in item:
                        sim_list.append(item)
-        #print sim_list
+
         cont_list= []
         for item in sim_list:
-             #column = item.split('?')
              cont_list.append(item.split('?')[0])
-        #print cont_list
         lab_list = []
-        #print zip(cont_list,sim_list)
         lab_list = zip(cont_list,sim_list)
         print lab_list
 
         config_file = open('deploy_config.py','a+')
         config_file.write(key +':')
         simplejson.dump(lab_list,config_file)
-    #for item in lab_list:
-    #    config_file.write(item)
+
 
 def csv_to_filtered_labs():
     files_dir = "/home/madhavi/demo/deploy-csv/"
     for file in os.listdir(files_dir):
          lab_csv_file = open(files_dir+file, 'r')
-         #print file_name
          filtered_file = "/home/madhavi/demo/test-filter/filtered_%s" % file
          new_file = open(filtered_file, 'w+')
          columns = []
          for line in lab_csv_file:
               columns = line.split(',')
-              #print columns[5]
               if(columns[5]!='GET / HTTP/1.1'):
                    new_file.write(columns[5] + "\n")
-
     filter()
-
-csv_to_filtered_labs()
+if __name__ == "__main__":
+    csv_to_filtered_labs()
 #+END_SRC 
 
 ** Building the Service
