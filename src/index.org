@@ -534,7 +534,7 @@ if __name__ == "__main__":
     logs_to_csv(config.deploy_path, config.deploy_csv_path)
 #+END_SRC
 To generate the usage count we use the following script: 
-#+BEGIN_SRC python :tangle build_exp_list.py 
+#+BEGIN_SRC python :tangle usage.py 
 import os
 import aws_config 
 import deploy_config 
