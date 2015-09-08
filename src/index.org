@@ -1569,7 +1569,7 @@ def numberofhits():
 @app.route('/usage')
 @app.cache.cached(timeout=360)  
 def usagehits():
-    usage_count  = usage_hits()
+    usage_count  = total_usage()
     response = make_response(usage_count)
     response.headers['Access-Control-Allow-Origin'] = '*'
     response.headers['Access-Control-Allow-Credentials'] = 'true'
