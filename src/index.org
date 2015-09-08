@@ -562,7 +562,7 @@ def filter(csv_path, filter_path, exp_sim_urls_for_labs):
         columns = []
         for line in file:
             columns = line.split(',')
-            if (search_pattern(columns[5], pattern_list)):
+            if (len(columns)>=5 and search_pattern(columns[5], pattern_list)):
                 new_file.write(columns[5] + "\n")
         new_file.write("Simulation count = %d" % sim_count)
         new_file.write("Content count = %d" % (ctx_count - sim_count))
