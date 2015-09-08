@@ -351,7 +351,7 @@ def grand_total():
     processed]] for [[Requirement%20#2][requirement #2]]. The python script is as below.
     The python script is as described below. 
     Import the necessary packages, files and variables.
-#+BEGIN_SRC python :tangle analytics/usage.py
+#+BEGIN_SRC 
 import shlex
 import os
 import csv
@@ -468,7 +468,7 @@ print tot_usage()
     There are two different config files, one which enlists the labs
     on AWS and the other for deploy. The config file for labs on AWS
     is as below:
-#+BEGIN_SRC python :tangle analytics/config/aws_config.py
+#+BEGIN_SRC 
 url_sim = {
 'emt-iiith':[['Experiment.php\?code\=C001','T005\&code\=C001'],
              ['Experiment.php\?code\=C002','T005\&code\=C002'],
@@ -479,7 +479,7 @@ url_sim = {
 }
 #+END_SRC
     The config file for deploy is as below:
-#+BEGIN_SRC python :tangle analytics/config/deploy_config.py
+#+BEGIN_SRC 
 url_sim = {
 'cse04':[['/labs/cse04/exp1/index.php','Experiment'],
          ['/labs/cse04/exp2/index.php','Experiment'],
@@ -489,12 +489,13 @@ url_sim = {
          ['/labs/cse07/exp3/index.php','Experiment']]
 }
 #+END_SRC
-#+BEGIN_SRC python :tangle analytics/config/config.py
+#+BEGIN_SRC 
 path='/var/www/html/logs/'
 #+END_SRC
 *** Usage Script
 To convert logs to csv we use the following script:
 #+BEGIN_SRC python :tangle logs_to_csv.py 
+import shlex
 import os
 import csv
 import fnmatch
@@ -530,8 +531,11 @@ def logs_to_csv(path_for_logs,path_for_csv_files):
 
 
 if __name__ == "__main__":
+                                                                                                                                                     1,1           Top
     logs_to_csv(config.aws_path, config.aws_csv_path)
     logs_to_csv(config.deploy_path, config.deploy_csv_path)
+
+
 #+END_SRC
 To generate the usage count we use the following script: 
 #+BEGIN_SRC python :tangle usage.py 
@@ -577,7 +581,7 @@ content and simulations and calculates the usage only if simulation
 count is less than content count and takes the simulation count as
 usage.
 
-#+BEGIN_SRC python :tangle build_exp_list.py 
+#+BEGIN_SRC python :tangle usage.py 
 def search_pattern(get_field, pattern_list):
     ret_val = False
     global ctx_count
@@ -616,6 +620,7 @@ deploy_csv_path = '/var/www/html/analytics/deploy-csv/'
 
 aws_filter_path = '/var/www/html/analytics/aws-filter/'
 deploy_filter_path = '/var/www/html/analytics/deploy-filter/'
+
 #+END_SRC
 The AWS config file:
 #+BEGIN_SRC python :tangle aws_config.py 
@@ -1408,7 +1413,7 @@ exp_sim_urls_for_labs = {"cse29":[["/labs/cse29/exp6/index.php", "/labs/cse29/ex
 }
 #+END_SRC
 *** Script to filter patterns from deploy logs
-#+BEGIN_SRC python : get_deploy_config_patterns.py 
+#+BEGIN_SRC 
 import simplejson
 import os
 def filter():
@@ -1436,11 +1441,18 @@ def filter():
              cont_list.append(item.split('?')[0])
         lab_list = []
         lab_list = zip(cont_list,sim_list)
-        print lab_list
-
-        config_file = open('deploy_config.py','a+')
-        config_file.write(key +':')
-        simplejson.dump(lab_list,config_file)
+                
+        if(len(lab_list)!=0):
+            config_file = open('deploy_config.py','w')
+            config_file.write('\n'+key +':\n')
+            simplejson.dump(lab_list,config_file)
+        else:
+            unmatched_list = []
+            unmatched_file = open('unmatched_file.py','w')
+            unmatched_file.write('\n'+key + ':')
+            for item in sim_cont_urls:
+                 unmatched_list.append(item)
+            simplejson.dump(unmatched_list,unmatched_file)
 
 
 def csv_to_filtered_labs():
@@ -1455,6 +1467,7 @@ def csv_to_filtered_labs():
               if(columns[5]!='GET / HTTP/1.1'):
                    new_file.write(columns[5] + "\n")
     filter()
+
 if __name__ == "__main__":
     csv_to_filtered_labs()
 #+END_SRC 
