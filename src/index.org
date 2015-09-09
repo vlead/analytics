@@ -57,7 +57,1079 @@
     and required service will return the calculated value in the form of json.
    
 * Implementation
-** TODO Parsing of data for Usage extraction
+** Parsing of data
+*** Page-hits extraction
+    The following script will be used to satisfy the [[Requirement #0]]
+#+BEGIN_SRC python :tangle analytics/extract_data.py
+import sys
+import re
+import json
+import os
+import fnmatch
+__dict_tot_pages__ = {}
+all = [__dict_tot_pages__ ]
+#+END_SRC
+#+BEGIN_SRC python :tangle analytics/extract_data.py
+def get_file_names(year,location):
+    list_of_files = []
+    for file in os.listdir(location):
+        if fnmatch.fnmatch(file, '*'+ re.escape(year) + '*.txt'):
+            list_of_files.append(location + file)
+    return list_of_files
+#+END_SRC
+    There are several awstats files. Some are ".bkp" files and some
+    are ".txt" files. We only require the ".txt" files. The following
+    function gets all the required awstats text files from the
+    specified directory.  From the data collected from AWS, the
+    awstats are lab specific. In AWS, awstats is not configured to
+    collect the analytics for all the labs together. So, all the
+    awstats data files need to be parsed to obtain the page views. The
+    function below looks through all the files and adds the page
+    views. It returns the total page views of labs deployed on AWS
+    infrastructure.
+#+BEGIN_SRC python :tangle analytics/extract_data.py
+def extract_aws_data(year,location):
+    files = get_file_names(year,location);
+    dictionary = {}
+    dict_tot_pages = {}
+    for i in files:
+        f = open(i)
+        for line in f:
+            if re.match(r'^BEGIN_DAY',line):
+                n = int((line.strip('BEGIN_DAY ')).rstrip())
+                x = 0
+                p = 0
+                for page_line in f:
+                    if (x >= n):
+                        break
+                    p += int(page_line.split()[1])
+                    x += 1
+                f.close()
+                dictionary[(i.lstrip('awstats.')).rstrip('.txt')] = p
+                break
+    z = 0
+    for key in dictionary:
+        z += dictionary[key]
+    return z
+#+END_SRC
+    Awstats on the reverse proxy is configured to capture the
+    analytics of all the labs at a single place. These files are named
+    as =awstats'month-year'virtual-labs.ac.in.txt=. The page views
+    from these files are only required. The function below looks
+    through only the specified files to obtain the page views. It
+    returns the total page views of labs deployed on IIIT
+    infrastructure.
+#+BEGIN_SRC python :tangle analytics/extract_data.py
+def extract_iiit_data(year, location):
+    files = get_file_names(year,location);
+    dictionary = {}
+    dict_tot_pages = {}
+    for i in files:
+        if re.search(r'awstats\d+.virtual-labs.ac.in.txt$',i):
+            print i
+            f = open(i)
+            for line in f:
+                if re.match(r'^BEGIN_DAY',line):
+                    n = int((line.strip('BEGIN_DAY ')).rstrip())
+                    x = 0
+                    p = 0
+                    for page_line in f:
+                        if (x >= n):
+                            break
+                        p += int(page_line.split()[1])
+                        x += 1
+                    f.close()
+                    dictionary[(i.lstrip('awstats.')).rstrip('.txt')] = p
+                    break
+    z = 0
+    for key in dictionary:
+        z += dictionary[key]
+    return z
+#+END_SRC
+    The total page views from both the platforms is obtained from the
+    function below. The statistics were collected from the year
+    2013-2015 hence the years are passed as parameters to the above
+    functions.
+#+BEGIN_SRC python :tangle analytics/extract_data.py
+def grand_total():
+    global __dict_tot_pages__
+    year = [ '2013','2014', '2015' ]
+    aws_location = '/root/aws/'
+    base_location = '/root/base/'
+    tot_pages=0
+    for i in year:
+        tot_pages += extract_iiit_data(i,base_location) + extract_aws_data(i,aws_location)
+    __dict_tot_pages__["total-pages"]=str(tot_pages)
+    return __dict_tot_pages__["total-pages"]
+#+END_SRC
+*** Usage Script for Requirement1 
+To convert logs to csv we use the following script:
+#+BEGIN_SRC python :tangle logs_to_csv.py 
+import shlex
+import os
+import csv
+import fnmatch
+import re
+import config
+
+#__current_path__ = '/var/www/html/analytics/deploy-csv/'
+def logs_to_csv(path_for_logs,path_for_csv_files):
+#    global __current_path__
+    files_dict = {}
+    log_as_csv_files = []
+    for file in os.listdir(path_for_logs):
+#        print file
+        if fnmatch.fnmatch(file, '*access_log*'):
+            lab_id = file.split('.')[0]
+            if not files_dict.has_key(lab_id):
+                files_dict[lab_id] = []
+                files_dict[lab_id].append(file)
+            else:
+                files_dict[lab_id].append(file)
+    print files_dict
+
+    for key in files_dict:
+        lab_log_files = files_dict[key]
+        lab_csv_file = key+'.csv'
+        log_as_csv_files.append(lab_csv_file)
+        with open(path_for_csv_files + lab_csv_file, 'w') as csv_file:
+            for log in lab_log_files:
+                with open(path_for_logs+log) as input:
+                    for line in input:
+                        output = ','.join(shlex.split(line)) + '\n'
+                        csv_file.write(output)
+
+
+if __name__ == "__main__":
+                                                                                                                                                     1,1           Top
+    logs_to_csv(config.aws_path, config.aws_csv_path)
+    logs_to_csv(config.deploy_path, config.deploy_csv_path)
+
+
+#+END_SRC
+We use the following script, to satisfy the [[requirement #2]]: 
+#+BEGIN_SRC python :tangle usage.py 
+import os
+import aws_config 
+import deploy_config 
+import config
+ 
+sim_count = 0
+ctx_count = 0
+def filter(csv_path, filter_path, exp_sim_urls_for_labs):
+    global sim_count 
+    global ctx_count 
+    usage = 0
+#    files_dir = "/var/www/html/analytics/csv/"
+    files_dir = csv_path
+    for key in exp_sim_urls_for_labs.keys():
+        file_name = "%s%s.csv" % (files_dir, key)
+        pattern_list = exp_sim_urls_for_labs[key]
+        file = open(file_name, 'r')
+#        new_file_name = "/var/www/html/analytics/filter/filtered_%s" % key
+        new_file_name = filter_path + "filtered_%s" % key
+        new_file = open(new_file_name, 'w+')
+        columns = []
+        for line in file:
+            columns = line.split(',')
+            if (len(columns)>=5 and search_pattern(columns[5], pattern_list)):
+                new_file.write(columns[5] + "\n")
+        new_file.write("Simulation count = %d" % sim_count)
+        new_file.write("Content count = %d" % (ctx_count - sim_count))
+        
+        if (ctx_count >= sim_count):
+            usage += sim_count
+        
+        ctx_count = 0
+        sim_count = 0
+
+    return usage
+#+END_SRC
+
+This function will calculate the usage by taking the total count of
+content and simulations and calculates the usage only if simulation
+count is less than content count and takes the simulation count as
+usage.
+
+#+BEGIN_SRC python :tangle usage.py 
+def search_pattern(get_field, pattern_list):
+    ret_val = False
+    global ctx_count
+    global sim_count
+    for experiment in pattern_list:
+        if experiment[0] in get_field:
+            ctx_count += 1
+            ret_val = True
+        if experiment[1] in get_field:
+            sim_count += 1
+            ret_val = True
+
+    return ret_val
+
+
+def total_usage():    
+    aws_usage = filter(config.aws_csv_path, config.aws_filter_path, aws_config.exp_sim_urls_for_labs)
+    deploy_usage = filter(config.deploy_csv_path, config.deploy_filter_path, deploy_config.exp_sim_urls_for_labs)
+    tot_usage = aws_usage + deploy_usage 
+    print "Usage = %s" % tot_usage
+    return str(tot_usage)
+
+if __name__ == "__main__":
+    usage = total_usage()
+    print "Usage = %s" % usage
+
+#+END_SRC
+
+The config file:
+#+BEGIN_SRC python :tangle config.py
+aws_path = '/var/www/html/aws-logs/'
+deploy_path = '/var/www/html/deploy-logs/'
+
+aws_csv_path = '/var/www/html/analytics/aws-csv/'
+deploy_csv_path = '/var/www/html/analytics/deploy-csv/'
+
+aws_filter_path = '/var/www/html/analytics/aws-filter/'
+deploy_filter_path = '/var/www/html/analytics/deploy-filter/'
+
+#+END_SRC
+The AWS config file:
+#+BEGIN_SRC python :tangle aws_config.py 
+exp_sim_urls_for_labs = { 
+'cse01-iiith':[['/exp1/index.php','/exp1/index.php?section=Simulation'],
+        ['/exp2/index.php','/exp2/index.php?section=Simulation'],	
+        ['/exp3/index.php','/exp3/index.php?section=Simulation'],
+	['/exp4/index.php','/exp4/index.php?section=Simulation'],
+	['/exp5/index.php','/exp5/index.php?section=Simulation'],
+	['/exp6/index.php','/exp6/index.php?section=Simulation'],
+	['/exp7/index.php','/exp7/index.php?section=Simulation'],
+	['/exp8/index.php','/exp8/index.php?section=Simulation'],
+	['/exp9/index.php','/exp9/index.php?section=Simulation']],
+'cse02-iiith':[	['/exp1/index.php','/exp1/index.php?section=Experiment'],
+	['/exp2/index.php','/exp2/index.php?section=Experiment'],
+	['/exp3/index.php','/exp3/index.php?section=Experiment'],
+	['/exp4/index.php','/exp4/index.php?section=Experiment'],
+	['/exp5/index.php','/exp5/index.php?section=Experiment'],
+	['/exp6/index.php','/exp6/index.php?section=Experiment'],
+	['/exp7/index.php','/exp7/index.php?section=Experiment'],
+	['/exp8/index.php','/exp8/index.php?section=Experiment'],
+	['/exp9/index.php','/exp9/index.php?section=Experiment'],
+	['/exp10/index.php','/exp10/index.php?section=Experiment']],
+'cse15-iiith':[['/exp1/index.php','/exp1/index.php?section=Experiment'],
+	['/exp2/index.php','/exp2/index.php?section=Experiment'],
+	['/exp3/index.php','/exp3/index.php?section=Experiment'],
+	['/exp4/index.php','/exp4/index.php?section=Experiment'],
+	['/exp5/index.php','/exp5/index.php?section=Experiment'],
+	['/exp6/index.php','/exp6/index.php?section=Experiment'],
+	['/exp7/index.php','/exp7/index.php?section=Experiment'],
+	['/exp8/index.php','/exp8/index.php?section=Experiment'],
+	['/exp9/index.php','/exp9/index.php?section=Experiment'],
+	['/exp10/index.php','/exp10/index.php?section=Experiment']],
+'cse18-iiith':[['/exp1/index.php','/exp1/index.php?section=Experiment'],
+	['/exp2/index.php','/exp2/index.php?section=Experiment'],
+	['/exp3/index.php','/exp3/index.php?section=Experiment'],	
+        ['/exp4/index.php','/exp4/index.php?section=Experiment'],
+	['/exp5a/index.php','/exp5a/index.php?section=Experiment'],
+	['/exp5b/index.php','/exp5b/index.php?section=Experiment'],
+	['/exp6/index.php','/exp6/index.php?section=Experiment'],
+	['/exp7/index.php','/exp7/index.php?section=Experiment'],
+	['/exp8/index.php','/exp8/index.php?section=Experiment'],
+	['/exp9/index.php','/exp9/index.php?section=Experiment'],
+	['/exp10/index.php','/exp10/index.php?section=Experiment']],
+'cse20-iiith':[['/exp1/index.php','/exp1/index.php?section=Experiment'],
+	['/exp2/index.php','/exp2/index.php?section=Experiment'],
+	['/exp3/index.php','/exp3/index.php?section=Experiment'],
+	['/exp4/index.php','/exp4/index.php?section=Experiment'],
+	['/exp5/index.php','/exp5/index.php?section=Experiment'],
+	['/exp6/index.php','/exp6/index.php?section=Experiment'],
+	['/exp7/index.php','/exp7/index.php?section=Experiment'],
+	['/exp10/index.php','/exp10/index.php?section=Experiment']],
+'emt-iiith':[['/Experiment.php?code=C001','/Experiment.php?T005&code=C001'],
+	['/Experiment.php?code=C002','/Experiment.php?tid=T005&code=C002'],
+	['/Experiment.php?code=C003','/Experiment.php?tid=T005&code=C003'],
+	['/Experiment.php?code=C004','/Experiment.php?tid=T005&code=C004'],
+	['/Experiment.php?code=C005','/Experiment.php?tid=T005&code=C005'],
+	['/Experiment.php?code=C006','/Experiment.php?tid=T005&code=C006'],
+	['/Experiment.php?code=C007','/Experiment.php?tid=T005&code=C007'],
+	['/Experiment.php?code=C008','/Experiment.php?tid=T005&code=C008'],
+	['/Experiment.php?code=C009','/Experiment.php?tid=T005&code=C009'],
+	['/Experiment.php?code=C009','/Experiment.php?tid=T005&code=C009']],
+'cse29-iiith':[['/exp1/index.php','/exp1/index.php?section=Experiment'],
+	['/exp2/index.php','/exp2/index.php?section=Experiment'],
+	['/exp3/index.php','/exp3/index.php?section=Experiment'],
+	['/exp5/index.php','/exp5/index.php?section=Experiment'],
+	['/exp6/index.php','/exp6/index.php?section=Experiment'],
+	['/exp7/index.php','/exp7/index.php?section=Experiment'],
+	['/exp8/index.php','/exp8/index.php?section=Experiment'],
+	['/exp9/index.php','/exp9/index.php?section=Experiment'],
+	['/exp10/index.php','/exp10/index.php?section=Experiment'],
+	['/exp11/index.php','/exp11/index.php?section=Experiment']],
+'ccnsb06-iiith':[['/exp6/index.php','/exp6/index.php?section=Experiment'],
+	['/exp7/index.php','/exp7/index.php?section=Experiment'],
+	['/exp8/index.php','/exp8/index.php?section=Experiment'],
+	['/exp9/index.php','/exp9/index.php?section=Experiment'],
+	['/exp5/index.php','/exp5/index.php?section=Experiment'],
+	['/exp10/index.php','/exp10/index.php?section=Experiment'],
+	['/exp1/index.php','/exp1/index.php?section=Experiment'],
+	['/exp2/index.php','/exp2/index.php?section=Experiment']],
+'eerc01-iiith':[['/exp1/index.php','/exp1/index.php?section=Experiment'],
+	['/exp3/index.php','/exp3/index.php?section=Experiment'],
+	['/exp4/index.php','/exp4/index.php?section=Experiment'],
+	['/exp4/index.php','/exp4/index.php?section=Experiment'],
+	['/exp5/index.php','/exp5/index.php?section=Experiment'],
+	['/exp6/index.php','/exp6/index.php?section=Experiment'],
+	['/exp7/index.php','/exp7/index.php?section=Experiment'],
+	['/exp8/index.php','/exp8/index.php?section=Experiment'],
+	['/exp9/index.php','/exp9/index.php?section=Experiment'],
+	['/exp10/index.php','/exp10/index.php?section=Experiment']],
+'csc-iiith':[['/exp1/index.html','/exp1/sol.html'],
+	['/exp2/index.html','/exp2/gel_form.html'],
+	['/exp3/index.html','/exp3/clean.html'],
+	['/exp14/index.html','/exp14/cmc.html'],
+	['/exp4/index.html','/exp4/surface.html'],
+	['/exp5/index.html','/exp5/Tyndal.html'],
+	['/exp7/index.html','/exp7/Gel_total.html'],
+	['/exp8/index.html','/exp8/surface.html'],
+	['/exp15/index.html','/exp15/lab9.html']],
+'cse19-iiith':[['/objective.php?exp=diff','/diff.php'],
+	['/objective.php?exp=arith','/arith.php'],
+	['/objective.php?exp=affine','/affine.php'],
+	['/objective.php?exp=point','/point.php'],
+	['/objective.php?exp=neigh','/neigh.php'],
+	['/objective.php?exp=histo','/histo.php'],
+	['/objective.php?exp=fourier','/fourier.php'],
+	['/objective.php?exp=colour','/colour.php'],
+	['/objective.php?exp=morph','/morph.php'],
+	['/objective.php?exp=segment','/segment.php'],
+	['/objective.php?exp=piping','/piping.php']],
+'cse22-iiith':[['/exp1/index.html','/exp1/index.html'],
+	['/exp2/index.html','/exp2/index.html'],
+	['/exp3/index.html','/exp3/index.html'],
+	['/exp4/index.html','/exp4/index.html'],
+	['/exp5/index.html','/exp5/index.html'],
+	['/exp6/index.html','/exp6/index.html'],
+	['/exp7/index.html','/exp7/index.html'],
+	['/exp8/index.html','/exp8/index.html'],
+	['/exp9/index.html','/exp9/index.html'],
+	['/exp10/index.html','/exp10/index.html']],
+'cse11-iiith':[['/Integers/index.php','section=Experiment'],
+	['/FloatingPointNumbers/index.php','section=Experiment'],
+	['/CacheOrganizations/index.php','section=Experiment'],
+	['/LocalityAnalysis/index.php','virtual-labs.ac.in/loc'],
+	['/TilingMatrix/index.php','virtual-labs.ac.in/matpar'],
+	['/VirtualMemory/index.php','section=Experiment'],
+	['/MIPS1/index.php','/MIPS1/index.php?section=Experiment'],
+	['/MIPS2/index.php','/MIPS2/index.php?section=Experiment'],
+	['/ARM1/index.php','/ARM1/index.php?section=Experiment'],
+	['/ARM2/index.php','/ARM2/index.php?section=Experiment'],
+	['/SingleCycle/index.php','section=Experiment']],
+'cse14-iiith':[['/Experiment.php?code=C001','tid=T005&code=C001'],
+	['/Experiment.php?code=C002','tid=T005&code=C002'],
+	['/Experiment.php?code=C003','tid=T005&code=C003'],
+	['/Experiment.php?code=C004','tid=T005&code=C004'],
+	['/Experiment.php?code=C005','tid=T005&code=C005'],
+	['/Experiment.php?code=C006','tid=T005&code=C006'],
+	['/Experiment.php?code=C008','tid=T005&code=C008'],
+	['/Experiment.php?code=C009','tid=T005&code=C009'],
+	['/Experiment.php?code=C0091','tid=T005&code=C0091'],
+	['/Experiment.php?code=C007','tid=T005&code=C007']],
+'vem-iitg':[['/Magnetic_Field_Behaviour_in_single_coil.html','/Magnetic_Field_Behaviour_in_single_coil%28experiment1%29.html'],
+	['/Magnetic_Field_Behaviour_in_single_coil.html','/Magnetic_Field_Behaviour_in_single_coil%28experiment2%29.html'],
+	['/Rotating%20Magnetic%20Field%20Behaviour%20in%20two%20coils.html','/Rotating%20Magnetic%20Field%20Behaviour%20in%20two%20coils%28experiments%29.html'],
+	['/Rotating%20Magnetic%20Field%20Behaviour%20in%20three%20coils.html','/Rotating_Magnetic_Field_Behaviour_in_three_coils%28experiments%29.html'],
+	['/Introduction_DC.html','/Experiment_DC.html'],
+	['/Introduction_Noload.html','/Experiment_Noload.html'],
+	['/Introduction_blockr.html','/Experiment_blockr.html'],
+	['/Stator%20Resistance%20Starter%28intro%29.html','/Stator%20Resistance%20Starter%28experiment%29.html'],
+	['/Auto%20Transformer%20Starting%28intro%29.html','/Auto%20Transformer%20Starting%28experiment%29.html'],
+	['/Star%20Delta%20Starting%28intro%29.html','/Star%20Delta%20Starting%28experiment%29.html']],
+'bmi-iitr':[['/exp1/index.php','/exp1/index.php?section=Experiment'],
+	['/exp2/index.php','/exp2/index.php?section=Experiment'],
+	['/exp3/index.php','/exp3/index.php?section=Experiment'],
+	['/exp5/index.php','/exp5/index.php?section=Experiment'],
+	['/exp6/index.php','/exp6/index.php?section=Experiment'],
+	['/exp7/index.php','/exp7/index.php?section=Experiment'],
+	['/exp8/index.php','/exp8/index.php?section=Experiment']],
+'bmsip-iitr':[['/exp1/index.php','/exp1/index.php?section=Experiment'],
+	['/exp2/index.php','/exp2/index.php?section=Experiment'],
+	['/exp3/index.php','/exp3/index.php?section=Experiment']],
+'em-iitr':[['/exp1/index.php','/exp1/index.php?section=Experiment'],
+	['/exp2/index.php','/exp2/index.php?section=Experiment'],
+	['/exp3/index.php','/exp3/index.php?section=Experiment'],
+	['/exp4/index.php','/exp4/index.php?section=Experiment'],
+	['/exp5/index.php','/exp5/index.php?section=Experiment'],
+	['/exp6/index.php','/exp6/index.php?section=Experiment'],
+	['/exp7/index.php','/exp7/index.php?section=Experiment']],
+'sl-iitr':[['/exp1/index.php','/exp1/index.php?section=Experiment'],
+	['/exp2/index.php','/exp2/index.php?section=Experiment'],
+	['/exp3/index.php','/exp3/index.php?section=Experiment'],
+	['/exp5/index.php','/exp5/index.php?section=Experiment'],
+	['/exp6/index.php','/exp6/index.php?section=Experiment'],
+	['/exp7/index.php','/exp7/index.php?section=Experiment'],
+	['/exp8/index.php','/exp8/index.php?section=Experiment'],
+	['/exp9/index.php','/exp9/index.php?section=Experiment'],
+	['/exp10/index.php','/exp10/index.php?section=Experiment'],
+	['/exp11/index.php','/exp11/index.php?section=Experiment']],
+'pev-au':[['/Interspecific_Competition_and_Coexistence/','/index.php?exp_id=Interspecific_Competition_and_Coexistence'],
+	['/conservingEndangeredSpecies/','/index.php?exp_id=conservingEndangeredSpecies'],
+	['/Interspecific%20Competition%20and%20Geographic%20Distributions/','/index.php?exp_id=Interspecific%20Competition%20and%20Geographic%20Distributions'],
+	['/Metapopulation_Dynamics/','/index.php?exp_id=Metapopulation_Dynamics'],
+	['/Parasitoid_Host_Dynamics/','/index.php?exp_id=Parasitoid_Host_Dynamics'],
+	['/Spread_Pest_Population_invasion/','/index.php?exp_id=Spread_Pest_Population_invasion']],
+'pevii-au':[['/OptimalForAging/','/index.php?exp_id=OptimalForAging'],
+	['/OptimalForaging_Pollinators/','/index.php?exp_id=OptimalForaging_Pollinators'],
+	['/Optimal_foraging_Sit_and_wait_predators_that_maximize_energy/','/index.php?exp_id=Optimal_foraging_Sit_and_wait_predators_that_maximize_energy']],
+'anthropology-iitg':[['/Theory_handaxe.html','/Simulator_handaxe.html'],
+	['/Theory_finger.html','/Simulator_finger.html'],
+	['/Theory_pot.html','/Simulator_pot.html'],
+	['/Theory_pot.html','/Simulator_pot.html'],
+	['/Theory_pot.html','/Simulator_pot.html'],
+	['/Theory_pot.html','/Simulator_pot.html'],
+	['/Theory_indices.html','/Simulator_indices.html'],
+	['/obtain_main_line_formula_theory.html','/obtain_main_line_formula_simulator.html'],
+	['/Skeleton_Assembling_Identification_labeling_theory.html','/Skeleton_Assembling_Identification_labelin_simulator.html'],
+	['/blood_group_technique_theory.html','/blood_group_technique_simulator.html'],
+	['/hunting_fishing_tools_theory.html','/hunting_fishing_tools_simulator.html'],
+	['/hunting_fishing_tools_theory.html','/hunting_fishing_tools_simulator.html']],
+'ergonomics-iitg':	[['/Theory_static.html','/Practical%20Experience_static.html'],
+	['/Theory_arm.html','/Practical%20Experience_arm.html'],
+	['/Theory_sitting.html','/Practical%20Experience_sitting.html'],
+	['/Theory_4.html','/Practical%20Experience_4.html'],
+	['/Theory_5.html','/Practical%20Experience_5.html'],
+	['/Theory_6.html','/Practical%20Experience_6.html'],
+	['/Theory_7.html','/Practical%20Experience_7.html'],
+	['/Theory_8.html','/Practical%20Experience_8.html'],
+	['/Theory_9.html','/Practical%20Experience_9.html'],
+	['/Theory_10.html','/Practical%20Experience_10.html']],
+'plc-coep':[['/exp2/index.html','/exp2/simulator2.html'],
+	['/exp3/index.html','/exp3/simulator3.html'],
+	['/exp4/index.html','/exp4/simulator4.html'],
+	['/exp5/index.html','/exp5/simulator5.html'],
+	['/exp6/index.html','/exp6/simulator6.html'],
+	['/exp7/index.html','/exp7/simulator7.html'],
+	['/exp8/index.html','/exp8/simulator8.html']],
+'em-coep':[['/Exp1/index.html','/Exp1/Experiment1.html'],
+	['/Exp2/index.html','/Exp2/Experiment2.html'],
+	['/Exp3/index.html','/Exp3/Experiment3.html'],
+	['/Exp4/index.html','/Exp4/Experiment4.html'],
+	['/Exp5/index.html','/Exp5/Experiment5.html'],
+	['/Exp6/index.html','/Exp6/Experiment6.html'],
+	['/Exp7/index.html','/Exp7/Experiment7.html'],
+	['/Exp8/index.html','/Exp8/Experiment8.html']],
+'sl-coep':[['/Rtd/index.html','/Rtd/rtd.html'],
+	['/Biosensor/index.html','/Biosensor/biosensor.html'],
+	['/Capacitance/index.html','/Capacitance/capacitance.html'],
+	['/LinearVariableDifferntialTransformer/index.html','/LinearVariableDifferntialTransformer/lvdt.html'],
+	['/Orifice/index.html','/Orifice/orifice.html'],
+	['/PHCalculation/index.html','/PHCalculation/phc.html'],
+	['/StrainGuage/index.html','/StrainGuage/strainguage.html'],
+	['/Thermocouple/index.html','/Thermocouple/thermocouple.html']],
+'he-coep':[['/Experiment1/index.html','/Experiment1/index1.html'],
+	['/Experiment2/index.html','/Experiment2/index1.html'],
+	['/Experiment3/index.html','/Experiment3/index1.html'],
+	['/Experiment4/index.html','/Experiment4/index1.html'],
+	['/Experiment5/index.html','/Experiment5/index1.html'],
+	['/Experiment6/index.html','/Experiment6/index1.html'],
+	['/Experiment8/index.html','/Experiment8/index1.html']],
+'ial-coep':[['/Expt2/index.html','/Expt2/AnalogDigital.html'],
+	['/Expt3/index.html','/Expt3/TimersCounters.html'],
+	['/Expt4/index.html','/Expt4/TrafficControl.html'],
+	['/Expt5/index.html','/Expt5/BottleFilling.html'],
+	['/Expt6/index.html','/Expt6/HeatExchange.html'],
+	['/Expt7/index.html','/Expt7/FBD.html']],
+'va-coep':[['/MIofConnectingRod/index.html','/MIofConnectingRod/MIofConnectingRod.html'],
+	['/ImpactTestCantilever/index.html','/ImpactTestCantilever/ImpactTestCantilever.html'],
+	['/SineSweepCantilever/index.html','/SineSweepCantilever/SineSweepCantilever.html'],
+	['/HarmonicExcitationSDOF/index.html','/HarmonicExcitationSDOF/HarmonicExcitationSDOF.html'],
+	['/NaturalVibrationSDOF/index.html','/NaturalVibrationSDOF/NaturalVibrationSDOF.html'],
+	['/TrifiliarSuspension/index.html','/TrifiliarSuspension/TrifiliarSuspension.html'],
+	['/ArbitraryExcitation/index.html','/ArbitraryExcitation/ArbitraryExcitation.html'],
+	['/TunedVibrationAbsorber/index.html','/TunedVibrationAbsorber/TunedVibrationAbsorber.html']],
+'mm-coep':[['/PulsedHeating/index.html','/PulsedHeating/PulsedHeating.html'],
+	['/LazerankosErosionModel/index.html','/LazerankosErosionModel/LazerankosErosionModel.html'],
+	['/DibitontoVsSalonitis/index.html','/DibitontoVsSalonitis/DibitontoVsSalonitis.html'],
+	['/EDM/index.html','/EDM/EDM.html'],
+	['/YAGLaser/index.html','/YAGLaser/YAGLaser.html'],
+	['/LaserSpotWelding/index.html','/LaserSpotWelding/LaserSpotWelding.html'],
+	['/ECM/index.html','/ECM/ECM.html'],
+	['/ECG/index.html','/ECG/ECG.html']],
+'fab-coep':[['/exp1/index.html','/exp1/woodcutting.html'],
+	['/exp2/index.html','/exp2/roughing.html'],
+	['/exp3/index.html','/exp3/pcb.html'],
+	['/exp4/index.html','/exp4/interfaceprog.html'],
+	['/exp5/index.html','/exp5/flexibleCircuit.htm'],
+	['/exp6/index.html','/exp6/scanning.html']],
+'bmsp-coep':[['/AbnormalECG/index.html','/NormalECG/index.html'],
+	['/AbnormalECG/index.html','/AbnormalECG/AbnormalECG.html'],
+	['/Electroencephalogram/index.html','/Electroencephalogram/Electroencephalogram.html'],
+	['/ElectromyogramSignal/index.html','/ElectromyogramSignal/ElectromyogramSignal.html'],
+	['/Defibrillator/index.html','/Defibrillator/Defibrillator.html'],
+	['/PaceMaker/index.html','/PaceMaker/PaceMaker.html'],
+	['/PaceMaker/index.html','/SynchronousPaceMaker/index.html'],
+	['/HaemoDialysis/index.html','/HaemoDialysis/HaemoDialysis.html'],
+	['/EMGAmplifier/index.html','/EMGAmplifier/EMGAmplifier.html'],
+	['/PulseMissingDetector/index.html','/PulseMissingDetector/PulseMissingDetector.html'],
+	['/LeadECG/index.html','/LeadECG/LeadECG.html']],
+'sa-nitk':[['/exp1/index.html','/exp1/index.html'],
+	['/exp2/index.html','/exp2/index.html'],
+	['/exp3/index.html','/exp3/index.html'],
+	['/exp4/index.html','/exp4/index.html'],
+	['/exp5/index.html','/exp5/index.html'],
+	['/exp6/index.html','/exp6/index.html'],
+	['/exp7/index.html','/exp7/index.html'],
+	['/exp8/index.html','/exp8/index.html'],
+	['/exp9/index.html','/exp9/index.html'],
+	['/exp10/index.html','/exp10/index.html'],
+	['/exp11/index.html','/exp11/index.html']],
+'fm-nitk':[['/exp1/index.html','/exp1/index.html']],
+'sm-nitk':[['/exp1/index.html','/exp1/index.html'],
+	['/exp2/index.html','/exp2/index.html'],
+	['/exp3/index.html','/exp3/index.html'],
+	['/exp4/index.html','/exp4/index.html']],
+'mm-nitk':[['/exp1/index.html','/exp1/index.html'],
+	['/exp2/index.html','/exp2/index.html'],
+	['/exp3/index.html','/exp3/index.html'],
+	['/exp4/index.html','/exp4/index.html'],
+	['/exp5/index.html','/exp5/index.html'],
+	['/exp6/index.html','/exp6/index.html'],
+	['/exp7/index.html','/exp7/index.html'],
+	['/exp8/index.html','/exp8/index.html'],
+	['/exp9/index.html','/exp9/index.html'],
+	['/exp10/index.html','/exp10/index.html'],
+	['/exp11/index.html','/exp11/index.html'],
+	['/exp12/index.html','/exp12/index.html'],
+	['/exp13/index.html','/exp13/index.html'],
+	['/exp14/index.html','/exp14/index.html'],
+	['/exp15/index.html','/exp15/index.html'],
+	['/exp16/index.html','/exp16/index.html']],
+'mdmv-nitk':[['/exp1/index.html','/exp1/index.html'],
+	['/exp2/index.html','/exp2/index.html'],
+	['/exp3/index.html','/exp3/index.html'],
+	['/exp4/index.html','/exp4/index.html'],
+	['/exp5/index.html','/exp5/index.html'],
+	['/exp6/index.html','/exp6/index.html'],
+	['/exp7/index.html','/exp7/index.html'],
+	['/exp8/index.html','/exp8/index.html']],
+'uorepc-nitk':[['/exp1/index.html','/exp1/index.html'],
+	['/exp2/index.html','/exp2/index.html'],
+	['/exp3/index.html','/exp3/index.html'],
+	['/exp4/index.html','/exp4/index.html'],
+	['/exp5/index.html','/exp5/index.html'],
+	['/exp6/index.html','/exp6/index.html'],
+	['/exp7/index.html','/exp7/index.html'],
+	['/exp8/index.html','/exp8/index.html'],
+	['/exp9/index.html','/exp9/index.html']],
+'ied-nitk':[['/INTRODUCTION%20TO%20PROGRAMMABLE%20LOGIC%20CONTROLLER%20AND%20INTRODUCTION%20TO%20DIGITAL%20IO%20INTERFACE%20TO%20PLC/index.html','/INTRODUCTION%20TO%20PROGRAMMABLE%20LOGIC%20CONTROLLER%20AND%20INTRODUCTION%20TO%20DIGITAL%20IO%20INTERFACE%20TO%20PLC/index.html'],
+	['/INTRODUCTION%20TO%20LADDER%20LOGIC/index.html','/INTRODUCTION%20TO%20LADDER%20LOGIC/index.html'],
+	['/ptinst/index.html','/PLC%20On-Delay%20Timer%20Instruction/index.html'],
+	['/ptinst/index.html','/PLC%20Off-Delay%20Timer%20Instruction/index.html'],
+	['/ptinst/index.html','/PLC%20Retentive%20Timer%20On%20%20Instruction/index.html'],
+	['/plcinst/index.html','/PLC%20COUNT-UP%20INSTRUCTION/index.html'],
+	['/plcinst/index.html','/PLC%20COUNT-DOWN%20INSTRUCTION/index.html'],
+	['/appplc/index.html','/Garage%20Shutter%20Opening%20and%20Closing%20Using%20PLC/index.html'],
+	['/appplc/index.html','/Container%20Filling%20Process%20Using%20PLC/index.html'],
+	['/appplc/index.html','/Simultaneous%20output%20interlock%20using%20PLC/index.html'],
+	['/appplc/index.html','/Maximum%20Simultaneous%20Operations%20Limiter%20using%20PLC/index.html'],
+	['/appplc/index.html','/Motor%20forward%20and%20reverse%20direction%20control%20using%20PLC/index.html']],
+'qnm-iitd':[['/experiment1.html','/Experiment%201/mm1.html'],
+	['/experiment1.html','/Experiment%201/mmc.html'],
+	['/experiment1.html','/Experiment%201/mminf.html'],
+	['/experiment2.html','/Experiment%202/Layout.html'],
+	['/experiment3.html','/Experiment%203/Layout.html'],
+	['/experiment4.html','/Experiment%204/Exp4a.html'],
+	['/experiment4.html','/Experiment%204/Exp4b.html'],
+	['/experiment5.html','/Experiment%205/Exp5a.html'],
+	['/experiment5.html','/Experiment%205/Exp5b.html'],
+	['/experiment6.html','/Experiment%206/Exp6.html'],
+	['/experiment7.html','/Experiment%207/DT1a/build/mm1.html'],
+	['/experiment7.html','/Experiment%207/DT1b/build/mmc.html'],
+	['/experiment7.html','/Experiment%207/DT1c/build/mminf.html'],
+	['/experiment7.html','/Experiment%207/DT2/build/Layout.html'],
+	['/experiment7.html','/Experiment%207/DT3/build/Layout.html'],
+	['/experiment8.html','/Experiment%208/tandem.html'],
+	['/experiment9.html','/Experiment%209/model2.html'],
+	['/experiment10.html','/Experiment%2010/opennetwork.html'],
+	['/experiment11.html','/Experiment%2011/closednetwork.html'],
+	['/experiment12.html','/Experiment%2012/12a.html'],
+	['/experiment12.html','/Experiment%2012/12b.html']],
+'eem-iitd':[['/exp1.html','/exp1/Application.exe'],
+	['/exp2.html','/exp2/Application.exe'],
+	['/exp3.html','/exp3/Application.exe'],
+	['/exp4.html','/exp4/Application.exe'],
+	['/exp5.html','/exp5/Application.exe'],
+	['/exp7.html','/exp7/Application.exe'],
+	['/exp8.html','/exp8/Application.exe']],
+'msvs-dei':[['/upsetting_process.php','/upsetting_simulation.php'],
+	['/upsetting_process.php','/Hydraulic.php'],
+	['/upsetting_process.php','/Mechanical.php'],
+	['/upsetting_process.php','/Upset_Experiment.php?UPSETTING/Upset_Comp/Case_1.mp4'],
+	['/upsetting_process.php','/Upset_Experiment.php?UPSETTING/Upset_Comp/Case_2.mp4'],
+	['/upsetting_process.php','/Upset_Experiment.php?UPSETTING/Upset_Comp/Case_3.mp4'],
+	['/upsetting_process.php','/Upset_Experiment.php?UPSETTING/Upset_Comp/Case_4.mp4'],
+	['/Extrusion.php','/Aluminium.php'],
+	['/Extrusion.php','/Titanium.php'],
+	['/Extrusion.php','/Extru_Experiment.php?EXTRUSION/ExtruComparision/SolidPipe.mp4'],
+	['/Extrusion.php','/Extru_Experiment.php?EXTRUSION/ExtruComparision/RadiusExtrusion.mp4'],
+	['/Extrusion.php','/Extru_Experiment.php?EXTRUSION/ExtruComparision/ExtrusionAngles.mp4'],
+	['/MultiStep.php','/MultiStep_Experiment.php?UPSETTING/MultiStep/MSF1.mp4'],
+	['/MultiStep.php','/MultiStep_Experiment.php?UPSETTING/MultiStep/MSF2.mp4'],
+	['/MultiStep.php','/MultiStep_Experiment.php?UPSETTING/MultiStep/MSF3.mp4'],
+	['/MultiStep.php','/MultiStep_Experiment.php?UPSETTING/MultiStep/MSF4.mp4'],
+	['/MultiStep.php','/MultiStep_Experiment.php?UPSETTING/MultiStep/MSF5.mp4'],
+	['/Hammer_Forging.php','/Hammer_Experiment.php?UPSETTING/Hammer_Forging/HammerForging1.mp4'],
+	['/Hammer_Forging.php','/Hammer_Experiment.php?UPSETTING/Hammer_Forging/HammerForging2.mp4'],
+	['/Rolling_process.php','/Rolling.php'],
+	['/Rolling_process.php','/RingRoll.php?ROLLING/RingRolling/FlatringSetup.mp4'],
+	['/Rolling_process.php','/RingRoll.php?ROLLING/RingRolling/FlatringStrain.mp4'],
+	['/Rolling_process.php','/RingRoll.php?ROLLING/RingRolling/CurvedringSetup.mp4'],
+	['/Rolling_process.php','/RingRoll.php?ROLLING/RingRolling/CurvedringStrain.mp4'],
+	['/ThreadRolling.php','/ThreadSimulation.php?ROLLING/ThreadRolling/FlatDies_Graph.mp4'],
+	['/ThreadRolling.php','/ThreadSimulation.php?ROLLING/ThreadRolling/FlatDies_Strain.mp4'],
+	['/ThreadRolling.php','/ThreadSimulation.php?ROLLING/ThreadRolling/TwoRolls_Graph.mp4'],
+	['/ThreadRolling.php','/ThreadSimulation.php?ROLLING/ThreadRolling/TwoRolls_Graph.mp4'],
+	['/ThreadRolling.php','/ThreadSimulation.php?ROLLING/ThreadRolling/ThreeRolls_Graph.mp4'],
+	['/ThreadRolling.php','/ThreadSimulation.php?ROLLING/ThreadRolling/ThreeRolls_Strain.mp4'],
+	['/WedgeRolling.php','/WedgeSimulation.php?Rolling/WedgeRolling/PlanetaryRolling.mp4'],
+	['/WedgeRolling.php','/WedgeSimulation.php?Rolling/WedgeRolling/ThreeRolls.mp4'],
+	['/SheetMetal.php','/SheetMetal_Experiment.php?SHEETMETAL/Bending/Bending1.mp4'],
+	['/SheetMetal.php','/SheetMetal_Experiment.php?SHEETMETAL/Bending/Bending2.mp4'],
+	['/SheetMetal.php','/SheetMetal_Experiment.php?SHEETMETAL/Bending/Bending4.mp4'],
+	['/SheetMetal.php','/SheetMetal_Experiment.php?SHEETMETAL/Bending/Bending3.mp4'],
+	['/SheetMetal.php','/SheetMetal_Experiment.php?SHEETMETAL/Bending/Bending5.mp4'],
+	['/SheetMetal.php','/SheetMetal_Experiment.php?SHEETMETAL/Bending/Bending8.mp4'],
+	['/SheetMetal.php','/SheetMetal_Experiment.php?SHEETMETAL/Bending/Bending6.mp4'],
+	['/SheetMetal.php','/SheetMetal_Experiment.php?SHEETMETAL/Bending/Bending7.mp4'],
+	['/Orbital.php','/OrbitalSimulation.php?Forming/Orbital/OrbitalForming.mp4'],
+	['/Orbital.php','/OrbitalSimulation.php?Forming/Orbital/OrbitalStrain.mp4'],
+	['/Orbital.php','/OrbitalSimulation.php?Forming/Orbital/FormingOrbital.mp4'],
+	['/Orbital.php','/OrbitalSimulation.php?Forming/Orbital/OrbitalRiveting.mp4'],
+	['/Hydroforming.php','/HydroSimulation.php?Forming/Hydroforming/TubeHydroforming.mp4'],
+	['/Hydroforming.php','/HydroSimulation.php?Forming/Hydroforming/CurveTubeHydroforming.mp4'],
+	['/Hydroforming.php','/HydroSimulation.php?Forming/Hydroforming/Hydroforming_ST.mp4'],
+	['/Hydroforming.php','/HydroSimulation.php?Forming/Hydroforming/CurveHydroforming_ST.mp4'],
+	['/Hydroforming.php','/HydroSimulation.php?Forming/Hydroforming/Hydroforming_dt_ss.mp4'],
+	['/Hydroforming.php','/HydroSimulation.php?Forming/Hydroforming/Hydroforming_DT_os.mp4'],
+	['/Hydroforming.php','/HydroSimulation.php?Forming/Hydroforming/SheetHydroforming.mp4'],
+	['/Hydroforming.php','/HydroSimulation.php?Forming/Hydroforming/SheetStrainHydroforming.mp4'],
+	['/Stretchforming.php','/StretchSimulation.php?Forming/Stretchforming/FormingStretch.mp4'],
+	['/Stretchforming.php','/StretchSimulation.php?Forming/Stretchforming/StretchGraph.mp4'],
+	['/Stretchforming.php','/StretchSimulation.php?Forming/Stretchforming/FormingStrain.mp4'],
+	['/Stretchforming.php','/StretchSimulation.php?Forming/Stretchforming/FormingGraph.mp4'],
+	['/Cogging.php','/CoggingSimulation.php?Cogging/CoggingCurve.mp4'],
+	['/Cogging.php','/CoggingSimulation.php?Cogging/CoggingStrain.mp4'],
+	['/Cogging.php','/CoggingSimulation.php?Cogging/BeckingSetup.mp4'],
+	['/Cogging.php','/CoggingSimulation.php?Cogging/BeckingStrain.mp4'],
+	['/Cogging.php','/CoggingSimulation.php?Cogging/MDShaftSetup.mp4'],
+	['/Cogging.php','/CoggingSimulation.php?Cogging/MDShaftStrain.mp4'],
+	['/Cogging.php','/CoggingSimulation.php?Cogging/MDShaftCurve.mp4'],
+	['/Swaging.php','/SwagingSimulation.php?Swaging/Swaging_Kinematics.mp4'],
+	['/Swaging.php','/SwagingSimulation.php?Swaging/Swaging_Strain.mp4'],
+	['/Swaging.php','/SwagingSimulation.php?Swaging/SwagingGraph.mp4'],
+        ['/Riveting.php','/RivetingSimulation.php?Riveting/RivetForming.mp4'],
+        ['/Riveting.php','/RivetingSimulation.php?Riveting/RivetStrainForming.mp4'],
+        ['/Riveting.php','/RivetingSimulation.php?Riveting/RivetCurveForming.mp4'],
+        ['/Riveting.php','/RivetingSimulation.php?Riveting/RivetingSplit.mp4'],
+        ['/Riveting.php','/RivetingSimulation.php?Riveting/SplitRiveting_Kinematics.mp4'],
+        ['/Riveting.php','/RivetingSimulation.php?Riveting/SplitRiveting_CutSection.mp4'],
+        ['/Riveting.php','/RivetingSimulation.php?Riveting/FlatRiveting.mp4'],
+        ['/Riveting.php','/RivetingSimulation.php?Riveting/FlatStrainRiveting.mp4'],
+        ['/Riveting.php','/RivetingSimulation.php?Riveting/FlatCurveRiveting.mp4'],
+        ['/Quenching.php','/QuenchingSimulation.php?Quenching/QuenchingProcess.mp4'],
+        ['/Quenching.php','/QuenchingSimulation.php?Quenching/StrainQuenching.mp4'],
+        ['/rct.php','/RCT_Bench.php'],
+        ['/Defects.php','/DefectSimulation.php?Defects/BucklingGraph.mp4'],
+        ['/Defects.php','/DefectSimulation.php?Defects/Buckling_Strain.mp4'],
+        ['/Defects.php','/DefectSimulation.php?Defects/Shearing_Kinematics.mp4'],
+        ['/Defects.php','/DefectSimulation.php?Defects/Shearing_Strain.mp4'],
+        ['/Defects.php','/DefectSimulation.php?Defects/OverFills.mp4'],
+        ['/Defects.php','/DefectSimulation.php?Defects/UnderFills1.mp4'],
+        ['/Defects.php','/DefectSimulation.php?Defects/UnderFills2.mp4'],
+        ['/Defects.php','/DefectSimulation.php?Defects/MultipleDefects.mp4']],
+'vp-dei':[['/Dreamweaver/exp1.html','/Dreamweaver/Sim_dcmotor.html'],
+	['/Dreamweaver/exp1.html','/Dreamweaver/syn_Sim.html'],
+	['/Dreamweaver/exp1.html','/Dreamweaver/Sim_DG_Set.html'],
+	['/Dreamweaver/exp1.html','/Dreamweaver/dynDcmotor.html'],
+	['/Dreamweaver/exp2.html','/Dreamweaver/Sim_2/phaseSequence.html'],
+	['/Dreamweaver/exp2.html','/Dreamweaver/Sim_2/SlipTest/index.html'],
+	['/Dreamweaver/exp3.html','/Dreamweaver/sim_3/OCC.html'],
+	['/Dreamweaver/exp3.html','/Dreamweaver/sim_3/SCC.html'],
+	['/Dreamweaver/exp3.html','/Dreamweaver/sim_3/comb/X2.html'],
+	['/Dreamweaver/exp3.html','/Dreamweaver/sim_3/comb/X0.html'],
+	['/Dreamweaver/exp4.html','/Dreamweaver/Sim_4/web/Exp4.html'],
+	['/Dreamweaver/exp5.html','/Dreamweaver/sim_5/web/Exp5.html'],
+	['/Dreamweaver/exp6.html','/Dreamweaver/sim_6/web/exp6.html'],
+	['/Dreamweaver/exp6.html','/Dreamweaver/sim_6a/web/index.html'],
+	['/Dreamweaver/exp7.html','/Dreamweaver/Sim%207/web/sim7.html'],
+	['/Dreamweaver/exp8.html','/Dreamweaver/Sim8/web/Sim8.html'],
+	['/Dreamweaver/exp9.html','/Dreamweaver/Sim9/web/index.html']],
+'vc-dei':[['/?page_id=83','/?page_id=108'],
+	['/?page_id=186','/?page_id=195'],
+	['/?page_id=200','/?page_id=209'],
+	['/?page_id=612','/?page_id=885'],
+	['/?page_id=748','/?page_id=899'],
+	['/?page_id=786','/?page_id=911'],
+	['/?page_id=939','/?page_id=968'],
+	['/?page_id=1028','/?page_id=1094'],
+	['/?page_id=1111','/?page_id=1169']],
+'pe-iitb':[['/exp3/index.html','/exp3/index.html'],
+	['/exp4/index.html','/exp4/index.html'],
+	['/exp5/index.html','/exp5/index.html'],
+	['/exp7/index.html','/exp7/index.html'],
+	['/exp8/index.html','/exp8/index.html'],
+	['/exp9/index.html','/exp9/index.html'],
+	['/exp10/index.html','/exp10/index.html'],
+	['/exp11/index.html','/exp11/index.html'],
+	['/exp13/index.html','/exp13/index.html'],
+	['/exp14/index.html','/exp14/index.html'],
+	['/exp15/index.html','/exp15/index.html'],
+	['/exp16/index.html','/exp16/index.html']],
+'ce-iitb':[['/exp1/index.html','/exp1/ori/ori1.php'],
+	['/exp2/index.html','/exp2/gla/gla1.php'],
+	['/exp3/index.html','/exp3/2pf/2pf1.php'],
+	['/exp4/index.html','/exp4/hpc/hpc1.php'],
+	['/exp5/index.html','/exp5/nof/nof1.php'],
+	['/exp6/index.html','/exp6/calo/cal1.php'],
+	['/exp7/index.html','/exp7/ftf/fm1.php'],
+	['/exp8/index.html','/exp8/htl/htl.php'],
+	['/exp8/index.html','/exp9/vle/vle.php'],
+	['/exp10/index.html','coepvlab.ac.in:8080/COEP/Vlabs/Simulators/ElectricalLab/SensorLab/Rtd/index.html']],
+'ee-iitb':[['/exp1/index.html','/exp1/index.html'],
+	['/exp12/index.html','/exp12/index.html'],
+	['/exp2/index.html','/exp2/index.html'],
+	['/exp3/index.html','/exp3/index.html'],
+	['/exp4/index.html','/exp4/index.html'],
+	['/exp5/index.html','/exp5/index.html'],
+	['/exp6/index.html','/exp6/index.html'],
+	['/exp7/index.html','/exp7/index.html'],
+	['/exp9/index.html','/exp9/index.html'],
+	['/exp10/index.html','/exp10/index.html'],
+	['/exp11/index.html','/exp11/index.html']],
+'cds-iiith':[['/exp1/index.html','/exp1/swf.html'],
+        ['/exp2/index.html','/exp2/emanim_ord_refrac.html'],
+        ['/exp2/index.html','/exp2/part2_cd/emanim_cd_refrac.html'],
+        ['/exp3/index.html','/exp3/jmol/'],
+        ['/exp4/index.html','/exp4/exp/'],
+        ['/exp5/index.html','/exp5/swf.html'],
+        ['/exp6/index.html','/exp6/swf.html'],
+        ['/exp7/index.html','/exp7/swf.html'],
+        ['/exp8/index.html','/exp8/experiment/index.html'],
+        ['/exp9/index.html','/exp9/experiment/index.html'],
+        ['/exp10/index.html','/exp10/experiment/index.html']],
+'smfe-iiith':[['/exp1/index.php','/exp1/index.php?section=Experiment'],
+	['/exp2/index.php','/exp2/index.php?section=Experiment'],
+	['/exp3/index.php','/exp3/index.php?section=Experiment'],
+	['/exp4/index.php','/exp4/index.php?section=Experiment'],
+	['/exp5/index.php','/exp5/index.php?section=Experiment'],
+	['/exp6/index.php','/exp6/index.php?section=Experiment'],
+	['/exp7/index.php','/exp7/index.php?section=Experiment'],
+	['/exp8/index.php','/exp8/index.php?section=Experiment'],
+	['/exp9/index.php','/exp9/index.php?section=Experiment'],
+	['/exp10/index.php','/exp10/index.php?section=Experiment']],
+'ssp-iiith':[['/exp01/index.html','/exp01/index.html'],
+	['/exp02/index.html','/exp02/index.html'],
+	['/exp03/index.html','/exp03/index.html'],
+	['/exp04/index.html','/exp04/index.html'],
+	['/exp05/index.html','/exp05/index.html'],
+	['/exp06/index.html','/exp06/index.html'],
+	['/exp07/index.html','/exp07/index.html'],
+	['/exp08/index.html','/exp08/index.html'],
+	['/exp09/index.html','/exp09/index.html'],
+	['/exp10/index.html','/exp10/index.html']],
+'mi-iiith':[['/exp1/index.html','/latest_project/bin/magnet1.html'],
+	['/exp1/index.html','/latest_project/bin/magnet.html'],
+	['/exp2/index.html','/latest_project/bin/magnet1.html'],
+	['/exp3/index.html','/latest_project/bin/magnet.html'],
+	['/exp4/index.html','/suraj/Suraj/bin/Electrostatic.html'],
+	['/exp5/index.html','/suraj/Suraj/bin/Hexane_Vanderwall.html'],
+	['/exp6/index.html','/suraj/Suraj/bin/Electrostatic.html'],
+	['/exp7/index.html','/suraj/Suraj/bin/Electrostatic_Hexane.html'],
+	['/exp8/index.html','/suraj/Suraj/bin/1.html'],
+	['/exp9/index.html','/suraj/Suraj/bin/ViscosEnvironment.html'],
+	['/exp10/index.html','/suraj/Suraj/bin/oilDrop.html'],
+	['/exp11/index.html','/suraj/Suraj/bin/Laser.html']],
+'mas-iiith':[['/exp1/index.html','/exp1/media/Principle.html'],
+	['/exp1/index.html','/exp1/media/instrument_animation.html'],
+	['/exp1/index.html','/exp1/media/1.html'],
+	['/exp2/index.html','/exp2/media/2.html'],
+	['/exp3/','/exp3/media/length.html'],
+	['/exp3/','/exp3/media/3.html'],
+	['/exp4/','/exp4/media/concentration.html'],
+	['/exp4/','/exp4/media/4.html'],
+	['/exp5/index.html','/exp5/media/5.html'],
+	['/exp6/','/exp6/media/6.html'],
+	['/exp7/','/exp7/media/7.html'],
+	['/exp8/','/exp8/media/8.html'],
+	['/exp9/','/exp9/media/9.html'],
+	['/exp10/','/exp10/media/10.html']],
+'mfs-iiith':[['/exp1/index.html','/exp1/media/1.html'],
+	['/exp2/index.html','/exp2/media/2_a.html'],
+	['/exp2/index.html','/exp2/media/2_b.html'],
+	['/exp3/index.html','/exp3/media/3.html'],
+	['/exp4/index.html','/exp4/media/4.html'],
+	['/exp5/index.html','/exp5/media/5.html'],
+	['/exp6/index.html','/exp6/media/6.html'],
+	['/exp7/index.html','/exp7/media/7.html'],
+	['/exp8/index.html','/exp8/media/8.html'],
+	['/exp9/index.html','/exp9/media/9.html'],
+	['/exp10/index.html','/exp10/media/10_a.html'],
+	['/exp10/index.html','/exp10/media/10_b.html']],
+'nlp-iiith':[['/exp1/index.html','/exp1/index.html'],
+	['/exp2/index.html','/exp2/index.html'],
+	['/exp3/index.html','/exp3/index.html'],
+	['/exp4/index.html','/exp4/index.html'],
+	['/exp5/index.html','/exp5/index.html'],
+	['/exp6/index.html','/exp6/index.html'],
+	['/exp7/index.html','/exp7/index.html'],
+	['/exp8/index.html','/exp8/index.html'],
+	['/exp9/index.html','/exp9/index.html'],
+	['/exp10/index.html','/exp10/index.html']],
+'cp-iiith':[['/exp1/index.php','/exp1/arithmatic/operator.php'],
+	['/exp2/index.php','/exp2/lab/if_else.php'],
+	['/exp3/index.php','/exp3/lab/loops.html'],
+	['/exp4/index.php','/exp4/index.php'],
+	['/exp5/index.php','/exp5/lab/function.html'],
+	['/exp6/index.php','/exp6/test1/build/towers.html'],
+	['/exp7/index.php','/exp7/structures/build/StrucMain.html'],
+	['/exp8/index.php','/exp8/index.php'],
+	['/exp9/index.php','/exp9/index.php'],
+	['/exp10/index.php','/exp10/Integration/build/factorial.html']],
+'cl-iiith':[['/exp1/index.html','/exp1/index.html'],
+	['/exp2/index.html','/exp2/index.html'],
+	['/exp3/index.html','/exp3/index.html'],
+	['/exp4/index.html','/exp4/index.html'],
+	['/exp5/index.html','/exp5/index.html'],
+	['/exp7/index.html','/exp7/index.html'],
+	['/exp8/index.html','/exp8/index.html'],
+	['/exp9/index.html','/exp9/index.html'],
+	['/exp10/index.html','/exp10/index.html']],
+'sd-iiith':[['/exp1/index.html','/exp1/exp1.html'],
+	['/exp1/index.html','java.com/en/download/linux_manual.jsp'],
+	['/exp2/index.html','/exp2/undamped_freevib.html'],
+	['/exp2/index.html','/exp2/dampedfree.html'],
+	['/exp2/index.html','java.com/en/download/linux_manual.jsp'],
+	['/exp3/index.html','/exp3/undamped_forced.html'],
+	['/exp3/index.html','/exp3/DampedForced.html'],
+	['/exp3/index.html','java.com/en/download/linux_manual.jsp'],
+	['/exp4/index.html','/exp4/Impluse.html'],
+	['/exp4/index.html','java.com/en/download/linux_manual.jsp'],
+	['/exp5/index.html','/exp5/responsespectrum.avi'],
+	['/exp5/index.html','java.com/en/download/linux_manual.jsp'],
+	['/exp6/index.html','/exp6/exp5.html'],
+	['/exp6/index.html','java.com/en/download/linux_manual.jsp'],
+	['/exp7/index.html','/exp7/dem.htm'],
+	['/exp7/index.html','java.com/en/download/linux_manual.jsp'],
+	['/exp8/index.html','/exp8/torsion6.html'],
+	['/exp8/index.html','java.com/en/download/linux_manual.jsp'],
+	['/exp9/index.html','/exp9/Coolingtowers.html'],
+	['/exp9/index.html','java.com/en/download/linux_manual.jsp'],
+	['/exp9/index.html','java.com/en/download/linux_manual.jsp'],
+	['/exp9/index.html','java.com/en/download/linux_manual.jsp'],
+	['/exp10/index.html','java.com/en/download/linux_manual.jsp']],
+'bsa-iiith':[['/exp2/index.php','/exp2/index.php?section=Experiment'],
+        ['/exp3/index.php','/exp3/index.php?section=Experiment'],
+        ['/exp4/index.php','/exp4/index.php?section=Experiment'],
+        ['/exp5/index.php','/exp5/index.php?section=Experiment'],
+        ['/exp6/index.php','/exp6/index.php?section=Experiment'],
+        ['/exp1/index.php','/exp1/index.php?section=Experiment'],
+        ['/exp7/index.php','/exp7/index.php?section=Experiment'],
+        ['/exp8/index.php','/exp8/index.php?section=Experiment'],
+        ['/exp9/index.php','/exp9/index.php?section=Experiment'],
+        ['/exp10/index.php','/exp10/index.php?section=Experiment']],
+'ge-iiith':[['/exp1/index.html','/exp1/animation/fsi.html'],
+        ['/exp1/index.html','www.oracle.com/technetwork/java/index.html'],
+        ['/exp2/index.html','www.oracle.com/technetwork/java/index.html'],
+        ['/exp3/index.html','www.oracle.com/technetwork/java/index.html'],
+        ['/exp4/index.html','www.oracle.com/technetwork/java/index.html'],
+        ['/exp5/index.html','www.oracle.com/technetwork/java/index.html'],
+        ['/exp6/index.html','/exp6/media/shearing.html'],
+        ['/exp6/index.html','www.oracle.com/technetwork/java/index.html'],
+        ['/exp7/index.html','www.oracle.com/technetwork/java/index.html'],
+        ['/exp8/index.html','www.oracle.com/technetwork/java/index.html'],
+        ['/exp9/index.html','www.oracle.com/technetwork/java/index.html']]}
+
+
+#+END_SRC
+The Deploy config file:
+#+BEGIN_SRC python :tangle deploy_config.py 
+exp_sim_urls_for_labs = {"cse29":[["/labs/cse29/exp6/index.php", "/labs/cse29/exp6/index.php?section=Experiment"], ["/labs/cse29/exp5/index.php", "/labs/cse29/exp5/index.php?section=Experiment"], ["/labs/cse29/exp1/index.php", "/labs/cse29/exp1/index.php?section=Experiment"], ["/labs/cse29/exp4/index.php", "/labs/cse29/exp4/index.php?section=Experiment"], ["/labs/cse29/index.php", "/labs/cse29/index.php?section=Experiments"], ["/labs/cse29/index.php", "/labs/cse29/index.php?section=Experiments&wvdpforce=1"], ["/labs/cse29/exp2/index.php", "/labs/cse29/exp2/index.php?section=Experiment"], ["/labs/cse29/exp10/index.php", "/labs/cse29/exp10/index.php?section=Experiment%27%20aND%20BeNChMaRK%282999999%2CMd5%28NoW%28%29%29%29%20AnD%20%271"], ["/labs/cse29/exp3/index.php", "/labs/cse29/exp3/index.php?section=Experiment"], ["/labs/cse29/exp11/index.php", "/labs/cse29/exp11/index.php?section=Experiment"], ["/labs/cse29/exp10/index.php", "/labs/cse29/exp10/index.php?section=Experiment%00%27%7C%7CSLeeP%283%29%26%26%271"], ["/labs/cse29/index.php", "/labs/cse29/index.php?section=Experimentsftp://webmaster:007jr@007jr.com/r57.txt?"], ["/labs/cse29/exp10/index.php", "/labs/cse29/exp10/index.php?section=Experiment%27%26%26sLEEp%283%29%26%26%271"], ["/labs/cse29/exp9/index.php", "/labs/cse29/exp9/index.php?section=Experiment"], ["/labs/cse29/exp10/index.php", "/labs/cse29/exp10/index.php?section=Experiment"], ["/labs/cse29/index.php", "/labs/cse29/index.php?section=Experiments\\videos"], ["/labs/cse29/exp8/index.php", "/labs/cse29/exp8/index.php?section=Experiment"], ["/labs/cse29/exp10/index.php", "/labs/cse29/exp10/index.php?section=Experiment%27%26%26BeNChMaRK%282999999%2CmD5%28NOW%28%29%29%29%26%26%271"], ["/labs/cse29/exp10/index.php", "/labs/cse29/exp10/index.php?section=Experiment%27%20AnD%20sLeep%283%29%20ANd%20%271"], ["/labs/cse29/exp10/index.php", "/labs/cse29/exp10/index.php?section=Experiment'\""], ["/labs/cse29/exp7/index.php", "/labs/cse29/exp7/index.php?section=Experiment"]],
+"cse21":
+[["/exp4/index.php", "/exp4/index.php?section=Experiment"], ["/exp2/index.php", "/exp2/index.php?section=Experiment"], ["/exp1/index.php", "/exp1/index.php?section=Experiment"], ["/labs/cse21/exp4/index.php", "/labs/cse21/exp4/index.php?section=Experiment"], ["http://deploy.virtual-labs.ac.in/labs/cse21/exp1/index.php", "http://deploy.virtual-labs.ac.in/labs/cse21/exp1/index.php?section=Experiment"], ["/labs/cse21/exp6/index.php", "/labs/cse21/exp6/index.php?section=Experiment"], ["/labs/cse21/exp5/index.php", "/labs/cse21/exp5/index.php?section=Experiment"], ["/labs/cse21/exp2/index.php", "/labs/cse21/exp2/index.php?section=Experiment"], ["/exp7/index.php", "/exp7/index.php?section=Experiment"], ["/exp6/index.php", "/exp6/index.php?section=Experiment"], ["/exp5/index.php", "/exp5/index.php?section=Experiment"], ["/labs/cse21/exp1/index.php", "/labs/cse21/exp1/index.php?section=Experiment"], ["/labs/cse21/exp3/index.php", "/labs/cse21/exp3/index.php?section=Experiment"], ["/exp3/index.php", "/exp3/index.php?section=Experiment"], ["/labs/cse21/exp7/index.php", "/labs/cse21/exp7/index.php?section=Experiment"]],
+"cse18":
+[["/labs/cse18/exp3/index.php", "/labs/cse18/exp3/index.php?section=Experiment"], ["/labs/cse18/exp9/index.php", "/labs/cse18/exp9/index.php?section=Experiment"], ["/labs/cse18/exp2/index.php", "/labs/cse18/exp2/index.php?section=Experiment"], ["/labs/cse18/exp5a/index.php", "/labs/cse18/exp5a/index.php?section=Experiment"], ["/labs/cse18/exp1/index.php", "/labs/cse18/exp1/index.php?section=Experiment"], ["/labs/cse18/exp6/index.php", "/labs/cse18/exp6/index.php?section=Experiment"], ["/labs/cse18/exp7/index.php", "/labs/cse18/exp7/index.php?section=Experiment"], ["/labs/cse18/exp8/index.php", "/labs/cse18/exp8/index.php?section=Experiment"], ["/labs/cse18/exp4/index.php", "/labs/cse18/exp4/index.php?section=Experiment"], ["/labs/cse18/exp10/index.php", "/labs/cse18/exp10/index.php?section=Experiment"], ["/labs/cse18/exp5b/index.php", "/labs/cse18/exp5b/index.php?section=Experiment"]],
+"cse11":
+[["/labs/cse11/Integers/index.php", "/labs/cse11/Integers/index.php?section=Experiment"], ["/labs/cse11/TilingMatrix/index.php", "/labs/cse11/TilingMatrix/index.php?section=Experiment"], ["/labs/cse11/SingleCycle/index.php", "/labs/cse11/SingleCycle/index.php?section=Experiment"], ["/labs/cse11/CacheOrganizations/index.php", "/labs/cse11/CacheOrganizations/index.php?section=Experiment"], ["/labs/cse11/VirtualMemory/index.php", "/labs/cse11/VirtualMemory/index.php?section=Experiment"], ["/labs/cse11/ARM1/index.php", "/labs/cse11/ARM1/index.php?section=Experiment"], ["/labs/cse11/MIPS2/index.php", "/labs/cse11/MIPS2/index.php?section=Experiment"], ["/labs/cse11/LocalityAnalysis/index.php", "/labs/cse11/LocalityAnalysis/index.php?section=Experiment"], ["/labs/cse11/MIPS1/index.php", "/labs/cse11/MIPS1/index.php?section=Experiment"], ["/labs/cse11/FloatingPointNumbers/index.php", "/labs/cse11/FloatingPointNumbers/index.php?section=Experiment"], ["/labs/cse11/ARM2/index.php", "/labs/cse11/ARM2/index.php?section=Experiment"]],
+"cse13":
+[["/labs/cse13/lfsr/index.php", "/labs/cse13/lfsr/index.php?section=Experiment"], ["/semi_custom/index.php", "/semi_custom/index.php?section=Experiment"], ["/ripple_carry_adder/index.php", "/ripple_carry_adder/index.php?section=Experiment"], ["/labs/cse13/carry_look_ahead_adder/index.php", "/labs/cse13/carry_look_ahead_adder/index.php?section=Experiment"], ["/labs/cse13/5_3_compressor/index.php", "/labs/cse13/5_3_compressor/index.php?section=Experiment"], ["/labs/cse13/ripple_carry_adder/index.php", "/labs/cse13/ripple_carry_adder/index.php?section=Experiment"], ["/hamming_coder/index.php", "/hamming_coder/index.php?section=Experiment"], ["/carry_look_ahead_adder/index.php", "/carry_look_ahead_adder/index.php?section=Experiment"], ["/labs/cse13/semi_custom/index.php", "/labs/cse13/semi_custom/index.php?section=Experiment"], ["/labs/cse13/full_custom/index.php", "/labs/cse13/full_custom/index.php?section=Experiment"], ["/labs/cse13/array_multiplier/index.php", "/labs/cse13/array_multiplier/index.php?section=Experiment"], ["/Gated_Clocking/index.php", "/Gated_Clocking/index.php?section=Experiment"], ["/array_multiplier/index.php", "/array_multiplier/index.php?section=Experiment"], ["/full_custom/index.php", "/full_custom/index.php?section=Experiment"], ["/labs/cse13/hamming_coder/index.php", "/labs/cse13/hamming_coder/index.php?section=Experiment"], ["/labs/cse13/Gated_Clocking/index.php", "/labs/cse13/Gated_Clocking/index.php?section=Experiment"], ["/lfsr/index.php", "/lfsr/index.php?section=Experiment"]],
+"cse04":
+[["/labs/cse04/exp7/index.php", "/labs/cse04/exp7/index.php?section=Experiment"], ["/labs/cse04/exp2/index.php", "/labs/cse04/exp2/index.php?section=Experiment"], ["/labs/cse04/exp6/index.php", "/labs/cse04/exp6/index.php?section=Experiment"], ["/exp10/index.php", "/exp10/index.php?section=Experiment"], ["/labs/cse04/exp5/index.php", "/labs/cse04/exp5/index.php?section=Experiment"], ["/labs/cse04/exp8/index.php", "/labs/cse04/exp8/index.php?section=Experiment"], ["/labs/cse04/exp9/index.php", "/labs/cse04/exp9/index.php?section=Experiment"], ["/labs/cse04/exp10/index.php", "/labs/cse04/exp10/index.php?section=Experiment"], ["/exp6/index.php", "/exp6/index.php?section=Experiment"], ["/exp4/index.php", "/exp4/index.php?section=Experiment"], ["/exp3/index.php", "/exp3/index.php?section=Experiment"], ["/exp5/index.php", "/exp5/index.php?section=Experiment"], ["/labs/cse04/exp1/index.php", "/labs/cse04/exp1/index.php?section=Experiment"], ["/exp1/index.php", "/exp1/index.php?section=Experiment"], ["/exp2/index.php", "/exp2/index.php?section=Experiment"], ["/labs/cse04/exp3/index.php", "/labs/cse04/exp3/index.php?section=Experiment"], ["/labs/cse04/exp4/index.php", "/labs/cse04/exp4/index.php?section=Experiment"], ["/exp7/index.php", "/exp7/index.php?section=Experiment"], ["/exp9/index.php", "/exp9/index.php?section=Experiment"], ["/exp8/index.php", "/exp8/index.php?section=Experiment"]],
+"cse17":
+[["/montecarlolocalization/index.php", "/montecarlolocalization/index.php?section=Experiment"], ["/labs/cse17/rrtbasedpathplanning/index.php", "/labs/cse17/rrtbasedpathplanning/index.php?section=Experiment"], ["/exploration/index.php", "/exploration/index.php?section=Experiment"], ["/mapping/index.php", "/mapping/index.php?section=Experiment"], ["/rrtbasedpathplanning/index.php", "/rrtbasedpathplanning/index.php?section=Experiment"], ["/gridbasednavigation/index.php", "/gridbasednavigation/index.php?section=Experiment"], ["/labs/cse17/exploration/index.php", "/labs/cse17/exploration/index.php?section=Experiment"], ["/velocitymodelling/index.php", "/velocitymodelling/index.php?section=Experiment"], ["/labs/cse17/gridbasednavigation/index.php", "/labs/cse17/gridbasednavigation/index.php?section=Experiment"], ["/labs/cse17/sensormodelling/index.php", "/labs/cse17/sensormodelling/index.php?section=Experiment"], ["/localization/index.php", "/localization/index.php?section=Experiment"], ["/labs/cse17/localization/index.php", "/labs/cse17/localization/index.php?section=Experiment"], ["/labs/cse17/mapping/index.php", "/labs/cse17/mapping/index.php?section=Experiment"], ["/labs/cse17/forwardkinematics/index.php", "/labs/cse17/forwardkinematics/index.php?section=Experiment"], ["/scanmatching/index.php", "/scanmatching/index.php?section=Experiment"], ["/labs/cse17/velocitymodelling/index.php", "/labs/cse17/velocitymodelling/index.php?section=Experiment"], ["/sensormodelling/index.php", "/sensormodelling/index.php?section=Experiment"], ["/labs/cse17/montecarlolocalization/index.php", "/labs/cse17/montecarlolocalization/index.php?section=Experiment"], ["/labs/cse17/scanmatching/index.php", "/labs/cse17/scanmatching/index.php?section=Experiment"], ["/forwardkinematics/index.php", "/forwardkinematics/index.php?section=Experiment"]],
+"cse02":
+[["/labs/cse02/exp9/index.php", "/labs/cse02/exp9/index.php?section=Experiment"], ["/labs/cse02/exp10/index.php", "/labs/cse02/exp10/index.php?section=Experiment"], ["/labs/cse02/exp4/index.php", "/labs/cse02/exp4/index.php?section=Experiment"], ["/labs/cse02/exp2/index.php", "/labs/cse02/exp2/index.php?section=Experiment"], ["/labs/cse02/exp6/index.php", "/labs/cse02/exp6/index.php?section=Experiment"], ["/labs/cse02/exp3/index.php", "/labs/cse02/exp3/index.php?section=Experiment"], ["/labs/cse02/exp7/index.php", "/labs/cse02/exp7/index.php?section=Experiment"], ["/labs/cse02/exp5/index.php", "/labs/cse02/exp5/index.php?section=Experiment"], ["/labs/cse02/exp8/index.php", "/labs/cse02/exp8/index.php?section=Experiment"], ["/labs/cse02/exp1/index.php", "/labs/cse02/exp1/index.php?section=Experiment"]],
+"cse15":
+[["/labs/cse15/exp5/index.php", "/labs/cse15/exp5/index.php?section=Experiment"], ["/labs/cse15/exp4/index.php", "/labs/cse15/exp4/index.php?section=Experiment"], ["/labs/cse15/exp10/index.php", "/labs/cse15/exp10/index.php?section=Experiment"], ["/labs/cse15/exp9/index.php", "/labs/cse15/exp9/index.php?section=Experiment"], ["/labs/cse15/exp7/index.php", "/labs/cse15/exp7/index.php?section=Experiment"], ["/labs/cse15/exp2/index.php", "/labs/cse15/exp2/index.php?section=Experiment"], ["/labs/cse15/exp8/index.php", "/labs/cse15/exp8/index.php?section=Experiment"], ["/labs/cse15/exp3/index.php", "/labs/cse15/exp3/index.php?section=Experiment"], ["/labs/cse15/exp1/index.php", "/labs/cse15/exp1/index.php?section=Experiment"], ["/labs/cse15/exp2/index.php", "/labs/cse15/exp2/index.php?section=Experiment&wvdpforce=1"], ["/labs/cse15/exp6/index.php", "/labs/cse15/exp6/index.php?section=Experiment"]],
+"cse20":
+[["/labs/cse20/index.php", "/labs/cse20/index.php?section=Experiments"], ["/labs/cse20/exp7/index.php", "/labs/cse20/exp7/index.php?section=Experiment"], ["/labs/cse20/exp1/index.php", "/labs/cse20/exp1/index.php?section=Experiment"], ["/labs/cse20/exp10/index.php", "/labs/cse20/exp10/index.php?section=Experiment"], ["/labs/cse20/exp2/index.php", "/labs/cse20/exp2/index.php?section=Experiment"], ["/labs/cse20/exp3/index.php", "/labs/cse20/exp3/index.php?section=Experiment"], ["/labs/cse20/exp4/index.php", "/labs/cse20/exp4/index.php?section=Experiment"], ["/labs/cse20/exp5/index.php", "/labs/cse20/exp5/index.php?section=Experiment"], ["/labs/cse20/exp6/index.php", "/labs/cse20/exp6/index.php?section=Experiment"]],
+"ccnsb04":
+[["/exp1/index.php", "/exp1/index.php?section=Experiment"], ["/labs/ccnsb04/exp5/index.php", "/labs/ccnsb04/exp5/index.php?section=Experiment"], ["/labs/ccnsb04/exp9/index.php", "/labs/ccnsb04/exp9/index.php?section=Experiment"], ["/exp8/index.php", "/exp8/index.php?section=Experiment"], ["/labs/ccnsb04/exp4/index.php", "/labs/ccnsb04/exp4/index.php?section=Experiment"], ["/labs/ccnsb04/exp2/index.php", "/labs/ccnsb04/exp2/index.php?section=Experiment"], ["/exp5/index.php", "/exp5/index.php?section=Experiment"], ["/exp4/index.php", "/exp4/index.php?section=Experiment"], ["/labs/ccnsb04/exp7/index.php", "/labs/ccnsb04/exp7/index.php?section=Experiment"], ["/exp3/index.php", "/exp3/index.php?section=Experiment"], ["/exp7/index.php", "/exp7/index.php?section=Experiment"], ["/exp2/index.php", "/exp2/index.php?section=Experiment"], ["/labs/ccnsb04/exp3/index.php", "/labs/ccnsb04/exp3/index.php?section=Experiment"], ["/labs/ccnsb04/exp8/index.php", "/labs/ccnsb04/exp8/index.php?section=Experiment"], ["/exp10/index.php", "/exp10/index.php?section=Experiment"], ["/exp9/index.php", "/exp9/index.php?section=Experiment"], ["/labs/ccnsb04/exp1/index.php", "/labs/ccnsb04/exp1/index.php?section=Experiment"], ["/labs/ccnsb04/exp10/index.php", "/labs/ccnsb04/exp10/index.php?section=Experiment"]],
+"eerc01":
+[["/labs/eerc01/exp6/index.php", "/labs/eerc01/exp6/index.php?section=Experiment"], ["/labs/eerc01/exp8/index.php", "/labs/eerc01/exp8/index.php?section=Experiment"], ["/labs/eerc01/exp2/index.php", "/labs/eerc01/exp2/index.php?section=Experiment"], ["/labs/eerc01/exp4/index.php", "/labs/eerc01/exp4/index.php?section=Experiment"], ["/labs/eerc01/exp3/index.php", "/labs/eerc01/exp3/index.php?section=Experiment"], ["/labs/eerc01/exp9/index.php", "/labs/eerc01/exp9/index.php?section=Experiment"], ["/labs/eerc01/exp7/index.php", "/labs/eerc01/exp7/index.php?section=Experiment"], ["/labs/eerc01/exp1/index.php", "/labs/eerc01/exp1/index.php?section=Experiment"], ["/labs/eerc01/exp5/index.php", "/labs/eerc01/exp5/index.php?section=Experiment"], ["/labs/eerc01/exp10/index.php", "/labs/eerc01/exp10/index.php?section=Experiment"]],
+"cse30":
+[["/labs/cse30/vlab3/myExp2_2_a/index.php", "/labs/cse30/vlab3/myExp2_2_a/index.php?section=Experiment"], ["/labs/cse30/vlab3/myExp2_2_b/index.php", "/labs/cse30/vlab3/myExp2_2_b/index.php?section=Experiment"], ["/vlab3/myExp2_2_a/index.php", "/vlab3/myExp2_2_a/index.php?section=Experiment"], ["/vlab3/myExp7_a/index.php", "/vlab3/myExp7_a/index.php?section=Experiment"], ["/labs/cse30/vlab3/myExp2_1_a/index.php", "/labs/cse30/vlab3/myExp2_1_a/index.php?section=Experiment"], ["/labs/cse30/vlab3/myExp6_basic/index.php", "/labs/cse30/vlab3/myExp6_basic/index.php?section=Experiment"], ["/vlab3/myExp7_b/index.php", "/vlab3/myExp7_b/index.php?section=Experiment"], ["/vlab3/myExp2_1_a/index.php", "/vlab3/myExp2_1_a/index.php?section=Experiment"], ["/labs/cse30/vlab3/myExp3_b/index.php", "/labs/cse30/vlab3/myExp3_b/index.php?section=Experiment"], ["/labs/cse30/vlab3/myExp2_3_b/index.php", "/labs/cse30/vlab3/myExp2_3_b/index.php?section=Experiment"], ["/labs/cse30/vlab3/myExp3_a/index.php", "/labs/cse30/vlab3/myExp3_a/index.php?section=Experiment"], ["/labs/cse30/vlab3/myExp9_a/index.php", "/labs/cse30/vlab3/myExp9_a/index.php?section=Experiment"], ["/vlab3/myExp9_b/index.php", "/vlab3/myExp9_b/index.php?section=Experiment"], ["/labs/cse30/vlab3/myExp2_1_b/index.php", "/labs/cse30/vlab3/myExp2_1_b/index.php?section=Experiment"], ["/vlab3/myExp9_a/index.php", "/vlab3/myExp9_a/index.php?section=Experiment"], ["/vlab3/myExp2_1_b/index.php", "/vlab3/myExp2_1_b/index.php?section=Experiment"], ["/labs/cse30/vlab3/myExp7_a/index.php", "/labs/cse30/vlab3/myExp7_a/index.php?section=Experiment"], ["/labs/cse30/vlab3/myExp5_a/index.php", "/labs/cse30/vlab3/myExp5_a/index.php?section=Experiment"], ["/vlab3/myExp5_a/index.php", "/vlab3/myExp5_a/index.php?section=Experiment"], ["/labs/cse30/vlab3/myExp7_b/index.php", "/labs/cse30/vlab3/myExp7_b/index.php?section=Experiment"], ["/labs/cse30/vlab3/myExp2_3_a/index.php", "/labs/cse30/vlab3/myExp2_3_a/index.php?section=Experiment"], ["/vlab3/myExp2_3_b/index.php", "/vlab3/myExp2_3_b/index.php?section=Experiment"], ["/vlab3/myExp2_3_a/index.php", "/vlab3/myExp2_3_a/index.php?section=Experiment"], ["/labs/cse30/vlab3/myExp9_b/index.php", "/labs/cse30/vlab3/myExp9_b/index.php?section=Experiment"], ["/labs/cse30/vlab3/myExp5_b/index.php", "/labs/cse30/vlab3/myExp5_b/index.php?section=Experiment"], ["/vlab3/myExp6_basic/index.php", "/vlab3/myExp6_basic/index.php?section=Experiment"], ["/vlab3/myExp2_2_b/index.php", "/vlab3/myExp2_2_b/index.php?section=Experiment"], ["/vlab3/myExp3_b/index.php", "/vlab3/myExp3_b/index.php?section=Experiment"], ["/vlab3/myExp5_b/index.php", "/vlab3/myExp5_b/index.php?section=Experiment"], ["/labs/cse30/vlab3/myExp6_cascode/index.php", "/labs/cse30/vlab3/myExp6_cascode/index.php?section=Experiment"], ["/vlab3/myExp6_cascode/index.php", "/vlab3/myExp6_cascode/index.php?section=Experiment"], ["/vlab3/myExp3_a/index.php", "/vlab3/myExp3_a/index.php?section=Experiment"]],
+"cse01":
+[["/labs/cse01/exp9/index.php", "/labs/cse01/exp9/index.php?section=Simulation"], ["/labs/cse01/exp2/index.php", "/labs/cse01/exp2/index.php?section=Simulation"], ["/labs/cse01/exp3/", "/labs/cse01/exp3/?section=Simulation"], ["/labs/cse01/exp5/index.php", "/labs/cse01/exp5/index.php?section=Simulation"], ["/labs/cse01/exp7/index.php", "/labs/cse01/exp7/index.php?section=Simulation"], ["/labs/cse01/exp3/index.php", "/labs/cse01/exp3/index.php?section=Simulation"], ["/labs/cse01/exp7/index.php", "/labs/cse01/exp7/index.php?section=Simulation#"], ["/labs/cse01/exp8/index.php", "/labs/cse01/exp8/index.php?section=Simulation"], ["/labs/cse01/exp1/index.php", "/labs/cse01/exp1/index.php?section=Simulation"], ["/labs/cse01/exp4/index.php", "/labs/cse01/exp4/index.php?section=Simulation"], ["/labs/cse01/exp6/index.php", "/labs/cse01/exp6/index.php?section=Simulation"]],
+"eerc02":
+[["/exp1/index.php", "/exp1/index.php?section=Experiment"], ["/labs/eerc02/exp9/index.php", "/labs/eerc02/exp9/index.php?section=Experiment"], ["/exp2/index.php", "/exp2/index.php?section=Experiment"], ["/labs/eerc02/exp10/index.php", "/labs/eerc02/exp10/index.php?section=Experiment"], ["/labs/eerc02/exp6/index.php", "/labs/eerc02/exp6/index.php?section=Experiment"], ["/labs/eerc02/exp1/index.php", "/labs/eerc02/exp1/index.php?section=Experiment"], ["/exp8/index.php", "/exp8/index.php?section=Experiment"], ["/labs/eerc02/exp4/index.php", "/labs/eerc02/exp4/index.php?section=Experiment;%27"], ["/labs/eerc02/exp1/index.php", "/labs/eerc02/exp1/index.php?section=Experiment&_=1414547151042"], ["/exp4/index.php", "/exp4/index.php?section=Experiment"], ["/exp7/index.php", "/exp7/index.php?section=Experiment"], ["/labs/eerc01/exp1/index.php", "/labs/eerc01/exp1/index.php?section=Experiment"], ["/labs/eerc02/exp3/index.php", "/labs/eerc02/exp3/index.php?section=Experiment"], ["/labs/eerc02/exp4/index.php", "/labs/eerc02/exp4/index.php?section=Experiment"], ["/exp9/index.php", "/exp9/index.php?section=Experiment"], ["/exp6/index.php", "/exp6/index.php?section=Experiment"], ["/labs/eerc02/exp2/index.php", "/labs/eerc02/exp2/index.php?section=Experiment"], ["/labs/eerc02/exp5/index.php", "/labs/eerc02/exp5/index.php?section=Experiment"], ["/exp5/index.php", "/exp5/index.php?section=Experiment"], ["/labs/eerc02/exp8/index.php", "/labs/eerc02/exp8/index.php?section=Experiment"], ["/labs/eerc02/exp7/index.php", "/labs/eerc02/exp7/index.php?section=Experiment"], ["/exp10/index.php", "/exp10/index.php?section=Experiment"], ["/exp3/index.php", "/exp3/index.php?section=Experiment"]],
+"eerc03":
+[["/labs/eerc03/exp7/index.php", "/labs/eerc03/exp7/index.php?section=Experiment"], ["/labs/eerc03/exp5/index.php", "/labs/eerc03/exp5/index.php?section=Experiment"], ["/labs/eerc03/exp6/index.php", "/labs/eerc03/exp6/index.php?section=Experiment"], ["/labs/eerc03/exp9/index.php", "/labs/eerc03/exp9/index.php?section=Experiment"], ["/labs/eerc03/exp8/index.php", "/labs/eerc03/exp8/index.php?section=Experiment"], ["/labs/eerc03/exp12/index.php", "/labs/eerc03/exp12/index.php?section=Experiment"], ["/labs/eerc03/exp10/index.php", "/labs/eerc03/exp10/index.php?section=Experiment&wvdpforce=1"], ["/labs/eerc03/exp11/index.php", "/labs/eerc03/exp11/index.php?section=Experiment"], ["/labs/eerc03/exp10/index.php", "/labs/eerc03/exp10/index.php?section=Experiment"], ["/labs/eerc03/exp1/index.php", "/labs/eerc03/exp1/index.php?section=Experiment"], ["/labs/eerc03/exp13/index.php", "/labs/eerc03/exp13/index.php?section=Experiment"]],
+"eerc04":
+[["/exp4/index.php", "/exp4/index.php?section=Experiment"], ["/exp2/index.php", "/exp2/index.php?section=Experiment"], ["/labs/eerc04/exp10/index.php", "/labs/eerc04/exp10/index.php?section=Experiment"], ["/exp1/index.php", "/exp1/index.php?section=Experiment"], ["/labs/eerc04/exp1/index.php", "/labs/eerc04/exp1/index.php?section=Experiment"], ["/exp8/index.php", "/exp8/index.php?section=Experiment"], ["/labs/eerc04/exp3/index.php", "/labs/eerc04/exp3/index.php?section=Experiment"], ["/exp10/index.php", "/exp10/index.php?section=Experiment"], ["/exp7/index.php", "/exp7/index.php?section=Experiment"], ["/labs/eerc04/exp7/index.php", "/labs/eerc04/exp7/index.php?section=Experiment"], ["/exp9/index.php", "/exp9/index.php?section=Experiment"], ["/labs/eerc04/exp8/index.php", "/labs/eerc04/exp8/index.php?section=Experiment"], ["/exp6/index.php", "/exp6/index.php?section=Experiment"], ["/exp5/index.php", "/exp5/index.php?section=Experiment"], ["/labs/eerc04/exp5/index.php", "/labs/eerc04/exp5/index.php?section=Experiment"], ["/exp3/index.php", "/exp3/index.php?section=Experiment"], ["/labs/eerc04/exp9/index.php", "/labs/eerc04/exp9/index.php?section=Experiment"], ["/labs/eerc04/exp4/index.php", "/labs/eerc04/exp4/index.php?section=Experiment"], ["/labs/eerc04/exp6/index.php", "/labs/eerc04/exp6/index.php?section=Experiment"], ["/labs/eerc04/exp2/index.php", "/labs/eerc04/exp2/index.php?section=Experiment"]],
+"eee07":[["/labs/eee07/exp1/index.html", "/labs/eee07/exp1/PendulumForces.swf"]],
+"civil09":
+[["/labs/civil09/exp1/index.html", "/labs/civil09/exp1/PendulumForces.swf"]],
+"ece11":
+[["/labs/ece11/exp1/index.html", "/labs/ece11/exp3/FM.exe"]],
+"cse08":
+[["/labs/cse08/exp1/index.html", "/labs/cse08/exp1/PendulumForces.swf"]],
+"ece10":
+[["/labs/ece10/exp1/index.html", "/labs/ece10/exp1/PendulumForces.swf"]],
+"engg01":
+[["/labs/engg01/exp1/index.html", "/labs/engg01/exp1/PendulumForces.swf"]],
+"ece26":
+[["/labs/ece26/exp1/index.html", "/labs/ece26/exp1/PendulumForces.swf"]],
+"ece04":
+[["/labs/ece04/exp1/index.html", "/labs/ece04/exp1/PendulumForces.swf" ], ["/labs/ece04/exp2/index.html","/labs/ece04/exp2/PendulumForces.swf"]],
+"cse12":
+[["/labs/cse12/exp1/index.html", "/labs/cse12/exp1/PendulumForces.swf"]],
+"chem01":
+[["/labs/chem01/exp1/index.html", "/labs/chem01/exp1/PendulumForces.swf"]],
+"phy19":
+[["/labs/phy19/exp1/index.html", "/labs/phy19/exp1/PendulumForces.swf"]],
+"cse07":
+[["/labs/cse07/exp1/index.html", "/labs/cse07/exp1/PendulumForces.swf"]],
+"cse23":
+[["/labs/cse23/exp5/index.html","/labs/cse23/exp5/PendulumForces.swf" ], ["/labs/cse23/exp9/index.html","/labs/cse23/exp9/PendulumForces.swf" ], ["/labs/cse23/exp4/index.html","/labs/cse23/exp4/PendulumForces.swf" ], ["/labs/cse23/exp1/index.html","/labs/cse23/exp1/PendulumForces.swf" ], ["/labs/cse23/exp2/index.html","/labs/cse23/exp2/PendulumForces.swf" ], ["/labs/cse23/exp3/index.html","/labs/cse23/exp3/PendulumForces.swf" ], ["/labs/cse23/exp7/index.html", "/labs/cse23/exp7/PendulumForces.swf"], ["/labs/cse23/exp10/index.html", "/labs/cse23/exp10/PendulumForces.swf"], ["/labs/cse23/exp8/index.html","/labs/cse23/exp8/PendulumForces.swf" ]],
+"cse24":
+[["/labs/cse24/exp10/index.html","/labs/cse24/exp10/PendulumForces.swf" ], ["/labs/cse24/exp2/index.html","/labs/cse24/exp2/PendulumForces.swf" ], ["/labs/cse24/exp7/index.html","/labs/cse24/exp7/PendulumForces.swf" ], ["/labs/cse24/exp1/index.html","/labs/cse24/exp1/PendulumForces.swf" ], ["/labs/cse24/exp3/index.html","/labs/cse24/exp3/PendulumForces.swf" ], ["/labs/cse24/exp8/index.html","/labs/cse24/exp8/PendulumForces.swf" ], ["/labs/cse24/exp4/index.html","/labs/cse24/exp4/PendulumForces.swf" ], ["/labs/cse24/exp5/index.html","/labs/cse24/exp5/PendulumForces.swf" ], ["/labs/cse24/exp9/index.html", "/labs/cse24/exp9/PendulumForces.swf"], ["/labs/cse24/exp6/index.html","/labs/cse24/exp6/PendulumForces.swf" ]],
+"ccnsb07":
+[["/labs/ccnsb07/exp8/index.html","/labs/ccnsb07/exp8/PendulumForces.swf" ], ["/labs/ccnsb07/exp3/index.html","/labs/ccnsb07/exp3/PendulumForces.swf" ], ["/labs/ccnsb07/exp6/index.html","/labs/ccnsb07/exp6/PendulumForces.swf" ], ["/labs/ccnsb07/exp2/index.html","/labs/ccnsb07/exp2/PendulumForces.swf" ], ["/labs/ccnsb07/exp4/index.html","/labs/ccnsb07/exp4/PendulumForces.swf" ], ["/labs/ccnsb07/exp1/index.html","/labs/ccnsb07/exp1/PendulumForces.swf" ], ["/labs/ccnsb07/exp11/index.html", "/labs/ccnsb07/exp11/PendulumForces.swf"], ["/labs/ccnsb07/exp9/index.html","/labs/ccnsb07/exp9/PendulumForces.swf" ], ["/labs/ccnsb07/exp5/index.html", "/labs/ccnsb07/exp5/PendulumForces.swf"], ["/labs/ccnsb07/exp7/index.html","/labs/ccnsb07/exp7/PendulumForces.swf" ], ["/labs/ccnsb07/exp10/index.html","/labs/ccnsb07/exp10/PendulumForces.swf" ]],
+"civil13":
+[["", "/labs/civil13/experiment2/video/Regression.swf"], ["","/labs/civil13/experiment2/video/RegressionPHP.swf"]],
+"mech01":
+[["","/labs/mech01/exp1/cylinder2.exe"],["", "/labs/mech01/exp10/ldlaw.exe"], ["","/labs/mech01/exp7/cflow.exe"], ["","/labs/mech01/exp2/slab2.exe"],["", "/labs/mech01/exp8/parallelflow.exe"],["", "/labs/mech01/exp4/cylinder1.exe"],["", "/labs/mech01/exp3/sphere2.exe"],["", "/labs/mech01/exp6/sphere1.exe"],["", "/labs/mech01/exp9/cosineflow.exe"],["", "/labs/mech01/exp5/slab1.exe"]],
+"ece18":
+[["","/labs/ece18/exp8/N-Port_Scattering_Parameter.exe"],["", "/labs/ece18/exp5/transient_frequency_domain.exe"],["", "/labs/ece18/exp3/dielectric_measure.exe"],["", "/labs/ece18/exp4/transient_capacitive_load.exe"],["", "/labs/ece18/exp7/double_stub_matching.exe"],["", "/labs/ece18/exp4/transient_inductive_load.exe"],["", "/labs/ece18/exp2/rwcavity.exe"],["", "/labs/ece18/exp6/Smith_intro.exe"],["", "/labs/ece18/exp7/single_stub_matching.exe"],["", "/labs/ece18/exp1/waveguide.exe"],["", "/labs/ece18/exp9/Reflection_Coefficient.exe"],["", "/labs/ece18/exp4/time_domain.exe"]],
+"eerc05":
+[["/labs/eerc05/exp1/index.html","/labs/eerc05/exp1/PendulumForces.swf" ], ["/labs/eerc05/exp1/index.html?", "/labs/eerc05/exp1/animation/fsi.swf" ], ["/labs/eerc05/exp2/index.html","/labs/eerc05/exp2/PendulumForces.swf" ], ["/labs/eerc05/exp3/index.html", "/labs/eerc05/exp3/PendulumForces.swf" ], ["/labs/eerc05/exp4/index.html","/labs/eerc05/exp4/PendulumForces.swf" ], ["","/labs/eerc05/exp5/PendulumForces.swf" ],["/labs/eerc05/exp6/index.html","/labs/eerc05/exp6/PendulumForces.swf" ], ["/labs/eerc05/exp7/index.html","/labs/eerc05/exp7/PendulumForces.swf" ], ["/labs/eerc05/exp8/index.html","/labs/eerc05/exp8/PendulumForces.swf" ], ["/labs/eerc05/exp9/index.html","/labs/eerc05/exp9/PendulumForces.swf"]],
+"ece01":
+[["/labs/ece01/exp1/index.html", "/labs/ece01/exp1/PendulumForces.swf"], ["", "/labs/ece01/exp1/simulation/indexexp1_files/dealply_swf_engine.swf"], ["/labs/ece01/exp10/index.html", "/labs/ece01/exp10/PendulumForces.swf"], ["/labs/ece01/exp11/index.html", "/labs/ece01/exp11/PendulumForces.swf"], ["/labs/ece01/exp2/index.html", "/labs/ece01/exp2/PendulumForces.swf"], ["", "/labs/ece01/exp2/simulation/indexexp2_files/dealply_swf_engine.swf"], ["/labs/ece01/exp3/index.html", "/labs/ece01/exp3/PendulumForces.swf"], ["", "/labs/ece01/exp3/postquiz/postq3_files/dealply_swf_engine.swf"], ["", "/labs/ece01/exp3/simulation/indexexp3_files/dealply_swf_engine.swf"], ["/labs/ece01/exp4/index.html", "/labs/ece01/exp4/PendulumForces.swf"], ["", "/labs/ece01/exp4/simulation/indexexp4_files/dealply_swf_engine.swf"], ["/labs/ece01/exp5/index.html", "/labs/ece01/exp5/PendulumForces.swf"], ["/labs/ece01/exp6/index.html", "/labs/ece01/exp6/PendulumForces.swf"], ["", "/labs/ece01/exp6/simulation/indexexp8_files/dealply_swf_engine.swf"], ["/labs/ece01/exp7/index.html", "/labs/ece01/exp7/PendulumForces.swf"], ["/labs/ece01/exp8/index.html", "/labs/ece01/exp8/PendulumForces.swf"], ["", "/labs/ece01/exp8/simulation/indexexp6_files/dealply_swf_engine.swf"], ["/labs/ece01/exp9/index.html", "/labs/ece01/exp9/PendulumForces.swf"], ["", "/labs/ece01/exp9/simulation/indexexp9_files/dealply_swf_engine.swf"], ["", "/labs/ece01/exp9/theory/index.php_files/dealply_swf_engine.swf"]],
+"cse14":
+[["", "/labs/cse14/EXP_1sep2010/Manual/exp10.swf"], ["", "/labs/cse14/EXP_1sep2010/Manual/exp7.swf"], ["", "/labs/cse14/EXP_1sep2010/Manual/exp8.swf"], ["", "/labs/cse14/EXP_1sep2010/Manual/exp9.swf"], ["", "/labs/cse14/EXP_1sep2010/Manual_exp1/exp1.swf"], ["/labs/cse14/exp1/index.html", "/labs/cse14/EXP_1sep2010/exp1/exp1.swf"], ["", "/labs/cse14/exp1/PendulumForces.swf"], ["", "/labs/cse14/final-build/EXP_1sep2010/Manual/exp10.swf"], ["", "/labs/cse14/final-build/EXP_1sep2010/Manual/exp7.swf"], ["", "/labs/cse14/final-build/EXP_1sep2010/Manual/exp8.swf"], ["", "/labs/cse14/final-build/EXP_1sep2010/Manual/exp9.swf"], ["", "/labs/cse14/final-build/EXP_1sep2010/Manual_exp1/exp1.swf"]],
+"ccnsb05":
+[["/labs/ccnsb05/exp10/index.html", "/exp10/experiment/sample1/exp8.swf"], ["/labs/ccnsb05/exp10/experiment/index.html", "/exp10/manual_exp10.swf"], ["", "/exp4/exp/help.swf"], ["/labs/ccnsb05/exp5/index.html", "/exp5/exp_5.swf"], ["/labs/ccnsb05/exp7/index.html", "/exp7/exp7.swf"], ["/labs/ccnsb05/exp8/experiment/index.html", "/exp8/experiment/videoplayer.swf"], ["/labs/ccnsb05/exp8/experiment/index.html", "/exp8/manual_exp8.swf"], ["/exp9/experiment/index.html", "/exp9/experiment/exp8.swf"], ["/exp9/experiment/index.html", "/exp9/experiment/videoplayer.swf"], ["", "/exp9/manual_exp9.swf"], ["", "/labs/ccnsb05/exp1/PendulumForces.swf"], ["/labs/ccnsb05/exp1/index.html", "/labs/ccnsb05/exp1/final_complete2_oct5.swf"], ["/exp10/experiment/index.html", "/labs/ccnsb05/exp10/PendulumForces.swf"], ["", "/labs/ccnsb05/exp10/experiment/sample1/exp8.swf"], ["/labs/ccnsb05/exp2/index.html", "/labs/ccnsb05/exp10/experiment/sample2/exp8.swf"], ["", "/labs/ccnsb05/exp10/manual_exp10.swf"], ["/labs/ccnsb05/exp2/index.html", "/labs/ccnsb05/exp2/PendulumForces.swf"], ["/labs/ccnsb05/exp2/index.html", "/labs/ccnsb05/exp2/final_complete2_oct5.swf"], ["/labs/ccnsb05/exp2/index.html", "/labs/ccnsb05/exp2/player.swf"], ["/labs/ccnsb05/exp3/index.html", "/labs/ccnsb05/exp3/PendulumForces.swf"], ["/labs/ccnsb05/exp3/jmol/index.php", "/labs/ccnsb05/exp3/jmol/help.swf"], ["/labs/ccnsb05/exp4/exp/index.php", "/labs/ccnsb05/exp4/PendulumForces.swf"], ["/labs/ccnsb05/exp4/exp/index.php", "/labs/ccnsb05/exp4/exp/graph1.swf"], ["/labs/ccnsb05/exp4/exp/index.php", "/labs/ccnsb05/exp4/exp/graph2.swf"], ["/labs/ccnsb05/exp4/exp/index.php", "/labs/ccnsb05/exp4/exp/graph3.swf"], ["/labs/ccnsb05/exp4/exp/index.php", "/labs/ccnsb05/exp4/exp/graph4.swf"], ["/labs/ccnsb05/exp5/index.html", "/labs/ccnsb05/exp4/exp/help.swf"], ["/labs/ccnsb05/exp5/index.html", "/labs/ccnsb05/exp5/PendulumForces.swf"], ["/labs/ccnsb05/exp5/index.html", "/labs/ccnsb05/exp5/exp_5.swf"], ["/labs/ccnsb05/exp6/index.html", "/labs/ccnsb05/exp6/PendulumForces.swf"], ["/labs/ccnsb05/exp6/index.html", "/labs/ccnsb05/exp6/ver14_n2purgeprobresolved.swf"], ["/labs/ccnsb05/exp7/index.html", "/labs/ccnsb05/exp7/PendulumForces.swf"], ["/labs/ccnsb05/exp7/index.html", "/labs/ccnsb05/exp7/exp7.swf"], ["/labs/ccnsb05/exp8/experiment/index.html", "/labs/ccnsb05/exp8/PendulumForces.swf"], ["/labs/ccnsb05/exp8/index.html", "/labs/ccnsb05/exp8/experiment/exp8.swf"], ["/labs/ccnsb05/exp8/index.html", "/labs/ccnsb05/exp8/experiment/videoplayer.swf"], ["", "/labs/ccnsb05/exp8/manual_exp8.swf"], ["/labs/ccnsb05/exp8/index.html", "/labs/ccnsb05/exp8/player.swf"], ["", "/labs/ccnsb05/exp9/PendulumForces.swf"], ["/labs/ccnsb05/exp9/experiment/index.html", "/labs/ccnsb05/exp9/experiment/exp8.swf"], ["/labs/ccnsb05/exp9/experiment/index.html", "/labs/ccnsb05/exp9/experiment/exp8_1.swf"], ["/labs/ccnsb05/exp9/experiment/index.html", "/labs/ccnsb05/exp9/experiment/videoplayer.swf"], ["/labs/ccnsb05/exp9/index.html", "/labs/ccnsb05/exp9/manual_exp9.swf"], ["/labs/ccnsb05/exp9/index.html", "/labs/ccnsb05/exp9/player.swf"]],
+"cse16":
+[["/labs/cse16/exp01/index.html", "/labs/cse16/exp01/PendulumForces.swf"], ["/labs/cse16/exp02/index.html", "/labs/cse16/exp02/PendulumForces.swf"], ["/labs/cse16/exp03/index.html", "/labs/cse16/exp03/PendulumForces.swf"], ["/labs/cse16/exp04/index.html", "/labs/cse16/exp04/PendulumForces.swf"], ["/labs/cse16/exp05/index.html", "/labs/cse16/exp05/PendulumForces.swf"], ["/labs/cse16/exp06/index.html", "/labs/cse16/exp06/PendulumForces.swf"], ["/labs/cse16/exp07/index.html", "/labs/cse16/exp07/PendulumForces.swf"], ["/labs/cse16/exp08/index.html", "/labs/cse16/exp08/PendulumForces.swf"], ["/labs/cse16/exp09/index.html", "/labs/cse16/exp09/PendulumForces.swf"], ["/labs/cse16/exp1/index.html", "/labs/cse16/exp1/PendulumForces.swf"], ["/labs/cse16/exp10/index.html", "/labs/cse16/exp10/PendulumForces.swf"]],
+"ece05":
+[["/labs/ece05/exp1/index.html", "/labs/ece05/exp1/PendulumForces.swf"], ["/labs/ece05/exp2/index.html", "/labs/ece05/exp2/PendulumForces.swf"], ["/labs/ece05/exp3/index.html", "/labs/ece05/exp3/PendulumForces.swf"], ["/labs/ece05/exp4/index.html", "/labs/ece05/exp4/PendulumForces.swf"], ["/labs/ece05/exp5/index.html", "/labs/ece05/exp5/PendulumForces.swf"], ["/labs/ece05/exp6/index.html", "/labs/ece05/exp6/PendulumForces.swf"], ["/labs/ece05/exp7/index.html", "/labs/ece05/exp7/PendulumForces.swf"]],
+"eerc06":
+[["/labs/eerc06/exp1/index.html", "/labs/eerc06/exp1/PendulumForces.swf"], ["/labs/eerc06/exp1/index.html", "/labs/eerc06/exp1/exp1.swf"], ["/labs/eerc06/exp1/index.html", "/labs/eerc06/exp1/simple%20pendulum.swf"], ["/labs/eerc06/exp10/index.html", "/labs/eerc06/exp10/PendulumForces.swf"], ["/labs/eerc06/exp10/index.html", "/labs/eerc06/exp10/tld.swf"], ["/labs/eerc06/exp10/index.html", "/labs/eerc06/exp10/vibration-control1.swf"], ["/labs/eerc06/exp2/index.html", "/labs/eerc06/exp2/PendulumForces.swf"], ["/labs/eerc06/exp2/index.html", "/labs/eerc06/exp2/Single%20Degree%20freedom.swf"], ["/labs/eerc06/exp2/index.html", "/labs/eerc06/exp2/dampedfree.swf"], ["/labs/eerc06/exp2/index.html", "/labs/eerc06/exp2/undamped_freevib.swf"], ["/labs/eerc06/exp3/index.html", "/labs/eerc06/exp3/DampedForced.swf"], ["/labs/eerc06/exp3/index.html", "/labs/eerc06/exp3/PendulumForces.swf"], ["/labs/eerc06/exp3/index.html", "/labs/eerc06/exp3/forced.swf"], ["/labs/eerc06/exp3/index.html", "/labs/eerc06/exp3/undamped_forced.swf"], ["/labs/eerc06/exp4/index.html", "/labs/eerc06/exp4/Impluse.swf"], ["/labs/eerc06/exp4/index.html", "/labs/eerc06/exp4/PendulumForces.swf"], ["/labs/eerc06/exp4/index.html", "/labs/eerc06/exp4/Responce%20spectrum.swf"], ["/labs/eerc06/exp5/index.html", "/labs/eerc06/exp5/PendulumForces.swf"], ["/labs/eerc06/exp5/index.html", "/labs/eerc06/exp5/Responce%20spectrum.swf"], ["/labs/eerc06/exp6/index.html", "/labs/eerc06/exp6/Multidegree.swf"], ["/labs/eerc06/exp6/index.html", "/labs/eerc06/exp6/PendulumForces.swf"], ["/labs/eerc06/exp6/index.html", "/labs/eerc06/exp6/exp5.swf"], ["/labs/eerc06/exp7/index.html", "/labs/eerc06/exp7/PendulumForces.swf"], ["/labs/eerc06/exp7/index.html", "/labs/eerc06/exp7/ShakeTable.swf"], ["/labs/eerc06/exp8/index.html", "/labs/eerc06/exp8/PendulumForces.swf"], ["/labs/eerc06/exp8/index.html", "/labs/eerc06/exp8/torsion6.swf"], ["/labs/eerc06/exp9/index.html", "/labs/eerc06/exp9/Coolingtowers.swf"], ["/labs/eerc06/exp9/index.html", "/labs/eerc06/exp9/PendulumForces.swf"]],
+"cse06":
+[["/labs/cse06/exp1/index.html", "/labs/cse06/exp1/PendulumForces.swf"]],
+"eee10":
+[["/labs/eee10/exp1/index.html", "/labs/eee10/exp1/PendulumForces.swf"], ["/labs/eee10/exp2/index.html", "/labs/eee10/exp2/PendulumForces.swf"], ["/labs/eee10/exp3/index.html", "/labs/eee10/exp3/PendulumForces.swf"], ["/labs/eee10/exp4/index.html", "/labs/eee10/exp4/PendulumForces.swf"], ["/labs/eee10/exp7/index.html", "/labs/eee10/exp7/PendulumForces.swf"], ["/labs/eee10/exp8/index.html", "/labs/eee10/exp8/PendulumForces.swf"], ["/labs/eee10/exp9/index.html", "/labs/eee10/exp9/PendulumForces.swf"]],
+"cse22":
+[["/labs/cse22/exp1/index.html", "/labs/cse22/exp1/PendulumForces.swf"], ["/labs/cse22/exp10/index.html", "/labs/cse22/exp10/PendulumForces.swf"], ["/labs/cse22/exp2/applet/index.html", "/labs/cse22/exp2/PendulumForces.swf"], ["/labs/cse22/exp3/index.html", "/labs/cse22/exp3/PendulumForces.swf"], ["/labs/cse22/exp4/index.html", "/labs/cse22/exp4/PendulumForces.swf"], ["/labs/cse22/exp5/index.html", "/labs/cse22/exp5/PendulumForces.swf"], ["/labs/cse22/exp6/index.html", "/labs/cse22/exp6/PendulumForces.swf"], ["/labs/cse22/exp7/index.html", "/labs/cse22/exp7/PendulumForces.swf"], ["/labs/cse22/exp8/index.html", "/labs/cse22/exp8/PendulumForces.swf"], ["/labs/cse22/exp9/index.html", "/labs/cse22/exp9/PendulumForces.swf"]],
+"ccnsb03":
+[["/labs/ccnsb03/exp1/index.html", "/labs/ccnsb03/exp1/Principle.swf"], ["/labs/ccnsb03/exp1/index.html", "/labs/ccnsb03/exp1/instrument_animation.swf"], ["/labs/ccnsb03/exp1/index.html", "/labs/ccnsb03/exp1/lab1.swf"], ["/labs/ccnsb03/exp1/index.html", "/labs/ccnsb03/exp1/media/1.swf"], ["/labs/ccnsb03/exp1/index.html", "/labs/ccnsb03/exp1/media/Principle.swf"], ["/labs/ccnsb03/exp1/index.html", "/labs/ccnsb03/exp1/media/instrument%20animation.swf"], ["/labs/ccnsb03/exp1/index.html", "/labs/ccnsb03/exp1/media/instrument_animation.swf"], ["/labs/ccnsb03/exp1/index.html", "/labs/ccnsb03/exp1/new1.swf"], ["", "/labs/ccnsb03/exp10/media/newone.swf"], ["/labs/ccnsb03/exp2/index.html", "/labs/ccnsb03/exp2/lab2.swf"], ["/labs/ccnsb03/exp2/index.html", "/labs/ccnsb03/exp2/length.swf"], ["/labs/ccnsb03/exp2/index.html", "/labs/ccnsb03/exp2/media/2.swf"], ["/labs/ccnsb03/exp3/index.html", "/labs/ccnsb03/exp3/concentration.swf"], ["/labs/ccnsb03/exp3/index.html", "/labs/ccnsb03/exp3/lab3.swf"], ["/labs/ccnsb03/exp3/index.html", "/labs/ccnsb03/exp3/media/3.swf"], ["/labs/ccnsb03/exp3/index.html", "/labs/ccnsb03/exp3/media/length.swf"], ["/labs/ccnsb03/exp3/index.html", "/labs/ccnsb03/exp4/media/3.swf"], ["", "/labs/ccnsb03/exp4/media/concentration.swf"], ["", "/labs/ccnsb03/exp4/new4.swf"], ["/labs/ccnsb03/exp5/index.html", "/labs/ccnsb03/exp5/media/5.swf"], ["", "/labs/ccnsb03/exp6/abs_exp6.swf"], ["", "/labs/ccnsb03/exp6/media/6.swf"], ["", "/labs/ccnsb03/exp7/media/7.swf"], ["", "/labs/ccnsb03/exp8/media/8.swf"], ["", "/labs/ccnsb03/exp9/lab9.swf"], ["", "/labs/ccnsb03/exp9/media/9.swf"]],
+"bio15":
+[["/labs/bio15/exp1/index.html", "/labs/bio15/exp1/PendulumForces.swf"], ["/labs/bio15/exp1/index.html", "/labs/bio15/exp1/Simulator/simulator.swf"], ["/labs/bio15/exp10/index.html", "/labs/bio15/exp10/PendulumForces.swf"], ["/labs/bio15/exp10/index.html", "/labs/bio15/exp10/Simulator/anaerobic-fedbatch.swf"], ["/labs/bio15/exp10/index.html", "/labs/bio15/exp10/Simulator/anaerobic.swf"], ["/labs/bio15/exp11/index.html", "/labs/bio15/exp11/PendulumForces.swf"], ["/labs/bio15/exp11/index.html", "/labs/bio15/exp11/Simulator/anaerobic-continuous.swf"], ["/labs/bio15/exp11/index.html", "/labs/bio15/exp11/Simulator/anaerobic-fedbatch.swf"], ["/labs/bio15/exp11/index.html", "/labs/bio15/exp11/Simulator/anaerobic.swf"], ["/labs/bio15/exp12/index.html", "/labs/bio15/exp12/PendulumForces.swf"], ["/labs/bio15/exp12/index.html", "/labs/bio15/exp12/Simulator/simulator.swf"], ["/labs/bio15/exp13/index.html", "/labs/bio15/exp13/PendulumForces.swf"], ["/labs/bio15/exp13/index.html", "/labs/bio15/exp13/Simulator/simulator.swf"], ["/labs/bio15/exp2/index.html", "/labs/bio15/exp2/PendulumForces.swf"], ["/labs/bio15/exp2/index.html", "/labs/bio15/exp2/Simulator/simulator.swf"], ["/labs/bio15/exp3/index.html", "/labs/bio15/exp3/PendulumForces.swf"], ["/labs/bio15/exp3/index.html", "/labs/bio15/exp3/Simulator/simulator.swf"], ["/labs/bio15/exp4/index.html", "/labs/bio15/exp4/PendulumForces.swf"], ["/labs/bio15/exp4/index.html", "/labs/bio15/exp4/Simulator/simulator.swf"], ["/labs/bio15/exp5/index.html", "/labs/bio15/exp5/PendulumForces.swf"], ["/labs/bio15/exp5/index.html", "/labs/bio15/exp5/Simulator/simulator.swf"], ["", "/labs/bio15/exp6/PendulumForces.swf"], ["/labs/bio15/exp6/index.html", "/labs/bio15/exp6/Simulator/continuous-cultivation.swf"], ["/labs/bio15/exp6/index.html", "/labs/bio15/exp6/Simulator/cultivation.swf"], ["/labs/bio15/exp6/index.html", "/labs/bio15/exp6/Simulator/fed-batch.swf"], ["/labs/bio15/exp6/index.html", "/labs/bio15/exp6/Simulator/hairy-root.swf"], ["/labs/bio15/exp7/index.html", "/labs/bio15/exp7/PendulumForces.swf"], ["/labs/bio15/exp7/index.html", "/labs/bio15/exp7/Simulator/animal1.swf"], ["/labs/bio15/exp8/index.html", "/labs/bio15/exp8/PendulumForces.swf"], ["/labs/bio15/exp8/index.html", "/labs/bio15/exp8/Simulator/animal1.swf"], ["/labs/bio15/exp9/index.html", "/labs/bio15/exp9/PendulumForces.swf"], ["/labs/bio15/exp9/index.html", "/labs/bio15/exp9/Simulator/simulator.swf"]],
+"ccnsb01":
+[["/labs/ccnsb01/exp1/index.html", "/labs/ccnsb01/exp1/media/1.swf"], ["/labs/ccnsb01/exp10/index.html", "/labs/ccnsb01/exp10/media/10_a.swf"], ["/labs/ccnsb01/exp10/index.html", "/labs/ccnsb01/exp10/media/10_b.swf"], ["/labs/ccnsb01/exp2/index.html", "/labs/ccnsb01/exp2/flo_exp2.swf"], ["/labs/ccnsb01/exp2/index.html", "/labs/ccnsb01/exp2/media/2_a.swf"], ["/labs/ccnsb01/exp2/index.html", "/labs/ccnsb01/exp2/media/2_b.swf"], ["/labs/ccnsb01/exp3/index.html", "/labs/ccnsb01/exp3/flo_exp3.swf"], ["/labs/ccnsb01/exp3/index.html", "/labs/ccnsb01/exp3/media/3.swf"], ["/labs/ccnsb01/exp4/index.html", "/labs/ccnsb01/exp4/flo_exp4.swf"], ["/labs/ccnsb01/exp4/index.html", "/labs/ccnsb01/exp4/media/4.swf"], ["/labs/ccnsb01/exp5/index.html", "/labs/ccnsb01/exp5/media/5.swf"], ["/labs/ccnsb01/exp6/index.html", "/labs/ccnsb01/exp6/media/6.swf"], ["/labs/ccnsb01/exp7/index.html", "/labs/ccnsb01/exp7/media/7.swf"], ["/labs/ccnsb01/exp8/index.html", "/labs/ccnsb01/exp8/media/8.swf"], ["/labs/ccnsb01/exp9/index.html", "/labs/ccnsb01/exp9/media/9.swf"]],
+"ece08":
+[["/labs/ece08/exp2/index.html", "/home/vlabs/ece08/src/lab/exp2/Application.exe"], ["/labs/ece08/exp4/index.html", "/home/vlabs/ece08/src/lab/exp4/Application.exe"], ["/labs/ece08/exp4/index.html", "/home/vlabs/ece08/src/lab/exp4/demo.exe"], ["/labs/ece08/exp6(b)/index.html", "/home/vlabs/ece08/src/lab/exp6(b)/Application.exe"], ["/labs/ece08/exp6(b)/index.html", "/home/vlabs/ece08/src/lab/exp6(b)/demo.exe"], ["/labs/ece08/exp6(d)/index.html", "/home/vlabs/ece08/src/lab/exp6(d)/demo.exe"], ["", "/home/vlabs/ece9(a)/src/lab/exp8/Application.exe"], ["", "/labs/ece08/exp1%28a%29/demo.exe"], ["", "/labs/ece08/exp1(a)/Application.exe"], ["", "/labs/ece08/exp1(a)/PendulumForces.swf"], ["", "/labs/ece08/exp1(a)/demo.exe"], ["", "/labs/ece08/exp1(b)/PendulumForces.swf"], ["/labs/ece08/exp2/index.html", "/labs/ece08/exp2/PendulumForces.swf"], ["/labs/ece08/exp4/index.html", "/labs/ece08/exp4/PendulumForces.swf"], ["/labs/ece08/exp5/index.html", "/labs/ece08/exp5/PendulumForces.swf"], ["/labs/ece08/exp6(a)/index.html", "/labs/ece08/exp6(a)/PendulumForces.swf"], ["/labs/ece08/exp6(b)/index.html", "/labs/ece08/exp6(b)/PendulumForces.swf"], ["/labs/ece08/exp6(c)/index.html", "/labs/ece08/exp6(c)/PendulumForces.swf"], ["/labs/ece08/exp6(d)/index.html", "/labs/ece08/exp6(d)/PendulumForces.swf"], ["/labs/ece08/exp6(e)/index.html", "/labs/ece08/exp6(e)/PendulumForces.swf"], ["/labs/ece08/exp6(f)/index.html", "/labs/ece08/exp6(f)/PendulumForces.swf"], ["/labs/ece08/exp6(g)/index.html", "/labs/ece08/exp6(g)/PendulumForces.swf"], ["/labs/ece08/exp7(a)/index.html", "/labs/ece08/exp7(a)/PendulumForces.swf"], ["/labs/ece08/exp7(b)/index.html", "/labs/ece08/exp7(b)/PendulumForces.swf"], ["/labs/ece08/exp8/index.html", "/labs/ece08/exp8/PendulumForces.swf"], ["/labs/ece08/exp9(a)/index.html", "/labs/ece08/exp9(a)/PendulumForces.swf"], ["/labs/ece08/exp9(b)/index.html", "/labs/ece08/exp9(b)/PendulumForces.swf"]],
+"mech18":
+[["/labs/mech18/exp1/index.html", "/labs/mech18/FabLab/exp1/woodcutting.swf"], ["", "/labs/mech18/FabLab/exp2/Finishing.swf"], ["", "/labs/mech18/FabLab/exp2/Roughing.swf"], ["", "/labs/mech18/FabLab/exp2/Scripts/expressInstall.swf"], ["", "/labs/mech18/FabLab/exp3/pcb.swf"], ["", "/labs/mech18/FabLab/exp4/interface.swf"], ["", "/labs/mech18/FabLab/exp5/Flexible_Circuits.swf"], ["", "/labs/mech18/FabLab/exp6/Scanning.swf"], ["/labs/mech18/exp1/index.html", "/labs/mech18/exp1/PendulumForces.swf"]],
+"phy14":
+[["/labs/phy14/exp1/index.html", "/labs/phy14/exp1/media/dipole_moment.swf"], ["/labs/phy14/exp1/index.html", "/labs/phy14/exp1/media/hcl.swf"], ["/labs/phy14/exp2/index.html", "/labs/phy14/exp2/media/milikan.swf"], ["/labs/phy14/exp3/index.html", "/labs/phy14/exp3/media/photoelectric.swf"], ["/labs/phy14/exp4/index.html", "/labs/phy14/exp4/media/mediaplayer/player-viral.swf"], ["/labs/phy14/exp4/index.html", "/labs/phy14/exp4/media/polarimeter.swf"], ["/labs/phy14/exp5/index.html", "/labs/phy14/exp5/media/calorimeter.swf"], ["/labs/phy14/exp5/index.html", "/labs/phy14/exp5/media/hcl.swf"], ["/labs/phy14/exp6/index.html", "/labs/phy14/exp6/media/ph_scale.swf"]],
+"eee06":
+[["/labs/eee06/exp1/index.html", "/labs/eee06/exp1/player/player.swf"]],
+"ccnsb06":
+[["/labs/ccnsb06/exp1/index.html", "/labs/ccnsb06/exp1/PendulumForces.swf"], ["", "/labs/ccnsb06/exp10/PendulumForces.swf"], ["/labs/ccnsb06/exp2/index.html", "/labs/ccnsb06/exp2/PendulumForces.swf"], ["/labs/ccnsb06/exp5/index.html", "/labs/ccnsb06/exp5/NMR.swf"], ["/labs/ccnsb06/exp5/index.html", "/labs/ccnsb06/exp5/PendulumForces.swf"], ["/labs/ccnsb06/exp5/index.html", "/labs/ccnsb06/exp5/nmr.swf"], ["/labs/ccnsb06/exp6/index.html", "/labs/ccnsb06/exp6/PendulumForces.swf"], ["", "/labs/ccnsb06/exp6_10/Experiment10.swf"], ["", "/labs/ccnsb06/exp6_10/IR_Powder_exp6.swf"], ["", "/labs/ccnsb06/exp6_10/IR_Sol_exp7.swf"], ["", "/labs/ccnsb06/exp6_10/Mass_Spec_exp8.swf"], ["", "/labs/ccnsb06/exp6_10/Mass_Spec_exp9.swf"], ["", "/labs/ccnsb06/exp6_10/Sample1/IR_Sol.swf"], ["", "/labs/ccnsb06/exp6_10/Sample1/Magnet.swf"], ["", "/labs/ccnsb06/exp6_10/Sample1/Mass_Spec.swf"], ["", "/labs/ccnsb06/exp6_10/Sample2/IR_Sol.swf"], ["", "/labs/ccnsb06/exp6_10/Sample2/Magnet.swf"], ["", "/labs/ccnsb06/exp6_10/Sample2/Mass_Spec.swf"], ["/labs/ccnsb06/exp7/index.html", "/labs/ccnsb06/exp7/PendulumForces.swf"], ["/labs/ccnsb06/exp8/index.html", "/labs/ccnsb06/exp8/PendulumForces.swf"], ["/labs/ccnsb06/exp9/index.html", "/labs/ccnsb06/exp9/PendulumForces.swf"]],
+"ccnsb02":
+[["/labs/ccnsb02/exp13/index.html", "/exp13/exp13.swf"], ["/labs/ccnsb02/exp1/index.html", "/labs/ccnsb02/exp1/sol.swf"], ["/labs/ccnsb02/exp13/index.html", "/labs/ccnsb02/exp13/Analysis.swf"], ["/labs/ccnsb02/exp13/index.html", "/labs/ccnsb02/exp13/Device.swf"], ["/labs/ccnsb02/exp13/index.html", "/labs/ccnsb02/exp13/exp13.swf"], ["/labs/ccnsb02/exp13/index.html", "/labs/ccnsb02/exp13/textLayout_1.0.0.591.swf"], ["/labs/ccnsb02/exp14/index.html", "/labs/ccnsb02/exp14/cmc.swf"], ["/labs/ccnsb02/exp15/index.html", "/labs/ccnsb02/exp15/lab9.swf"], ["/labs/ccnsb02/exp2/index.html", "/labs/ccnsb02/exp2/gel_form.swf"], ["/labs/ccnsb02/exp3/index.html", "/labs/ccnsb02/exp3/soap.swf"], ["/labs/ccnsb02/exp3/index.html", "/labs/ccnsb02/exp3/textLayout_1.0.0.591.swf"], ["/labs/ccnsb02/exp4/index.html", "/labs/ccnsb02/exp4/sur.swf"], ["/labs/ccnsb02/exp5/index.html", "/labs/ccnsb02/exp5/Tyndal.swf"], ["/labs/ccnsb02/exp7/index.html", "/labs/ccnsb02/exp7/Gel_elec.swf"], ["/labs/ccnsb02/exp8/index.html", "/labs/ccnsb02/exp8/ag.swf"]],
+"mech17":
+[["/labs/mech17/exp1/index.html", ""], [ "/labs/mech17/exp4/index.html", ""], [ "/labs/mech17/exp5/index.html", ""], [ "/labs/mech17/exp2/index.html", ""], [ "/labs/mech17/exp3/index.html", ""], [ "/labs/mech17/exp7/index.html", ""], [ "/labs/mech17/exp6/index.html", ""], [ "/labs/mech17/exp8/index.html",""]],
+"mech04":
+[["/labs/mech04/exp2/index.html", ""], [ "/labs/mech04/exp6/index.html", ""], [ "/labs/mech04/exp4/index.html", ""], [ "/labs/mech04/exp3/index.html", ""], [ "/labs/mech04/exp5/index.html", ""], [ "/labs/mech04/exp1/index.html",""]],
+"hss01":
+[["/home/vlabs/hss01/src/lab/09_The%20Visual%20Coding%20Of%20Information%20In%20Short%20Term%20Memory%20(STM)/simulation/exp13/newexp/index.php", ""], [ "/labs/hss01/exp1/index.html", ""], [ "/home/vlabs/hss01/src/lab/10_Color%20Theory/simulation/exp10/index.html",""]],
+"eee12":
+[["/labs/eee12/exp8/index.html", ""], [ "/labs/eee12/exp1/index.html", ""], [ "/labs/eee12/exp6/index.html", ""], [ "/labs/eee12/exp3/index.html", ""], [ "/labs/eee12/exp7/index.html", ""], [ "/labs/eee12/exp4/index.html", ""], [ "/labs/eee12/exp5/index.html", ""], [ "/labs/eee12/exp2/index.html",""]],
+"eee09":
+[["/labs/eee09/exp6/index.html", ""], [ "/labs/eee09/exp7/index.html", ""], [ "/labs/eee09/exp5/index.html", ""], [ "/labs/eee09/exp2/index.html", ""], [ "/labs/eee09/exp4/index.html", ""], [ "/labs/eee09/exp1/index.html", ""], [ "/labs/eee09/exp3/index.html",""]],
+"cse03":
+[["/labs/cse03/exp2/index.php",""]],
+"bio16":
+[["/labs/bio16/exp9/index.html", ""], [ "/labs/bio16/exp4/index.html", ""], [ "/labs/bio16/exp6/index.html", ""], [ "/labs/bio16/exp3/index.html", ""], [ "/labs/bio16/exp5/index.html", ""], [ "/labs/bio16/exp8/index.html", ""], [ "/labs/bio16/exp2/index.html", ""], [ "/labs/bio16/exp7/index.html", ""], [ "/labs/bio16/exp1/index.html", ""], [ "/labs/bio16/exp10/index.html", ""]],
+"emt":
+[["/labs/emt/final_expt/expt3.pdf/index.php", ""], ["/labs/emt/final_expt/expt3.pdf/index.html", ""]],
+"ece19":
+[["/labs/ece19/exp1/index.html",""]],
+"cse09":
+[["/labs/cse09/exp6/index.html", ""], [ "/labs/cse09/exp8/index.html", ""], [ "/labs/cse09/exp9/index.html", ""], [ "/labs/cse09/exp7/index.html",""]],
+"eee05":
+[["/labs/eee05/exp6b/index.html", ""], [ "/labs/eee05/exp7/index.html", ""], [ "/labs/eee05/exp5/index.html", ""], [ "/labs/eee05/exp8/index.html",""]],
+"hss03":
+[["/labs/hss03/exp1/index.html", ""]]
+}
+#+END_SRC
+
+*** TODO Usage Script for Requirement2
+#+BEGIN_SRC 
+import os
+from aws_config import exp_sim_urls_for_labs
+
+files_dir = "/home/madhavi/demo/csv"
+total=0
+Lab=dict()
+
+for key in exp_sim_urls_for_labs.keys():
+	count=0
+	file1=open(files_dir+key+".csv","r")
+	lines=file1.readlines()
+	logs=[]
+	for line in lines:
+		temp1=[]
+		tokens=line.split(",")
+		temp=tokens[5].split(" ");		
+		temp1.append(tokens[0])
+		temp1.append(temp[1]);	
+		logs.append(temp1);		
+        Lab[key]=logs;	
+	ip_urls=Lab[key]
+        sim_exp_list= exp_sim_urls_for_labs[key]
+        for i in range(len(sim_exp_list)):
+	  flag=1
+	  for k in range(len(ip_urls)):
+		for j in range(len(ip_urls)):
+			if( flag==1 and  ip_urls[j][1]==sim_exp_list[i][0] and ip_urls[j][1]!=""):
+				ip_urls[j][1]=""
+				flag=0
+				ip1=ip_urls[j][0]
+			if(flag==0 and  ip_urls[j][1]==sim_exp_list[i][1] and ip_urls[j][1]!=""):
+			  	ip2=ip_urls[j][0]
+				ip_urls[j][1]=""
+				sim_flag1=1	
+				if(ip2==ip1):
+					count+=1
+					flag=1;
+	  
+	print key,"==",count
+	total+=count
+	
+
+print total
+
+#+END_SRC
 ** Building the Service
    + For building the service, python-flask is used.
    Flask is a micro web application framework written in Python.
@@ -306,30 +1378,227 @@ http://10.4.15.133/numberofhits
 
    Note: If you want to display the total number of page visits and usage on vlab.co.in, 
    then add the above code snippet in =index.html= file. 
-*  TODO Test Cases
+* Test Cases
   A test case is a document, which has a set of test data,
   preconditions, expected results and post-conditions, developed for a
   particular test scenario in order to verify compliance against a
   specific requirement.
 ** Objective:
-** Test case ID: TC01
-** Test case name: 
-** Test case description:
-** Test data/Input data:
-** Step description/action
-*** Step 1:
-** Expected Result
-  
+   The objective of this test cases is to test whether the application 
+   is running or not, by sending HTTP GET request and also to test 
+   the return value of the response. 
+** Test Case ID: TC01
+*** Test case name: Test Number of Page Visits
+*** Test case description:
+    In this test case, end point =/numberofhits= is tested, where it 
+    will return the total number of pages visited.
+*** Test data/Input data:
+   The Input data is required to test the test case. 
+   Input data is to verify that a given set of 
+   input to a given function/program produces some expected result. 
+   Input can be valid data or invalid data.
+   Here, the input data will return the user-defined value when
+    =grand_total()= function is called. 
+#+BEGIN_SRC python :tangle analytics/tests/sample_data.py
+#!/usr/bin/python
+def grand_total():
+  dict = {'numberofhits':'1234'};
+  return dict['numberofhits']
+#+END_SRC
+*** Step description/action
+**** Step 1:
+    Import the required packages used for testing.
+#+BEGIN_SRC python :tangle analytics/tests/test_app.py
+import unittest
+from flask.ext.testing import TestCase
+import sample_data
+from app import app
+#+END_SRC
+**** Step 2:
+ A test case is created by sub-classing =unittest.TestCase=.
+#+BEGIN_SRC python :tangle analytics/tests/test_app.py
+class AnalyticsTestCase(unittest.TestCase):
+#+END_SRC
+**** Step 3:
+    The tests are defined with methods whose names start with the
+    letters =test=.  This naming convention informs the test runner
+    about which methods represent tests.  To start testing the
+    functionality of the application, add a new test method to our
+    class, like =test_numberofhits()=.Similarly, other test methods
+    can be added. 
+#+BEGIN_SRC python :tangle analytics/tests/test_app.py 
+    def test_numberofhits(self):
+        json_string = sample_data.grand_total()
+        print json_string
+#+END_SRC
+**** Step 4:
+   Each test is a call to =assertEqual()= function which will test
+   that first and second arguments are equal.  If the values do not
+   compare equal, then test will fail.
+   - The status code of the endpoint =/numberofhits= is equated to =200= 
+   which means =OK= (the request has succeeded). The endpoint returned 
+   with the response.
+   - The data which is returned in the form of response is compared against
+     the Input data.
+#+BEGIN_SRC python :tangle analytics/tests/test_app.py 
+        tester = app.test_client(self)
+        response = tester.get('http://localhost:5000/numberofhits')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(json_string,  response.data)
+
+#+END_SRC            
+**** Step 5:
+    The final block shows a simple way to run the
+    tests. =unittest.main()= provides a command-line interface to the
+    test script.  When run from the command line, the script
+    produces an output.
+#+BEGIN_SRC  
+if __name__ == '__main__':
+    unittest.main()
+#+END_SRC
+
+*** Expected Result
+    - Run =python test_app.py= in terminal.
+    - Check the output, if it was like =Ran 1 test in 0.034s= and =OK=.
+    - If the output is found then test is passed.
+ #+BEGIN_SRC 
+$ python test_app.py
+.
+----------------------------------------------------------------------
+Ran 1 test in 0.034s
+
+OK
+#+END_SRC
+
+** Test Case ID: TC02
+*** Test case name: Test Usage for R1 
+*** Test case description:
+    In this test case, end point =/usage= is tested, where it 
+    will return the total number of usage.
+*** Test data/Input data:
+   The Input data is required to test the test case. 
+   Input data is to verify that a given set of 
+   input to a given function/program produces some expected result. 
+   Input can be valid data or invalid data.
+   Here, the input data will return the user-defined value when
+    =usage_hits()= function is called. 
+#+BEGIN_SRC python :tangle analytics/tests/sample_data.py 
+def usage_hits():
+  dict = {'numberofusagehits':'1234'};
+  return dict['numberofusagehits']
+#+END_SRC
+*** Step description/action
+**** Step 1:
+    Import the required packages used for testing.
+#+BEGIN_SRC  
+import unittest
+from flask.ext.testing import TestCase
+import sample_data
+from app import app
+#+END_SRC
+**** Step 2:
+ A test case is created by sub-classing =unittest.TestCase=.
+#+BEGIN_SRC 
+class AnalyticsTestCase(unittest.TestCase):
+#+END_SRC
+**** Step 3:
+    The tests are defined with methods whose names start with the
+    letters =test=.  This naming convention informs the test runner
+    about which methods represent tests.  To start testing the
+    functionality of the application, add a new test method to our
+    class, like =test_usage()=.Similarly, other test methods
+    can be added. 
+#+BEGIN_SRC python :tangle analytics/tests/test_app.py 
+    def test_usage(self):
+        json_string = sample_data.usage_hits()
+        print json_string
+#+END_SRC
+**** Step 4:
+   Each test is a call to =assertEqual()= function which will test
+   that first and second arguments are equal.  If the values do not
+   compare equal, then test will fail.
+   - The status code of the endpoint =/numberofhits= is equated to =200= 
+   which means =OK= (the request has succeeded). The endpoint returned 
+   with the response.
+   - The data which is returned in the form of response is compared against
+     the Input data.
+#+BEGIN_SRC python :tangle analytics/tests/test_app.py
+        tester = app.test_client(self)
+        response = tester.get('http://localhost:5000/usage')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(json_string,  response.data)
+
+#+END_SRC            
+**** Step 5:
+    The final block shows a simple way to run the
+    tests. =unittest.main()= provides a command-line interface to the
+    test script.  When run from the command line, the script
+    produces an output.
+#+BEGIN_SRC python :tangle analytics/tests/test_app.py
+if __name__ == '__main__':
+    unittest.main()
+#+END_SRC
+
+*** Expected Result
+    - Run =python test_app.py= in terminal.
+    - Check the output, if it was like =Ran 1 test in 0.034s= and =OK=.
+    - If the output is found then test is passed.
+ #+BEGIN_SRC 
+$ python test_app.py
+.
+----------------------------------------------------------------------
+Ran 2 tests in 0.022s
+
+OK
+
+#+END_SRC
+
+** TODO Test Case ID: TC03
 * Releases
 ** Release v1.0.0
-   This release realizes [[Requirement #0]]
-   The release date is [2015-07-08 Wed]
-** Release v1.0.1
    This release realizes [[Requirement #1]].
-   The release date is: [2015-08-31 Mon]
+   The release date is [2015-07-08 Wed]
+*** Work Plan
+****  Prepare the document
+****  Discuss on how to meet the requirement
+          There was a discussion on [2015-06-23 Tue] with the
+          participants as Saurabh, Thirumal, Anon, Zubair, Soumya and
+          the other VLEAD members. The task division and the process to
+          bring up the service was also discussed which is mentioned in
+          the [[Process%20for%20implementation][Process for implementation]] section.
+****  Figure out the various location of the labs
+          There are several locations the labs are situated namely AWS,
+          deploy, separate containers. How to display the combined
+          output of all the labs is yet to be decided.  (This has been
+          done and the decision taken has been mentioned in the [[Present%20scenario%20of%20statistics][Present
+          scenario of statistics]])
+
+****  Build the scripts
+****  Test the scripts.
+****  Updation of page view count in new landing page of vlab.co.in
+
+** Release v1.0.1
+   This release realizes [[Requirement%20#2][Requirement #2]].
+   The release date is: [2015-08-01 Sat]
+*** Work Plan
+****  Update model with usage design [[https://github.com/vlead/analytics/issues/2][#2]]
+****  Write script  to convert logs into csv format [[https://github.com/vlead/analytics/issues/9][#9]]
+****  Write a python script to extract usage form the CSV formatted logs. [[https://github.com/vlead/analytics/issues/8][#8]]
+****  Update model with usage extraction script implementation [[https://github.com/vlead/analytics/issues/12][#12]]
+****  Add a new endpoint to the service [[https://github.com/vlead/analytics/issues/6][#6]]
+****  A display page to show the usage [[https://github.com/vlead/analytics/issues/7][#7]]
+****  Update model with html, ajax and js implementation [[https://github.com/vlead/analytics/issues/13][#13]]
+****  Update model with service implementation [[https://github.com/vlead/analytics/issues/3][#3]]
+****  Write test cases [[https://github.com/vlead/analytics/issues/5][#5]]
+****  Update model with test-cases [[https://github.com/vlead/analytics/issues/4][#4]]
+****  Add usage definitions to pop-up page [[https://github.com/vlead/analytics/issues/14][#14]]
+****  Add usage definitions to pop-up page [[https://github.com/vlead/analytics/issues/14][#14]]
+
 ** Release v1.0.2
    This release realizes [[Requirement #2]].
    The release date is: [2015-09-21 Mon]
-   
-
-
+*** Work Plan
+  Status of work can be found from the following tasks:
+**** https://issues.vlabs.ac.in/issues/101
+**** https://issues.vlabs.ac.in/issues/98
+**** https://issues.vlabs.ac.in/issues/102
