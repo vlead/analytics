@@ -1091,11 +1091,14 @@ from aws_config import exp_sim_urls_for_labs
 files_dir = "/home/madhavi/demo/csv/"
 total=0
 Lab=dict()
-
 for key in exp_sim_urls_for_labs.keys():
 	count=0
+	count1=0
+ 	s1=0
+	c1=0
 	file1=open(files_dir+key+".csv","r")
 	lines=file1.readlines()
+	str1=""
 	logs=[]
 	for line in lines:
 		temp1=[]
@@ -1104,31 +1107,53 @@ for key in exp_sim_urls_for_labs.keys():
 		temp1.append(tokens[0])
 		temp1.append(temp[1])	
 		logs.append(temp1)		
-        Lab[key]=logs	
+        Lab[key]=logs
 	ip_urls=Lab[key]
+
         sim_exp_list= exp_sim_urls_for_labs[key]
         for i in range(len(sim_exp_list)):
-	  flag=1
-	  for k in range(len(ip_urls)):
+	 for k in range(len(ip_urls)):
+		flag=1
+		sim_flag1=0
 		for j in range(len(ip_urls)):
-			if( flag==1 and  ip_urls[j][1]==sim_exp_list[i][0] and ip_urls[j][1]!=""):
+					
+			if( flag==1 and  ip_urls[j][1].strip()==sim_exp_list[i][0].strip() and ip_urls[j][1]!=""):
+				c1+=1					
 				ip_urls[j][1]=""
 				flag=0
 				ip1=ip_urls[j][0]
-			if(flag==0 and  ip_urls[j][1]==sim_exp_list[i][1] and ip_urls[j][1]!=""):
+				
+		       	if(flag==0 and  ip_urls[j][1].strip()==sim_exp_list[i][1].strip() and ip_urls[j][1]!=""):
+				#if(  ip_urls[j][1].strip()==sim_exp_list[i][1].strip() and ip_urls[j][1]!=""):
 			  	ip2=ip_urls[j][0]
 				ip_urls[j][1]=""
-				sim_flag1=1	
+				s1+=1
 				if(ip2==ip1):
 					count+=1
-					flag=1
+					flag=1;
+		       	if(sim_exp_list[i][1].strip()== ip_urls[j][1].strip() and sim_flag1==0 and ip_urls[j][1]!=""):
+			
+				ip_urls[j][1]=""
+				ip3=ip_urls[j][0]
+				sim_flag1=1
+				s1+=1
+		
+		       	if(sim_flag1==1 and ip_urls[j][1].strip()==sim_exp_list[i][0].strip() and ip_urls[j][1]!=""):
+				#if(ip_urls[j][1].strip()==sim_exp_list[i][0].strip() and ip_urls[j][1]!=""):
+				ip4=ip_urls[j][0]
+				ip_urls[j][1]=""
+				c1+=1				
+				if(ip4==ip3):
+					count1+=1
+					sim_flag1=0
+
 	  
-	print key,"==",count
-	total+=count
+		       
 	
+	print count+count1
+	break	
 
 print total
-
 #+END_SRC
 ** Building the Service
    + For building the service, python-flask is used.
