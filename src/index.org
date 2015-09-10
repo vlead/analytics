@@ -207,7 +207,7 @@ if __name__ == "__main__":
 
 
 #+END_SRC
-We use the following script, to satisfy the [[requirement #2]]: 
+We use the following script, to satisfy the [[requirement #1]]: 
 #+BEGIN_SRC python :tangle usage.py 
 import os
 import aws_config 
@@ -1083,7 +1083,7 @@ exp_sim_urls_for_labs = {"cse29":[["/labs/cse29/exp6/index.php", "/labs/cse29/ex
 }
 #+END_SRC
 
-*** TODO Usage Script for Requirement2
+*** TODO Usage Script for Requirement-#2
 #+BEGIN_SRC 
 import os
 from aws_config import exp_sim_urls_for_labs
