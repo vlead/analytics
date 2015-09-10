@@ -1088,7 +1088,7 @@ exp_sim_urls_for_labs = {"cse29":[["/labs/cse29/exp6/index.php", "/labs/cse29/ex
 import os
 from aws_config import exp_sim_urls_for_labs
 
-files_dir = "/home/madhavi/demo/csv"
+files_dir = "/home/madhavi/demo/csv/"
 total=0
 Lab=dict()
 
