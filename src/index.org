@@ -1100,11 +1100,11 @@ for key in exp_sim_urls_for_labs.keys():
 	for line in lines:
 		temp1=[]
 		tokens=line.split(",")
-		temp=tokens[5].split(" ");		
+		temp=tokens[5].split(" ")		
 		temp1.append(tokens[0])
-		temp1.append(temp[1]);	
-		logs.append(temp1);		
-        Lab[key]=logs;	
+		temp1.append(temp[1])	
+		logs.append(temp1)		
+        Lab[key]=logs	
 	ip_urls=Lab[key]
         sim_exp_list= exp_sim_urls_for_labs[key]
         for i in range(len(sim_exp_list)):
@@ -1121,7 +1121,7 @@ for key in exp_sim_urls_for_labs.keys():
 				sim_flag1=1	
 				if(ip2==ip1):
 					count+=1
-					flag=1;
+					flag=1
 	  
 	print key,"==",count
 	total+=count
