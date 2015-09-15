@@ -1086,74 +1086,65 @@ exp_sim_urls_for_labs = {"cse29":[["/labs/cse29/exp6/index.php", "/labs/cse29/ex
 *** TODO Usage Script for Requirement-#2
 #+BEGIN_SRC 
 import os
+from deploy_config import exp_sim_urls_for_labs 
 from aws_config import exp_sim_urls_for_labs
+import deploy_config
+import aws_config 
+import config
 
-files_dir = "/home/madhavi/demo/csv/"
-total=0
-Lab=dict()
-for key in exp_sim_urls_for_labs.keys():
-	count=0
-	count1=0
- 	s1=0
-	c1=0
-	file1=open(files_dir+key+".csv","r")
-	lines=file1.readlines()
-	str1=""
-	logs=[]
-	for line in lines:
-		temp1=[]
-		tokens=line.split(",")
-		temp=tokens[5].split(" ")		
-		temp1.append(tokens[0])
-		temp1.append(temp[1])	
-		logs.append(temp1)		
-        Lab[key]=logs
-	ip_urls=Lab[key]
+def usage(csv_path, exp_sim_urls_for_labs):
+    tot_count =0
+    files_dir = csv_path
+    for key in exp_sim_urls_for_labs.keys():
+        lab_csv_file=open(files_dir+key+".csv","r")
+	lines = lab_csv_file.readlines()
+        exp_sim_list= exp_sim_urls_for_labs[key]
+        log = []
+        cont_ip = "ip1"
+        sim_ip = "ip2"
+        cont_flag=0
+        sim_flag=0
+        count = 0
+  	for line in lines:
+            columns=line.split(",")
+            get_column=columns[5].split(" ")
+            ip_urls =[]
+            ip_urls.append(columns[0])
+            ip_urls.append(get_column[1])	
+            for i in range(len(exp_sim_list)):
+                if (exp_sim_list[i][0] == ip_urls[1]):
+                   # print ip_urls
+                    log.append(ip_urls)
+                    cont_ip = ip_urls[0]
+                    cont_flag = 1
+              
+                if(exp_sim_list[i][1] == ip_urls[1]):
+                    print ip_urls
+                    log.append(ip_urls)
+                    sim_ip = ip_urls[0]
+                    sim_flag = 1
+                if(cont_flag==1 and sim_flag==1 and cont_ip == sim_ip):
+                   cont_flag=0
+                   sim_flag=0
+                   count += 1
+                   print count
 
-        sim_exp_list= exp_sim_urls_for_labs[key]
-        for i in range(len(sim_exp_list)):
-	 for k in range(len(ip_urls)):
-		flag=1
-		sim_flag1=0
-		for j in range(len(ip_urls)):
-					
-			if( flag==1 and  ip_urls[j][1].strip()==sim_exp_list[i][0].strip() and ip_urls[j][1]!=""):
-				c1+=1					
-				ip_urls[j][1]=""
-				flag=0
-				ip1=ip_urls[j][0]
-				
-		       	if(flag==0 and  ip_urls[j][1].strip()==sim_exp_list[i][1].strip() and ip_urls[j][1]!=""):
-				#if(  ip_urls[j][1].strip()==sim_exp_list[i][1].strip() and ip_urls[j][1]!=""):
-			  	ip2=ip_urls[j][0]
-				ip_urls[j][1]=""
-				s1+=1
-				if(ip2==ip1):
-					count+=1
-					flag=1;
-		       	if(sim_exp_list[i][1].strip()== ip_urls[j][1].strip() and sim_flag1==0 and ip_urls[j][1]!=""):
-			
-				ip_urls[j][1]=""
-				ip3=ip_urls[j][0]
-				sim_flag1=1
-				s1+=1
+        tot_count += count
+    return tot_count
 		
-		       	if(sim_flag1==1 and ip_urls[j][1].strip()==sim_exp_list[i][0].strip() and ip_urls[j][1]!=""):
-				#if(ip_urls[j][1].strip()==sim_exp_list[i][0].strip() and ip_urls[j][1]!=""):
-				ip4=ip_urls[j][0]
-				ip_urls[j][1]=""
-				c1+=1				
-				if(ip4==ip3):
-					count1+=1
-					sim_flag1=0
+def total_usage():    
+    aws_usage = usage(config.aws_csv_path, aws_config.exp_sim_urls_for_labs)
+    deploy_usage = usage(config.deploy_csv_path, deploy_config.exp_sim_urls_for_labs)
+    print aws_usage
+    print deploy_usage
+    tot_usage = aws_usage + deploy_usage 
+    print "Usage = %s" % tot_usage
+    return str(tot_usage)
 
-	  
-		       
-	
-	print count+count1
-	break	
 
-print total
+if __name__ == '__main__':
+    usage = total_usage()
+    print "Usage = %s" % usage
 #+END_SRC
 ** Building the Service
    + For building the service, python-flask is used.
