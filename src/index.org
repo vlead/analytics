@@ -1262,7 +1262,7 @@ if __name__ == '__main__':
     The object called application in that file is then used as application.
 #+BEGIN_SRC  python :tangle analytics/analytics.wsgi
 import sys
-sys.path.insert (0,'/var/www/html/analytics/build/code/analytics/')
+sys.path.insert (0,'/var/www/html/analytics')
 
 import logging, sys
 logging.basicConfig(stream=sys.stderr)
