@@ -282,8 +282,8 @@ if __name__ == "__main__":
 
 The config file:
 #+BEGIN_SRC python :tangle /analytics/config.py
-deploy_csv_path = "/home/madhavi/Documents/analytics/deploy-csv/"
-aws_csv_path = "/home/madhavi/Documents/analytics/aws-csv/"
+deploy_csv_path = "/var/www/html/analytics/deploy-csv/"
+aws_csv_path = "/var/www/html/analytics/aws-csv/"
 #+END_SRC
 The AWS config file:
 #+BEGIN_SRC python :tangle /analytics/aws_config.py 
