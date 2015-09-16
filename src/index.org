@@ -199,9 +199,7 @@ def logs_to_csv(path_for_logs,path_for_csv_files):
                         output = ','.join(shlex.split(line)) + '\n'
                         csv_file.write(output)
 
-
 if __name__ == "__main__":
-                                                                                                                                                     1,1           Top
     logs_to_csv(config.aws_path, config.aws_csv_path)
     logs_to_csv(config.deploy_path, config.deploy_csv_path)
 
