@@ -1083,8 +1083,8 @@ exp_sim_urls_for_labs = {"cse29":[["/labs/cse29/exp6/index.php", "/labs/cse29/ex
 }
 #+END_SRC
 
-*** TODO Usage Script for Requirement-#2
-#+BEGIN_SRC 
+*** Usage Script for Requirement-#2
+#+BEGIN_SRC python :tangle analytics/usage.py
 import os
 from deploy_config import exp_sim_urls_for_labs 
 from aws_config import exp_sim_urls_for_labs
@@ -1487,34 +1487,83 @@ OK
 #+END_SRC
 
 ** Test Case ID: TC02
-*** Test case name: Test Usage for R1 
+*** Test case name: Test Usage for R2 
 *** Test case description:
-    In this test case, end point =/usage= is tested, where it 
-    will return the total number of usage.
+    In this test case, the functionality of =usage()= is tested by known usage,
+    where it will return the total number of usage.
 *** Test data/Input data:
    The Input data is required to test the test case. 
    Input data is to verify that a given set of 
    input to a given function/program produces some expected result. 
    Input can be valid data or invalid data.
    Here, the input data will return the user-defined value when
-    =usage_hits()= function is called. 
+    =aws_usage()= and =deploy_usage()= functions are called. 
 #+BEGIN_SRC python :tangle analytics/tests/sample_data.py 
-def usage_hits():
-  dict = {'numberofusagehits':'1234'};
-  return dict['numberofusagehits']
+def aws_usage():
+  dict = {'aws_usage':2};
+  return dict['aws_usage']
+def deploy_usage():
+  dict = {'deploy_usage': 1};
+  return dict['deploy_usage']
 #+END_SRC
+#+BEGIN_SRC python :tangle analytics/tests/test_aws_config.py
+exp_sim_urls_for_labs = { 
+'cse01-iiith':[['/exp1/index.php','/exp1/index.php?section=Simulation'],
+        ['/exp2/index.php','/exp2/index.php?section=Simulation'],	
+        ['/exp3/index.php','/exp3/index.php?section=Simulation'],
+	['/exp4/index.php','/exp4/index.php?section=Simulation'],
+	['/exp5/index.php','/exp5/index.php?section=Simulation'],
+	['/exp6/index.php','/exp6/index.php?section=Simulation'],
+	['/exp7/index.php','/exp7/index.php?section=Simulation'],
+	['/exp8/index.php','/exp8/index.php?section=Simulation'],
+	['/exp9/index.php','/exp9/index.php?section=Simulation']]}
+
+#+END_SRC
+#+BEGIN_SRC python :tangle analytics/tests/test_deploy_config.py
+exp_sim_urls_for_labs = {
+"cse01":
+[["/labs/cse01/exp9/index.php", "/labs/cse01/exp9/index.php?section=Simulation"], ["/labs/cse01/exp2/index.php", "/labs/cse01/exp2/index.php?section=Simulation"], ["/labs/cse01/exp3/", "/labs/cse01/exp3/?section=Simulation"], ["/labs/cse01/exp5/index.php", "/labs/cse01/exp5/index.php?section=Simulation"], ["/labs/cse01/exp7/index.php", "/labs/cse01/exp7/index.php?section=Simulation"], ["/labs/cse01/exp3/index.php", "/labs/cse01/exp3/index.php?section=Simulation"], ["/labs/cse01/exp7/index.php", "/labs/cse01/exp7/index.php?section=Simulation#"], ["/labs/cse01/exp8/index.php", "/labs/cse01/exp8/index.php?section=Simulation"], ["/labs/cse01/exp1/index.php", "/labs/cse01/exp1/index.php?section=Simulation"], ["/labs/cse01/exp4/index.php", "/labs/cse01/exp4/index.php?section=Simulation"], ["/labs/cse01/exp6/index.php", "/labs/cse01/exp6/index.php?section=Simulation"]]
+}
+#+END_SRC
+#+BEGIN_SRC csv :tangle analytics/tests/test-aws-csv/cse01-iiith.csv
+1.39.63.239,-,-,[01/Jun/2015:01:51:25,+0000],GET /exp1/index.php HTTP/1.1,200,3986,http://cse01-iiith.virtual-labs.ac.in/index.php?section=List%20of%20experiments,Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:38.0) Gecko/20100101 Firefox/38.0
+1.39.63.239,-,-,[01/Jun/2015:01:51:41,+0000],GET /exp1/index.php?section=Simulation HTTP/1.1,200,3288,http://cse01-iiith.virtual-labs.ac.in/exp1/index.php?section=Objective,Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:38.0) Gecko/20100101 Firefox/38.0
+122.163.23.130,-,-,[17/May/2015:17:24:03,+0000],GET /exp2/index.php HTTP/1.1,200,3594,http://cse01-iiith.virtual-labs.ac.in/index.php?section=List%20of%20experiments,Mozilla/5.0 (Windows NT 6.1; rv:38.0) Gecko/20100101 Firefox/38.0
+122.163.23.130,-,-,[17/May/2015:17:24:27,+0000],GET /exp2/index.php?section=Simulation HTTP/1.1,200,3284,http://cse01-iiith.virtual-labs.ac.in/exp2/index.php,Mozilla/5.0 (Windows NT 6.1; rv:38.0) Gecko/20100101 Firefox/38.0
+118.102.191.46,-,-,[18/May/2015:06:13:42,+0000],GET /exp3/index.php HTTP/1.1,200,3325,http://cse01-iiith.virtual-labs.ac.in/index.php?section=List%20of%20experiments,Mozilla/5.0 (Windows NT 6.1; WOW64; rv:37.0) Gecko/20100101 Firefox/37.0
+14.139.196.7,-,-,[19/May/2015:10:03:42,+0000],GET /exp3/index.php?section=Simulation HTTP/1.1,200,3300,http://cse01-iiith.virtual-labs.ac.in/exp3/index.php,Mozilla/5.0 (Windows NT 6.2; WOW64; rv:30.0) Gecko/20100101 Firefox/30.0
+#+END_SRC
+#+BEGIN_SRC csv :tangle analytics/tests/test-deploy-csv/cse01.csv
+10.4.12.236,-,-,[26/Jan/2014:05:37:19,+0530],GET /labs/cse01/exp1/index.php?section=Further%20Readings HTTP/1.1,200,3430,-,Mozilla/5.0 (compatible; AhrefsBot/5.0; +http://ahrefs.com/robot/)
+10.4.8.52,-,-,[08/Feb/2014:18:50:56,+0530],GET /labs/cse01/exp1/index.php?section=Simulation HTTP/1.1,200,3240,http://deploy.virtual-labs.ac.in/labs/cse01/exp1/index.php?section=Further%20Readings,Mozilla/5.0 (Linux; U; Android 4.1.2; en-in; Q500 Build/JZO54K) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30
+10.4.12.236,-,-,[10/Feb/2014:01:01:08,+0530],GET /labs/cse01/exp9/index.php HTTP/1.1,502,520,http://deploy.virtual-labs.ac.in/labs/cse01/index.php?section=List%20of%20experiments,Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1700.107 Safari/537.36
+10.4.12.236,-,-,[12/Feb/2014:20:02:07,+0530],GET /labs/cse01/exp9/index.php?section=Simulation HTTP/1.1,200,3281,http://deploy.virtual-labs.ac.in/labs/cse01/exp9/index.php?section=Theory,Mozilla/5.0 (compatible; MSIE 9.0; Windows Phone OS 7.5; Trident/5.0; IEMobile/9.0; NOKIA; Lumia 800)
+10.4.8.52,-,-,[12/Feb/2014:21:02:14,+0530],GET /labs/cse01/images/simulation.jpg HTTP/1.1,200,2556,http://deploy.virtual-labs.ac.in/labs/cse01/index.php,Mozilla/5.0 (Windows NT 5.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1700.107 Safari/537.36
+10.4.8.52,-,-,[12/Feb/2014:21:02:14,+0530],GET /labs/cse01/css/default.css HTTP/1.1,200,3338,http://deploy.virtual-labs.ac.in/labs/cse01/index.php,Mozilla/5.0 (Windows NT 5.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1700.107 Safari/537.36
+#+END_SRC
+#+BEGIN_SRC python :tangle analytics/tests/config.py
+deploy_csv_path = "/home/madhavi/Documents/analytics/tests/test-deploy-csv/"
+aws_csv_path = "/home/madhavi/Documents/analytics/tests/test-aws-csv/"
+#+END_SRC
+#+BEGIN_SRC python :tangle analytics/tests/__init__.py
+print "test package"
+#+END_SRC
+
 *** Step description/action
 **** Step 1:
     Import the required packages used for testing.
-#+BEGIN_SRC  
+#+BEGIN_SRC python :tangle analytics/tests/test_usage.py
 import unittest
 from flask.ext.testing import TestCase
 import sample_data
-from app import app
+import test_deploy_config 
+import test_aws_config
+import config 
+from analytics import usage
 #+END_SRC
 **** Step 2:
  A test case is created by sub-classing =unittest.TestCase=.
-#+BEGIN_SRC 
+#+BEGIN_SRC python :tangle analytics/tests/test_usage.py
 class AnalyticsTestCase(unittest.TestCase):
 #+END_SRC
 **** Step 3:
@@ -1524,33 +1573,25 @@ class AnalyticsTestCase(unittest.TestCase):
     functionality of the application, add a new test method to our
     class, like =test_usage()=.Similarly, other test methods
     can be added. 
-#+BEGIN_SRC python :tangle analytics/tests/test_app.py 
-    def test_usage(self):
-        json_string = sample_data.usage_hits()
-        print json_string
+#+BEGIN_SRC python :tangle analytics/tests/test_usage.py 
+    def test_usage_r2(self):
+       aws_expected_usage = sample_data.aws_usage()
+       deploy_expected_usage = sample_data.deploy_usage()
+       aws_usage = usage(config.aws_csv_path, aws_config.exp_sim_urls_for_labs)
+       deploy_usage = usage(config.deploy_csv_path, deploy_config.exp_sim_urls_for_labs)
+       self.assertEqual(aws_expected_usage,  aws_usage)
+       self.assertEqual(deploy_expected_usage,  deploy_usage)
 #+END_SRC
 **** Step 4:
    Each test is a call to =assertEqual()= function which will test
    that first and second arguments are equal.  If the values do not
    compare equal, then test will fail.
-   - The status code of the endpoint =/numberofhits= is equated to =200= 
-   which means =OK= (the request has succeeded). The endpoint returned 
-   with the response.
-   - The data which is returned in the form of response is compared against
-     the Input data.
-#+BEGIN_SRC python :tangle analytics/tests/test_app.py
-        tester = app.test_client(self)
-        response = tester.get('http://localhost:5000/usage')
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(json_string,  response.data)
-
-#+END_SRC            
 **** Step 5:
     The final block shows a simple way to run the
     tests. =unittest.main()= provides a command-line interface to the
     test script.  When run from the command line, the script
     produces an output.
-#+BEGIN_SRC python :tangle analytics/tests/test_app.py
+#+BEGIN_SRC python :tangle analytics/tests/test_usage.py
 if __name__ == '__main__':
     unittest.main()
 #+END_SRC
@@ -1560,16 +1601,14 @@ if __name__ == '__main__':
     - Check the output, if it was like =Ran 1 test in 0.034s= and =OK=.
     - If the output is found then test is passed.
  #+BEGIN_SRC 
-$ python test_app.py
 .
 ----------------------------------------------------------------------
-Ran 2 tests in 0.022s
+Ran 1 test in 0.000s
 
 OK
-
 #+END_SRC
 
-** TODO Test Case ID: TC03
+
 * Releases
 ** Release v1.0.0
    This release realizes [[Requirement #1]].
