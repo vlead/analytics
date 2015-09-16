@@ -282,6 +282,9 @@ if __name__ == "__main__":
 
 The config file:
 #+BEGIN_SRC python :tangle /analytics/config.py
+aws_path = '/var/www/html/aws-logs/'
+deploy_path = '/var/www/html/deploy-logs/'
+
 deploy_csv_path = "/var/www/html/analytics/deploy-csv/"
 aws_csv_path = "/var/www/html/analytics/aws-csv/"
 #+END_SRC
