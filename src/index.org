@@ -164,7 +164,7 @@ def grand_total():
 #+END_SRC
 *** Usage Script for Requirement1 
 To convert logs to csv we use the following script:
-#+BEGIN_SRC python :tangle logs_to_csv.py 
+#+BEGIN_SRC python :tangle /analytics/logs_to_csv.py 
 import shlex
 import os
 import csv
@@ -208,7 +208,7 @@ if __name__ == "__main__":
 
 #+END_SRC
 We use the following script, to satisfy the [[requirement #1]]: 
-#+BEGIN_SRC python :tangle usage.py 
+#+BEGIN_SRC 
 import os
 import aws_config 
 import deploy_config 
@@ -251,7 +251,7 @@ content and simulations and calculates the usage only if simulation
 count is less than content count and takes the simulation count as
 usage.
 
-#+BEGIN_SRC python :tangle usage.py 
+#+BEGIN_SRC 
 def search_pattern(get_field, pattern_list):
     ret_val = False
     global ctx_count
@@ -281,19 +281,12 @@ if __name__ == "__main__":
 #+END_SRC
 
 The config file:
-#+BEGIN_SRC python :tangle config.py
-aws_path = '/var/www/html/aws-logs/'
-deploy_path = '/var/www/html/deploy-logs/'
-
-aws_csv_path = '/var/www/html/analytics/aws-csv/'
-deploy_csv_path = '/var/www/html/analytics/deploy-csv/'
-
-aws_filter_path = '/var/www/html/analytics/aws-filter/'
-deploy_filter_path = '/var/www/html/analytics/deploy-filter/'
-
+#+BEGIN_SRC python :tangle /analytics/config.py
+deploy_csv_path = "/home/madhavi/Documents/analytics/deploy-csv/"
+aws_csv_path = "/home/madhavi/Documents/analytics/aws-csv/"
 #+END_SRC
 The AWS config file:
-#+BEGIN_SRC python :tangle aws_config.py 
+#+BEGIN_SRC python :tangle /analytics/aws_config.py 
 exp_sim_urls_for_labs = { 
 'cse01-iiith':[['/exp1/index.php','/exp1/index.php?section=Simulation'],
         ['/exp2/index.php','/exp2/index.php?section=Simulation'],	
@@ -949,7 +942,7 @@ exp_sim_urls_for_labs = {
 
 #+END_SRC
 The Deploy config file:
-#+BEGIN_SRC python :tangle deploy_config.py 
+#+BEGIN_SRC python :tangle /analytics/deploy_config.py 
 exp_sim_urls_for_labs = {"cse29":[["/labs/cse29/exp6/index.php", "/labs/cse29/exp6/index.php?section=Experiment"], ["/labs/cse29/exp5/index.php", "/labs/cse29/exp5/index.php?section=Experiment"], ["/labs/cse29/exp1/index.php", "/labs/cse29/exp1/index.php?section=Experiment"], ["/labs/cse29/exp4/index.php", "/labs/cse29/exp4/index.php?section=Experiment"], ["/labs/cse29/index.php", "/labs/cse29/index.php?section=Experiments"], ["/labs/cse29/index.php", "/labs/cse29/index.php?section=Experiments&wvdpforce=1"], ["/labs/cse29/exp2/index.php", "/labs/cse29/exp2/index.php?section=Experiment"], ["/labs/cse29/exp10/index.php", "/labs/cse29/exp10/index.php?section=Experiment%27%20aND%20BeNChMaRK%282999999%2CMd5%28NoW%28%29%29%29%20AnD%20%271"], ["/labs/cse29/exp3/index.php", "/labs/cse29/exp3/index.php?section=Experiment"], ["/labs/cse29/exp11/index.php", "/labs/cse29/exp11/index.php?section=Experiment"], ["/labs/cse29/exp10/index.php", "/labs/cse29/exp10/index.php?section=Experiment%00%27%7C%7CSLeeP%283%29%26%26%271"], ["/labs/cse29/index.php", "/labs/cse29/index.php?section=Experimentsftp://webmaster:007jr@007jr.com/r57.txt?"], ["/labs/cse29/exp10/index.php", "/labs/cse29/exp10/index.php?section=Experiment%27%26%26sLEEp%283%29%26%26%271"], ["/labs/cse29/exp9/index.php", "/labs/cse29/exp9/index.php?section=Experiment"], ["/labs/cse29/exp10/index.php", "/labs/cse29/exp10/index.php?section=Experiment"], ["/labs/cse29/index.php", "/labs/cse29/index.php?section=Experiments\\videos"], ["/labs/cse29/exp8/index.php", "/labs/cse29/exp8/index.php?section=Experiment"], ["/labs/cse29/exp10/index.php", "/labs/cse29/exp10/index.php?section=Experiment%27%26%26BeNChMaRK%282999999%2CmD5%28NOW%28%29%29%29%26%26%271"], ["/labs/cse29/exp10/index.php", "/labs/cse29/exp10/index.php?section=Experiment%27%20AnD%20sLeep%283%29%20ANd%20%271"], ["/labs/cse29/exp10/index.php", "/labs/cse29/exp10/index.php?section=Experiment'\""], ["/labs/cse29/exp7/index.php", "/labs/cse29/exp7/index.php?section=Experiment"]],
 "cse21":
 [["/exp4/index.php", "/exp4/index.php?section=Experiment"], ["/exp2/index.php", "/exp2/index.php?section=Experiment"], ["/exp1/index.php", "/exp1/index.php?section=Experiment"], ["/labs/cse21/exp4/index.php", "/labs/cse21/exp4/index.php?section=Experiment"], ["http://deploy.virtual-labs.ac.in/labs/cse21/exp1/index.php", "http://deploy.virtual-labs.ac.in/labs/cse21/exp1/index.php?section=Experiment"], ["/labs/cse21/exp6/index.php", "/labs/cse21/exp6/index.php?section=Experiment"], ["/labs/cse21/exp5/index.php", "/labs/cse21/exp5/index.php?section=Experiment"], ["/labs/cse21/exp2/index.php", "/labs/cse21/exp2/index.php?section=Experiment"], ["/exp7/index.php", "/exp7/index.php?section=Experiment"], ["/exp6/index.php", "/exp6/index.php?section=Experiment"], ["/exp5/index.php", "/exp5/index.php?section=Experiment"], ["/labs/cse21/exp1/index.php", "/labs/cse21/exp1/index.php?section=Experiment"], ["/labs/cse21/exp3/index.php", "/labs/cse21/exp3/index.php?section=Experiment"], ["/exp3/index.php", "/exp3/index.php?section=Experiment"], ["/labs/cse21/exp7/index.php", "/labs/cse21/exp7/index.php?section=Experiment"]],
@@ -1082,7 +1075,6 @@ exp_sim_urls_for_labs = {"cse29":[["/labs/cse29/exp6/index.php", "/labs/cse29/ex
 [["/labs/hss03/exp1/index.html", ""]]
 }
 #+END_SRC
-
 *** Usage Script for Requirement-#2
 #+BEGIN_SRC python :tangle analytics/usage.py
 import os
@@ -1607,7 +1599,6 @@ Ran 1 test in 0.000s
 
 OK
 #+END_SRC
-
 
 * Releases
 ** Release v1.0.0
