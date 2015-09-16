@@ -1091,8 +1091,12 @@ def usage(csv_path, exp_sim_urls_for_labs):
     tot_count =0
     files_dir = csv_path
     for key in exp_sim_urls_for_labs.keys():
-        lab_csv_file=open(files_dir+key+".csv","r")
-	lines = lab_csv_file.readlines()
+        try: 
+            lab_csv_file=open(files_dir+key+".csv","r")
+            lines = lab_csv_file.readlines()
+            pass
+        except IOError as e:
+            print "No csv file found for lab =" + key 
         exp_sim_list= exp_sim_urls_for_labs[key]
         log = []
         cont_ip = "ip1"
