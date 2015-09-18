@@ -1256,19 +1256,6 @@ def usagehits():
 if __name__ == '__main__':
     app.run(port=5000, debug=True)
 #+END_SRC
-**** Create a =.wsgi= file
-    To run your application you need a =analytics.wsgi= file. 
-    This file contains the code =mod_wsgi= is executing on startup to get the application object. 
-    The object called application in that file is then used as application.
-#+BEGIN_SRC  python :tangle analytics/analytics.wsgi
-import sys
-sys.path.insert (0,'/var/www/html/analytics')
-
-import logging, sys
-logging.basicConfig(stream=sys.stderr)
-
-from app import app as application
- #+END_SRC
 ** Presenting the data
    For presenting the data, AJAX (Asynchronous JavaScript and
    XML)and HTML(HyperText Markup Language) is used. 
