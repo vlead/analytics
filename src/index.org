@@ -1147,6 +1147,9 @@ if __name__ == '__main__':
     usage = total_usage()
     print "Usage = %s" % usage
 #+END_SRC
+#+BEGIN_SRC python :tangle analytics/__init__.py 
+import usage
+#+END_SRC
 ** Building the Service
    + For building the service, python-flask is used.
    Flask is a micro web application framework written in Python.
@@ -1462,7 +1465,7 @@ import sample_data
 import test_deploy_config 
 import test_aws_config
 import config 
-from analytics import usage
+from usage import usage
 #+END_SRC
 **** Step 2:
  A test case is created by sub-classing =unittest.TestCase=.
