@@ -1484,8 +1484,8 @@ class AnalyticsTestCase(unittest.TestCase):
     def test_usage_r2(self):
        aws_expected_usage = sample_data.aws_usage()
        deploy_expected_usage = sample_data.deploy_usage()
-       aws_usage = usage(config.aws_csv_path, aws_config.exp_sim_urls_for_labs)
-       deploy_usage = usage(config.deploy_csv_path, deploy_config.exp_sim_urls_for_labs)
+       aws_usage = usage(config.aws_csv_path, test_aws_config.exp_sim_urls_for_labs)
+       deploy_usage = usage(config.deploy_csv_path, test_deploy_config.exp_sim_urls_for_labs)
        self.assertEqual(aws_expected_usage,  aws_usage)
        self.assertEqual(deploy_expected_usage,  deploy_usage)
 #+END_SRC
