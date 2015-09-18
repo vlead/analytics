@@ -1452,6 +1452,10 @@ exp_sim_urls_for_labs = {
 deploy_csv_path = "/home/madhavi/Documents/analytics/tests/test-deploy-csv/"
 aws_csv_path = "/home/madhavi/Documents/analytics/tests/test-aws-csv/"
 #+END_SRC
+#+BEGIN_SRC python :tangle analytics/tests/__init__.py
+print "test package"
+#+END_SRC
+
 *** Step description/action
 **** Step 1:
     Import the required packages used for testing.
