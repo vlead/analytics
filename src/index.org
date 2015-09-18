@@ -1449,8 +1449,8 @@ exp_sim_urls_for_labs = {
 10.4.8.52,-,-,[12/Feb/2014:21:02:14,+0530],GET /labs/cse01/css/default.css HTTP/1.1,200,3338,http://deploy.virtual-labs.ac.in/labs/cse01/index.php,Mozilla/5.0 (Windows NT 5.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1700.107 Safari/537.36
 #+END_SRC
 #+BEGIN_SRC python :tangle analytics/tests/config.py
-deploy_csv_path = "/home/madhavi/Documents/analytics/tests/test-deploy-csv/"
-aws_csv_path = "/home/madhavi/Documents/analytics/tests/test-aws-csv/"
+deploy_csv_path = "/var/www/html/analytics/tests/test-deploy-csv/"
+aws_csv_path = "/var/www/html/analytics/tests/test-aws-csv/"
 #+END_SRC
 #+BEGIN_SRC python :tangle analytics/tests/__init__.py
 print "test package"
