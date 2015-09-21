@@ -20,6 +20,12 @@
    hc = hit to an experiment content page.
    hs = hit to the same experiment simulation page.
    hc.ip = hs.ip
+** Requirement #3
+   Lab wise Usage Hits = {hc, hs}
+   where,
+   hc = hit to an experiment content page.
+   hs = hit to the same experiment simulation page.
+   hc.ip = hs.ip
    
 * Design
 ** Design description
@@ -1557,19 +1563,19 @@ OK
 
 ** Release v1.0.2
    This release realizes [[Requirement #2]].
-   The release date is: [2015-09-21 Mon]
+   The release date is: [2015-09-23 Wed]
 *** Work Plan
   Status of work can be found from the following tasks:
 |------+------------------------------------+------------+------------+------------|
 | S.No | Tasks                              | No.of Days | Start Date | End Date   |
 |------+------------------------------------+------------+------------+------------|
-|    1 | Analytics Service Model-Design     |          2 | 18/09/2015 | 21/09/2015 |
+|    1 | Analytics Service Model-Design     |          2 | 21/09/2015 | 23/09/2015 |
 |------+------------------------------------+------------+------------+------------|
-|    2 | Implementation of Requirement - #2 |          3 | 09/09/2015 | 11/09/2015 |
+|    2 | Implementation of Requirement - #2 |          3 | 10/09/2015 | 14/09/2015 |
 |------+------------------------------------+------------+------------+------------|
-|    3 | Testing                            |          1 | 14/09/2015 | 14/09/2015 |
+|    3 | Testing                            |          1 | 15/09/2015 | 15/09/2015 |
 |------+------------------------------------+------------+------------+------------|
-|    4 | Model Review                       |          1 | 15/09/2015 | 15/09/2015 |
+|    4 | Model Review                       |          1 | 16/09/2015 | 16/09/2015 |
 |------+------------------------------------+------------+------------+------------|
-|    5 | Review Changes                     |          1 | 16/09/2015 | 16/09/2015 |
+|    5 | Review Changes                     |          1 | 18/09/2015 | 18/09/2015 |
 |------+------------------------------------+------------+------------+------------|
