@@ -15,7 +15,7 @@
 ** Requirement #1
    Each hit to a  simulation is a Usage Instance.
 ** Requirement #2
-   Hits = {hc, hs}
+   Total Usage Hits = {hc, hs}
    where,
    hc = hit to an experiment content page.
    hs = hit to the same experiment simulation page.
