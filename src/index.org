@@ -83,56 +83,18 @@ def get_file_names(year,location):
             list_of_files.append(location + file)
     return list_of_files
 #+END_SRC
-    There are several awstats files. Some are ".bkp" files and some
-    are ".txt" files. We only require the ".txt" files. The following
-    function gets all the required awstats text files from the
-    specified directory.  From the data collected from AWS, the
-    awstats are lab specific. In AWS, awstats is not configured to
-    collect the analytics for all the labs together. So, all the
-    awstats data files need to be parsed to obtain the page views. The
-    function below looks through all the files and adds the page
-    views. It returns the total page views of labs deployed on AWS
-    infrastructure.
+    The function below looks through only the specified files to obtain the page views.
+    It returns the total page views of labs deployed on AWS and IIIT infrastructure.
 #+BEGIN_SRC python :tangle analytics/extract_data.py
-def extract_aws_data(year,location):
+def extract_data(year,location,data):
     files = get_file_names(year,location);
     dictionary = {}
     dict_tot_pages = {}
     for i in files:
-        f = open(i)
-        for line in f:
-            if re.match(r'^BEGIN_DAY',line):
-                n = int((line.strip('BEGIN_DAY ')).rstrip())
-                x = 0
-                p = 0
-                for page_line in f:
-                    if (x >= n):
-                        break
-                    p += int(page_line.split()[1])
-                    x += 1
-                f.close()
-                dictionary[(i.lstrip('awstats.')).rstrip('.txt')] = p
-                break
-    z = 0
-    for key in dictionary:
-        z += dictionary[key]
-    return z
-#+END_SRC
-    Awstats on the reverse proxy is configured to capture the
-    analytics of all the labs at a single place. These files are named
-    as =awstats'month-year'virtual-labs.ac.in.txt=. The page views
-    from these files are only required. The function below looks
-    through only the specified files to obtain the page views. It
-    returns the total page views of labs deployed on IIIT
-    infrastructure.
-#+BEGIN_SRC python :tangle analytics/extract_data.py
-def extract_iiit_data(year, location):
-    files = get_file_names(year,location);
-    dictionary = {}
-    dict_tot_pages = {}
-    for i in files:
-        if re.search(r'awstats\d+.virtual-labs.ac.in.txt$',i):
-            print i
+        if data!= "NONE":
+            if re.search(data,i):
+                f = open(i)    
+        else:
             f = open(i)
             for line in f:
                 if re.match(r'^BEGIN_DAY',line):
@@ -151,22 +113,38 @@ def extract_iiit_data(year, location):
     for key in dictionary:
         z += dictionary[key]
     return z
+
 #+END_SRC
+    
     The total page views from both the platforms is obtained from the
     function below. The statistics were collected from the year
     2013-2015 hence the years are passed as parameters to the above
-    functions.
+    function.
 #+BEGIN_SRC python :tangle analytics/extract_data.py
-def grand_total():
+def total_visits():
     global __dict_tot_pages__
     year = [ '2013','2014', '2015' ]
-    aws_location = '/root/aws/'
-    base_location = '/root/base/'
+    aws_location = '/var/www/html/analytics/aws/'
+    base_location = '/var/www/html/analytics/base/'
+    aws_data = r'awstats\d+.virtual-labs.ac.in.txt$'
+    deploy_data = "NONE"
     tot_pages=0
     for i in year:
-        tot_pages += extract_iiit_data(i,base_location) + extract_aws_data(i,aws_location)
+        #print i
+        deploy_total = extract_data(i,base_location,deploy_data)
+       # print deploy_total
+        aws_total = extract_data(i,aws_location,aws_data)
+       # print aws_total
+        tot_pages += deploy_total + aws_total
+      
     __dict_tot_pages__["total-pages"]=str(tot_pages)
     return __dict_tot_pages__["total-pages"]
+#+END_SRC
+#+BEGIN_SRC python :tangle analytics/extract_data.py
+if __name__ == '__main__':
+    total = total_visits()
+    print total
+
 #+END_SRC
 *** Usage Script for Requirement1 
 To convert logs to csv we use the following script:
@@ -1220,11 +1198,11 @@ function.
 def pageviewhits():
 #+END_SRC
 
- Call the function =grand_total()= which is defined in
+ Call the function =total_visits()= which is defined in
  =extract_data.py= to get the total number of hits.
   
 #+BEGIN_SRC python :tangle analytics/app.py
-    numberofhits  = grand_total()
+    numberofhits  =total_visits()
 #+END_SRC
 
    The =make_response()= function can be called instead of using a return
