@@ -123,17 +123,17 @@ def extract_data(year,location,data):
 #+BEGIN_SRC python :tangle analytics/extract_data.py
 def total_visits():
     global __dict_tot_pages__
-    year = [ '2013','2014', '2015' ]
+    years = [ '2013','2014', '2015' ]
     aws_location = '/var/www/html/analytics/aws/'
     base_location = '/var/www/html/analytics/base/'
     aws_data = r'awstats\d+.virtual-labs.ac.in.txt$'
     deploy_data = "NONE"
     tot_pages=0
-    for i in year:
+    for year in years:
         #print i
-        deploy_total = extract_data(i,base_location,deploy_data)
+        deploy_total = extract_data(year,base_location,deploy_data)
        # print deploy_total
-        aws_total = extract_data(i,aws_location,aws_data)
+        aws_total = extract_data(year,aws_location,aws_data)
        # print aws_total
         tot_pages += deploy_total + aws_total
       
