@@ -46,7 +46,7 @@
    
    #+CAPTION:  Design diagram
    #+LABEL:  Design diagram
-   [[../diagrams/architecture.png]]
+   [[./diagrams/architecture.png]]
 
    The analytics service as shown in the above diagram has inputs
    coming from two sources. The first source is from the log files
