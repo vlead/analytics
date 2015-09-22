@@ -1060,7 +1060,9 @@ exp_sim_urls_for_labs = {"cse29":[["/labs/cse29/exp6/index.php", "/labs/cse29/ex
 [["/labs/hss03/exp1/index.html", ""]]
 }
 #+END_SRC
-*** Usage Script for Requirement-#2
+*** Usage Script for Requirement2
+The following usage script will satisfy the Requirement2.
+Import the required files and packages used by this script.
 #+BEGIN_SRC python :tangle analytics/usage.py
 import os
 from deploy_config import exp_sim_urls_for_labs 
@@ -1069,54 +1071,57 @@ import deploy_config
 import aws_config 
 import config
 import os.path
- 
-def usage(csv_path, exp_sim_urls_for_labs):
+#+END_SRC
+The following =usage()= will take the csv files as input and processes files against the patterns given in 
+=exp_sim_urls_for_labs= and calculates and returns the =total_count= as usage.
+#+BEGIN_SRC python :tangle analytics/usage.py
+def usage(csv_path, exp_sim_urls_for_labs): # this function will take the csv file path and a dictionary which has experiment and simulation patterns
     tot_count =0
     files_dir = csv_path
-    for key in exp_sim_urls_for_labs.keys():
+    for key in exp_sim_urls_for_labs.keys():# It loops over each key in the given pattern dictionary.Here key is nothing but lab_id.
         try: 
-            lab_csv_file=open(files_dir+key+".csv","r")
-            lines = lab_csv_file.readlines()
+            lab_csv_file=open(files_dir+key+".csv","r")# opens the lab csv file in read mode if available.
+            lines = lab_csv_file.readlines() # once the file is opened it reads all the line one by one.
             pass
         except IOError as e:
-            print "No csv file found for lab =" + key 
+            print "No csv file found for lab =" + key # if there is no csv file available, then it raises this exception
         
-        exp_sim_list= exp_sim_urls_for_labs[key]
-        log = []
+        exp_sim_list= exp_sim_urls_for_labs[key] #It will load the exp and sim patterns of a particular lab.
         cont_ip = "ip1"
         sim_ip = "ip2"
         cont_flag=0
         sim_flag=0
         count = 0
-  	for line in lines:
-            columns=line.split(",")
-            get_column=columns[5].split(" ")
+  	for line in lines: # It loops over each line in the lines.
+            columns=line.split(",") # columns will have all the columns after splitting with comma.
+            get_column=columns[5].split(" ")# columns[5] will have the GET /url column, by splitting with space we get only url.
             ip_urls =[]
-            ip_urls.append(columns[0])
-            ip_urls.append(get_column[1])	
-            for i in range(len(exp_sim_list)):
-                if (exp_sim_list[i][0] == ip_urls[1]):
+            ip_urls.append(columns[0])#column[0] will have the ip address of the user, so we are appending them to ip_urls array.
+            ip_urls.append(get_column[1]) # get_column[1] will have only the url, which is separated from GET.	
+            for i in range(len(exp_sim_list)): # It will loop over the length of exp_sim_list 
+                if (exp_sim_list[i][0] == ip_urls[1]): # exp_sim_list[i][0] will have either the exp_url which is compared with ip_urls[1] which has url from log.
                    # print ip_urls
-                    log.append(ip_urls)
-                    cont_ip = ip_urls[0]
-                    cont_flag = 1
+                    cont_ip = ip_urls[0] # once content url is found, ip of that url is stored in cont_ip and cont_flag is set to 1.
+                    cont_flag = 1 
               
-                if(exp_sim_list[i][1] == ip_urls[1]):
+                if(exp_sim_list[i][1] == ip_urls[1]):# exp_sim_list[i][1] will have either the sim_url which is compared with ip_urls[1] which has url from log.
                     print ip_urls
-                    log.append(ip_urls)
-                    sim_ip = ip_urls[0]
+                    sim_ip = ip_urls[0] # once simulation url is found, ip of that url is stored in sim_ip and sim_flag is set to 1.
                     sim_flag = 1
-                if(cont_flag==1 and sim_flag==1 and cont_ip == sim_ip):
+                if(cont_flag==1 and sim_flag==1 and cont_ip == sim_ip): # once the content and simulation urls are found, it will compare the ip address.
                    cont_flag=0
                    sim_flag=0
-                   count += 1
+                   count += 1 # if cont_ip and sim_ip are equal then it will increment the count.
                    print count
         #print key," = ", count
                 
-        tot_count += count
+        tot_count += count # to give the total usage count, each lab counts are added simultanously.
 
     return tot_count
-		
+#+END_SRC
+the following =total_usage()= will call the =usage()= twice, one for the AWS and other for Deploy labs.
+Adds the usage of AWS and Deploy and returns the total usage.
+#+BEGIN_SRC python :tangle analytics/usage.py		
 def total_usage():    
     aws_usage = usage(config.aws_csv_path, aws_config.exp_sim_urls_for_labs)
     deploy_usage = usage(config.deploy_csv_path, deploy_config.exp_sim_urls_for_labs)
@@ -1125,8 +1130,9 @@ def total_usage():
     tot_usage = aws_usage + deploy_usage 
     print "Usage = %s" % tot_usage
     return str(tot_usage)
-
-
+#+END_SRC
+The main method below will make a call to =total_usage()= to find the total usage of all labs.
+#+BEGIN_SRC python :tangle analytics/usage.py
 if __name__ == '__main__':
     usage = total_usage()
     print "Usage = %s" % usage
