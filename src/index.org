@@ -1284,6 +1284,9 @@ def usagehits():
 if __name__ == '__main__':
     app.run(port=5000, debug=True)
 #+END_SRC
+The following =results.py= is used to make a call to the scripts and get
+the calculated values and store them in a separate file. So that rendering
+of the endpoints will take less time. 
 #+BEGIN_SRC python :tangle analytics/results.py
 #!/usr/bin/python
 from usage import *
