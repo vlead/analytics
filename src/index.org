@@ -1187,8 +1187,7 @@ import usage
 from flask import Flask, render_template, request, jsonify, make_response
 from flask.ext.cache import Cache
 import json
-from extract_data import *
-from usage import *
+from results import *
 #+END_SRC
 
 Create an instance of the class(Flask). The argument is the name of
@@ -1235,11 +1234,12 @@ function.
 def pageviewhits():
 #+END_SRC
 
- Call the function =total_visits()= which is defined in
- =extract_data.py= to get the total number of hits.
-  
+ get the total visits from the =visits.txt= file
 #+BEGIN_SRC python :tangle analytics/app.py
-    numberofhits  =total_visits()
+    files_dir = "/var/www/html/analytics/"
+    result_file = files_dir+"visits.txt"
+    with open(result_file, 'r') as f:
+        visits = f.read()
 #+END_SRC
 
    The =make_response()= function can be called instead of using a return
@@ -1255,7 +1255,7 @@ def pageviewhits():
    setting the =Access-Control-Allow-Credentials= header.
 
 #+BEGIN_SRC python :tangle analytics/app.py
-    response = make_response(numberofhits)
+    response = make_response(visits)
     response.headers['Access-Control-Allow-Origin'] = '*'
     response.headers['Access-Control-Allow-Credentials'] = 'true'
     return response
@@ -1265,8 +1265,11 @@ def pageviewhits():
 @app.route('/usage')
 @app.cache.cached(timeout=360)  
 def usagehits():
-    usage_count  = total_usage()
-    response = make_response(usage_count)
+    files_dir = "/var/www/html/analytics/"
+    result_file = files_dir+"usage.txt"
+    with open(result_file, 'r') as f:
+        usage = f.read()
+    response = make_response(usage)
     response.headers['Access-Control-Allow-Origin'] = '*'
     response.headers['Access-Control-Allow-Credentials'] = 'true'
     return response
@@ -1280,6 +1283,38 @@ def usagehits():
 #+BEGIN_SRC python :tangle analytics/app.py
 if __name__ == '__main__':
     app.run(port=5000, debug=True)
+#+END_SRC
+#+BEGIN_SRC python :tangle analytics/results.py
+#!/usr/bin/python
+from usage import *
+from extract_data import *
+#+END_SRC
+ Call the function =total_visits()= which is defined in
+ =extract_data.py= to get the total number of hits.
+ and write to =visits.txt= file.
+#+BEGIN_SRC python :tangle analytics/results.py
+def tot_visits():
+   result_file = open("visits.txt", 'w')
+   visits = total_visits()
+   result_file.write(visits)
+   return visits
+#+END_SRC
+Call the function =total_usage()= which is defined in
+ =usage.py= to get the total usage.
+ and write to =usage.txt= file.
+
+#+BEGIN_SRC python :tangle analytics/results.py
+def tot_usage():
+   result_file = open("usage.txt", 'w')
+   usage = total_usage()
+   result_file.write(usage)
+   return usage
+#+END_SRC
+#+BEGIN_SRC python :tangle analytics/results.py
+if __name__ == '__main__':
+   tot_visits()
+   tot_usage()
+
 #+END_SRC
 **** Create a =.wsgi= file
     To run your application you need a =analytics.wsgi= file. 
