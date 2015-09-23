@@ -11,7 +11,8 @@
 * Requirements
 ** Requirement #0
    The "visitor page views" count of the labs deployed on Amazon Web Services(AWS) and IIIT infrastructure from both AWS and
-   local deployment must be displayed on [[www.vlabs.ac.in][vlabs web page]]. The "visitor page views" count must be updated every one hour.
+   local deployment must be displayed on vlabs web page. The "visitor page views" count must be updated every one hour.
+   Note: vlabs web page at time of this writing is [[http://www.vlabs.ac.in]]
 ** Requirement #1
    Each hit to a  simulation is a Usage Instance.
 ** Requirement #2
@@ -59,7 +60,7 @@
     A service exposes different endpoints. Currently the endpoint that
     is exposed provides total number of pages, usage. 
 ** Presentation
-    To display the analytics on [[www.vlabs.ac.in]] web page, Ajax call to the service is made from vlabs.ac.in web page
+    To display the analytics on vlabs web page, Ajax call to the service is made from vlabs.ac.in web page
     and required service will return the calculated value in the form of json.
    
 * Implementation
