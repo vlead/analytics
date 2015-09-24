@@ -1,4 +1,4 @@
-#+TITLE:     Building an application for the Analytics of Virtual Labs
+#+TITLE:     Analytics Service Model
 #+AUTHOR:    VLEAD
 #+DATE:      2015-09-24 Thu
 #+PROPERTY: results output
