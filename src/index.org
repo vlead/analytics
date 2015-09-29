@@ -16,22 +16,54 @@
   is [[http://www.vlabs.ac.in][www.vlabs.ac.in]]  
 
 * Requirements
-** Requirement #1 
-   Total Number of Hits, Visits and Usage of all labs.
-   1) If a User visits the lab page, then the server access log
+   1) Get the Total Number of Hits, Visits and Usage of all the virtual-labs.
+      If a User visits the lab page, then the server access log
       records all requests processed by the server.
       - HIT :: Each line in a log file of a particular lab is a single
-             Hit.
-      - Visit :: A Hit to a lab web page either html or php pages except
-               js/css/images/pdf/doc files.
+               Hit.  
+      The following example shows the sample log lines of =cse01= lab
+      with 4 hits.
+       #+BEGIN_EXAMPLE
+       10.4.8.52 - - [08/Feb/2014:18:43:07 +0530] "GET /labs/cse01/index.php HTTP/1.1" 200 3241 "http://virtual-labs.ac.in/labs/cse01/" "Mozilla/5.0 (Linux; U; Android 4.1.2; en-in; Q500 Build/JZO54K) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30"
+       10.4.8.52 - - [08/Feb/2014:18:43:07 +0530] "GET /labs/cse01/css/default.css HTTP/1.1" 200 3338 "http://deploy.virtual-labs.ac.in/labs/cse01/index.php" "Mozilla/5.0 (Linux; U; Android 4.1.2; en-in; Q500 Build/JZO54K) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30"
+       10.4.8.52 - - [26/Jan/2014:05:26:22 +0530] "GET /labs/cse01/exp9/MinimumSpanningTree.swf HTTP/1.1" 304 - "http://web.iiit.ac.in/~sharada.mohanty/content/graph-visualisation-using-flash" "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36"
+       10.4.8.52 - - [26/Jan/2014:05:32:48 +0530] "GET /labs/cse01/exp7/DFS_BFS.swf HTTP/1.1" 200 13567 "http://web.iiit.ac.in/~sharada.mohanty/content/graph-visualisation-using-flash" "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36"
+       #+END_EXAMPLE
+	       
+      - Visit :: A Hit to a lab web page either html or php pages
+                 except js/css/images/pdf/doc files.  
+      The following example shows the sample log lines of =cse01= lab
+      with 2 visits.
+      #+BEGIN_EXAMPLE
+      10.4.8.52 - - [08/Feb/2014:18:43:07 +0530] "GET /labs/cse01/index.php HTTP/1.1" 200 3241 "http://virtual-labs.ac.in/labs/cse01/" "Mozilla/5.0 (Linux; U; Android 4.1.2; en-in; Q500 Build/JZO54K) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30"
+      10.4.8.52 - - [08/Feb/2014:18:51:05 +0530] "GET /labs/cse01/exp1/UnarySystem.html HTTP/1.1" 200 642 "http://deploy.virtual-labs.ac.in/labs/cse01/exp1/index.php?section=Simulation" "Mozilla/5.0 (Linux; U; Android 4.1.2; en-in; Q500 Build/JZO54K) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30"
+      #+END_EXAMPLE
+      *Note* : Observe =GET /labs/cse01/= column to know the visit count.
       - Usage :: A Visit to the experiment of a lab and a Visit to the
-               simulation of the same lab.Considering both visits are
-               from same ip-address.
+                 simulation of the same lab. Considering both visits
+                 are from same <ip-address>, and in 'x' amount of
+                 time.
+      The following example shows the sample log lines of =cse01= lab
+      with one Usage.
+      #+BEGIN_EXAMPLE
+      10.4.12.236 - - [09/Feb/2014:13:46:18 +0530] "GET /labs/cse01/exp2/index.php HTTP/1.1" 200 3591 "http://deploy.virtual-labs.ac.in/labs/cse01/index.php?section=List%20of%20experiments" "Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1700.107 Safari/537.36"
+      10.4.12.236 - - [09/Feb/2014:13:47:55 +0530] "GET /labs/cse01/exp2/index.php?section=Simulation HTTP/1.1" 200 3232 "http://deploy.virtual-labs.ac.in/labs/cse01/exp2/index.php?section=Theory" "Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1700.107 Safari/537.36"
+      #+END_EXAMPLE	
       *Note* : Hits, Visits and Usage is calculated from the logs of
       the labs which are hosted on IIIT-H Infrastrure and AWS. Labs on
       IIIT-H are not at Level-5, hence these labs are running on
       Individual containers.  The labs which are at level-5 are hosted
       on AWS.
-   2) Get the Number of Hits, visits and Usage from the respective
+   2) Similarly, get the Total Number of Hits, Visits and Usage of each virtual-lab.
+   3) Get the Number of Hits, visits and Usage from the respective
       institues for the labs which are hosted across the
       institutes(where ever the labs are hosted other than IIIT-H).
+      *Note* : These numbers will be treated as 'constants' for total usage calculation 
+   4) The labs, which are deployed with only simulations, then a visit
+      to the simulation is itself considered as usage.
+   5) The labs, with-out simulations are not considered as usage. (Although
+      hits and visits will be calculated)
+   6) The number of users accessing a lab from the same <ip-address>
+      (either from the same Institute or College), then the minimum
+      number of the experiment page visits and simulation page visits
+      is considered as usage.
