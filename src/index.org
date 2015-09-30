@@ -48,11 +48,10 @@
      - Usage :: 
               1) A Visit to the experiment of a lab and a Visit to the
                  simulation of the same lab. Considering both visits
-                 are from same <ip-address>, and in 'x' amount of
-                 time.
-              2) If a user visits an experiment page and later the
-                 simulation page on the same day, then it is being
-                 counted as a usage.
+                 are from same <ip-address>.
+              2) If a user visits an experiment page and the
+                 simulation page with minimum of 'x' amount of time
+                 and maximum of 1 day, then it is counted as a usage.
 	      3) The Order in which the user visited the experiment
                  page or simulation page is not considered.(Either the
                  experiment page visited first or simulation page or
