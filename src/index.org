@@ -23,49 +23,54 @@
      - HIT :: Each line in a log file of a particular lab is a single
               Hit.
 	       
-             The following example shows the sample log lines of
-              =cse01= lab with 4 hits.
-              #+BEGIN_EXAMPLE
-	      10.4.8.52 - - [08/Feb/2014:18:43:07 +0530] "GET /labs/cse01/index.php HTTP/1.1" 200 3241 "http://virtual-labs.ac.in/labs/cse01/" "Mozilla/5.0 (Linux; U; Android 4.1.2; en-in; Q500 Build/JZO54K) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30"
-	      10.4.8.52 - - [08/Feb/2014:18:43:07 +0530] "GET /labs/cse01/css/default.css HTTP/1.1" 200 3338 "http://deploy.virtual-labs.ac.in/labs/cse01/index.php" "Mozilla/5.0 (Linux; U; Android 4.1.2; en-in; Q500 Build/JZO54K) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30"
-	      10.4.8.52 - - [26/Jan/2014:05:26:22 +0530] "GET /labs/cse01/exp9/MinimumSpanningTree.swf HTTP/1.1" 304 - "http://web.iiit.ac.in/~sharada.mohanty/content/graph-visualisation-using-flash" "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36"
-	      10.4.8.52 - - [26/Jan/2014:05:32:48 +0530] "GET /labs/cse01/exp7/DFS_BFS.swf HTTP/1.1" 200 13567 "http://web.iiit.ac.in/~sharada.mohanty/content/graph-visualisation-using-flash" "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36"
-	      #+END_EXAMPLE
+      The following example shows the sample log lines of =cse01= lab
+      with 4 hits.
+      #+BEGIN_EXAMPLE
+      10.4.8.52 - - [08/Feb/2014:18:43:07 +0530] "GET /labs/cse01/index.php HTTP/1.1" 200 3241 "http://virtual-labs.ac.in/labs/cse01/" "Mozilla/5.0 (Linux; U; Android 4.1.2; en-in; Q500 Build/JZO54K) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30"
+      10.4.8.52 - - [08/Feb/2014:18:43:07 +0530] "GET /labs/cse01/css/default.css HTTP/1.1" 200 3338 "http://deploy.virtual-labs.ac.in/labs/cse01/index.php" "Mozilla/5.0 (Linux; U; Android 4.1.2; en-in; Q500 Build/JZO54K) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30"
+      10.4.8.52 - - [26/Jan/2014:05:26:22 +0530] "GET /labs/cse01/exp9/MinimumSpanningTree.swf HTTP/1.1" 304 - "http://web.iiit.ac.in/~sharada.mohanty/content/graph-visualisation-using-flash" "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36"
+      10.4.8.52 - - [26/Jan/2014:05:32:48 +0530] "GET /labs/cse01/exp7/DFS_BFS.swf HTTP/1.1" 200 13567 "http://web.iiit.ac.in/~sharada.mohanty/content/graph-visualisation-using-flash" "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36"
+      #+END_EXAMPLE
 	       
      - Visit :: A Hit to a lab web page either html or php pages
-                except js/css/images/pdf/doc files.  
+                except js/css/images/pdf/doc files.
 
-                The following example shows the sample log lines of
-                =cse01= lab with 2 visits.
-                #+BEGIN_EXAMPLE
-		10.4.8.52 - - [08/Feb/2014:18:43:07 +0530] "GET /labs/cse01/index.php HTTP/1.1" 200 3241 "http://virtual-labs.ac.in/labs/cse01/" "Mozilla/5.0 (Linux; U; Android 4.1.2; en-in; Q500 Build/JZO54K) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30"
-		10.4.8.52 - - [08/Feb/2014:18:51:05 +0530] "GET /labs/cse01/exp1/UnarySystem.html HTTP/1.1" 200 642 "http://deploy.virtual-labs.ac.in/labs/cse01/exp1/index.php?section=Simulation" "Mozilla/5.0 (Linux; U; Android 4.1.2; en-in; Q500 Build/JZO54K) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30"
-		#+END_EXAMPLE
+       The following example shows the sample log lines of =cse01= lab
+                with 2 visits.
+      #+BEGIN_EXAMPLE
+      10.4.8.52 - - [08/Feb/2014:18:43:07 +0530] "GET /labs/cse01/index.php HTTP/1.1" 200 3241 "http://virtual-labs.ac.in/labs/cse01/" "Mozilla/5.0 (Linux; U; Android 4.1.2; en-in; Q500 Build/JZO54K) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30"
+      10.4.8.52 - - [08/Feb/2014:18:51:05 +0530] "GET /labs/cse01/exp1/UnarySystem.html HTTP/1.1" 200 642 "http://deploy.virtual-labs.ac.in/labs/cse01/exp1/index.php?section=Simulation" "Mozilla/5.0 (Linux; U; Android 4.1.2; en-in; Q500 Build/JZO54K) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30"
+      #+END_EXAMPLE
 
-                *Note* : Observe =GET /labs/cse01/= column to know the
-                visit count.
+      *Note* : Observe =GET /labs/cse01/= column to know the visit
+                count.
 
      - Usage :: 
-                1) A Visit to the experiment of a lab and a Visit to
-                   the simulation of the same lab. Considering both
-                   visits are from same <ip-address>, and in 'x'
-                   amount of time.
-                2) If a user visits an experiment page and later the
-                   simulation page on the same day, then it is being
-                   counted as a usage.
+              1) A Visit to the experiment of a lab and a Visit to the
+                 simulation of the same lab. Considering both visits
+                 are from same <ip-address>, and in 'x' amount of
+                 time.
+              2) If a user visits an experiment page and later the
+                 simulation page on the same day, then it is being
+                 counted as a usage.
+	      3) The Order in which the user visited the experiment
+                 page or simulation page is not considered.(Either the
+                 experiment page visited first or simulation page or
+                 vice versa).
 
-     The following example shows the sample log lines of =cse01= lab
-     with one Usage.
-     #+BEGIN_EXAMPLE
-     10.4.12.236 - - [09/Feb/2014:13:46:18 +0530] "GET /labs/cse01/exp2/index.php HTTP/1.1" 200 3591 "http://deploy.virtual-labs.ac.in/labs/cse01/index.php?section=List%20of%20experiments" "Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1700.107 Safari/537.36"
-     10.4.12.236 - - [09/Feb/2014:13:47:55 +0530] "GET /labs/cse01/exp2/index.php?section=Simulation HTTP/1.1" 200 3232 "http://deploy.virtual-labs.ac.in/labs/cse01/exp2/index.php?section=Theory" "Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1700.107 Safari/537.36"
-     #+END_EXAMPLE	
+	The following example shows the sample log lines of =cse01=
+                lab with one Usage.
+        #+BEGIN_EXAMPLE
+	10.4.12.236 - - [09/Feb/2014:13:46:18 +0530] "GET /labs/cse01/exp2/index.php HTTP/1.1" 200 3591 "http://deploy.virtual-labs.ac.in/labs/cse01/index.php?section=List%20of%20experiments" "Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1700.107 Safari/537.36"
+	10.4.12.236 - - [09/Feb/2014:13:47:55 +0530] "GET /labs/cse01/exp2/index.php?section=Simulation HTTP/1.1" 200 3232 "http://deploy.virtual-labs.ac.in/labs/cse01/exp2/index.php?section=Theory" "Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1700.107 Safari/537.36"
+        #+END_EXAMPLE	
       
 
-  *Note* : Hits, Visits and Usage is calculated from the logs of the
-  labs which are hosted on IIIT-H Infrastrure and AWS. Labs on IIIT-H
-  are not at Level-5, hence these labs are running on Individual
-  containers.  The labs which are at level-5 are hosted on AWS.
+           *Note* : Hits, Visits and Usage is calculated from the logs of
+           the labs which are hosted on IIIT-H Infrastrure and AWS. Labs on
+	   IIIT-H are not at Level-5, hence these labs are running on
+	   Individual containers.  The labs which are at level-5 are hosted
+	   on AWS.
 
   2) Similarly, get the Total Number of Hits, Visits and Usage of each
      virtual-lab.
@@ -126,6 +131,41 @@
   10) The lab existing with multiple simulations per experiment, In such cases
       visit to any one simulation (among many) after visiting
       experiment will be considered as usage.
+
+  11) The labs with tasks instead of simulations, then each visit
+      to a task is counted as usage.
+      
+      The following example shows the sample log lines of =cse09= lab
+      with simulation as tasks. (Observe the 5th column from the following
+      example). 
+
+      #+BEGIN_EXAMPLE
+      10.4.12.236 - - [09/Feb/2014:16:49:17 +0530] "GET /labs/cse09/exp1/tasks.html HTTP/1.1" 200 429 "http://deploy.virtual-labs.ac.in/labs/cse09/exp1/interaction-frame.html" "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36"
+      #+END_EXAMPLE
+
+  12)  The vlabs landing page should display numbers for: Labs, Experiments, Visits, and Usage.
+
+       *Note*: only "Visits" and "Usage" will be provided by analytics service model.
+
+  13) Give a hyper link to the Usage. On click, it should open a web
+      page with Analytics of all labs.  Mention on this page: "All
+      data shown below is from January 20XX until today".
+
+  14) Analytics of Top 5 labs among all labs should be display
+      first. Rest of the labs analytics will be displayed according to
+      the institutes.
+
+  15) The web page that opens upon clicking Usage will have the following:
+
+      a) Analytics of top 10 labs: 
+         Labs-> Hits -> Visits -> Usage -> Average time spent
+
+      b) Analytics of institutions 
+         Institute -> Most popular lab -> Usage
+
+      c) Analytics by months of the year
+         Month -> Hits -> Visits -> Usage -> Average time spent
+
 * COMMENT Display Analytics on Vlabs landing page     
 #+BEGIN_SRC python :tangle all-total.txt
 cse01 1234 2345 3450
