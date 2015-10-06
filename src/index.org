@@ -16,156 +16,2535 @@
   is [[http://www.vlabs.ac.in][www.vlabs.ac.in]]  
 
 * Requirements
-  1) Get the Total Number of Hits, Visits and Usage of all the
-     virtual-labs.  If a User visits the lab page, then the server
-     access log records all requests processed by the server.
+** Apache combined log format
+   Apache combined log format is as follows:
+   TODO
 
-     - HIT :: Each line in a log file of a particular lab is a single
-              Hit.
-	       
-      The following example shows the sample log lines of =cse01= lab
-      with 4 hits.
-      #+BEGIN_EXAMPLE
-      10.4.8.52 - - [08/Feb/2014:18:43:07 +0530] "GET /labs/cse01/index.php HTTP/1.1" 200 3241 "http://virtual-labs.ac.in/labs/cse01/" "Mozilla/5.0 (Linux; U; Android 4.1.2; en-in; Q500 Build/JZO54K) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30"
-      10.4.8.52 - - [08/Feb/2014:18:43:07 +0530] "GET /labs/cse01/css/default.css HTTP/1.1" 200 3338 "http://deploy.virtual-labs.ac.in/labs/cse01/index.php" "Mozilla/5.0 (Linux; U; Android 4.1.2; en-in; Q500 Build/JZO54K) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30"
-      10.4.8.52 - - [26/Jan/2014:05:26:22 +0530] "GET /labs/cse01/exp9/MinimumSpanningTree.swf HTTP/1.1" 304 - "http://web.iiit.ac.in/~sharada.mohanty/content/graph-visualisation-using-flash" "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36"
-      10.4.8.52 - - [26/Jan/2014:05:32:48 +0530] "GET /labs/cse01/exp7/DFS_BFS.swf HTTP/1.1" 200 13567 "http://web.iiit.ac.in/~sharada.mohanty/content/graph-visualisation-using-flash" "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36"
-      #+END_EXAMPLE
-	       
-     - Visit :: A Hit to a lab web page either html or php pages
-                except js/css/images/pdf/doc files.
+** About bots and non 2** response code
+   TODO
 
+** Example log lines
+   TODO 
+** Hits after removing bots and non 2** response code
+   TODO
+
+** Visits
+*** Following extensions are removed from hit URLs before
+    considering a hit as a visit:
+    - png
+    - jpg
+    - jpeg
+    TODO
+
+** Structure of virtual-labs in terms of theory and simulation
+** Usage
+   Based on above visits we look at visit date, source IP, URL to get
+   theory visit and simulation visit.  Then usage is calculated as
+   follows:
+   TODO
+** Month-wise experiment-wise usage
+   TODO
+** Total usage of lab across all experiments for a given month
+   TODO 
+** Total usage of lab across all months
+   TODO
+** Total usage of all virtual-labs
+   TODO 
+** Adding a new Lab for analytics
+   TODO
+** Stopping analytics for a lab
+   TODO
+** Changing analytics program code / experiment information, etc.
+   TODO
+
+** OLD Hits, Visits and Usage based on apache combined logs
+   1) Get the Total Number of Hits, Visits and Usage of all the
+      virtual-labs.  If a User visits the lab page, then the server
+      access log records all requests processed by the server.
+
+      - HIT :: Each line in a log file of a particular lab is a single
+               Hit.
+	       	
        The following example shows the sample log lines of =cse01= lab
-                with 2 visits.
+       with 4 hits.
+       #+BEGIN_EXAMPLE
+       10.4.8.52 - - [08/Feb/2014:18:43:07 +0530] "GET /labs/cse01/index.php HTTP/1.1" 200 3241 "http://virtual-labs.ac.in/labs/cse01/" "Mozilla/5.0 (Linux; U; Android 4.1.2; en-in; Q500 Build/JZO54K) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30"
+       10.4.8.52 - - [08/Feb/2014:18:43:07 +0530] "GET /labs/cse01/css/default.css HTTP/1.1" 200 3338 "http://deploy.virtual-labs.ac.in/labs/cse01/index.php" "Mozilla/5.0 (Linux; U; Android 4.1.2; en-in; Q500 Build/JZO54K) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30"
+       10.4.8.52 - - [26/Jan/2014:05:26:22 +0530] "GET /labs/cse01/exp9/MinimumSpanningTree.swf HTTP/1.1" 304 - "http://web.iiit.ac.in/~sharada.mohanty/content/graph-visualisation-using-flash" "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36"
+       10.4.8.52 - - [26/Jan/2014:05:32:48 +0530] "GET /labs/cse01/exp7/DFS_BFS.swf HTTP/1.1" 200 13567 "http://web.iiit.ac.in/~sharada.mohanty/content/graph-visualisation-using-flash" "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36"
+       #+END_EXAMPLE
+	       	
+      - Visit :: A Hit to a lab web page either html or php pages
+                 except js/css/images/pdf/doc files.
+
+       	The following example shows the sample log lines of =cse01= lab
+                 with 2 visits.
+       #+BEGIN_EXAMPLE
+       10.4.8.52 - - [08/Feb/2014:18:43:07 +0530] "GET /labs/cse01/index.php HTTP/1.1" 200 3241 "http://virtual-labs.ac.in/labs/cse01/" "Mozilla/5.0 (Linux; U; Android 4.1.2; en-in; Q500 Build/JZO54K) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30"
+       10.4.8.52 - - [08/Feb/2014:18:51:05 +0530] "GET /labs/cse01/exp1/UnarySystem.html HTTP/1.1" 200 642 "http://deploy.virtual-labs.ac.in/labs/cse01/exp1/index.php?section=Simulation" "Mozilla/5.0 (Linux; U; Android 4.1.2; en-in; Q500 Build/JZO54K) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30"
+       #+END_EXAMPLE
+
+       *Note* : Observe =GET /labs/cse01/= column to know the visit
+                 count.
+
+      - Usage :: 
+       	1) A Visit to the experiment of a lab and a Visit to the
+           simulation of the same lab. Considering both visits
+           are from same <ip-address>.
+       	2) If a user visits an experiment page and the
+           simulation page with minimum of 'x' amount of time
+           and maximum of 1 day, then it is counted as a usage.
+       	3) The Order in which the user visited the experiment
+           page or simulation page is not considered.(Either the
+           experiment page visited first or simulation page or
+           vice versa).
+
+	 The following example shows the sample log lines of =cse01=
+                 lab with one Usage.
+         #+BEGIN_EXAMPLE
+	 10.4.12.236 - - [09/Feb/2014:13:46:18 +0530] "GET /labs/cse01/exp2/index.php HTTP/1.1" 200 3591 "http://deploy.virtual-labs.ac.in/labs/cse01/index.php?section=List%20of%20experiments" "Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1700.107 Safari/537.36"
+	 10.4.12.236 - - [09/Feb/2014:13:47:55 +0530] "GET /labs/cse01/exp2/index.php?section=Simulation HTTP/1.1" 200 3232 "http://deploy.virtual-labs.ac.in/labs/cse01/exp2/index.php?section=Theory" "Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1700.107 Safari/537.36"
+         #+END_EXAMPLE	
+       
+
+            *Note* : Hits, Visits and Usage is calculated from the logs of
+            the labs which are hosted on IIIT-H Infrastrure and AWS. Labs on
+	    IIIT-H are not at Level-5, hence these labs are running on
+	    Individual containers.  The labs which are at level-5 are hosted
+	    on AWS.
+
+   2) Similarly, get the Total Number of Hits, Visits and Usage of each
+      virtual-lab.
+   3) Get the Number of Hits, visits and Usage from the respective
+      institues for the labs which are hosted across the
+      institutes(where ever the labs are hosted other than IIIT-H).
+       
+       *Note* : These numbers will be treated as 'constants' for total
+       usage calculation
+
+   4) The labs, which are deployed with only simulations, then a visit
+      to the simulation is itself considered as usage.
+   5) The labs, with-out simulations are not considered as usage. (Although
+      hits and visits will be calculated)
+   6) The number of users accessing a lab from the same <ip-address>
+      (either from the same Institute or College), then the minimum
+      number of the experiment page visits and simulation page visits
+      is considered as usage.
+   7) The log lines with HTTP response code 2** (success) will be
+      considered for calculating the hits, visits and usage.  The log
+      lines with HTTP response code 4** or 5** (error) will be
+      ignored.
+
+      The following example shows the sample log lines of =cse01= lab
+      with response code =2**= (Observe 6th column from the following
+      example). The logs with this response code should be considered
+      for hits, visits and usage calculation.
+      
       #+BEGIN_EXAMPLE
-      10.4.8.52 - - [08/Feb/2014:18:43:07 +0530] "GET /labs/cse01/index.php HTTP/1.1" 200 3241 "http://virtual-labs.ac.in/labs/cse01/" "Mozilla/5.0 (Linux; U; Android 4.1.2; en-in; Q500 Build/JZO54K) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30"
-      10.4.8.52 - - [08/Feb/2014:18:51:05 +0530] "GET /labs/cse01/exp1/UnarySystem.html HTTP/1.1" 200 642 "http://deploy.virtual-labs.ac.in/labs/cse01/exp1/index.php?section=Simulation" "Mozilla/5.0 (Linux; U; Android 4.1.2; en-in; Q500 Build/JZO54K) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30"
+      10.4.8.52 - - [08/Feb/2014:18:43:07 +0530] "GET /labs/cse01/exp1/index.php HTTP/1.1" 200 3241 "http://virtual-labs.ac.in/labs/cse01/" "Mozilla/5.0 (Linux; U; Android 4.1.2; en-in; Q500 Build/JZO54K) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30"
+      10.4.8.52 - - [09/Feb/2014:13:46:18 +0530] "GET /labs/cse01/exp2/index.php HTTP/1.1" 200 3591 "http://deploy.virtual-labs.ac.in/labs/cse01/index.php?section=List%20of%20experiments" "Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1700.107 Safari/537.36"
       #+END_EXAMPLE
+       
+      The following example shows the sample log lines of =cse01= lab
+      with response codes =4**= and =5**= (Observe 6th column from the following
+      example). The logs with this response codes should be ignored.
 
-      *Note* : Observe =GET /labs/cse01/= column to know the visit
-                count.
+      #+BEGIN_EXAMPLE
+      196.12.53.130 - - [04/Mar/2014:14:24:02 +0530] "GET /labs/cse01/index.php HTTP/1.1" 400 400 "-" "Mozilla/5.0 (Windows NT 6.1; rv:12.0) Gecko/20100101 Firefox/12.0"
+      10.4.8.52 - - [24/Jun/2014:16:33:22 +0530] "GET /build/index.php HTTP/1.1" 404 250 "http://deploy.virtual-labs.ac.in/labs/cse01/index.php" "Mozilla/5.0 (Windows NT 6.1; rv:26.0) Gecko/20100101 Firefox/26.0"
+      10.4.8.52 - - [24/Jun/2014:16:33:24 +0530] "GET /build/index.php HTTP/1.1" 502 500 "http://deploy.virtual-labs.ac.in/labs/cse01/index.php" "Mozilla/5.0 (Windows NT 6.1; rv:26.0) Gecko/20100101 Firefox/26.0"
+      10.4.8.52 - - [24/Jun/2014:16:33:29 +0530] "GET /build/index.php HTTP/1.1" 503 414 "http://deploy.virtual-labs.ac.in/labs/cse01/index.php" "Mozilla/5.0 (Windows NT 6.1; rv:26.0) Gecko/20100101 Firefox/26.0"
+      #+END_EXAMPLE
+   8) The log lines with bots (Googlebot, bingbot, etc.) are not 
+      considered for calculation of hits, visits and usage.
 
-     - Usage :: 
-       1) A Visit to the experiment of a lab and a Visit to the
-          simulation of the same lab. Considering both visits
-          are from same <ip-address>.
-       2) If a user visits an experiment page and the
-          simulation page with minimum of 'x' amount of time
-          and maximum of 1 day, then it is counted as a usage.
-       3) The Order in which the user visited the experiment
-          page or simulation page is not considered.(Either the
-          experiment page visited first or simulation page or
-          vice versa).
+      The following example shows the sample log lines of =cse01= lab
+      with Googlebot and bingbot. (Observe the last column from the following
+      example). The logs with this bots to be ignored.
 
-	The following example shows the sample log lines of =cse01=
-                lab with one Usage.
-        #+BEGIN_EXAMPLE
-	10.4.12.236 - - [09/Feb/2014:13:46:18 +0530] "GET /labs/cse01/exp2/index.php HTTP/1.1" 200 3591 "http://deploy.virtual-labs.ac.in/labs/cse01/index.php?section=List%20of%20experiments" "Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1700.107 Safari/537.36"
-	10.4.12.236 - - [09/Feb/2014:13:47:55 +0530] "GET /labs/cse01/exp2/index.php?section=Simulation HTTP/1.1" 200 3232 "http://deploy.virtual-labs.ac.in/labs/cse01/exp2/index.php?section=Theory" "Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1700.107 Safari/537.36"
-        #+END_EXAMPLE	
-      
+      #+BEGIN_EXAMPLE
+      66.249.79.3 - - [02/Jan/2015:20:16:46 +0530] "GET /labs/cse01/exp8/index.php?section=Simulation HTTP/1.1" 200 3277 "-" "Mozilla/5.0 (iPhone; CPU iPhone OS 6_0 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/6.0 Mobile/10A5376e Safari/8536.25 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"
+      10.4.8.52 - - [03/Jan/2015:17:55:42 +0530] "GET /labs/cse01/exp8/index.php?section=Simulation HTTP/1.1" 200 3277 "-" "Mozilla/5.0 (compatible; bingbot/2.0; +http://www.bing.com/bingbot.htm)"
+      #+END_EXAMPLE
+   9) The process to be defined on how to maintain analytics when:
+      - A New lab gets Deployed/Hosted.
+      - An Existing lab gets Deleted/Removed.
+   10) The lab existing with multiple simulations per experiment, In such cases
+       visit to any one simulation (among many) after visiting
+       experiment will be considered as usage.
 
-           *Note* : Hits, Visits and Usage is calculated from the logs of
-           the labs which are hosted on IIIT-H Infrastrure and AWS. Labs on
-	   IIIT-H are not at Level-5, hence these labs are running on
-	   Individual containers.  The labs which are at level-5 are hosted
-	   on AWS.
+   11) The labs with tasks instead of simulations, then each visit
+       to a task is counted as usage.
+       
+       The following example shows the sample log lines of =cse09= lab
+       with simulation as tasks. (Observe the 5th column from the following
+       example). 
 
-  2) Similarly, get the Total Number of Hits, Visits and Usage of each
-     virtual-lab.
-  3) Get the Number of Hits, visits and Usage from the respective
-     institues for the labs which are hosted across the
-     institutes(where ever the labs are hosted other than IIIT-H).
-      
-      *Note* : These numbers will be treated as 'constants' for total
-      usage calculation
+       #+BEGIN_EXAMPLE
+       10.4.12.236 - - [09/Feb/2014:16:49:17 +0530] "GET /labs/cse09/exp1/tasks.html HTTP/1.1" 200 429 "http://deploy.virtual-labs.ac.in/labs/cse09/exp1/interaction-frame.html" "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36"
+       #+END_EXAMPLE
 
-  4) The labs, which are deployed with only simulations, then a visit
-     to the simulation is itself considered as usage.
-  5) The labs, with-out simulations are not considered as usage. (Although
-     hits and visits will be calculated)
-  6) The number of users accessing a lab from the same <ip-address>
-     (either from the same Institute or College), then the minimum
-     number of the experiment page visits and simulation page visits
-     is considered as usage.
-  7) The log lines with HTTP response code 2** (success) will be
-     considered for calculating the hits, visits and usage.  The log
-     lines with HTTP response code 4** or 5** (error) will be
-     ignored.
+   12)  The vlabs landing page should display numbers for: Labs, Experiments, Visits, and Usage.
 
-     The following example shows the sample log lines of =cse01= lab
-     with response code =2**= (Observe 6th column from the following
-     example). The logs with this response code should be considered
-     for hits, visits and usage calculation.
+       	*Note*: only "Visits" and "Usage" will be provided by analytics service model.
+
+   13) Give a hyper link to the Usage. On click, it should open a web
+       page with Analytics of all labs.  Mention on this page: "All
+       data shown below is from January 20XX until today".
+
+   14) Analytics of Top 5 labs among all labs should be display
+       first. Rest of the labs analytics will be displayed according to
+       the institutes.
+
+   15) The web page that opens upon clicking Usage will have the following:
+
+       a) Analytics of top 10 labs: 
+          Labs-> Hits -> Visits -> Usage -> Average time spent
+
+       b) Analytics of institutions 
+          Institute -> Most popular lab -> Usage
+
+       c) Analytics by months of the year
+          Month -> Hits -> Visits -> Usage -> Average time spent
+
+* Base2 http logs
+** Apache configuration on base2 http container
+   All labs hosted on base machines were reverse-proxied
+   (Proxy-passed) via http (CTID: 12159) container on base2
+   (10.4.12.22) machine.  Thus, all http logs of labs hosted on IIIT
+   infrastructure are available on http container.
+
+   apache configuration on http container is mainly done using
+   following config files:
+   - /etc/httpd/conf/httpd.conf :: This is default apache
+	configuration file without having anything specific to a lab. 
+   - /etc/httpd/conf.d/virtualhosts.conf :: This file has many lab
+	virtualhosts with names such as 
+     - cse04-iiith.virtual-labs.ac.in
+     - eerc05-iiith.virtual-labs.ac.in
+     - mech01-iitg.virtual-labs.ac.in
+     - eee06-dei.virtual-labs.ac.in 
+     All the logs for all these virtualhosts go into one single log
+     file with name 'deploy.virtual-labs.ac.in-access_log' in
+     combined format.
+   - /etc/httpd/conf.d/vlabs-virtual-hosts.conf :: This file has many
+	different virtual-hosts.  Some of them are:
+     - vlabs.ac.in :: Main virtual-labs website being redirected to
+		      vlab.co.in
+     - mail.vlabs.ac.in, uir.vlabs.ac.in :: Obsolete.  Perhaps
+	  these should have been removed.
+     - deploy1.vlabs.ac.in :: Purpose is not clear.
+     - http.vlabs.ac.in :: For http container
+     - gateone.cse09.vlabs.ac.in :: For Linux lab
+     - alipi.iiit.ac.in :: For alipi project
+     - cse12.vlabs.ac.in :: For cse12 lab.  The logs in this case
+	  go directly to cse12.vlabs.ac.in-access_log in combined
+	  format
+     - civil11.vlabs.ac.in :: For civil11 lab.  The logs in this
+	  case go directly to civil11.vlabs.ac.in-access_log in
+	  combined format
+     - nitk.vlabs.ac.in :: Perhaps for all nitk labs.  The logs in
+	  this case go directly to nitk.vlabs.ac.in-access_log in
+	  combined format.
+     - www.vlabs.ca.in :: Interesting configuration such as:
+       #+BEGIN_EXAMPLE
+       # Pass Proxy for cse28
+       <Location /cse28/>
+	   ProxyPass http://cse08.vlabs.ac.in/ant/ant/
+       </Location>
+       #+END_EXAMPLE
+     - cpl.vlabs.ac.in, hybrid-electronic.vlabs.ac.in, etc. :: Many
+	  such lab virtual-hosts with lab names.  The logs go to
+	  cpl.virtual-labs.ac.in-access_log or
+	  hybrid-electronic.virtual-labs.ac.in-access_log etc. in
+	  combined format.  The list of such virtual-hosts is:
+
+	  1. cpl.virtual-labs.ac.in
+	  2. hybrid-electronic.virtual-labs.ac.in
+	  3. virtual-english.virtual-labs.ac.in
+	  4. cdpeslab.virtual-labs.ac.in
+	  5. mmlaboratory.virtual-labs.ac.in
+	  6. industrial-automation.virtual-labs.ac.in
+	  7. nlp.virtual-labs.ac.in
+	  8. dld.virtual-labs.ac.in
+	  9. computer-graphics.virtual-labs.ac.in
+	  10. pattern-recognition.virtual-labs.ac.in
+	  11. cryptography.virtual-labs.ac.in
+	  12. ds.virtual-labs.ac.in
+	  13. image-processing.virtual-labs.ac.in
+	  14. emt.virtual-labs.ac.in
+
+	  In each of this case the logs go to <fqdn>-access_log file.
+	
+    - /etc/httpd/conf.d/virtual-labs-virtual-hosts.conf :: Repeated
+	 configuration of virtual-hosts from vlabs-virtual-hosts.conf
+	 file.  However few virtual-hosts are different such as:
+
+	 1. microwave.virtual-labs.ac.in
+	 2. eee07.virtual-labs.ac.in
+	 3. music.virtual-labs.ac.in
+	 4. eee06.virtual-labs.ac.in
+	 5. mech26.virtual-labs.ac.in
+	 6. mech08.virtual-labs.ac.in
+	 7. phy01.virtual-labs.ac.in
+	 8. chs13.virtual-labs.ac.in
+	 9. aerospaceengg.virtual-labs.ac.in
+	 10. combustion.virtual-labs.ac.in
+
+	 In each of this case the logs go to <fqdn>-access_log file.
+	
+** Cron and awstats configuration on base2 http container
+   With help of /etc/cron.hourly/00awstats
+   deploy.virtual-labs.ac.in-access.log file is split into various
+   smaller log files so that they can be processed by awstats.  These
+   files are:
+   #+BEGIN_EXAMPLE
+   cse01.virtual-labs.ac.in-access_log
+   cse02.virtual-labs.ac.in-access_log
+   cse03.virtual-labs.ac.in-access_log
+   cse04.virtual-labs.ac.in-access_log
+   cse05.virtual-labs.ac.in-access_log
+   cse06.virtual-labs.ac.in-access_log
+   cse07.virtual-labs.ac.in-access_log
+   cse08.virtual-labs.ac.in-access_log
+   cse09.virtual-labs.ac.in-access_log
+   cse10.virtual-labs.ac.in-access_log
+   cse11.virtual-labs.ac.in-access_log
+   cse12.virtual-labs.ac.in-access_log
+   cse13.virtual-labs.ac.in-access_log
+   cse14.virtual-labs.ac.in-access_log
+   cse15.virtual-labs.ac.in-access_log
+   cse16.virtual-labs.ac.in-access_log
+   cse17.virtual-labs.ac.in-access_log
+   cse18.virtual-labs.ac.in-access_log
+   cse19.virtual-labs.ac.in-access_log
+   cse20.virtual-labs.ac.in-access_log
+   cse21.virtual-labs.ac.in-access_log
+   cse22.virtual-labs.ac.in-access_log
+   cse23.virtual-labs.ac.in-access_log
+   cse24.virtual-labs.ac.in-access_log
+   cse25.virtual-labs.ac.in-access_log
+   cse26.virtual-labs.ac.in-access_log
+   cse27.virtual-labs.ac.in-access_log
+   cse28.virtual-labs.ac.in-access_log
+   cse29.virtual-labs.ac.in-access_log
+   cse30.virtual-labs.ac.in-access_log
+   ece01.virtual-labs.ac.in-access_log
+   ece02.virtual-labs.ac.in-access_log
+   ece03.virtual-labs.ac.in-access_log
+   ece04.virtual-labs.ac.in-access_log
+   ece05.virtual-labs.ac.in-access_log
+   ece06.virtual-labs.ac.in-access_log
+   ece07.virtual-labs.ac.in-access_log
+   ece08.virtual-labs.ac.in-access_log
+   ece09.virtual-labs.ac.in-access_log
+   ece10.virtual-labs.ac.in-access_log
+   ece11.virtual-labs.ac.in-access_log
+   bio15.virtual-labs.ac.in-access_log
+   bio16.virtual-labs.ac.in-access_log
+   ccnsb01.virtual-labs.ac.in-access_log
+   ccnsb02.virtual-labs.ac.in-access_log
+   ccnsb03.virtual-labs.ac.in-access_log
+   ccnsb04.virtual-labs.ac.in-access_log
+   ccnsb05.virtual-labs.ac.in-access_log
+   ccnsb06.virtual-labs.ac.in-access_log
+   ccnsb07.virtual-labs.ac.in-access_log
+   chem01.virtual-labs.ac.in-access_log
+   civil09.virtual-labs.ac.in-access_log
+   civil13.virtual-labs.ac.in-access_log
+   civil15.virtual-labs.ac.in-access_log
+   civil16.virtual-labs.ac.in-access_log
+   engg01.virtual-labs.ac.in-access_log
+   hss01.virtual-labs.ac.in-access_log
+   hss02.virtual-labs.ac.in-access_log
+   hss03.virtual-labs.ac.in-access_log
+   mech01.virtual-labs.ac.in-access_log
+   mech04.virtual-labs.ac.in-access_log
+   mech17.virtual-labs.ac.in-access_log
+   mech18.virtual-labs.ac.in-access_log
+   phy14.virtual-labs.ac.in-access_log
+   phy19.virtual-labs.ac.in-access_log
+   sample1.virtual-labs.ac.in-access_log
+   sample13.virtual-labs.ac.in-access_log
+   sample16.virtual-labs.ac.in-access_log
+   sample2.virtual-labs.ac.in-access_log
+   sample20.virtual-labs.ac.in-access_log
+   sample21.virtual-labs.ac.in-access_log
+   ece18.virtual-labs.ac.in-access_log
+   ece19.virtual-labs.ac.in-access_log
+   ece21.virtual-labs.ac.in-access_log
+   ece26.virtual-labs.ac.in-access_log
+   eee03.virtual-labs.ac.in-access_log
+   eee05.virtual-labs.ac.in-access_log
+   eee07.virtual-labs.ac.in-access_log
+   eee08.virtual-labs.ac.in-access_log
+   eee09.virtual-labs.ac.in-access_log
+   eee10.virtual-labs.ac.in-access_log
+   eee12.virtual-labs.ac.in-access_log
+   eerc01.virtual-labs.ac.in-access_log
+   eerc02.virtual-labs.ac.in-access_log
+   eerc03.virtual-labs.ac.in-access_log
+   eerc04.virtual-labs.ac.in-access_log
+   emt.virtual-labs.ac.in-access_log    
+   #+END_EXAMPLE
+
+** Important logs files on base2 http container
+   Based on apache configuration following log files are important
+   and need to be processed:
+   1. deploy.virtual-labs.ac.in-access_log (For many different labs)
+   2. cse12.vlabs.ac.in-access_log
+   3. civil11.vlabs.ac.in-access_log
+   4. nitk.vlabs.ac.in-access_log (For many nitk labs)
+   5. cpl.virtual-labs.ac.in-access_log
+   6. hybrid-electronic.virtual-labs.ac.in-access_log
+   7. virtual-english.virtual-labs.ac.in-access_log
+   8. cdpeslab.virtual-labs.ac.in-access_log
+   9. mmlaboratory.virtual-labs.ac.in-access_log
+   10. industrial-automation.virtual-labs.ac.in-access_log
+   11. nlp.virtual-labs.ac.in-access_log
+   12. dld.virtual-labs.ac.in-access_log
+   13. computer-graphics.virtual-labs.ac.in-access_log
+   14. pattern-recognition.virtual-labs.ac.in-access_log
+   15. cryptography.virtual-labs.ac.in-access_log
+   16. ds.virtual-labs.ac.in-access_log
+   17. image-processing.virtual-labs.ac.in-access_log
+   18. microwave.virtual-labs.ac.in-access_log
+   19. music.virtual-labs.ac.in-access_log
+   20. eee06.virtual-labs.ac.in-access_log
+   21. mech26.virtual-labs.ac.in-access_log
+   22. mech08.virtual-labs.ac.in-access_log
+   23. phy01.virtual-labs.ac.in-access_log
+   24. chs13.virtual-labs.ac.in-access_log
+   25. aerospaceengg.virtual-labs.ac.in-access_log
+   26. combustion.virtual-labs.ac.in-access_log
+       
+   Following files are created by virtual-hosts configuration of
+   apache but are unfortunately overwritten by cron.  So these cannot
+   be used:
+   1. eee07.virtual-labs.ac.in-access_log
+   2. emt.virtual-labs.ac.in-access_log
+* AWS http logs
+* Design
+** Details of input information and output of log analysis
+*** Apache combined log format
+*** Logic for hits
+*** Logic for visits
+*** Logic for usage
+*** Integration of analytics program and web service
+** Design of program that processes logs to get analytics
+   The entire process of getting final lab-wise analytics (hits, visits
+   and usage) for base2 http container and aws is described below
+*** For each platform do the following
+**** (STEP:initialize) Ensure that necessary folder exist and are sane
+     Following folders would be used for the entire analytics:
+     - logs folder :: For file processing we would read log files
+                      directly from where the rsync cron process copies
+                      it.  We are not going to copy files to a new
+                      temporary location every time for processing as
+                      that is very expensive (disk I/O wise).  Location
+                      of this folder is as per analytics systems model.
+
+		      *The logs must be in combined log format*.
+
+     - data folder :: Data folder would contain important state
+                      information such as how many lines have been
+                      processed for each file, so that we do not
+                      process the same lines again.  This would also
+                      contain all information about past analytics for
+                      same cluster.
+
+                      This folder must exist with reasonable initial
+                      files so that the analysis works properly.  If
+                      this is the first run then as part of this
+                      initialization step it is ensured that various
+                      important files with default values get created.
+
+     - process folder :: Process folder is a temporary folder created
+                         for processing of new log lines.  During start
+                         of a new analysis cycle process folder should
+                         be empty.
+
+     - output folder :: This folder would contain final text files that 
+		       	would be read by web service.  These files
+                       	would not be in erlang term format so that they
+                       	can be read by programs written in other
+                       	languages easily.  
+
+**** (STEP:all_list) Prepare list of all log file names present on base2 http container log folder :Done:
+     First we look at folder where log files are copied from http
+     container of base2 by rsync cron job on analytics node and build a
+     list of all log-files present.
+
+**** (STEP:positive_filter) Filter irrelevant log files		       :Done:
+    Since base2 logs have both actual logs files created by apache and
+    temporary log files created by cron for awstats, we can't process
+    all log files directly.  Thus, first logical step is to get only
+    the relevant log files.  This can be done by removing all log
+    files which are not listed in [[Important logs files on base2 http
+    container]] section.  
+
+    Note that:
+    1. we are also removing / ignoring log files for
+       vlead.vlabs.ac.in, issues.vlabs.ac.in, etc. as part of this
+       step.
+    2. For deploy we are considering both
+       deploy.virtual-labs.ac.in-access_log and
+       deploy.vlabs.ac.in-access_log files
+
+The output of program after this step is:
+#+BEGIN_EXAMPLE
+TRACE {{2015,9,25},{13,21,20}} analytics:base2_main/0: File_list after positive filter on base2 is
+["deploy.virtual-labs.ac.in-access_log-20130804",
+"deploy.virtual-labs.ac.in-access_log-20130721",
+"deploy.virtual-labs.ac.in-access_log-20131020",
+"deploy.virtual-labs.ac.in-access_log-20131229",
+"deploy.virtual-labs.ac.in-access_log-20131006",
+"deploy.virtual-labs.ac.in-access_log-20140105",
+"deploy.virtual-labs.ac.in-access_log-20131124",
+"deploy.virtual-labs.ac.in-access_log-20130901",
+"deploy.virtual-labs.ac.in-access_log-20140119",
+"deploy.virtual-labs.ac.in-access_log-20130922",
+"deploy.virtual-labs.ac.in-access_log-20130707",
+"deploy.virtual-labs.ac.in-access_log-20130915",
+"deploy.virtual-labs.ac.in-access_log-20131201",
+"deploy.virtual-labs.ac.in-access_log-20131103",
+"deploy.virtual-labs.ac.in-access_log-20130818",
+"deploy.virtual-labs.ac.in-access_log-20130728",
+"deploy.virtual-labs.ac.in-access_log-20130908",
+"deploy.virtual-labs.ac.in-access_log-20131027",
+"deploy.virtual-labs.ac.in-access_log-20130714",
+"deploy.virtual-labs.ac.in-access_log-20140112",
+"deploy.virtual-labs.ac.in-access_log-20131013",
+"deploy.virtual-labs.ac.in-access_log-20130929",
+"deploy.virtual-labs.ac.in-access_log-20131110",
+"deploy.virtual-labs.ac.in-access_log-20131208",
+"deploy.virtual-labs.ac.in-access_log-20130811",
+"deploy.virtual-labs.ac.in-access_log-20140126",
+"deploy.virtual-labs.ac.in-access_log",
+"deploy.virtual-labs.ac.in-access_log-20131117",
+"deploy.virtual-labs.ac.in-access_log-20131222",
+"deploy.virtual-labs.ac.in-access_log-20130825",
+"deploy.virtual-labs.ac.in-access_log-20131215",
+"deploy.vlabs.ac.in-access_log-20140412",
+"deploy.vlabs.ac.in-access_log-20140715",
+"deploy.vlabs.ac.in-access_log-20140410",
+"deploy.vlabs.ac.in-access_log-20140405",
+"deploy.vlabs.ac.in-access_log-20140802",
+"deploy.vlabs.ac.in-access_log-20140415",
+"deploy.vlabs.ac.in-access_log-20140305",
+"deploy.vlabs.ac.in-access_log-20140329",
+"deploy.vlabs.ac.in-access_log-20131006",
+"deploy.vlabs.ac.in-access_log-20131002",
+"deploy.vlabs.ac.in-access_log-20140310",
+"deploy.vlabs.ac.in-access_log-20140702",
+"deploy.vlabs.ac.in-access_log-20140313",
+"deploy.vlabs.ac.in-access_log-20140213",
+"deploy.vlabs.ac.in-access_log-20131127",
+"deploy.vlabs.ac.in-access_log-20141001",
+"deploy.vlabs.ac.in-access_log",
+"deploy.vlabs.ac.in-access_log-20141029",
+"deploy.vlabs.ac.in-access_log-20140306",
+"deploy.vlabs.ac.in-access_log-20130922",
+"deploy.vlabs.ac.in-access_log-20141116",
+"deploy.vlabs.ac.in-access_log-20140930",
+"deploy.vlabs.ac.in-access_log-20141016",
+"deploy.vlabs.ac.in-access_log-20141002",
+"deploy.vlabs.ac.in-access_log-20140326",
+"deploy.vlabs.ac.in-access_log-20140605",
+"deploy.vlabs.ac.in-access_log-20131013",
+"deploy.vlabs.ac.in-access_log-20131020",
+"deploy.vlabs.ac.in-access_log-20140501",
+"deploy.vlabs.ac.in-access_log-20140327",
+"deploy.vlabs.ac.in-access_log-20130915",
+"cse12.vlabs.ac.in-access_log-20130915",
+"cse12.vlabs.ac.in-access_log",
+"civil11.vlabs.ac.in-access_log-20131201",
+"civil11.vlabs.ac.in-access_log-20131110",
+"civil11.vlabs.ac.in-access_log-20131117",
+"civil11.vlabs.ac.in-access_log-20131105",
+"civil11.vlabs.ac.in-access_log-20131124",
+"civil11.vlabs.ac.in-access_log",
+"nitk.vlabs.ac.in-access_log-20131110",
+"nitk.vlabs.ac.in-access_log-20131103",
+"nitk.vlabs.ac.in-access_log-20131029",
+"nitk.vlabs.ac.in-access_log-20150924",
+"nitk.vlabs.ac.in-access_log-20150829",
+"nitk.vlabs.ac.in-access_log-20150827",
+"nitk.vlabs.ac.in-access_log-20150819",
+"nitk.vlabs.ac.in-access_log",
+"nitk.vlabs.ac.in-access_log-20150826",
+"nitk.vlabs.ac.in-access_log-20150909",
+"nitk.vlabs.ac.in-access_log-20140715",
+"nitk.vlabs.ac.in-access_log-20150812",
+"nitk.vlabs.ac.in-access_log-20140716",
+"nitk.vlabs.ac.in-access_log-20150717",
+"nitk.vlabs.ac.in-access_log-20150801",
+"nitk.vlabs.ac.in-access_log-20140712",
+"cpl.virtual-labs.ac.in-access_log",
+"hybrid-electronic.virtual-labs.ac.in-access_log",
+"virtual-english.virtual-labs.ac.in-access_log",
+"cdpeslab.virtual-labs.ac.in-access_log",
+"mmlaboratory.virtual-labs.ac.in-access_log",
+"industrial-automation.virtual-labs.ac.in-access_log",
+"nlp.virtual-labs.ac.in-access_log",
+"dld.virtual-labs.ac.in-access_log",
+"computer-graphics.virtual-labs.ac.in-access_log",
+"pattern-recognition.virtual-labs.ac.in-access_log",
+"cryptography.virtual-labs.ac.in-access_log",
+"ds.virtual-labs.ac.in-access_log",
+"image-processing.virtual-labs.ac.in-access_log",
+"microwave.virtual-labs.ac.in-access_log",
+"microwave.virtual-labs.ac.in-access_log-20140723",
+"microwave.virtual-labs.ac.in-access_log-20140712",
+"microwave.virtual-labs.ac.in-access_log-20140105",
+"microwave.virtual-labs.ac.in-access_log-20131229",
+"music.virtual-labs.ac.in-access_log",
+"eee06.virtual-labs.ac.in-access_log",
+"mech26.virtual-labs.ac.in-access_log",
+"mech08.virtual-labs.ac.in-access_log",
+"phy01.virtual-labs.ac.in-access_log",
+"chs13.virtual-labs.ac.in-access_log",
+"aerospaceengg.virtual-labs.ac.in-access_log",
+"combustion.virtual-labs.ac.in-access_log"]
+#+END_EXAMPLE       
+    
+**** (STEP:negative_filter) Filter log files that are not usable       :Done:
+    As part of this step we take relevant log files names and remove
+    the names of log files that cannot be used.  This can be because
+    URLs in log lines do not have lab name eg eee06 or we do not know
+    lab-id based on virtual-host name, etc.
+
+    The log files which are filtered as part of this step are:
+    - deploy.vlabs.ac.in-access_log :: Only 967 log lines across 31
+         logs files.  Ignoring.
+    - cse12.vlabs.ac.in-access_log :: Only 62 log lines in total
+         across two files. No lab name in log file.
+    - civil11.vlabs.ac.in-access_log :: Only 793 log lines in total
+         across 6 files including bot hits (anonymouse etc.).  No lab
+         name in log file.
+    - nitk.vlabs.ac.in-access_log :: Only 231 log lines in total
+         across 16 files.  No lab name in log file.
+    - cpl.virtual-labs.ac.in-access_log :: Only 574 non-nagios lines
+         are present.  No lab name in log file.  Experiments names are
+         proper (exp1, etc.).  As such there are 11495 log lines but
+         only 574 log lines are non-nagios:
+	 #+BEGIN_EXAMPLE
+	 [saurabh@barjatiyarklp base2-http-logs]$ grep -v nagios cpl.virtual-labs.ac.in-access_log | wc -l
+	 574
+	 #+END_EXAMPLE
+	 Thus, ignoring this file.
+    - hybrid-electronic.virtual-labs.ac.in-access_log :: 2194 log
+         lines.  No lab name in log file.  Experiment names are proper
+         (exp1, etc.).  Thus, ignoring this file for optimization.  We
+         can revisit this later, if necessary.
+    - virtual-english.virtual-labs.ac.in-access_log :: Only 222 log
+         lines, thus ignoring it completely.
+    - cdpeslab.virtual-labs.ac.in-access_log :: Only 455 log lines.
+         No lab name and experiment name in URL. 
+    - mmlaboratory.virtual-labs.ac.in-access_log :: Only 110 log
+         lines, ignoring.
+    - industrial-automation.virtual-labs.ac.in-access_log :: Only 188
+         log lines, ignoring
+    - nlp.virtual-labs.ac.in-access_log :: Only 158 log lines,
+         ignoring.
+    - dld.virtual-labs.ac.in-access_log :: Only 293 log lines,
+         ignoring.
+    - computer-graphics.virtual-labs.ac.in-access_log :: Only 327 log
+         lines.  Experiment names are present.  No lab name in URL.
+    - pattern-recognition.virtual-labs.ac.in-access_log :: Only 342
+         log lines.  No lab name in URL.  Experiment names are
+         present.  Ignoring.
+    - cryptography.virtual-labs.ac.in-access_log :: Only 171 log
+         lines, ignoring. 
+    - ds.virtual-labs.ac.in-access_log :: Only 91 log lines,
+         ignoring. 
+    - image-processing.virtual-labs.ac.in-access_log :: Only 977 log
+         lines.  There is no proper structure in terms of experiments
+         so this perhaps can't be processed even in future.
+    - microwave.virtual-labs.ac.in-access_log :: Only 481 log lines
+         across five files, ignoring.
+    - eee06.virtual-labs.ac.in-access_log :: Logs related to eee06,
+         but these are duplicates of
+         deploy.virtual-labs.ac.in-access_log file.  This is strange
+         since eee06 was not part of awstats cron, so how this
+         duplicate file is getting created / updated is not clear.
+    - mech26.virtual-labs.ac.in-access_log :: 3,642 log lines.  But
+         lab does not follow experiment structure.  So we cannot
+         process this file even later.
+    - mech08.virtual-labs.ac.in-access_log :: Logs related to mech08,
+         but these are duplicates of
+         deploy.virtual-labs.ac.in-access_log file.  This is strange
+         since mech08 was not part of awstats cron, so how this
+         duplicate file is getting created / updated is not clear.
+    - phy01.virtual-labs.ac.in-access_log :: Logs from 9th Feb 2014 to
+         20th Sept 2015 are present in
+         deploy.virtual-labs.ca.in-access_log file too.  Ignoring at
+         present as at most one weeks log are different.  We should
+         revisit this after a month or so.
+    - chs13.virtual-labs.ac.in-access_log :: Logs from 26th Jan 2014
+         to 16th Sept 2015 are present in
+         deploy.virtual-labs.ca.in-access_log file too.  Ignoring at
+         present as at most 10 days logs are different.  We should
+         revisit this after a month or so.
+ 
+    The log files which are not filtered are:
+    - deploy.virtual-labs.ac.in-access_log :: Most of the logs are
+         here in one single 1.2GB file with 4,761,969 log lines.
+         There are overall 31 log files with total 6,292,787 log
+         lines.
+    - music.virtual-labs.ac.in-access_log :: 49,530 log lines.  The
+         experiments are also named properly.  We should visit this
+         later, but at present I am ignoring it.  I also do not have
+         this labs lab-id.
+    - aerospaceengg.virtual-labs.ac.in-access_log :: 3,430 log lines
+         ignoring at present for simplification.  The experiment names
+         are visible in URL but there is no lab name.  Lab ID is also
+         not known.
+    - combustion.virtual-labs.ac.in-access_log :: 4,274 log lines
+         ignoring at present for simplification.  The experiment names
+         are visible in URL but there is no lab name.  Lab ID is also
+         not known.
+
+The output of program after this steps is:
+#+BEGIN_EXAMPLE
+TRACE {{2015,9,25},{15,5,11}} analytics:base2_main/0: File_list after negative filter on base2 is 
+["deploy.virtual-labs.ac.in-access_log-20130804",
+ "deploy.virtual-labs.ac.in-access_log-20130721",
+ "deploy.virtual-labs.ac.in-access_log-20131020",
+ "deploy.virtual-labs.ac.in-access_log-20131229",
+ "deploy.virtual-labs.ac.in-access_log-20131006",
+ "deploy.virtual-labs.ac.in-access_log-20140105",
+ "deploy.virtual-labs.ac.in-access_log-20131124",
+ "deploy.virtual-labs.ac.in-access_log-20130901",
+ "deploy.virtual-labs.ac.in-access_log-20140119",
+ "deploy.virtual-labs.ac.in-access_log-20130922",
+ "deploy.virtual-labs.ac.in-access_log-20130707",
+ "deploy.virtual-labs.ac.in-access_log-20130915",
+ "deploy.virtual-labs.ac.in-access_log-20131201",
+ "deploy.virtual-labs.ac.in-access_log-20131103",
+ "deploy.virtual-labs.ac.in-access_log-20130818",
+ "deploy.virtual-labs.ac.in-access_log-20130728",
+ "deploy.virtual-labs.ac.in-access_log-20130908",
+ "deploy.virtual-labs.ac.in-access_log-20131027",
+ "deploy.virtual-labs.ac.in-access_log-20130714",
+ "deploy.virtual-labs.ac.in-access_log-20140112",
+ "deploy.virtual-labs.ac.in-access_log-20131013",
+ "deploy.virtual-labs.ac.in-access_log-20130929",
+ "deploy.virtual-labs.ac.in-access_log-20131110",
+ "deploy.virtual-labs.ac.in-access_log-20131208",
+ "deploy.virtual-labs.ac.in-access_log-20130811",
+ "deploy.virtual-labs.ac.in-access_log-20140126",
+ "deploy.virtual-labs.ac.in-access_log",
+ "deploy.virtual-labs.ac.in-access_log-20131117",
+ "deploy.virtual-labs.ac.in-access_log-20131222",
+ "deploy.virtual-labs.ac.in-access_log-20130825",
+ "deploy.virtual-labs.ac.in-access_log-20131215",
+ "music.virtual-labs.ac.in-access_log",
+ "aerospaceengg.virtual-labs.ac.in-access_log",
+ "combustion.virtual-labs.ac.in-access_log"]
+#+END_EXAMPLE
+
+**** (STEP:read_line_count) Read old line count stored from previous analysis :Done:
+     If logs have been processed earlier then read how many lines of
+     each log file has already been processed so that we do not process
+     those lines again (=processed_lines=)
+
+     *Note that in the document =read= is used to refer to numbers / values read from previous files.  At the same time =get= is used to refer to numbers/values read from current process data.*
+
+**** (STEP:get_line_count) Get number of lines for each log file       :Done:
+     In this step we get total number of lines for each log file which
+     is relevant and usable (=total_lines=)
+
+**** (STEP:compare_count) For each relevant log file compare how many new log lines are present wrt previous analysis :Done:
+     Subtract lines which have already been processed
+     (=processed_lines=) from total number of log lines in each file
+     (=total_lines=) to obtain count of new log lines (=new_lines=)
+     that have been appended to each log file since last processing.
+
+**** (STEP:copy_lines) Copy new lines of relevant log files to a new folder (process) with same file name :Done:
+     Based on output of compare_count step only the =new_lines= from
+     each log file are copied to =process_folder= with same filename.
+     In future steps we will concentrate only on these new log lines.
+   
+**** (STEP:update_line_count) Update count of log file lines processed in data folder :Done:
+     Since we are now going to process additional lines from each log
+     file, we will change the count of =processed_lines= in
+     =data_folder= so that we do not process these lines again in any
+     next iteration.
      
-     #+BEGIN_EXAMPLE
-     10.4.8.52 - - [08/Feb/2014:18:43:07 +0530] "GET /labs/cse01/exp1/index.php HTTP/1.1" 200 3241 "http://virtual-labs.ac.in/labs/cse01/" "Mozilla/5.0 (Linux; U; Android 4.1.2; en-in; Q500 Build/JZO54K) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30"
-     10.4.8.52 - - [09/Feb/2014:13:46:18 +0530] "GET /labs/cse01/exp2/index.php HTTP/1.1" 200 3591 "http://deploy.virtual-labs.ac.in/labs/cse01/index.php?section=List%20of%20experiments" "Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1700.107 Safari/537.36"
-     #+END_EXAMPLE
-      
-     The following example shows the sample log lines of =cse01= lab
-     with response codes =4**= and =5**= (Observe 6th column from the following
-     example). The logs with this response codes should be ignored.
+**** (STEP:remove_bot) Remove all log lines which are related to bot   :Done:
+     Remove all log lines were browser identification matches regular
+     expression =bot|Anonymouse.org|nagios=   This step is added to
+     ensure that we do not process bot lines for hits, visits or usages.
+     
+**** (STEP:remove_non_http_ok) Remove all log lines which do not return HTTP response code 2** :Done:
+     At this step we are removing all log lines that indicate HTTP
+     response other than 2**.  This is done because 3**, 4**, 5** status code
+     log lines should also be removed as they are not successful hits.
 
-     #+BEGIN_EXAMPLE
-     196.12.53.130 - - [04/Mar/2014:14:24:02 +0530] "GET /labs/cse01/index.php HTTP/1.1" 400 400 "-" "Mozilla/5.0 (Windows NT 6.1; rv:12.0) Gecko/20100101 Firefox/12.0"
-     10.4.8.52 - - [24/Jun/2014:16:33:22 +0530] "GET /build/index.php HTTP/1.1" 404 250 "http://deploy.virtual-labs.ac.in/labs/cse01/index.php" "Mozilla/5.0 (Windows NT 6.1; rv:26.0) Gecko/20100101 Firefox/26.0"
-     10.4.8.52 - - [24/Jun/2014:16:33:24 +0530] "GET /build/index.php HTTP/1.1" 502 500 "http://deploy.virtual-labs.ac.in/labs/cse01/index.php" "Mozilla/5.0 (Windows NT 6.1; rv:26.0) Gecko/20100101 Firefox/26.0"
-     10.4.8.52 - - [24/Jun/2014:16:33:29 +0530] "GET /build/index.php HTTP/1.1" 503 414 "http://deploy.virtual-labs.ac.in/labs/cse01/index.php" "Mozilla/5.0 (Windows NT 6.1; rv:26.0) Gecko/20100101 Firefox/26.0"
-     #+END_EXAMPLE
-  8) The log lines with bots (Googlebot, bingbot, etc.) are not 
-     considered for calculation of hits, visits and usage.
+**** (STEP:lab_id_log) Store all individual lab logs in single <lab-id>.log file in process folder :Done:
+     The log files are stored based on name of virtual-host eg
+     deploy.virtual-labs.ac.in.  As part of this step corresponding
+     lines of a log file will be copied to file with name lab-id.  This
+     way we will have all logs related to a particular lab in one
+     single file with same name as lab-id.
 
-     The following example shows the sample log lines of =cse01= lab
-     with Googlebot and bingbot. (Observe the last column from the following
-     example). The logs with this bots to be ignored.
+**** (STEP:month_wise) Split all log lines such that they are stored in respective month folders :Done:
+     In this function we take all the files with lab-id names (with
+     corresponding logs of that lab) and split them month wise.  These
+     month-wise files are stored in =process_folder/lab-name= folder.
+     Month-wise files are named in =YYYY-Mon= format.
 
-     #+BEGIN_EXAMPLE
-     66.249.79.3 - - [02/Jan/2015:20:16:46 +0530] "GET /labs/cse01/exp8/index.php?section=Simulation HTTP/1.1" 200 3277 "-" "Mozilla/5.0 (iPhone; CPU iPhone OS 6_0 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/6.0 Mobile/10A5376e Safari/8536.25 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"
-     10.4.8.52 - - [03/Jan/2015:17:55:42 +0530] "GET /labs/cse01/exp8/index.php?section=Simulation HTTP/1.1" 200 3277 "-" "Mozilla/5.0 (compatible; bingbot/2.0; +http://www.bing.com/bingbot.htm)"
-     #+END_EXAMPLE
-  9) The process to be defined on how to maintain analytics when:
-     - A New lab gets Deployed/Hosted.
-     - An Existing lab gets Deleted/Removed.
-  10) The lab existing with multiple simulations per experiment, In such cases
-      visit to any one simulation (among many) after visiting
-      experiment will be considered as usage.
+     This function assumes logs are in combined format and hence Dates
+     are in =[18/Aug/2013:09:06:47","+0530]= format.  If this
+     assumption is not met then the program will not work.
 
-  11) The labs with tasks instead of simulations, then each visit
-      to a task is counted as usage.
-      
-      The following example shows the sample log lines of =cse09= lab
-      with simulation as tasks. (Observe the 5th column from the following
-      example). 
+**** (STEP:read_hit_count) Read hit count from data stored from previous analysis :Done:
+     During previous analysis we would have got hit counts, visit
+     counts, usage counts, etc. information for each lab for each month
+     for each experiment.  This information is read back so that we can
+     update this information based on new log lines and write back to
+     the original file later.
 
-      #+BEGIN_EXAMPLE
-      10.4.12.236 - - [09/Feb/2014:16:49:17 +0530] "GET /labs/cse09/exp1/tasks.html HTTP/1.1" 200 429 "http://deploy.virtual-labs.ac.in/labs/cse09/exp1/interaction-frame.html" "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36"
-      #+END_EXAMPLE
+**** (STEP:get_hit_count) Get hit count (month-wise) from log files for each lab :Done:
+     In this step we will read hit count for each lab for each month
+     and prepare a big list of lab-wise month-wise hits.
+**** (STEP:update_hit_count) Update hit count (month-wise) for each lab to data-folder stats :Done:
+     In this step we will update hit count for each lab for each month
+     using lab-wise month-wise list prepared in previous steps
+     =get_hit_count= and =read_hit_count=.  This information would be
+     stored in the =data-folder= for overall statistics (analytics).
+**** (STEP:remove_non_visit) Remove all log lines that are not HTML for each month for each lab :Done:
+     As part of this step log lines (hits) related to all non-HTML
+     requests such as css, js, png, jpg, pdf, etc. will be removed from
+     log file.  Thus the remaining log lines will correspond only to
+     HTML request, ie visits.
 
-  12)  The vlabs landing page should display numbers for: Labs, Experiments, Visits, and Usage.
+**** (STEP:get_visit_count) Get visit count (month-wise) from log files for each lab :Done:
+     Once all non-visit related log lines are removed from each
+     month-wise lab-wise file, then the remaining lines are all
+     visits.  Hence counting number of lines in remaining file gives
+     number of visits for each lab (month-wise).
 
-       *Note*: only "Visits" and "Usage" will be provided by analytics service model.
+**** (STEP:update_visit_count) Update visit count (month-wise) for each lab to data-folder stats :Done:
+     The visit count is also added to values read in =read_hit_count=
+     step above.  The new visit values are then written to data-folder
+     as analytics output and for reference on next execution of this
+     analytics program.
 
-  13) Give a hyper link to the Usage. On click, it should open a web
-      page with Analytics of all labs.  Mention on this page: "All
-      data shown below is from January 20XX until today".
+**** (STEP:count_usage) For each lab for each experiment get usage (month-wise) :Done:
+     In this step for each lab, for each experiment, for each month we
+     count how many times experiment was visited in terms of theory,
+     introduction, etc.  This count is required for calculating usage
+     later on.
 
-  14) Analytics of Top 5 labs among all labs should be display
-      first. Rest of the labs analytics will be displayed according to
-      the institutes.
+     Since experiment URLs for each lab and number of experiments for
+     each lab vary, this step requires understanding each lab properly
+     in terms of
+     - Number of experiments
+     - URL pattern for each experiment
 
-  15) The web page that opens upon clicking Usage will have the following:
+     For example for music lab there are 14 experiments and URL for
+     experiment for music lab are of format
+     "/experiments/<experiment-number>" such as /experiments/1,
+     /experiments/14, etc.
 
-      a) Analytics of top 10 labs: 
-         Labs-> Hits -> Visits -> Usage -> Average time spent
+     The same thing is then done for simuation URL. 
 
-      b) Analytics of institutions 
-         Institute -> Most popular lab -> Usage
+     Finally once we have number of visits for theory and simulation,
+     the data is divided date-wise.  For each date then list of IP
+     addresses that have visited theory page and simulation page is
+     calcuated.  Intersection of IP addresses that have visited theory
+     page and simulation page on same day is treated as usage.
 
-      c) Analytics by months of the year
-         Month -> Hits -> Visits -> Usage -> Average time spent
+     Note that thus:
+     1. It is possible for a person to visit theory page in morning and
+       	simulation page in evening and we would still get that as a
+       	usage.
+     2. If simulation page is visited before theory page, it would
+       	still be considered as usage
+     3. If theory page is visted just before midnight and simulation
+       	page just after midnight, then it wont get counted as theory /
+       	simulation would have been visited on different dates.
 
-* COMMENT Display Analytics on Vlabs landing page     
+     In cases such as {"Number Systems", "/exp1/index.php",
+     "/exp1/index.php.*section=Simulation.*"}  for cse01 lab the
+     simulation reg-exp is subset of theory reg-exp.  Hence if a
+     simulation URL is matched for a given log line, then the same line
+     is not matched for theory again to avoid problems.
+
+**** (STEP:update_usage) Update usage information by adding read usages and by including hits, visit information calculated above :Done:
+     In this step we need to combine usage information counted in
+     =count_usage= step and add the values to usage values from
+     previous analysis collected during =read_hit_count= step.  
+
+     This step is as complex as =count_usage= because we need to
+     combine information lab-wise month-wise experiment-wise from two
+     complex lists.
+*** (STEP: combine_platforms) Combine final values of different platforms (AWS, Base2)
+*** (STEP: lab_totals) For each lab get totals for all duration by adding all month-wise values
+*** (STEP: all_total)Get total for entire vlabs by adding all lab total values
+** Things to take care of in future
+*** Time between visits under minutes
+*** Graphs
+*** Display analytics per experiment on vlabs.ac.in webpages
+* Implementation
+  The erlang program source is:
+#+BEGIN_SRC erlang :tangle analytics.erl
+-module(analytics).
+%-compile(export_all).
+-export([main/0]).
+
+%%% Use this definition of trace during function development / debugging
+-define(TRACE(Format_string, Values), io:format(lists:append("TRACE ~p ~s:", Format_string), [erlang:localtime(), ?MODULE | Values])).
+
+%%% Use this definition of trace in production
+%-define(TRACE(Format_string, Values), void).
+
+
+-define(Base2_log_folder_path, "base2-http-logs").
+%-define(Base2_log_folder_path, "test-logs").
+
+-define(Aws_log_folder_path, "aws-http-logs").
+%-define(Aws_log_folder_path, "test-logs").
+
+-define(Base2_relevant_file_names, [
+			      "deploy.virtual-labs.ac.in-access_log",
+			      "deploy.vlabs.ac.in-access_log",
+			      "cse12.vlabs.ac.in-access_log",
+			      "civil11.vlabs.ac.in-access_log",
+			      "nitk.vlabs.ac.in-access_log",
+			      "cpl.virtual-labs.ac.in-access_log",
+			      "hybrid-electronic.virtual-labs.ac.in-access_log",
+			      "virtual-english.virtual-labs.ac.in-access_log",
+			      "cdpeslab.virtual-labs.ac.in-access_log",
+			      "mmlaboratory.virtual-labs.ac.in-access_log",
+			      "industrial-automation.virtual-labs.ac.in-access_log",
+			      "nlp.virtual-labs.ac.in-access_log",
+			      "dld.virtual-labs.ac.in-access_log",
+			      "computer-graphics.virtual-labs.ac.in-access_log",
+			      "pattern-recognition.virtual-labs.ac.in-access_log",
+			      "cryptography.virtual-labs.ac.in-access_log",
+			      "ds.virtual-labs.ac.in-access_log",
+			      "image-processing.virtual-labs.ac.in-access_log",
+			      "microwave.virtual-labs.ac.in-access_log",
+			      "music.virtual-labs.ac.in-access_log",
+			      "eee06.virtual-labs.ac.in-access_log",
+			      "mech26.virtual-labs.ac.in-access_log",
+			      "mech08.virtual-labs.ac.in-access_log",
+			      "phy01.virtual-labs.ac.in-access_log",
+			      "chs13.virtual-labs.ac.in-access_log",
+			      "aerospaceengg.virtual-labs.ac.in-access_log",
+			      "combustion.virtual-labs.ac.in-access_log"
+			     ]).
+
+
+-define(Aws_relevant_file_names, [
+				  "anthropology-iitg.virtual-labs.ac.in-access_log",
+				  "bmi-iitr.virtual-labs.ac.in-access_log",
+				  "bmsip-iitr.virtual-labs.ac.in-access_log",
+				  "bmsp-coep.virtual-labs.ac.in-access_log",
+				  "bsa-iiith.virtual-labs.ac.in-access_log",
+				  "ccnsb06-iiith.virtual-labs.ac.in-access_log",
+				  "cds-iiith.virtual-labs.ac.in-access_log",
+				  "ce-iitb.virtual-labs.ac.in-access_log",
+				  "cl-iiith.virtual-labs.ac.in-access_log",
+				  "csc-iiith.virtual-labs.ac.in-access_log",
+				  "cse01-iiith.virtual-labs.ac.in-access_log",
+				  "cse02-iiith.virtual-labs.ac.in-access_log",
+				  "cse11-iiith.virtual-labs.ac.in-access_log",
+				  "cse14-iiith.virtual-labs.ac.in-access_log",
+				  "cse15-iiith.virtual-labs.ac.in-access_log",
+				  "cse18-iiith.virtual-labs.ac.in-access_log",
+				  "cse19-iiith.virtual-labs.ac.in-access_log",
+				  "cse20-iiith.virtual-labs.ac.in-access_log",
+				  "cse22-iiith.virtual-labs.ac.in-access_log",
+				  "cse29-iiith.virtual-labs.ac.in-access_log",
+				  "ee-iitb.virtual-labs.ac.in-access_log",
+				  "eem-iitd.virtual-labs.ac.in-access_log",
+				  "eerc01-iiith.virtual-labs.ac.in-access_log",
+				  "eerc03-iiith.virtual-labs.ac.in-access_log",
+				  "em-coep.virtual-labs.ac.in-access_log",
+				  "em-iitr.virtual-labs.ac.in-access_log",
+				  "emt-iiith.virtual-labs.ac.in-access_log",
+				  "ergonomics-iitg.virtual-labs.ac.in-access_log",
+				  "fab-coep.virtual-labs.ac.in-access_log",
+				  "fm-nitk.virtual-labs.ac.in-access_log",
+				  "ge-iiith.virtual-labs.ac.in-access_log",
+				  "he-coep.virtual-labs.ac.in-access_log",
+				  "ial-coep.virtual-labs.ac.in-access_log",
+				  "ied-nitk.virtual-labs.ac.in-access_log",
+				  "mas-iiith.virtual-labs.ac.in-access_log",
+				  "mdmv-nitk.virtual-labs.ac.in-access_log",
+				  "mfs-iiith.virtual-labs.ac.in-access_log",
+				  "mi-iiith.virtual-labs.ac.in-access_log",
+				  "mm-coep.virtual-labs.ac.in-access_log",
+				  "mm-nitk.virtual-labs.ac.in-access_log",
+				  "mrmsmtbs-iitk.virtual-labs.ac.in-access_log",
+				  "msvs-dei.virtual-labs.ac.in-access_log",
+				  "nlp-iiith.virtual-labs.ac.in-access_log",
+				  "pe-iitb.virtual-labs.ac.in-access_log",
+				  "pev-au.virtual-labs.ac.in-access_log",
+				  "pevii-au.virtual-labs.ac.in-access_log",
+				  "phy14-iiith.virtual-labs.ac.in-access_log",
+				  "plc-coep.virtual-labs.ac.in-access_log",
+				  "ps-iiith.virtual-labs.ac.in-access_log",
+				  "qnm-iitd.virtual-labs.ac.in-access_log",
+				  "sa-nitk.virtual-labs.ac.in-access_log",
+				  "sd-iiith.virtual-labs.ac.in-access_log",
+				  "sl-coep.virtual-labs.ac.in-access_log",
+				  "sl-iitr.virtual-labs.ac.in-access_log",
+				  "smfe-iiith.virtual-labs.ac.in-access_log",
+				  "sm-nitk.virtual-labs.ac.in-access_log",
+				  "ssl-iitg.virtual-labs.ac.in-access_log",
+				  "ssp-iiith.virtual-labs.ac.in-access_log",
+				  "ufls-iitk.virtual-labs.ac.in-access_log",
+				  "uorepc-nitk.virtual-labs.ac.in-access_log",
+				  "va-coep.virtual-labs.ac.in-access_log",
+				  "va-iitk.virtual-labs.ac.in-access_log",
+				  "vcal-iitk.virtual-labs.ac.in-access_log",
+				  "vc-dei.virtual-labs.ac.in-access_log",
+				  "ve-iitg.virtual-labs.ac.in-access_log",
+				  "vem-iitg.virtual-labs.ac.in-access_log",
+				  "vlae-iitk.virtual-labs.ac.in-access_log",
+				  "vp-dei.virtual-labs.ac.in-access_log",
+				  "vssd-iitd.virtual-labs.ac.in-access_log" 
+				 ]).
+
+-define(Base2_unusable_log_files, [
+				   "deploy.vlabs.ac.in-access_log",
+				   "cse12.vlabs.ac.in-access_log",
+				   "civil11.vlabs.ac.in-access_log",
+				   "nitk.vlabs.ac.in-access_log",
+				   "cpl.virtual-labs.ac.in-access_log",
+				   "hybrid-electronic.virtual-labs.ac.in-access_log",
+				   "virtual-english.virtual-labs.ac.in-access_log",
+				   "cdpeslab.virtual-labs.ac.in-access_log",
+				   "mmlaboratory.virtual-labs.ac.in-access_log",
+				   "industrial-automation.virtual-labs.ac.in-access_log",
+				   "nlp.virtual-labs.ac.in-access_log",
+				   "dld.virtual-labs.ac.in-access_log",
+				   "computer-graphics.virtual-labs.ac.in-access_log",
+				   "pattern-recognition.virtual-labs.ac.in-access_log",
+				   "cryptography.virtual-labs.ac.in-access_log",
+				   "ds.virtual-labs.ac.in-access_log",
+				   "image-processing.virtual-labs.ac.in-access_log",
+				   "microwave.virtual-labs.ac.in-access_log",
+				   "eee06.virtual-labs.ac.in-access_log",
+				   "mech26.virtual-labs.ac.in-access_log",
+				   "mech08.virtual-labs.ac.in-access_log",
+				   "phy01.virtual-labs.ac.in-access_log",
+				   "chs13.virtual-labs.ac.in-access_log"
+				   ]).
+
+-define(Aws_unusable_log_files, []).
+
+-define(Base2_file_lab_id_regexp_list, [
+					{"music.virtual-labs.ac.in-access_log", 
+					 [{".", "music"}]
+					},
+					{"aerospaceengg.virtual-labs.ac.in-access_log",
+					 [{".", "aerosp"}]
+					},
+					{"combustion.virtual-labs.ac.in-access_log",
+					 [{".", "combus"}]
+					},
+					{"deploy.virtual-labs.ac.in-access_log",
+					 [
+					  {"GET /labs/account/", "account"},
+					  {"GET /labs/administrator/", "administrator"},
+					  {"GET /labs/ae01/", "ae01"},
+					  {"GET /labs/assets/", "assets"},
+					  {"GET /labs/bio15/", "bio15"},
+					  {"GET /labs/bio16/", "bio16"},
+					  {"GET /labs/blogs/", "blogs"},
+					  {"GET /labs/ccnsb/", "ccnsb"},
+					  {"GET /labs/ccnsb0/", "ccnsb0"},
+					  {"GET /labs/ccnsb00/", "ccnsb00"},
+					  {"GET /labs/ccnsb01/", "ccnsb01"},
+					  {"GET /labs/ccnsb02/", "ccnsb02"},
+					  {"GET /labs/ccnsb03/", "ccnsb03"},
+					  {"GET /labs/ccnsb04/", "ccnsb04"},
+					  {"GET /labs/ccnsb05/", "ccnsb05"},
+					  {"GET /labs/ccnsb06/", "ccnsb06"},
+					  {"GET /labs/ccnsb07/", "ccnsb07"},
+					  {"GET /labs/cevl/", "cevl"},
+					  {"GET /labs/chandan/", "chandan"},
+					  {"GET /labs/che02/", "che02"},
+					  {"GET /labs/chem01/", "chem01"},
+					  {"GET /labs/chem02/", "chem02"},
+					  {"GET /labs/chs13/", "chs13"},
+					  {"GET /labs/civil/", "civil"},
+					  {"GET /labs/civil09/", "civil09"},
+					  {"GET /labs/civil13/", "civil13"},
+					  {"GET /labs/civil13images/", "civil13images"},
+					  {"GET /labs/civil15/", "civil15"},
+					  {"GET /labs/civil16/", "civil16"},
+					  {"GET /labs/civill13/", "civill13"},
+					  {"GET /labs/civilutspbd13/", "civilutspbd13"},
+					  {"GET /labs/consb06/", "consb06"},
+					  {"GET /labs/csc19/", "csc19"},
+					  {"GET /labs/csc29/", "csc29"},
+					  {"GET /labs/cse/", "cse"},
+					  {"GET /labs/cse01/", "cse01"},
+					  {"GET /labs/cse02/", "cse02"},
+					  {"GET /labs/cse03/", "cse03"},
+					  {"GET /labs/cse04/", "cse04"},
+					  {"GET /labs/cse05/", "cse05"},
+					  {"GET /labs/cse06/", "cse06"},
+					  {"GET /labs/cse07/", "cse07"},
+					  {"GET /labs/cse08/", "cse08"},
+					  {"GET /labs/cse09/", "cse09"},
+					  {"GET /labs/cse09exp1/", "cse09exp1"},
+					  {"GET /labs/cse09images/", "cse09images"},
+					  {"GET /labs/cse1/", "cse1"},
+					  {"GET /labs/cse10/", "cse10"},
+					  {"GET /labs/cse11/", "cse11"},
+					  {"GET /labs/cse12/", "cse12"},
+					  {"GET /labs/cse13/", "cse13"},
+					  {"GET /labs/cse14/", "cse14"},
+					  {"GET /labs/cse15/", "cse15"},
+					  {"GET /labs/cse16/", "cse16"},
+					  {"GET /labs/cse17/", "cse17"},
+					  {"GET /labs/cse18/", "cse18"},
+					  {"GET /labs/cse187/", "cse187"},
+					  {"GET /labs/cse19/", "cse19"},
+					  {"GET /labs/cse20/", "cse20"},
+					  {"GET /labs/cse21/", "cse21"},
+					  {"GET /labs/cse22/", "cse22"},
+					  {"GET /labs/cse23/", "cse23"},
+					  {"GET /labs/cse232/", "cse232"},
+					  {"GET /labs/cse24/", "cse24"},
+					  {"GET /labs/cse25/", "cse25"},
+					  {"GET /labs/cse26/", "cse26"},
+					  {"GET /labs/cse27/", "cse27"},
+					  {"GET /labs/cse28/", "cse28"},
+					  {"GET /labs/cse282/", "cse282"},
+					  {"GET /labs/cse29/", "cse29"},
+					  {"GET /labs/cse30/", "cse30"},
+					  {"GET /labs/cseog/", "cseog"},
+					  {"GET /labs/css/", "css"},
+					  {"GET /labs/design/", "design"},
+					  {"GET /labs/ece01/", "ece01"},
+					  {"GET /labs/ece02/", "ece02"},
+					  {"GET /labs/ece03/", "ece03"},
+					  {"GET /labs/ece04/", "ece04"},
+					  {"GET /labs/ece05/", "ece05"},
+					  {"GET /labs/ece06/", "ece06"},
+					  {"GET /labs/ece08/", "ece08"},
+					  {"GET /labs/ece09/", "ece09"},
+					  {"GET /labs/ece10/", "ece10"},
+					  {"GET /labs/ece11/", "ece11"},
+					  {"GET /labs/ece18/", "ece18"},
+					  {"GET /labs/ece19/", "ece19"},
+					  {"GET /labs/ece21/", "ece21"},
+					  {"GET /labs/ece23/", "ece23"},
+					  {"GET /labs/ece26/", "ece26"},
+					  {"GET /labs/eecr03/", "eecr03"},
+					  {"GET /labs/eee03/", "eee03"},
+					  {"GET /labs/eee05/", "eee05"},
+					  {"GET /labs/eee06/", "eee06"},
+					  {"GET /labs/eee07/", "eee07"},
+					  {"GET /labs/eee09/", "eee09"},
+					  {"GET /labs/eee10/", "eee10"},
+					  {"GET /labs/eee12/", "eee12"},
+					  {"GET /labs/eee23/", "eee23"},
+					  {"GET /labs/eerc01/", "eerc01"},
+					  {"GET /labs/eerc01images/", "eerc01images"},
+					  {"GET /labs/eerc02/", "eerc02"},
+					  {"GET /labs/eerc02css/", "eerc02css"},
+					  {"GET /labs/eerc02js/", "eerc02js"},
+					  {"GET /labs/eerc03/", "eerc03"},
+					  {"GET /labs/eerc03css/", "eerc03css"},
+					  {"GET /labs/eerc03images/", "eerc03images"},
+					  {"GET /labs/eerc03js/", "eerc03js"},
+					  {"GET /labs/eerc04/", "eerc04"},
+					  {"GET /labs/eerc04js/", "eerc04js"},
+					  {"GET /labs/eerc05/", "eerc05"},
+					  {"GET /labs/eerc05images/", "eerc05images"},
+					  {"GET /labs/eerc06/", "eerc06"},
+					  {"GET /labs/eerc07/", "eerc07"},
+					  {"GET /labs/eerca/", "eerca"},
+					  {"GET /labs/eercn/", "eercn"},
+					  {"GET /labs/eerco/", "eerco"},
+					  {"GET /labs/eerco2/", "eerco2"},
+					  {"GET /labs/eercs/", "eercs"},
+					  {"GET /labs/eercw/", "eercw"},
+					  {"GET /labs/emt/", "emt"},
+					  {"GET /labs/engg01/", "engg01"},
+					  {"GET /labs/forums/", "forums"},
+					  {"GET /labs/hss01/", "hss01"},
+					  {"GET /labs/hss02/", "hss02"},
+					  {"GET /labs/hss03/", "hss03"},
+					  {"GET /labs/images/", "images"},
+					  {"GET /labs/img/", "img"},
+					  {"GET /labs/js/", "js"},
+					  {"GET /labs/labs/", "labs"},
+					  {"GET /labs/mech01/", "mech01"},
+					  {"GET /labs/mech04/", "mech04"},
+					  {"GET /labs/mech08/", "mech08"},
+					  {"GET /labs/mech17/", "mech17"},
+					  {"GET /labs/mech18/", "mech18"},
+					  {"GET /labs/mech26/", "mech26"},
+					  {"GET /labs/member/", "member"},
+					  {"GET /labs/phy/", "phy"},
+					  {"GET /labs/phy01/", "phy01"},
+					  {"GET /labs/phy14/", "phy14"},
+					  {"GET /labs/phy141/", "phy141"},
+					  {"GET /labs/phy144/", "phy144"},
+					  {"GET /labs/phy14exp3/", "phy14exp3"},
+					  {"GET /labs/phy14images/", "phy14images"},
+					  {"GET /labs/phy19/", "phy19"},
+					  {"GET /labs/sample1/", "sample1"},
+					  {"GET /labs/sample13/", "sample13"},
+					  {"GET /labs/sample16/", "sample16"},
+					  {"GET /labs/sample2/", "sample2"},
+					  {"GET /labs/sample20/", "sample20"},
+					  {"GET /labs/sample21/", "sample21"},
+					  {"GET /labs/sample22/", "sample22"},
+					  {"GET /labs/sample3/", "sample3"},
+					  {"GET /labs/sample4/", "sample4"},
+					  {"GET /labs/sample5/", "sample5"},
+					  {"GET /labs/sample6/", "sample6"},
+					  {"GET /labs/sample7/", "sample7"},
+					  {"GET /labs/sc01/", "sc01"},
+					  {"GET /labs/signup/", "signup"},
+					  {"GET /labs/site/", "site"},
+					  {"GET /labs/temp98/", "temp98"},
+					  {"GET /labs/user/", "user"}
+					 ]
+					}
+			       ]).
+
+-define(Aws_file_lab_id_regexp_list, [    
+					  {"anthropology-iitg.virtual-labs.ac.in-access_log", [{".", "anthropology"}]},
+					  {"bmi-iitr.virtual-labs.ac.in-access_log", [{".", "bmi"}]},
+					  {"bmsip-iitr.virtual-labs.ac.in-access_log", [{".", "bmsip"}]},
+					  {"bmsp-coep.virtual-labs.ac.in-access_log", [{".", "bmsp"}]},
+					  {"bsa-iiith.virtual-labs.ac.in-access_log", [{".", "bsa"}]},
+					  {"ccnsb06-iiith.virtual-labs.ac.in-access_log", [{".", "ccnsb06"}]},
+					  {"cds-iiith.virtual-labs.ac.in-access_log", [{".", "cds"}]},
+					  {"ce-iitb.virtual-labs.ac.in-access_log", [{".", "ce"}]},
+					  {"cl-iiith.virtual-labs.ac.in-access_log", [{".", "cl"}]},
+					  {"csc-iiith.virtual-labs.ac.in-access_log", [{".", "csc"}]},
+					  {"cse01-iiith.virtual-labs.ac.in-access_log", [{".", "cse01"}]},
+					  {"cse02-iiith.virtual-labs.ac.in-access_log", [{".", "cse02"}]},
+					  {"cse11-iiith.virtual-labs.ac.in-access_log", [{".", "cse11"}]},
+					  {"cse14-iiith.virtual-labs.ac.in-access_log", [{".", "cse14"}]},
+					  {"cse15-iiith.virtual-labs.ac.in-access_log", [{".", "cse15"}]},
+					  {"cse18-iiith.virtual-labs.ac.in-access_log", [{".", "cse18"}]},
+					  {"cse19-iiith.virtual-labs.ac.in-access_log", [{".", "cse19"}]},
+					  {"cse20-iiith.virtual-labs.ac.in-access_log", [{".", "cse20"}]},
+					  {"cse22-iiith.virtual-labs.ac.in-access_log", [{".", "cse22"}]},
+					  {"cse29-iiith.virtual-labs.ac.in-access_log", [{".", "cse29"}]},
+					  {"cp-iiith.virtual-labs.ac.in-access_log", [{".", "cse02"}]}, %Same as cse02
+					  {"ee-iitb.virtual-labs.ac.in-access_log", [{".", "ee"}]},
+					  {"eem-iitd.virtual-labs.ac.in-access_log", [{".", "eem"}]},
+					  {"eerc01-iiith.virtual-labs.ac.in-access_log", [{".", "eerc01"}]},
+					  {"eerc03-iiith.virtual-labs.ac.in-access_log", [{".", "eerc03"}]},
+					  {"em-coep.virtual-labs.ac.in-access_log", [{".", "em"}]},
+					  {"em-iitr.virtual-labs.ac.in-access_log", [{".", "em"}]},
+					  {"emt-iiith.virtual-labs.ac.in-access_log", [{".", "emt"}]},
+					  {"ergonomics-iitg.virtual-labs.ac.in-access_log", [{".", "ergonomics"}]},
+					  {"fab-coep.virtual-labs.ac.in-access_log", [{".", "fab"}]},
+					  {"fm-nitk.virtual-labs.ac.in-access_log", [{".", "fm"}]},
+					  {"ge-iiith.virtual-labs.ac.in-access_log", [{".", "ge"}]},
+					  {"he-coep.virtual-labs.ac.in-access_log", [{".", "he"}]},
+					  {"ial-coep.virtual-labs.ac.in-access_log", [{".", "ial"}]},
+					  {"ied-nitk.virtual-labs.ac.in-access_log", [{".", "ied"}]},
+					  {"mas-iiith.virtual-labs.ac.in-access_log", [{".", "mas"}]},
+					  {"mdmv-nitk.virtual-labs.ac.in-access_log", [{".", "mdmv"}]},
+					  {"mfs-iiith.virtual-labs.ac.in-access_log", [{".", "mfs"}]},
+					  {"mi-iiith.virtual-labs.ac.in-access_log", [{".", "mi"}]},
+					  {"mm-coep.virtual-labs.ac.in-access_log", [{".", "mm"}]},
+					  {"mm-nitk.virtual-labs.ac.in-access_log", [{".", "mm"}]},
+					  {"mrmsmtbs-iitk.virtual-labs.ac.in-access_log", [{".", "mrmsmtbs"}]},
+					  {"msvs-dei.virtual-labs.ac.in-access_log", [{".", "msvs"}]},
+					  {"nlp-iiith.virtual-labs.ac.in-access_log", [{".", "nlp"}]},
+					  {"outreach.virtual-labs.ac.in-access_log", [{".", "outreach"}]},
+					  {"pe-iitb.virtual-labs.ac.in-access_log", [{".", "pe"}]},
+					  {"pev-au.virtual-labs.ac.in-access_log", [{".", "pev"}]},
+					  {"pevii-au.virtual-labs.ac.in-access_log", [{".", "pevii"}]},
+					  {"phy14-iiith.virtual-labs.ac.in-access_log", [{".", "phy14"}]},
+					  {"plc-coep.virtual-labs.ac.in-access_log", [{".", "plc"}]},
+					  {"ps-iiith.virtual-labs.ac.in-access_log", [{".", "ps"}]},
+					  {"qnm-iitd.virtual-labs.ac.in-access_log", [{".", "qnm"}]},
+					  {"sa-nitk.virtual-labs.ac.in-access_log", [{".", "sa"}]},
+					  {"sd-iiith.virtual-labs.ac.in-access_log", [{".", "sd"}]},
+					  {"sl-coep.virtual-labs.ac.in-access_log", [{".", "sl"}]},
+					  {"sl-iitr.virtual-labs.ac.in-access_log", [{".", "sl"}]},
+					  {"smfe-iiith.virtual-labs.ac.in-access_log", [{".", "smfe"}]},
+					  {"sm-nitk.virtual-labs.ac.in-access_log", [{".", "sm"}]},
+					  {"ssl-iitg.virtual-labs.ac.in-access_log", [{".", "ssl"}]},
+					  {"ssp-iiith.virtual-labs.ac.in-access_log", [{".", "ssp"}]},
+					  {"ufls-iitk.virtual-labs.ac.in-access_log", [{".", "ufls"}]},
+					  {"uorepc-nitk.virtual-labs.ac.in-access_log", [{".", "uorepc"}]},
+					  {"va-coep.virtual-labs.ac.in-access_log", [{".", "va"}]},
+					  {"va-iitk.virtual-labs.ac.in-access_log", [{".", "va"}]},
+					  {"vcal-iitk.virtual-labs.ac.in-access_log", [{".", "vcal"}]},
+					  {"vc-dei.virtual-labs.ac.in-access_log", [{".", "vc"}]},
+					  {"ve-iitg.virtual-labs.ac.in-access_log", [{".", "ve"}]},
+					  {"vem-iitg.virtual-labs.ac.in-access_log", [{".", "vem"}]},
+					  {"vlae-iitk.virtual-labs.ac.in-access_log", [{".", "vlae"}]},
+					  {"vp-dei.virtual-labs.ac.in-access_log", [{".", "vpvp"}]},
+					  {"vssd-iitd.virtual-labs.ac.in-access_log", [{".", "vssd"}]}
+				     ]
+       ).
+
+					
+-define(Lab_id_exp_info_list, [
+			       {"cse01",
+				[
+				 {"Number Systems", "/exp1/index.php", "/exp1/index.php.*section=Simulation.*"},
+				 {"Expression Evaluation", "/exp2/index.php", "/exp2/index.php.*section=Simulation.*"},
+				 {"Sorting Algorithm", "/exp3/index.php", "/exp3/index.php.*section=Simulation.*"},
+				 {"Polynomial Operations", "/exp4/index.php", "/exp4/index.php.*section=Simulation.*"},
+				 {"Search Trees", "/exp5/index.php", "/exp5/index.php.*section=Simulation.*"},
+				 {"Expression Trees", "/exp6/index.php", "/exp6/index.php.*section=Simulation.*"},
+				 {"Graph Traversals", "/exp7/index.php", "/exp7/index.php.*section=Simulation.*"},
+				 {"Shortest Paths in Graphs", "/exp8/index.php", "/exp8/index.php.*section=Simulation.*"},
+				 {"Spanning Trees in Graphs", "/exp9/index.php", "/exp9/index.php.*section=Simulation.*"}
+				]
+			       },
+			       {"cse02",
+				[
+				 {"Numerical Integration ( Area Under Curve )", "/exp1/index.html", "/exp1/simulation/index.html"},
+				 {"Functions", "/exp2/index.html", "/exp2/simulation/index.html"},
+				 {"Loops (Factorial Calculation)", "/exp3/index.html", "/exp3/simulation/index.html"},
+				 {"Arrays", "/exp4/index.html", "/exp4/simulation/index.html"},
+				 {"Structure", "/exp5/index.html", "/exp5/simulation/index.html"},
+				 {"Basic Control Flow", "/exp6/index.html", "/exp6/simulation/index.html"},
+				 {"Strings", "/exp7/index.html", "/exp7/simulation/index.html"},
+				 {"Pointers", "/exp8/index.html", "/exp8/simulation/index.html"},
+				 {"Recursion", "/exp9/index.html", "/exp9/simulation/index.html"},
+				 {"Expression Evaluation", "/exp10/index.html", "/exp10/simulation/index.html"}
+				]
+			       },
+			       {"cse15",
+				[
+				 {"Adder Circuit", "/exp1/index.php", "/exp1/exp1.html"},
+				 {"Multiplexer", "/exp2/index.php", "/exp2/index.php.*section=Experiment.*"},
+				 {"Decoder with 7 segment display", "/exp3/index.php", "/exp3/index.php.*section=Experiment.*"},
+				 {"ALU with function", "/exp4/index.php", "/exp4/index.php.*section=Experiment.*"},
+				 {"Comparator", "/exp5/index.php", "/exp5/index.php.*section=Experiment.*"},
+				 {"JK Flip-Flop", "/exp6/index.php", "/exp6/index.php.*section=Experiment.*"},
+				 {"Registers", "/exp7/index.php", "/exp7/index.php.*section=Experiment.*"},
+				 {"Counters", "/exp8/index.php", "/exp8/index.php.*section=Experiment.*"},
+				 {"Multipliers", "/exp9/index.php", "/exp9/index.php.*section=Experiment.*"},
+				 {"State Diagrams", "/exp10/index.php", "/exp10/index.php.*section=Experiment.*"}
+				]
+			       },
+			       %%TODO "cse19"
+			       {"cse18",
+				[
+				 {"Points & Co-ordinate Systems", "/exp1/index.php", "/exp1/index.php.*section=Experiment.*"},
+				 {"Transformations: Translation", "/exp2/index.php", "/exp2/index.php.*section=Experiment.*"},
+				 {"Transformations: Rotation", "/exp3/index.php", "/exp3/index.php.*section=Experiment.*"},
+				 {"Transformations: Scaling", "/exp4/index.php", "/exp4/index.php.*section=Experiment.*"},
+				 {"Hierarchical Transformations: 2D Demo", "/exp5a/index.php", "/exp5a/index.php.*section=Experiment.*"},
+				 {"Hierarchical Transformations: 3D Articulated Arm", "/exp5b/index.php", "/exp5b/index.php.*section=Experiment.*"},
+				 {"Projections and Cameras", "/exp6/index.php", "/exp6/index.php.*section=Experiment.*"},
+				 {"Clipping : Line", "/exp7/index.php", "/exp7/index.php.*section=Experiment.*"},
+				 {"Clipping : Polygon", "/exp8/index.php", "/exp8/index.php.*section=Experiment.*"},
+				 {"Rasterization : Line", "/exp9/index.php", "/exp9/index.php.*section=Experiment.*"},
+				 {"Rasterization : Polygon", "/exp10/index.php", "/exp10/index.php.*section=Experiment.*"}
+				]
+			       },
+			       {"cse20",
+				[
+				 {"Feature Representation", "/exp1/index.php", "/exp1/index.php.*section=Experiment.*"},
+				 {"Mean and Covariance", "/exp2/index.php", "/exp2/index.php.*section=Experiment.*"},
+				 {"Linear Perceptron", "/exp3/index.php", "/exp3/index.php.*section=Experiment.*"},
+				 {"Generating Random Numbers", "/exp4/index.php", "/exp4/index.php.*section=Experiment.*"},
+				 {"Bayesian Classification", "/exp5/index.php", "/exp5/index.php.*section=Experiment.*"},
+				 {"MLE: Learning the Classifier from Data", "/exp6/index.php", "/exp6/index.php.*section=Experiment.*"},
+				 {"From 2-class to multiclass", "/exp7/index.php", "/exp7/index.php.*section=Experiment.*"},
+				 {"Data Clustering: K-means, MST based", "/exp10/index.php", "/exp10/index.php.*section=Experiment.*"}
+				]
+			       },
+			       {"emt",
+				[
+				 {"Coulomb's Law", "/Experiment.php.*code=C001", "/Experiment.php?tid.*code=C001"},
+				 {"Electrostatic Fields I", "/Experiment.php.*code=C002", "/Experiment.php?tid.*code=C002"},
+				 {"Electrostatic Fields II", "/Experiment.php.*code=C003", "/Experiment.php?tid.*code=C003"},
+				 {"Boundary Conditions", "/Experiment.php.*code=C004", "/Experiment.php?tid.*code=C004"},
+				 {"Electric Field in Material Space", "/Experiment.php.*code=C005", "/Experiment.php?tid.*code=C005"},
+				 {"Magnetostatic Fields", "/Experiment.php.*code=C006", "/Experiment.php?tid.*code=C006"},
+				 {"Application of Faraday's Laws", "/Experiment.php.*code=C007", "/Experiment.php?tid.*code=C007"},
+				 {"Wave Propagation", "/Experiment.php.*code=C008", "/Experiment.php?tid.*code=C008"},
+				 {"Distance and Altitude Measurement", "/Experiment.php.*code=C009", "/Experiment.php?tid.*code=C009"},
+				 {"Plane Waves - Reflection and Refraction", "/Experiment.php.*code=C010", "/Experiment.php?tid.*code=C010"}
+				]
+			       },
+			       {"cse29",
+				[
+				 {"Breaking the Shift Cipher", "/exp1/index.php", "/exp1/index.php.*section=Experiment.*"},
+				 {"Breaking the Mono-alphabetic Substitution Cipher", "/exp2/index.php", "/exp2/index.php.*section=Experiment.*"},
+				 {"Vernam Cipher and Perfect secrecy", "/exp3/index.php", "/exp3/index.php.*section=Experiment.*"},
+				 {"Message Authentication Code (CBC-MAC)", "/exp5/index.php", "/exp5/index.php.*section=Experiment.*"},
+				 {"", "/exp6/index.php", "/exp6/index.php.*section=Experiment.*"},
+				 {"", "/exp7/index.php", "/exp7/index.php.*section=Experiment.*"},
+				 {"", "/exp8/index.php", "/exp8/index.php.*section=Experiment.*"},
+				 {"", "/exp9/index.php", "/exp9/index.php.*section=Experiment.*"},
+				 {"", "/exp10/index.php", "/exp10/index.php.*section=Experiment.*"},
+				 {"", "/exp11/index.php", "/exp11/index.php.*section=Experiment.*"}
+				]
+			       }
+
+				 
+
+			      ]).
+				 
+-define(Base2_lab_id_exp_info_list, ?Lab_id_exp_info_list).
+
+-define(Aws_lab_id_exp_info_list, ?Lab_id_exp_info_list).
+
+-define(Base2_data_folder, "base2-data").
+
+-define(Base2_process_folder, "base2-process").
+
+-define(Aws_data_folder, "aws-data").
+
+-define(Aws_process_folder, "aws-process").
+
+-define(Output_folder, "output").
+
+-define(Bot_regular_expression, "bot|Anonymouse.org|nagios").
+
+-define(Non_visit_extension_list, [
+				   ".class",
+				   ".css",
+				   ".gif",
+				   ".ico",
+				   ".jar",
+				   ".jpeg",
+				   ".jpg",
+				   ".js", 
+				   ".mp3",
+				   ".pdf",
+				   ".png",
+				   ".svg",
+				   ".swf",
+				   ".txt",
+				   ".wav"
+				  ]).
+
+-define(Lab_total_file_name, "lab_total.txt").
+
+-define(All_total_file_name, "all_total.txt").
+
+
+%%% Internal records and variables.  Ideally there should be no need
+%%% for a person to change this.
+-record(file_lines, {name, total_lines=0, processed_lines=0, new_lines=0}).
+
+-define(Line_count_file, "line_count.txt").
+
+-define(Lab_stats_file, "lab-stats.txt").
+
+-define(Bot_remove_temp_file, "bot_remove_temp.txt").
+
+-define(Non_http_ok_remove_temp_file, "non_http_ok_remove_temp.txt").
+
+-define(Non_visit_remove_temp_file, "non_visit_remove_temp.txt").
+
+-record(lab_stats, {name, month, year, hits=0, visits=0, usage=0, exp_data=[]}).
+
+-record(exp_data, {name, exp_visit=0, sim_visit=0, usage=0}).
+
+
+%%% This function intializes for given data and process folders
+initialize(Data_folder, Process_folder) ->
+    %%Ensure that Data_folder exists
+    Command_data_1=lists:flatten(io_lib:format("mkdir -p ~s", [Data_folder])),
+    os:cmd(Command_data_1),
+
+    %%Ensure that Process_folder exists and is empty,
+    Command_process_1=lists:flatten(io_lib:format("rm -rf ~s; mkdir ~s", [Process_folder, Process_folder])),
+    os:cmd(Command_process_1),
+
+    %%Ensure that ?Line_count_file exists in Data folder
+    Command_data_2=lists:flatten(io_lib:format("touch ~s/~s", [Data_folder, ?Line_count_file])),
+    os:cmd(Command_data_2),
+
+    %%Ensure that ?Lab_stats_file exists in Data folder
+    Command_data_3=lists:flatten(io_lib:format("touch ~s/~s", [Data_folder, ?Lab_stats_file])),
+    os:cmd(Command_data_3),
+
+    ok.
+
+
+
+%%% This function takes folder name as argument and returns list of
+%%% all files in the folder after removing "." and ".."
+read_all_file_names(Folder1) ->
+    {ok, File_names} = file:list_dir(Folder1),
+    %% ?TRACE("~s: File_names for folder ~p are ~p~n", ["read_all_file_names/1", Folder1, File_names]),
+    File_names.
+
+
+%%% This function takes two lists of strings.  From first list it
+%%% removes all strings which do not begin with strings mentioned in
+%%% second list.
+%%%
+%%% The main purpose of this function is to filter file name list.
+%%% The second list would contain list of log files that are relevant.
+%%% Thus the function would return only the relevant file names at the
+%%% end.
+positive_filter(File_list, Positive_list) ->
+    positive_filter_helper(File_list, Positive_list, []).
+
+
+%%% Helper for positive_filter/2 function.
+positive_filter_helper(_, [], Result) -> Result;
+positive_filter_helper(File_list, Positive_list, Result) ->
+    Current_filter=hd(Positive_list),
+    {Pass, Fail} = lists:partition(fun(File_name) ->
+					   string:str(File_name, Current_filter) =:= 1
+				   end,
+				   File_list),
+    positive_filter_helper(Fail, tl(Positive_list), Result ++ Pass).
+
+
+
+%%% This function takes two lists of strings.  From first list it
+%%% keeps only strings which begin with strings mentioned in second
+%%% list.
+%%%
+%%% The main purpose of this function is to filter file name list.
+%%% The second list would contain list of log files that are unusable.
+%%% Thus the function would return only the usable file names at the
+%%% end.
+negative_filter(File_list, Negative_list) ->
+    negative_filter_helper(File_list, Negative_list).
+
+
+%%% Helper for negative_filter/2 function.
+negative_filter_helper(Result, []) -> Result;
+negative_filter_helper(File_list, Negative_list) ->
+    Current_filter=hd(Negative_list),
+    {_, Pass} = lists:partition(fun(File_name) ->
+					   string:str(File_name, Current_filter) =:= 1
+				   end,
+				   File_list),
+    negative_filter_helper(Pass, tl(Negative_list)).
+
+
+
+%%% Read list of file_lines records from line count file
+read_line_count(Count_file_path) ->
+    {ok, Line_count_1} = file:consult(Count_file_path),
+
+    _Test1=#file_lines{name="base2-http-logs/deploy.virtual-labs.ac.in-access_log", total_lines=1000},
+    %[Test1],
+
+    Line_count_1.
+
+
+%%% Go through list of given files present in given folder and
+%%% get number of lines in file_lines records
+get_line_count(_, []) -> [];
+get_line_count(Base_folder, File_list) ->
+    %%Prepare wc -l filename command to get number of lines in each file
+    File_path1=lists:map(fun(Name1) -> Base_folder ++ "/" ++ Name1 end, File_list),
+    File_paths=string:join(File_path1, " "),
+    Command1=lists:flatten(io_lib:format("wc -l ~s", [File_paths])),
+
+    %% Execute wc -l command to get result
+    Output1=os:cmd(Command1),
+    %% ?TRACE("~s: Command1 and Output1 are ~p and ~n~p~n", ["get_line_count/2", Command1, Output1]),
+
+    %% Process result and convert it into list of file_lines records
+    Line_count1=string:tokens(Output1, "\n"),
+    Line_count2=lists:map(fun(Line1) -> string:tokens(Line1, " ") end, Line_count1),
+    Line_count3=lists:map(fun([Line_count, File_path]) -> 
+				  #file_lines{name=File_path, total_lines=list_to_integer(Line_count)}
+			  end,
+			  Line_count2),
+
+    %% wc -l puts a total line at end, if there is more than one file
+    %% Remove count with name total, if present
+    Line_count4=lists:filter(fun(File_lines1) ->
+				     File_lines1#file_lines.name=/="total"
+			     end,
+			     Line_count3),
+    Line_count4.
+
+
+%%% This function takes two lists of file_lines records
+%%%   1. Total list
+%%%   2. Processed list
+%%% and returns file_lines records with total - processed = new_lines for each file.  
+%%% If a file was never processed before its processed_lines value is treated as 0.
+compare_count(Total_list, Process_list) ->
+    compare_count_helper(Total_list, Process_list, []).
+
+
+%%% Helper for compare_count/2 function
+compare_count_helper([], _, Result) -> Result;
+compare_count_helper(Total_list, Process_list, Result) ->
+    Current_file=hd(Total_list),
+    Current_file_name=Current_file#file_lines.name,
+    Current_file_total=Current_file#file_lines.total_lines,
+    case lists:keyfind(Current_file_name, 2, Process_list) of
+	%%If file was never processed before, processed_lines is 0
+	false -> 
+	    Updated_current_file=Current_file#file_lines{processed_lines=0, new_lines=Current_file_total},
+	    compare_count_helper(tl(Total_list), Process_list, [Updated_current_file | Result]);
+	Process_element ->
+	    Processed_count=Process_element#file_lines.total_lines,
+	    Updated_current_file=Current_file#file_lines{processed_lines=Processed_count, new_lines=Current_file_total-Processed_count},
+	    compare_count_helper(tl(Total_list), Process_list, [Updated_current_file | Result])
+    end.    
+
+
+%%% This function takes folder name and list of file_lines record It
+%%% then copies last new_lines for each file in list to the given
+%%% folder Finally it returns only the records for which at least one
+%%% line was copied
+copy_lines(Process_folder, File_line_list1) ->
+    File_line_list2=lists:filter(fun(File1) ->
+		      New_lines=File1#file_lines.new_lines,
+		      if 
+			   New_lines > 0 ->
+			      File_name=filename:basename(File1#file_lines.name),
+			      Command=lists:flatten(io_lib:format("tail -~p ~s > ~s", [New_lines, File1#file_lines.name, Process_folder ++ "/" ++ File_name])),
+			      os:cmd(Command),
+			      true;
+			  true ->
+			      %% ?TRACE("~s: Nothing changed in file ~p since last time ~n", ["copy_lines/2", File1#file_lines.name]),
+			      false
+		      end
+	      end,
+	      File_line_list1),
+    File_line_list2.
+
+
+%%% This function takes name of file and two lists of file_lines
+%%% records.  The first list is initial count read from the same file
+%%% on total_lines that were processed earlier.  The second list is
+%%% current total_lines, new_lines, etc.
+%%%  
+%%% Note that we are not simply overwriting older data with new data
+%%% so that if a log file was present earlier, but is no longer
+%%% present, we do not loose its processed_lines information.
+update_line_count(File1, Read_count1, Compare_count1) ->
+    update_line_count_helper(File1, Read_count1, Compare_count1, []).
+
+
+%%% Helper for update_line_count/3 function
+%%%
+%% When all read_counts and compare_counts have been processed
+%% write the result to File
+update_line_count_helper(File1, [], [], Result) ->
+    %%Write information in Erlang term format so that we can read it
+    %%with file:consult() easily
+    Data_lines=lists:map(fun(File_line1) -> io_lib:format("~p.~n", [File_line1]) end, Result),
+    file:write_file(File1, Data_lines);
+
+%%When all compare_counts are processed, add all the remaining
+%%read_counts to result and loop again
+update_line_count_helper(File1, Read_count1, [], Result) ->
+    update_line_count_helper(File1, [], [], Result ++ Read_count1);
+
+%%Loop through various compare_counts till it is empty
+%%Remove corresponding counts from read_count before looping
+update_line_count_helper(File1, Read_count1, Compare_count1, Result) ->
+    Current_file=hd(Compare_count1),
+    Current_file_name=Current_file#file_lines.name,
+    case lists:keytake(Current_file_name, 2, Read_count1) of
+	{value, _, Read_count2} ->
+	    update_line_count_helper(File1, Read_count2, tl(Compare_count1), [Current_file | Result]);
+	false ->
+	    update_line_count_helper(File1, Read_count1, tl(Compare_count1), [Current_file | Result])
+    end.
+
+
+
+
+
+%%% This function takes a process folder and list of file_lines.  It
+%%% then removes all bot related lines from all the given files from
+%%% process folder.
+remove_bot(Process_folder, File_list1) ->
+    lists:map(fun(File1) ->
+		      remove_bot_from_file(Process_folder, filename:basename(File1#file_lines.name))
+	      end,
+	      File_list1).
+
+%%% This function takes a folder-name and filename.  It then removes
+%%% all bot related lines from given file.  Bot related lines are
+%%% lines where browser indentification contains
+%%% ?Bot_regular_expression.  The removal creates a temporary file
+%%% named ?Bot_remove_temp_file in the process folder for removal
+%%% process.
+remove_bot_from_file(Process_folder, File1) ->
+    {ok, Input_file1} = file:open(Process_folder ++ "/" ++ File1, [read]),
+    {ok, Output_file1} = file:open(Process_folder ++ "/" ++ ?Bot_remove_temp_file, [write]),
+    RE1=?Bot_regular_expression,
+    {ok, MP1} = re:compile(RE1),
+    Count=remove_bot_from_file_helper(Process_folder, File1, Input_file1, Output_file1, MP1, 0),
+    file:close(Input_file1),
+    file:close(Output_file1),
+    Command1=lists:flatten(io_lib:format("mv -f ~s/~s ~s/~s", 
+					 [Process_folder,
+					  ?Bot_remove_temp_file,
+					  Process_folder,
+					  File1])),
+    os:cmd(Command1),
+    {File1, Count}.
+
+remove_bot_from_file_helper(Process_folder, File1, Input_file1, Output_file1, MP1, Count) ->
+    case file:read_line(Input_file1) of 
+	eof -> Count;
+	{ok, Data} ->
+	    Tokens=string:tokens(Data, "\""),
+
+	    %% Here we have assumed combined log format, as only in
+	    %% combined log format tokenizing by " will create 6th
+	    %% token with browser identification
+	    if 
+	    	length(Tokens) < 6 ->
+	    	    io:format("Troublesome line with not enough tokens is ~n~p~nIgnoring line as if it is bot related.~n", [Data]),
+		    remove_bot_from_file_helper(Process_folder, File1, Input_file1, Output_file1, MP1, Count+1);
+	    	true ->
+
+		    Browser=lists:nth(6, Tokens),
+		    case re:run(Browser, MP1) of
+			{match, _} ->
+			    remove_bot_from_file_helper(Process_folder, File1, Input_file1, Output_file1, MP1, Count+1);
+			nomatch ->
+			    file:write(Output_file1, Data),
+			    remove_bot_from_file_helper(Process_folder, File1, Input_file1, Output_file1, MP1, Count)
+		    end
+	    end
+    end.
+
+
+
+%%% This function takes a process folder and list of file_lines.  It
+%%% then removes all log lines where HTTP response code is not 2**.
+%%% This is done for all the given files from process folder.
+remove_non_http_ok(Process_folder, File_list1) ->
+    lists:map(fun(File1) ->
+		      remove_non_http_ok_from_file(Process_folder, filename:basename(File1#file_lines.name))
+	      end,
+	      File_list1).
+
+
+%%% This function takes a folder-name and filename.  It then removes
+%%% all log lines from given file where HTTP response code is not of
+%%% 2** form.  The removal creates a temporary file named
+%%% ?Non_http_ok_remove_temp_file in the process folder for removal process.
+remove_non_http_ok_from_file(Process_folder, File1) ->
+    {ok, Input_file1} = file:open(Process_folder ++ "/" ++ File1, [read]),
+    {ok, Output_file1} = file:open(Process_folder ++ "/" ++ ?Non_http_ok_remove_temp_file, [write]),
+    Count=remove_non_http_ok_from_file_helper(Process_folder, File1, Input_file1, Output_file1, 0),
+    file:close(Input_file1),
+    file:close(Output_file1),
+    Command1=lists:flatten(io_lib:format("mv -f ~s/~s ~s/~s", 
+					 [Process_folder,
+					  ?Non_http_ok_remove_temp_file,
+					  Process_folder,
+					  File1])),
+    os:cmd(Command1),
+    {File1, Count}.
+
+remove_non_http_ok_from_file_helper(Process_folder, File1, Input_file1, Output_file1, Count) ->
+    case file:read_line(Input_file1) of 
+	eof -> Count;
+	{ok, Data} ->
+	    Tokens=string:tokens(Data, " "),
+	    Status_code=lists:nth(9, Tokens),
+	    First_character=lists:nth(1, Status_code),
+	    if
+		First_character =/= $2 ->
+		    remove_non_http_ok_from_file_helper(Process_folder, File1, Input_file1, Output_file1, Count+1);
+		true ->
+		    file:write(Output_file1, Data),
+		    remove_non_http_ok_from_file_helper(Process_folder, File1, Input_file1, Output_file1, Count)
+	    end
+    end.
+
+
+
+
+
+%%% This function takes a list of file_lines records and separates logs present in each file lab-id wise.  
+%%% To determine which logs belong to which lab File_lab_id_regexp_list is used.
+%%% File_lab_id_regexp_list has following structure
+%%%
+%%%   [{"<file-name>", [{"<regexp>", "<labid>"}, ...]}, ... ]
+%%%
+%%% All processing happens in Process_folder.
+%%%
+split_logs_by_lab_id(Process_folder, File_list1, File_lab_id_regexp_list) ->
+    split_logs_by_lab_id_helper(Process_folder, File_list1, File_lab_id_regexp_list, []).
+
+
+%%% Helper for split_logs_by_lab_id/3 function
+split_logs_by_lab_id_helper(_, [], _File_lab_id_regexp_list, Result) -> lists:usort(Result);
+split_logs_by_lab_id_helper(Process_folder, File_list1, File_lab_id_regexp_list, Result) ->
+    Current_file=hd(File_list1),
+    Current_file_name=filename:basename(Current_file#file_lines.name),
+    [{_File_base_name, Reg_exp_list}] = lists:filter(
+					    fun({File1, _Regexp1}) ->
+						    string:str(Current_file_name, File1) =:= 1
+					    end,
+					    File_lab_id_regexp_list
+					   ),
+    Result2=split_logs_for_file_by_reg_exp(Process_folder, Current_file_name, Reg_exp_list),
+    split_logs_by_lab_id_helper(Process_folder, tl(File_list1), File_lab_id_regexp_list, Result ++ Result2).
+
+%%% Helper for split_logs_by_lab_id_helper/4 function
+split_logs_for_file_by_reg_exp(Process_folder, File1, Reg_exp_list) ->
+    Filenames=lists:map(fun({Regexp1, Labid1}) ->
+				Command1=lists:flatten(io_lib:format("grep '~s' ~s/~s >> ~s/~s", 
+								     [Regexp1,
+								      Process_folder,
+								      File1,
+								      Process_folder,
+								      Labid1])),
+				os:cmd(Command1),
+				Labid1
+			end,
+			Reg_exp_list),
+    Command2=lists:flatten(io_lib:format("rm -f ~s/~s", [Process_folder, File1])),
+    os:cmd(Command2),
+    lists:usort(Filenames).
+    
+				   
+
+%%% This function takes a process folder and list of file names.  It
+%%% then opens each of the files and splits its log lines month-wise
+%%% in process-folder in folder with same name at same location.
+%%% Since a file and folder with same full path cannot exist in
+%%% parallel, temporarily the folder name would be month-<filename>.
+%%% Once the file is processed and deleted the folder would be renamed
+%%% to <filename>.
+%%%
+split_month_wise(Process_folder, File_name_list) ->
+    split_month_wise_helper(Process_folder, File_name_list).
+
+%%% Helper for split_month_wise/2 function
+split_month_wise_helper(_, []) -> ok;
+split_month_wise_helper(Process_folder, File_name_list) ->
+    %% Create folder for month-wise files of given file
+    File1=hd(File_name_list),
+    Command1=lists:flatten(io_lib:format("mkdir -p ~s/month-~s", [Process_folder, File1])),
+    os:cmd(Command1),
+
+    %% Split file month-wise
+    {ok, Input1} = file:open(Process_folder ++ "/" ++ File1, [read]),
+    case file:read_line(Input1) of
+	eof ->
+	    ok;
+	{ok, Line1} ->
+	    Tokens1=string:tokens(Line1, " "),
+	    Date_token=lists:nth(4,Tokens1),
+	    Month=string:substr(Date_token, 5, 3),
+	    Year=string:substr(Date_token, 9, 4),
+	    {ok, Output1} = file:open(Process_folder ++ "/month-" ++ File1 ++ "/" ++ Year ++ "-" ++ Month, [append]),
+	    file:write(Output1, Line1),
+ 	    split_month_wise_helper_writer(Input1, Output1, Month, Year, Process_folder, File1)
+    end,
+    file:close(Input1),
+    
+    %%Remove input-file and rename month-wise folder
+    Command2=lists:flatten(io_lib:format("rm -f ~s/~s; mv ~s/month-~s ~s/~s",
+    					 [Process_folder, File1,
+    					  Process_folder, File1, 
+    					  Process_folder, File1])),
+    os:cmd(Command2),
+    split_month_wise_helper(Process_folder, tl(File_name_list)).
+
+
+%%% Helper for split_month_wise_helper/2 function
+split_month_wise_helper_writer(Input1, Output1, Month, Year, Process_folder, File1) ->
+    case file:read_line(Input1) of
+	eof ->
+	    file:close(Output1),
+	    ok;
+	{ok, Line1} ->
+	    Tokens1=string:tokens(Line1, " "),
+	    Date_token=lists:nth(4,Tokens1),
+	    Month2=string:substr(Date_token, 5, 3),
+	    Year2=string:substr(Date_token, 9, 4),
+	    if 
+		(Month =:= Month2) and (Year =:= Year2) ->
+		    file:write(Output1, Line1),
+		    split_month_wise_helper_writer(Input1, Output1, Month, Year, Process_folder, File1);
+		true ->
+		    file:close(Output1),
+		    {ok, Output2} = file:open(Process_folder ++ "/month-" ++ File1 ++ "/" ++ Year2 ++ "-" ++ Month2, [append]),
+		    file:write(Output2, Line1),
+		    split_month_wise_helper_writer(Input1, Output2, Month2, Year2, Process_folder, File1)
+	    end
+    end.
+    
+
+%%% Read list of {lab_name, lab_stat} records from given file
+read_lab_stats(Lab_stats_file) ->
+    {ok, Lab_stats1} = file:consult(Lab_stats_file),
+    Lab_stats1.
+
+
+
+
+%%% This function takes process folder and list of folder names.  Then
+%%% this function gets number of lines in each file inside each of the
+%%% folders.  This count is then returned to the caller as list of
+%%% {lab_name, lab_stats} records.
+get_hit_count(Process_folder, Lab_file_list) ->
+    lists:map(fun(Lab1) ->
+		      get_hit_count_for_lab(Process_folder, Lab1)
+	      end,
+	      Lab_file_list).
+
+
+%%% This function takes a folder name and a lab name.  Then it counts
+%%% number of lines for each file inside lab-folder and returns {name, list
+%%% of lab_stats records} for the lab.
+get_hit_count_for_lab(Process_folder, Lab1) ->
+    {ok, Files1} = file:list_dir(Process_folder ++ "/" ++ Lab1),
+    Line_count1 =  get_line_count(Process_folder ++ "/" ++ Lab1, Files1),    
+    Lab_stats2=lists:map(fun(Line_count_record1) ->
+				 File_name1=filename:basename(Line_count_record1#file_lines.name),
+				 File_line_count1=Line_count_record1#file_lines.total_lines,
+				 Year=string:substr(File_name1, 1, 4),
+				 Month=string:substr(File_name1, 6, 3),
+				 Lab_stats1=#lab_stats{name=Lab1, month=Month, year=Year,
+						       hits=File_line_count1},
+				 Lab_stats1
+			 end,
+			 Line_count1),
+    {Lab1, Lab_stats2}.
+
+
+
+
+%%% This function takes a process folder and a list of folder names as
+%%% input.  For all input folders inside process folder, all log lines
+%%% with request extension part of ?Non_visit_extension_list are
+%%% removed.  The remaining lines are saved in the same location with
+%%% same file name.
+%%%
+remove_non_visit(Process_folder, Lab_name_list) ->
+    lists:map(fun(Lab1) ->
+		      remove_non_visit_for_lab(Process_folder, Process_folder ++ "/" ++ Lab1)
+	      end,
+	      Lab_name_list).
+
+%%% Helper for remove_non_visit/2 function
+remove_non_visit_for_lab(Process_folder, Lab_folder) ->
+    {ok, Files1} = file:list_dir(Lab_folder),
+    lists:map(fun(File1) ->
+		      remove_non_visit_for_file(Process_folder, Lab_folder ++ "/" ++ File1)
+	      end,
+	      Files1).
+
+%%% Helper for remove_non_visit_for_lab/2 function
+remove_non_visit_for_file(Process_folder, File1) ->
+    {ok, Input1} = file:open(File1, [read]),
+    {ok, Output1} = file:open(Process_folder ++ "/" ++ ?Non_visit_remove_temp_file, [write]),
+    Lines_removed=remove_non_visit_lines_from_file(Input1, Output1, 0),
+    file:close(Input1),
+    file:close(Output1),
+    
+    Command1=lists:flatten(io_lib:format("mv ~s/~s ~s", [Process_folder, ?Non_visit_remove_temp_file, File1])),
+    os:cmd(Command1),
+    {File1, Lines_removed}.
+
+
+%%% Helper for remove_non_visit_for_file/2
+remove_non_visit_lines_from_file(Input1, Output1, Count) ->
+    case file:read_line(Input1) of
+	eof ->
+	    Count;
+	{ok, Data} ->
+	    Tokens=string:tokens(Data, " "),
+	    Request_uri=lists:nth(7, Tokens),
+	    File_extension=string:to_lower(filename:extension(Request_uri)),
+
+	    Non_visit=lists:member(File_extension, ?Non_visit_extension_list),
+	    if 
+		Non_visit ->
+		    remove_non_visit_lines_from_file(Input1, Output1, Count+1);
+		true ->
+		    file:write(Output1, Data),
+		    remove_non_visit_lines_from_file(Input1, Output1, Count)
+	    end
+    end.	
+
+
+
+
+%%% This function takes process folder and list of folder names.  Then
+%%% this function gets number of lines in each file inside each of the
+%%% folders.  This count is then returned to the caller as list of
+%%% {lab_name, lab_stats} records.
+get_visit_count(Process_folder, Lab_file_list) ->
+    lists:map(fun(Lab1) ->
+		      get_visit_count_for_lab(Process_folder, Lab1)
+	      end,
+	      Lab_file_list).
+
+
+%%% This function takes a folder name and a lab name.  Then it counts
+%%% number of lines for each file inside lab-folder and returns {name, list
+%%% of lab_stats records} for the lab.
+get_visit_count_for_lab(Process_folder, Lab1) ->
+    {ok, Files1} = file:list_dir(Process_folder ++ "/" ++ Lab1),
+    Line_count1 =  get_line_count(Process_folder ++ "/" ++ Lab1, Files1),    
+    Lab_stats2=lists:map(fun(Line_count_record1) ->
+				 File_name1=filename:basename(Line_count_record1#file_lines.name),
+				 File_line_count1=Line_count_record1#file_lines.total_lines,
+				 Year=string:substr(File_name1, 1, 4),
+				 Month=string:substr(File_name1, 6, 3),
+				 Lab_stats1=#lab_stats{name=Lab1, month=Month, year=Year,
+						       visits=File_line_count1},
+				 Lab_stats1
+			 end,
+			 Line_count1),
+    {Lab1, Lab_stats2}.
+
+
+
+
+%%% This function takes three arguments a process folder, a list of
+%%% folder names (lab-names) and a list containing information about
+%%% each experiment for each lab.  
+%%%
+%%% This function then processes each file (month-wise) inside each
+%%% lab folder and for each experiment gets usage of experiment
+%%% visits.  This information is returned as list of {Lab_name, list
+%%% of lab_stats records} where each lab_stats records exp_data is
+%%% populated with 'list of exp_data' records.  The overall lab_stats
+%%% record usage is also populated with total from all exp_data
+%%% records appropriately.
+count_experiment_usage(Process_folder, Lab_file_list, Lab_exp_info_list) ->
+    count_experiment_usage_helper(Process_folder, Lab_file_list, Lab_exp_info_list, []).
+
+
+%%% Helper for count_experiment_usage/3 function
+count_experiment_usage_helper(_Process_folder, [], _Lab_exp_info_list, Result) -> Result;
+count_experiment_usage_helper(Process_folder, Lab_file_list, Lab_exp_info_list, Result) -> 
+    Current_lab=hd(Lab_file_list),
+    case lists:keyfind(Current_lab, 1, Lab_exp_info_list) of
+	false ->
+	    io:format("Do not have experiment information for lab ~p.~n", [Current_lab]),
+	    count_experiment_usage_helper(Process_folder, tl(Lab_file_list), Lab_exp_info_list, Result);
+	{Current_lab, Experiment_info} ->
+	    Lab_exp_usage1 = count_experiment_usage_for_lab(Process_folder, Current_lab, Experiment_info),
+	    count_experiment_usage_helper(Process_folder, tl(Lab_file_list), Lab_exp_info_list, [Lab_exp_usage1 | Result])
+    end.
+		
+%%% Helper for count_experiment_usage_for_lab function.  The function
+%%% returns {Lab_name, list of Lab_stats records}.
+count_experiment_usage_for_lab(Process_folder, Lab1, Experiment_info) ->
+    {ok, Files1} = file:list_dir(Process_folder ++ "/" ++ Lab1),
+    Lab_exp_usage1 = lists:map(fun(File1) ->
+				       count_experiment_usage_for_lab_for_month(Process_folder, Lab1, File1, Experiment_info)
+			       end,
+			       Files1),
+    {Lab1, Lab_exp_usage1}.
+    
+
+%%% Helper for count_experiment_usage_for_lab/3 function.  This
+%%% function returns a single lab_stat record with exp_data populated
+%%% with 'list of exp_data' records for the given month.
+count_experiment_usage_for_lab_for_month(Process_folder, Lab1, File1, Experiment_info) ->
+    Lab_year=string:substr(File1, 1, 4),
+    Lab_month=string:substr(File1, 6, 3),
+    Lab_exp_data=lists:map(fun(Experiment1) ->
+				   get_experiment_usage_for_lab_for_month_helper(Process_folder, Lab1, File1, Experiment1)
+			   end,
+			   Experiment_info),
+    Usage=lists:foldl(fun(Exp_data1, Usage2) ->
+			      Usage3=Exp_data1#exp_data.usage,
+			      Usage2+Usage3
+		      end,
+		      0,
+		      Lab_exp_data),
+    #lab_stats{name=Lab1, year=Lab_year, month=Lab_month, usage=Usage, exp_data=Lab_exp_data}.
+    
+
+%%% Helper function for count_experiment_usage_for_lab_for_month/4.
+%%% This function returns a single exp_data record for given
+%%% experiment.  
+%%%
+%%% Fourth argument Experiment1 has structure similar to 
+%%%     {"Number Systems", "/exp1/index.php", "/exp1/index.php.*section=Simulation.*"}  
+%%%
+get_experiment_usage_for_lab_for_month_helper(Process_folder, Lab1, File1, Experiment1) ->
+    {Exp_name, Visit_regexp, Simul_regexp} = Experiment1,
+    {ok, Input1} = file:open(Process_folder ++ "/" ++ Lab1 ++ "/" ++ File1, [read]),
+    {ok, MP1} = re:compile(Visit_regexp),
+    {ok, MP2} = re:compile(Simul_regexp),
+    {Exp_visit, Sim_visit, Usage}=get_usage_from_file(Input1, MP1, MP2, []),
+    file:close(Input1),
+    #exp_data{name=Exp_name, exp_visit=Exp_visit, sim_visit=Sim_visit, usage=Usage}.
+
+
+%%% Helper for get_experiment_usage_for_lab_for_month_helper/4
+%%% function This function takes a file handler for input along with
+%%% two compiled regular expresssions.  It finally returns
+%%% {<experiment_visit>, <sim_visit>, <usage>} for the file for the
+%%% month.
+get_usage_from_file(Input1, MP1, MP2, Result) ->    
+    case file:read_line(Input1) of
+	eof ->
+	    get_usage_from_day_wise_ip_list(Result);
+
+	{ok, Data} ->
+	    Tokens=string:tokens(Data, " "),
+	    Request_ip=lists:nth(1, Tokens),
+	    Request_date1 = lists:nth(4, Tokens),
+	    Request_day1=string:substr(Request_date1, 2, 2),
+	    Request_uri=lists:nth(7, Tokens),
+	    case re:run(Request_uri, MP2) of
+		{match, _} ->
+		    Result2=update_day_ip_simulation_visit(Result, Request_day1, Request_ip),
+		    get_usage_from_file(Input1, MP1, MP2, Result2);
+		nomatch ->
+		    case re:run(Request_uri, MP1) of
+			{match, _} ->
+			    Result2=update_day_ip_experiment_visit(Result, Request_day1, Request_ip),
+			    get_usage_from_file(Input1, MP1, MP2, Result2);
+			nomatch ->
+			    get_usage_from_file(Input1, MP1, MP2, Result)
+		    end
+	    end
+    end.
+
+
+%%% This function takes a tuple containing list of {day,
+%%% theory_visit_ips, simulation_visit_ips}.  Here theory_visit_ips is
+%%% itself a list of IPs who visited theory page from given IP on the
+%%% given day.  Similarly, simulation_visit_ips is a list of IPs who
+%%% visited simulation page from given IP on the given day.  Day is
+%%% between "01" and "31" as per days of month.
+%%% 
+update_day_ip_simulation_visit(Result, Request_day1, Request_ip) ->
+    case lists:keyfind(Request_day1, 1, Result) of
+	{Request_day1, Theory_IPs, Sim_IPs} ->
+	    Sim_IPs2 = [Request_ip | Sim_IPs],
+	    New_day_tuple = {Request_day1, Theory_IPs, Sim_IPs2},
+	    Result2=lists:keyreplace(Request_day1, 1, Result, New_day_tuple),
+	    Result2;
+	false ->
+	    Result2=[{Request_day1, [], [Request_ip]} | Result],
+	    Result2
+    end.
+
+%%% Very similar to update_day_ip_simulation_visit/3 with difference
+%%% that instead of simulation visit this function updates experiment
+%%% (theory) visit information.
+update_day_ip_experiment_visit(Result, Request_day1, Request_ip) ->
+    case lists:keyfind(Request_day1, 1, Result) of
+	{Request_day1, Theory_IPs, Sim_IPs} ->
+	    Theory_IPs2 = [Request_ip | Theory_IPs],
+	    New_day_tuple = {Request_day1, Theory_IPs2, Sim_IPs},
+	    Result2=lists:keyreplace(Request_day1, 1, Result, New_day_tuple),
+	    Result2;
+	false ->
+	    Result2=[{Request_day1, [Request_ip], []} | Result],
+	    Result2
+    end.
+
+
+%%% Helper for get_usage_from_file/4 function.
+%%%
+%%% Day_wise_IP_address_list1 is 'list of {day, theory_visit_ips,
+%%% simulation_visit_ips}'.  Here theory_visit_ips is itself a list of
+%%% IPs who visited theory page from given IP on the given day.
+%%% Similarly, simulation_visit_ips is a list of IPs who visited
+%%% simulation page from given IP on the given day.  Day is between
+%%% "01" and "31" as per days of month.
+%%%
+%%% This function returns {<experiment_visit>, <sim_visit>, <usage>}
+%%% for the entire input list.  
+get_usage_from_day_wise_ip_list(Day_wise_IP_address_list1) ->
+    Count_list1 = lists:map(fun({_Day1, Theory_IPs, Sim_IPs}) ->
+				    Usage = get_usage_from_day_ips_list(Theory_IPs, Sim_IPs, 0),
+				    {length(Theory_IPs), length(Sim_IPs), Usage}
+			    end,
+			    Day_wise_IP_address_list1),
+    {Exp_visit3, Sim_visit3, Usage3} = lists:foldl
+					 (fun({Exp_visit, Sim_visit, Usage}, {Exp_visit2, Sim_visit2, Usage2}) ->
+						  {Exp_visit+Exp_visit2, Sim_visit+Sim_visit2, Usage+Usage2}
+					  end,
+					  {0, 0, 0},
+					  Count_list1
+					 ),
+    {Exp_visit3, Sim_visit3, Usage3}.
+
+%%% This function takes two lists and finds number of matching element
+%%% in the two lists.  The final count of matching elements is
+%%% returned.
+get_usage_from_day_ips_list([], _, Usage) -> Usage;
+get_usage_from_day_ips_list(Theory_IPs, Sim_IPs, Usage) ->
+    Current_ip=hd(Theory_IPs),
+    case lists:member(Current_ip, Sim_IPs) of
+	true ->
+	    Sim_IPs2 = Sim_IPs -- [Current_ip],
+	    get_usage_from_day_ips_list(tl(Theory_IPs), Sim_IPs2, Usage+1);
+	false ->
+	    get_usage_from_day_ips_list(tl(Theory_IPs), Sim_IPs, Usage)
+    end.
+    
+
+
+
+%%% This function takes file path and two lists of all_lab_stats.
+%%% 
+%%% This function creates a new third list of all_lab_stats after
+%%% adding various counts of both input lists.  This new list is
+%%% returned by function to caller.
+%%% 
+%%% The final output is also written to the file path given in argument
+%%% in erlang term format.
+update_count(Stats_file, Read_all_lab_stats1, Get_all_lab_stats1) ->
+    All_lab_stats2=update_count_helper(Read_all_lab_stats1, Get_all_lab_stats1),
+    Data_lines=lists:map(fun(Lab_stats1) -> io_lib:format("~p.~n", [Lab_stats1]) end, All_lab_stats2),
+    file:write_file(Stats_file, Data_lines),
+    All_lab_stats2.
+
+
+
+%%% This is helper for update_count/3 function
+update_count_helper(Read_all_lab_stats1, []) -> Read_all_lab_stats1;
+update_count_helper(Read_all_lab_stats1, Get_all_lab_stats1) ->
+    Get_lab_stats1=hd(Get_all_lab_stats1),
+    Read_all_lab_stats2=update_count_for_lab(Get_lab_stats1, Read_all_lab_stats1),
+    update_count_helper(Read_all_lab_stats2, tl(Get_all_lab_stats1)).
+    
+
+update_count_for_lab({Get_lab_name1, Get_lab_stats_list1}, Read_all_lab_stats1) ->
+    case lists:keyfind(Get_lab_name1, 1, Read_all_lab_stats1) of
+	false ->
+	    [{Get_lab_name1, Get_lab_stats_list1} | Read_all_lab_stats1];
+	{Get_lab_name1=Read_lab_name1, Read_lab_stats_list2} ->
+	    Lab_stat_list3=update_count_for_lab_helper(Get_lab_name1, Get_lab_stats_list1, Read_lab_stats_list2),
+	    All_lab_stats2=Read_all_lab_stats1--[{Read_lab_name1, Read_lab_stats_list2}],
+	    All_lab_stats3=All_lab_stats2++[{Get_lab_name1, Lab_stat_list3}],
+	    All_lab_stats3
+    end.
+
+update_count_for_lab_helper(_Lab_name, Get_lab_stat_list1, []) -> Get_lab_stat_list1;
+update_count_for_lab_helper(Lab_name, Get_lab_stat_list1, Read_lab_stat_list2) ->
+    Read_lab_stat_record1=hd(Read_lab_stat_list2),
+    Read_lab_month=Read_lab_stat_record1#lab_stats.month,
+    Read_lab_year=Read_lab_stat_record1#lab_stats.year,
+    Result = lists:filter(fun(Get_lab_stat_record2) ->
+				  (Get_lab_stat_record2#lab_stats.month=:=Read_lab_month) 
+				      and (Get_lab_stat_record2#lab_stats.year=:=Read_lab_year) 
+			  end,
+			  Get_lab_stat_list1),
+    case Result of 
+	[] ->
+	    update_count_for_lab_helper(Lab_name, [Read_lab_stat_record1 | Get_lab_stat_list1], tl(Read_lab_stat_list2));
+	[Get_lab_stat_record3] ->
+	    Additional_usage_count=Get_lab_stat_record3#lab_stats.usage,
+	    Old_usage_count=Read_lab_stat_record1#lab_stats.usage,
+
+	    New_exp_data_records=Get_lab_stat_record3#lab_stats.exp_data,
+	    Old_exp_data_records=Read_lab_stat_record1#lab_stats.exp_data,
+	    Combined_exp_data_records=merge_exp_data_lists(New_exp_data_records, Old_exp_data_records),
+
+	    Additional_visit_count=Get_lab_stat_record3#lab_stats.visits,
+	    Old_visit_count=Read_lab_stat_record1#lab_stats.visits,
+
+	    Additional_hit_count=Get_lab_stat_record3#lab_stats.hits,
+	    Old_hit_count=Read_lab_stat_record1#lab_stats.hits,
+
+	    Lab_stat_record4=Read_lab_stat_record1#lab_stats{
+			       hits=Old_hit_count + Additional_hit_count,
+			       usage=Old_usage_count + Additional_usage_count,
+			       exp_data=Combined_exp_data_records,
+			       visits=Old_visit_count + Additional_visit_count
+			      },
+	    Lab_stat_list3=Get_lab_stat_list1--[Get_lab_stat_record3],
+	    update_count_for_lab_helper(Lab_name, [Lab_stat_record4 | Lab_stat_list3], tl(Read_lab_stat_list2))
+    end.
+
+
+%%% This function takes two lists of exp_data records and merges them
+%% merge_exp_data_lists(New_exp_data_records, undefined) -> New_exp_data_records;
+merge_exp_data_lists([], Old_exp_data_records) -> Old_exp_data_records;
+merge_exp_data_lists(New_exp_data_records, Old_exp_data_records) ->
+    New_record1=hd(New_exp_data_records),
+    Exp_name=New_record1#exp_data.name,
+    case lists:keyfind(Exp_name, 2, Old_exp_data_records) of
+	false ->
+	    merge_exp_data_lists(tl(New_exp_data_records), [New_record1 | Old_exp_data_records]);
+	Old_record1 ->
+	    Total_exp_visit=New_record1#exp_data.exp_visit + Old_record1#exp_data.exp_visit,
+	    Total_sim_visit=New_record1#exp_data.sim_visit + Old_record1#exp_data.sim_visit,
+	    Total_usage=New_record1#exp_data.usage + Old_record1#exp_data.usage,
+	    New_exp_data_record=#exp_data{name=Exp_name, exp_visit=Total_exp_visit, sim_visit=Total_sim_visit, usage=Total_usage},
+	    Old_exp_data_records2 = Old_exp_data_records -- [Old_record1],
+	    merge_exp_data_lists(tl(New_exp_data_records), [New_exp_data_record | Old_exp_data_records2])
+    end.
+
+
+
+
+%%% This function calls various functions to process logs for Base2
+%%% cluster
+base2_main() ->
+    %%(STEP:initialize)
+    initialize(?Base2_data_folder, ?Base2_process_folder),
+    
+    %%(STEP:all_list)
+    File_list1=read_all_file_names(?Base2_log_folder_path),
+
+    %% %%(STEP:positive_filter)
+    File_list2=positive_filter(File_list1, ?Base2_relevant_file_names),
+    %% ?TRACE("~s: File_list after positive filter on base2 is ~n~p~n", ["base2_main/0", File_list2]),
+    
+    %%(STEP:negative_filter)
+    File_list3=negative_filter(File_list2, ?Base2_unusable_log_files),
+    %% ?TRACE("~s: File_list after negative filter on base2 is ~n~p~n", ["base2_main/0", File_list3]),
+    
+    %%(STEP:read_line_count)
+    Line_count_1=read_line_count(?Base2_data_folder ++ "/" ++ ?Line_count_file),
+    %% ?TRACE("~s: Line_count processed already is ~n~p~n", ["base2_main/0", Line_count_1]),
+
+    %%(STEP:get_line_count)
+    Line_count_2=get_line_count(?Base2_log_folder_path, File_list3),
+    %% ?TRACE("~s: Line_count of log files is ~n~p~n", ["base2_main/0", Line_count_2]),
+
+    %%(STEP:compare_count)
+    Line_count_3=compare_count(Line_count_2, Line_count_1),
+    %% ?TRACE("~s: Count of new lines in log files is ~n~p~n", ["base2_main/0", Line_count_3]),
+
+    %%(STEP:copy_lines)
+    Line_count_4=copy_lines(?Base2_process_folder, Line_count_3),
+    %% ?TRACE("~s: Number of lines copied in this iteration are ~n~p~n", ["base2_main/0", Line_count_4]),
+
+    %%(STEP:update_line_count)
+    update_line_count(?Base2_data_folder ++ "/" ++ ?Line_count_file, Line_count_1, Line_count_3),
+
+    %%(STEP:remove_bot)
+    Bot_line_count=remove_bot(?Base2_process_folder, Line_count_4),
+    %% ?TRACE("~s: Number of bot lines removed (among new_lines) are ~n~p~n", ["base2_main/0", Bot_line_count]),
+
+    %%(STEP:remove_non_http_ok)
+    Non_http_ok_line_count=remove_non_http_ok(?Base2_process_folder, Line_count_4),
+    %% ?TRACE("~s: Number of non-bot non_http_ok lines removed (among new_lines) are ~n~p~n", ["base2_main/0", Non_http_ok_line_count]),
+
+    %%(STEP:lab_id_log)
+    Lab_file_list=split_logs_by_lab_id(?Base2_process_folder, Line_count_4, ?Base2_file_lab_id_regexp_list),
+    %% ?TRACE("~s: Various files created for lab wise logs are ~n~p~n", ["base2_main/0", Lab_file_list]),
+
+    %%(STEP:month-wise)
+    split_month_wise(?Base2_process_folder, Lab_file_list),
+
+    %%(STEP:read_hit_count)
+    Read_all_lab_stat1 = read_lab_stats(?Base2_data_folder ++ "/" ++ ?Lab_stats_file),
+    %% ?TRACE("~s: lab-wise month-wise stats from previous analytics are ~n~p~n", ["base2_main/0", Read_all_lab_stat1]),
+    
+    %%(STEP:get_hit_count)
+    Get_all_lab_hit1 = get_hit_count(?Base2_process_folder, Lab_file_list),
+    %% ?TRACE("~s: lab-wise month-wise hit counts of new log lines are ~n~p~n", ["base2_main/0", Get_all_lab_hit1]),
+
+    %%(STEP:update_hit_count)
+    All_lab_stat2 = update_count(?Base2_data_folder ++ "/" ++ ?Lab_stats_file, Read_all_lab_stat1, Get_all_lab_hit1),
+    %% ?TRACE("~s: Hits updated lab-wise month-wise stats are ~n~p~n", ["base2_main/0", All_lab_stat2]),
+
+    %%(STEP:remove_non_visit)
+    Removed_non_visit1=remove_non_visit(?Base2_process_folder, Lab_file_list),
+    %% ?TRACE("~s: Non-visit lines removed file-wise are ~n~p~n", ["base2_main/0", Removed_non_visit1]),
+
+    %%(STEP:get_visit_count)
+    Get_all_lab_visit1 = get_visit_count(?Base2_process_folder, Lab_file_list),
+    %%?TRACE("~s: lab-wise month-wise visit counts of new log lines are ~n~p~n", ["base2_main/0", Get_all_lab_visit1]),
+
+    %%(STEP:update_visit_count)
+    All_lab_stat3 = update_count(?Base2_data_folder ++ "/" ++ ?Lab_stats_file, All_lab_stat2, Get_all_lab_visit1),
+    %% ?TRACE("~s: Visits updated lab-wise month-wise stats are ~n~p~n", ["base2_main/0", All_lab_stat3]),
+
+    %%(STEP:count_usage)
+    Count_all_lab_experiment_usage1 = count_experiment_usage(?Base2_process_folder, Lab_file_list, ?Base2_lab_id_exp_info_list),
+    %% ?TRACE("~s: Lab-wise month-wise experiment-wise experiment usage for new lines are ~n~p~n", ["base2_main/0", Count_all_lab_experiment_usage1]),
+
+    %%(STEP:update_usage)
+    Final_output1=update_count(?Base2_data_folder ++ "/" ++ ?Lab_stats_file, All_lab_stat3, Count_all_lab_experiment_usage1),
+    %% ?TRACE("~s: Final complete output is ~n~p~n", ["base2_main/0", Final_output1]),
+    
+    Final_output1.
+
+
+%%% This function calls various functions to process logs for AWS
+%%% cluster
+aws_main() ->
+    %%(STEP:initialize)
+    initialize(?Aws_data_folder, ?Aws_process_folder),
+    
+    %%(STEP:all_list)
+    File_list1=read_all_file_names(?Aws_log_folder_path),
+
+    %% %%(STEP:positive_filter)
+    File_list2=positive_filter(File_list1, ?Aws_relevant_file_names),
+    %% ?TRACE("~s: File_list after positive filter on base2 is ~n~p~n", ["aws_main/0", File_list2]),
+    
+    %%(STEP:negative_filter)
+    File_list3=negative_filter(File_list2, ?Aws_unusable_log_files),
+    %% ?TRACE("~s: File_list after negative filter on base2 is ~n~p~n", ["aws_main/0", File_list3]),
+    
+    %%(STEP:read_line_count)
+    Line_count_1=read_line_count(?Aws_data_folder ++ "/" ++ ?Line_count_file),
+    %% ?TRACE("~s: Line_count processed already is ~n~p~n", ["aws_main/0", Line_count_1]),
+
+    %%(STEP:get_line_count)
+    Line_count_2=get_line_count(?Aws_log_folder_path, File_list3),
+    %% ?TRACE("~s: Line_count of log files is ~n~p~n", ["aws_main/0", Line_count_2]),
+
+    %%(STEP:compare_count)
+    Line_count_3=compare_count(Line_count_2, Line_count_1),
+    %% ?TRACE("~s: Count of new lines in log files is ~n~p~n", ["aws_main/0", Line_count_3]),
+
+    %%(STEP:copy_lines)
+    Line_count_4=copy_lines(?Aws_process_folder, Line_count_3),
+    %% ?TRACE("~s: Number of lines copied in this iteration are ~n~p~n", ["aws_main/0", Line_count_4]),
+
+    %%(STEP:update_line_count)
+    update_line_count(?Aws_data_folder ++ "/" ++ ?Line_count_file, Line_count_1, Line_count_3),
+
+    %%(STEP:remove_bot)
+    Bot_line_count=remove_bot(?Aws_process_folder, Line_count_4),
+    %% ?TRACE("~s: Number of bot lines removed (among new_lines) are ~n~p~n", ["aws_main/0", Bot_line_count]),
+
+    %%(STEP:remove_non_http_ok)
+    Non_http_ok_line_count=remove_non_http_ok(?Aws_process_folder, Line_count_4),
+    %% ?TRACE("~s: Number of non-bot non_http_ok lines removed (among new_lines) are ~n~p~n", ["aws_main/0", Non_http_ok_line_count]),
+
+    %%(STEP:lab_id_log)
+    Lab_file_list=split_logs_by_lab_id(?Aws_process_folder, Line_count_4, ?Aws_file_lab_id_regexp_list),
+    %% ?TRACE("~s: Various files created for lab wise logs are ~n~p~n", ["aws_main/0", Lab_file_list]),
+
+    %%(STEP:month-wise)
+    split_month_wise(?Aws_process_folder, Lab_file_list),
+
+    %%(STEP:read_hit_count)
+    Read_all_lab_stat1 = read_lab_stats(?Aws_data_folder ++ "/" ++ ?Lab_stats_file),
+    %% ?TRACE("~s: lab-wise month-wise stats from previous analytics are ~n~p~n", ["aws_main/0", Read_all_lab_stat1]),
+    
+    %%(STEP:get_hit_count)
+    Get_all_lab_hit1 = get_hit_count(?Aws_process_folder, Lab_file_list),
+    %% ?TRACE("~s: lab-wise month-wise hit counts of new log lines are ~n~p~n", ["aws_main/0", Get_all_lab_hit1]),
+
+    %%(STEP:update_hit_count)
+    All_lab_stat2 = update_count(?Aws_data_folder ++ "/" ++ ?Lab_stats_file, Read_all_lab_stat1, Get_all_lab_hit1),
+    %% ?TRACE("~s: Hits updated lab-wise month-wise stats are ~n~p~n", ["aws_main/0", All_lab_stat2]),
+
+    %%(STEP:remove_non_visit)
+    Removed_non_visit1=remove_non_visit(?Aws_process_folder, Lab_file_list),
+    %% ?TRACE("~s: Non-visit lines removed file-wise are ~n~p~n", ["aws_main/0", Removed_non_visit1]),
+
+    %%(STEP:get_visit_count)
+    Get_all_lab_visit1 = get_visit_count(?Aws_process_folder, Lab_file_list),
+    %%?TRACE("~s: lab-wise month-wise visit counts of new log lines are ~n~p~n", ["aws_main/0", Get_all_lab_visit1]),
+
+    %%(STEP:update_visit_count)
+    All_lab_stat3 = update_count(?Aws_data_folder ++ "/" ++ ?Lab_stats_file, All_lab_stat2, Get_all_lab_visit1),
+    %% ?TRACE("~s: Visits updated lab-wise month-wise stats are ~n~p~n", ["aws_main/0", All_lab_stat3]),
+
+    %%(STEP:count_usage)
+    Count_all_lab_experiment_usage1 = count_experiment_usage(?Aws_process_folder, Lab_file_list, ?Base2_lab_id_exp_info_list),
+    %% ?TRACE("~s: Lab-wise month-wise experiment-wise experiment usage for new lines are ~n~p~n", ["aws_main/0", Count_all_lab_experiment_usage1]),
+
+    %%(STEP:update_usage)
+    Final_output1=update_count(?Aws_data_folder ++ "/" ++ ?Lab_stats_file, All_lab_stat3, Count_all_lab_experiment_usage1),
+    %% ?TRACE("~s: Final complete output is ~n~p~n", ["aws_main/0", Final_output1]),
+    
+    Final_output1.
+
+
+
+%%% This function takes list of {lab name, list of lab_stats} records
+%%% and then returns a list of {lab_name, total_hits, total_visits,
+%%% total_usage}.  
+%%%
+%%% The output is written to a Lab_total_file which is also received
+%%% as argument
+get_lab_totals(Lab_totals_file, All_lab_stats_list1) ->
+    %% Get total for a lab from all lab_stats records of the lab
+    All_totals=lists:map(fun({Lab1, Lab_stats_list1}) ->
+				 {Lab1, Hits2, Visits2, Usage2} 
+				     = lists:foldl(
+					 fun(Lab_stat_record1, {Lab1, Hits3, Visits3, Usage3}) ->
+						 Hits4=Lab_stat_record1#lab_stats.hits,
+						 Visits4=Lab_stat_record1#lab_stats.visits,
+						 Usage4=Lab_stat_record1#lab_stats.usage,
+						 {Lab1, Hits3+Hits4, Visits3+Visits4, Usage3+Usage4}
+					 end,
+					 {Lab1, 0, 0, 0},
+					 Lab_stats_list1
+					)
+			 end,
+			 All_lab_stats_list1),
+    
+    %% Write the final values to Lab_totals_file seperated by spaces
+    %% in non-erlang term format.
+    {ok, Output1} = file:open(Lab_totals_file, [write]),
+    lists:map(fun({Lab1, Hits1, Visits1, Usage1}) ->
+		      io:format(Output1, "~s ~p ~p ~p~n", [Lab1, Hits1, Visits1, Usage1])
+	      end,
+	      All_totals),
+    file:close(Output1),
+
+    All_totals.
+    
+
+
+get_all_total(All_total_file, Lab_totals) ->
+    %% Get total for all labs
+    All_total=lists:foldl(fun({Lab1, Hits1, Visits1, Usage1},  {Hits2, Visits2, Usage2}) ->
+				  {Hits1+Hits2, Visits1+Visits2, Usage1+Usage2}
+			  end,
+			  {0, 0, 0},
+			  Lab_totals
+			 ),
+    {Hits3, Visits3, Usage3} = All_total,
+
+    %% Write the final values to All_total_file seperated by spaces
+    %% in non-erlang term format.
+    {ok, Output1} = file:open(All_total_file, [write]),
+    io:format(Output1, "~p ~p ~p~n", [Hits3, Visits3, Usage3]),
+    file:close(Output1),
+    
+    All_total.
+    
+
+
+%%% This function calls various other functions to process logs of
+%%% various clusters
+main() ->
+    %%Various steps for each hosting platform
+    Base_final_output=base2_main(),
+    Aws_final_output=aws_main(),
+
+    %%Ensure that output folder exists and is empty
+    Command1=lists:flatten(io_lib:format("rm -rf ~s; mkdir -p ~s", [?Output_folder, ?Output_folder])),
+    os:cmd(Command1),
+    
+    %%(STEP: combine_platforms)
+    Final_output1=update_count(?Output_folder ++ "/" ++ ?Lab_stats_file, Aws_final_output, Base_final_output),
+    %% ?TRACE("~s: Final complete output is ~n~p~n", ["main/0", Final_output1]),
+    
+    %%(STEP: lab_totals)
+    Lab_totals=get_lab_totals(?Output_folder ++ "/" ++ ?Lab_total_file_name, Final_output1),
+    %% ?TRACE("~s: Final lab totals are ~n~p~n", ["main/0", Lab_totals]),
+
+    %%(STEP: all_total)
+    All_total=get_all_total(?Output_folder ++ "/" ++ ?All_total_file_name, Lab_totals),
+    %% ?TRACE("~s: All totals is ~n~p~n", ["main/0", All_total]),
+    
+    ok.
+#+END_SRC
+* COMMENT Display Analytics on Vlabs landing page
 #+BEGIN_SRC python :tangle all-total.txt
 cse01 1234 2345 3450
 cse02 2343 9979 8979
@@ -271,3 +2650,17 @@ if __name__ == '__main__':
    </body>
 </html>
 #+END_SRC
+
+* Processes
+** Installing erlang and cloning analytics sources
+   TODO
+** Configuring analytics program
+   TODO
+** Running analytics program from shell in background
+   TODO
+** Adding a new lab
+   TODO
+** Removing a lab
+   TODO
+** Re-running entire analytics program again for all logs
+   TODO
