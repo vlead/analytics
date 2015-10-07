@@ -908,6 +908,7 @@ TRACE {{2015,9,25},{15,5,11}} analytics:base2_main/0: File_list after negative f
 -define(Aws_log_folder_path, "aws-http-logs").
 %-define(Aws_log_folder_path, "test-logs").
 
+
 -define(Base2_relevant_file_names, [
 			      "deploy.virtual-labs.ac.in-access_log",
 			      "deploy.vlabs.ac.in-access_log",
@@ -1008,7 +1009,7 @@ TRACE {{2015,9,25},{15,5,11}} analytics:base2_main/0: File_list after negative f
 				  "vem-iitg.virtual-labs.ac.in-access_log",
 				  "vlae-iitk.virtual-labs.ac.in-access_log",
 				  "vp-dei.virtual-labs.ac.in-access_log",
-				  "vssd-iitd.virtual-labs.ac.in-access_log" 
+				  "vssd-iitd.virtual-labs.ac.in-access_log"
 				 ]).
 
 -define(Base2_unusable_log_files, [
@@ -1040,7 +1041,7 @@ TRACE {{2015,9,25},{15,5,11}} analytics:base2_main/0: File_list after negative f
 -define(Aws_unusable_log_files, []).
 
 -define(Base2_file_lab_id_regexp_list, [
-					{"music.virtual-labs.ac.in-access_log", 
+					{"music.virtual-labs.ac.in-access_log",
 					 [{".", "music"}]
 					},
 					{"aerospaceengg.virtual-labs.ac.in-access_log",
@@ -1216,7 +1217,7 @@ TRACE {{2015,9,25},{15,5,11}} analytics:base2_main/0: File_list after negative f
 					}
 			       ]).
 
--define(Aws_file_lab_id_regexp_list, [    
+-define(Aws_file_lab_id_regexp_list, [
 					  {"anthropology-iitg.virtual-labs.ac.in-access_log", [{".", "anthropology"}]},
 					  {"bmi-iitr.virtual-labs.ac.in-access_log", [{".", "bmi"}]},
 					  {"bmsip-iitr.virtual-labs.ac.in-access_log", [{".", "bmsip"}]},
@@ -1242,8 +1243,8 @@ TRACE {{2015,9,25},{15,5,11}} analytics:base2_main/0: File_list after negative f
 					  {"eem-iitd.virtual-labs.ac.in-access_log", [{".", "eem"}]},
 					  {"eerc01-iiith.virtual-labs.ac.in-access_log", [{".", "eerc01"}]},
 					  {"eerc03-iiith.virtual-labs.ac.in-access_log", [{".", "eerc03"}]},
-					  {"em-coep.virtual-labs.ac.in-access_log", [{".", "em"}]},
-					  {"em-iitr.virtual-labs.ac.in-access_log", [{".", "em"}]},
+					  {"em-coep.virtual-labs.ac.in-access_log", [{".", "em-coep"}]},
+					  {"em-iitr.virtual-labs.ac.in-access_log", [{".", "em-iitr"}]},
 					  {"emt-iiith.virtual-labs.ac.in-access_log", [{".", "emt"}]},
 					  {"ergonomics-iitg.virtual-labs.ac.in-access_log", [{".", "ergonomics"}]},
 					  {"fab-coep.virtual-labs.ac.in-access_log", [{".", "fab"}]},
@@ -1256,8 +1257,8 @@ TRACE {{2015,9,25},{15,5,11}} analytics:base2_main/0: File_list after negative f
 					  {"mdmv-nitk.virtual-labs.ac.in-access_log", [{".", "mdmv"}]},
 					  {"mfs-iiith.virtual-labs.ac.in-access_log", [{".", "mfs"}]},
 					  {"mi-iiith.virtual-labs.ac.in-access_log", [{".", "mi"}]},
-					  {"mm-coep.virtual-labs.ac.in-access_log", [{".", "mm"}]},
-					  {"mm-nitk.virtual-labs.ac.in-access_log", [{".", "mm"}]},
+					  {"mm-coep.virtual-labs.ac.in-access_log", [{".", "mm-coep"}]},
+					  {"mm-nitk.virtual-labs.ac.in-access_log", [{".", "mm-nitk"}]},
 					  {"mrmsmtbs-iitk.virtual-labs.ac.in-access_log", [{".", "mrmsmtbs"}]},
 					  {"msvs-dei.virtual-labs.ac.in-access_log", [{".", "msvs"}]},
 					  {"nlp-iiith.virtual-labs.ac.in-access_log", [{".", "nlp"}]},
@@ -1271,129 +1272,1288 @@ TRACE {{2015,9,25},{15,5,11}} analytics:base2_main/0: File_list after negative f
 					  {"qnm-iitd.virtual-labs.ac.in-access_log", [{".", "qnm"}]},
 					  {"sa-nitk.virtual-labs.ac.in-access_log", [{".", "sa"}]},
 					  {"sd-iiith.virtual-labs.ac.in-access_log", [{".", "sd"}]},
-					  {"sl-coep.virtual-labs.ac.in-access_log", [{".", "sl"}]},
-					  {"sl-iitr.virtual-labs.ac.in-access_log", [{".", "sl"}]},
+					  {"sl-coep.virtual-labs.ac.in-access_log", [{".", "sl-coep"}]},
+					  {"sl-iitr.virtual-labs.ac.in-access_log", [{".", "sl-iitr"}]},
 					  {"smfe-iiith.virtual-labs.ac.in-access_log", [{".", "smfe"}]},
 					  {"sm-nitk.virtual-labs.ac.in-access_log", [{".", "sm"}]},
 					  {"ssl-iitg.virtual-labs.ac.in-access_log", [{".", "ssl"}]},
 					  {"ssp-iiith.virtual-labs.ac.in-access_log", [{".", "ssp"}]},
 					  {"ufls-iitk.virtual-labs.ac.in-access_log", [{".", "ufls"}]},
 					  {"uorepc-nitk.virtual-labs.ac.in-access_log", [{".", "uorepc"}]},
-					  {"va-coep.virtual-labs.ac.in-access_log", [{".", "va"}]},
-					  {"va-iitk.virtual-labs.ac.in-access_log", [{".", "va"}]},
+					  {"va-coep.virtual-labs.ac.in-access_log", [{".", "va-coep"}]},
+					  {"va-iitk.virtual-labs.ac.in-access_log", [{".", "va-iitk"}]},
 					  {"vcal-iitk.virtual-labs.ac.in-access_log", [{".", "vcal"}]},
 					  {"vc-dei.virtual-labs.ac.in-access_log", [{".", "vc"}]},
 					  {"ve-iitg.virtual-labs.ac.in-access_log", [{".", "ve"}]},
 					  {"vem-iitg.virtual-labs.ac.in-access_log", [{".", "vem"}]},
 					  {"vlae-iitk.virtual-labs.ac.in-access_log", [{".", "vlae"}]},
-					  {"vp-dei.virtual-labs.ac.in-access_log", [{".", "vpvp"}]},
+					  {"vp-dei.virtual-labs.ac.in-access_log", [{".", "vp"}]},
 					  {"vssd-iitd.virtual-labs.ac.in-access_log", [{".", "vssd"}]}
 				     ]
        ).
 
-					
+
 -define(Lab_id_exp_info_list, [
 			       {"cse01",
 				[
-				 {"Number Systems", "/exp1/index.php", "/exp1/index.php.*section=Simulation.*"},
-				 {"Expression Evaluation", "/exp2/index.php", "/exp2/index.php.*section=Simulation.*"},
-				 {"Sorting Algorithm", "/exp3/index.php", "/exp3/index.php.*section=Simulation.*"},
-				 {"Polynomial Operations", "/exp4/index.php", "/exp4/index.php.*section=Simulation.*"},
-				 {"Search Trees", "/exp5/index.php", "/exp5/index.php.*section=Simulation.*"},
-				 {"Expression Trees", "/exp6/index.php", "/exp6/index.php.*section=Simulation.*"},
-				 {"Graph Traversals", "/exp7/index.php", "/exp7/index.php.*section=Simulation.*"},
-				 {"Shortest Paths in Graphs", "/exp8/index.php", "/exp8/index.php.*section=Simulation.*"},
-				 {"Spanning Trees in Graphs", "/exp9/index.php", "/exp9/index.php.*section=Simulation.*"}
+				 {"Number Systems", "/exp1/index.php", "/exp1/UnarySystem.*|/exp1/RomanSystem.*| /exp1/BinarySystem.*"},
+				 {"Expression Evaluation", "/exp2/index.php", "/exp2/calc3.*"},
+				 {"Sorting Algorithm", "/exp3/index.php", "/exp3/quick.*|/exp3/merge.*|/exp3/insertion.*"},
+				 {"Polynomial Operations", "/exp4/index.php", "/exp4/polynomial.*"},
+				 {"Search Trees", "/exp5/index.php", "/exp5/binarySearchTree.*"},
+				 {"Expression Trees", "/exp6/index.php", "/exp6/exptree.*"},
+				 {"Graph Traversals", "/exp7/index.php", "/exp7/DFS_BFS.*"},
+				 {"Shortest Paths in Graphs", "/exp8/index.php", "/exp8/Dijkstra.*"},
+				 {"Spanning Trees in Graphs", "/exp9/index.php", "/exp9/MinimumSpanningTree.*"}
 				]
 			       },
 			       {"cse02",
-				[
-				 {"Numerical Integration ( Area Under Curve )", "/exp1/index.html", "/exp1/simulation/index.html"},
-				 {"Functions", "/exp2/index.html", "/exp2/simulation/index.html"},
-				 {"Loops (Factorial Calculation)", "/exp3/index.html", "/exp3/simulation/index.html"},
-				 {"Arrays", "/exp4/index.html", "/exp4/simulation/index.html"},
-				 {"Structure", "/exp5/index.html", "/exp5/simulation/index.html"},
-				 {"Basic Control Flow", "/exp6/index.html", "/exp6/simulation/index.html"},
-				 {"Strings", "/exp7/index.html", "/exp7/simulation/index.html"},
-				 {"Pointers", "/exp8/index.html", "/exp8/simulation/index.html"},
-				 {"Recursion", "/exp9/index.html", "/exp9/simulation/index.html"},
-				 {"Expression Evaluation", "/exp10/index.html", "/exp10/simulation/index.html"}
-				]
+			       	[
+			       	 {"Numerical Integration ( Area Under Curve )", "/exp1/index.html", "/exp1/simulation/index.*"},
+			       	 {"Functions", "/exp2/index.html", "/exp2/simulation/index.*"},
+			       	 {"Loops (Factorial Calculation)", "/exp3/index.html", "/exp3/simulation/index.*"},
+			       	 {"Arrays", "/exp4/index.html", "/exp4/simulation.*"},
+			       	 {"Structure", "/exp5/index.html", "/exp5/simulation/index.*"},
+			       	 {"Basic Control Flow", "/exp6/index.html", "/exp6/simulation.*"},
+			       	 {"Strings", "/exp7/index.html", "/exp7/simulation.*"},
+			       	 {"Pointers", "/exp8/index.html", "/exp8/simulation.*"},
+			       	 {"Recusrion", "/exp9/index.html", "/exp9/simulation.*"},
+			       	 {"Expression Evaluation", "/exp10/index.html", "/exp10/simulation.*"}
+			       	]
 			       },
 			       {"cse15",
-				[
-				 {"Adder Circuit", "/exp1/index.php", "/exp1/exp1.html"},
-				 {"Multiplexer", "/exp2/index.php", "/exp2/index.php.*section=Experiment.*"},
-				 {"Decoder with 7 segment display", "/exp3/index.php", "/exp3/index.php.*section=Experiment.*"},
-				 {"ALU with function", "/exp4/index.php", "/exp4/index.php.*section=Experiment.*"},
-				 {"Comparator", "/exp5/index.php", "/exp5/index.php.*section=Experiment.*"},
-				 {"JK Flip-Flop", "/exp6/index.php", "/exp6/index.php.*section=Experiment.*"},
-				 {"Registers", "/exp7/index.php", "/exp7/index.php.*section=Experiment.*"},
-				 {"Counters", "/exp8/index.php", "/exp8/index.php.*section=Experiment.*"},
-				 {"Multipliers", "/exp9/index.php", "/exp9/index.php.*section=Experiment.*"},
-				 {"State Diagrams", "/exp10/index.php", "/exp10/index.php.*section=Experiment.*"}
-				]
+			       	[
+			       	 {"Adder Circuit", "/exp1/index.php", "/exp1/exp1.*"},
+			       	 {"Multiplexer", "/exp2/index.php", "/exp2/exp2.*"},
+			       	 {"Decoder with 7 segment display", "/exp3/index.php", "/exp3/exp3.*"},
+			       	 {"ALU with function", "/exp4/index.php", "/exp4/exp4.*"},
+			       	 {"Comparator", "/exp5/index.php", "/exp5/exp5.*"},
+			       	 {"JK Flip-Flop", "/exp6/index.php", "/exp6/exp6.*"},
+			       	 {"Registers", "/exp7/index.php", "/exp7/exp7.*"},
+			       	 {"Counters", "/exp8/index.php", "/exp8/exp8.*"},
+			       	 {"Multipliers", "/exp9/index.php", "/exp9/exp9.*"},
+			       	 {"State Diagrams", "/exp10/index.php", "/exp10/exp10.*"}
+			       	]
 			       },
-			       %%TODO "cse19"
+			       {"cse19",
+			       	[
+			       	 {"Distance and Connectivity", "/objective.php.*exp=diff", "/diff.php"},
+			       	 {"Image Arithmetic", "/objective.php.*exp=arith", "/arith.php"},
+			       	 {"Affine Transformation", "/objective.php.*exp=affine", "/affine.php"},
+			       	 {"Point Operations", "/objective.php.*exp=point", "/point.php"},
+			       	 {"Neighbourhood Operations", "/objective.php.*exp=neigh", "/neigh.php"},
+			       	 {"Image Histogram", "/objective.php.*exp=histo", "/histo.php"},
+			       	 {"Fourier Transform", "/objective.php.*exp=fourier", "/fourier.php"},
+			       	 {"Color Image Processing ", "/objective.php.*exp=colour", "/clour.php"},
+			       	 {"Morphological Operations", "/objective.php.*exp=morph", "/morph.php"},
+			       	 {"Image Segmentation", "/objective.php.*exp=segment", "/segment.php"},
+			       	 {"Image Processing Test Bench", "/objective.php.*exp=piping", "/piping.php"}
+			       	]
+			       },
 			       {"cse18",
-				[
-				 {"Points & Co-ordinate Systems", "/exp1/index.php", "/exp1/index.php.*section=Experiment.*"},
-				 {"Transformations: Translation", "/exp2/index.php", "/exp2/index.php.*section=Experiment.*"},
-				 {"Transformations: Rotation", "/exp3/index.php", "/exp3/index.php.*section=Experiment.*"},
-				 {"Transformations: Scaling", "/exp4/index.php", "/exp4/index.php.*section=Experiment.*"},
-				 {"Hierarchical Transformations: 2D Demo", "/exp5a/index.php", "/exp5a/index.php.*section=Experiment.*"},
-				 {"Hierarchical Transformations: 3D Articulated Arm", "/exp5b/index.php", "/exp5b/index.php.*section=Experiment.*"},
-				 {"Projections and Cameras", "/exp6/index.php", "/exp6/index.php.*section=Experiment.*"},
-				 {"Clipping : Line", "/exp7/index.php", "/exp7/index.php.*section=Experiment.*"},
-				 {"Clipping : Polygon", "/exp8/index.php", "/exp8/index.php.*section=Experiment.*"},
-				 {"Rasterization : Line", "/exp9/index.php", "/exp9/index.php.*section=Experiment.*"},
-				 {"Rasterization : Polygon", "/exp10/index.php", "/exp10/index.php.*section=Experiment.*"}
-				]
+			       	[
+			       	 {"Points & Co-ordinate Systems", "/exp1/index.php", "/exp1/index.php.*section=Experiment.*"},
+			       	 {"Transformations: Translation", "/exp2/index.php", "/exp2/index.php.*section=Experiment.*"},
+			       	 {"Transformations: Rotation", "/exp3/index.php", "/exp3/index.php.*section=Experiment.*"},
+			       	 {"Transformations: Scaling", "/exp4/index.php", "/exp4/index.php.*section=Experiment.*"},
+			       	 {"Hierarchical Transformations: 2D Demo", "/exp5a/index.php", "/exp5a/index.php.*section=Experiment.*"},
+			       	 {"Hierarchical Transformations: 3D Articulated Arm", "/exp5b/index.php", "/exp5b/index.php.*section=Experiment.*"},
+			       	 {"Projections and Cameras", "/exp6/index.php", "/exp6/index.php.*section=Experiment.*"},
+			       	 {"Clipping : Line", "/exp7/index.php", "/exp7/index.php.*section=Experiment.*"},
+			       	 {"Clipping : Polygon", "/exp8/index.php", "/exp8/index.php.*section=Experiment.*"},
+			       	 {"Rasterization : Line", "/exp9/index.php", "/exp9/index.php.*section=Experiment.*"},
+			       	 {"Rasterization : Polygon", "/exp10/index.php", "/exp10/index.php.*section=Experiment.*"}
+			       	]
 			       },
 			       {"cse20",
-				[
-				 {"Feature Representation", "/exp1/index.php", "/exp1/index.php.*section=Experiment.*"},
-				 {"Mean and Covariance", "/exp2/index.php", "/exp2/index.php.*section=Experiment.*"},
-				 {"Linear Perceptron", "/exp3/index.php", "/exp3/index.php.*section=Experiment.*"},
-				 {"Generating Random Numbers", "/exp4/index.php", "/exp4/index.php.*section=Experiment.*"},
-				 {"Bayesian Classification", "/exp5/index.php", "/exp5/index.php.*section=Experiment.*"},
-				 {"MLE: Learning the Classifier from Data", "/exp6/index.php", "/exp6/index.php.*section=Experiment.*"},
-				 {"From 2-class to multiclass", "/exp7/index.php", "/exp7/index.php.*section=Experiment.*"},
-				 {"Data Clustering: K-means, MST based", "/exp10/index.php", "/exp10/index.php.*section=Experiment.*"}
-				]
+			       	[
+			       	 {"Feature Representation", "/exp1/index.php", "/exp1/index.php.*section=Experiment.*"},
+			       	 {"Mean and Covariance", "/exp2/index.php", "/exp2/index.php.*section=Experiment.*"},
+			       	 {"Linear Perceptron", "/exp3/index.php", "/exp3/index.php.*section=Experiment.*"},
+			       	 {"Generating Random Numbers", "/exp4/index.php", "/exp4/index.php.*section=Experiment.*"},
+			       	 {"Bayesian Classification", "/exp5/index.php", "/exp5/index.php.*section=Experiment.*"},
+			       	 {"MLE: Learning the Classifier from Data", "/exp6/index.php", "/exp6/index.php.*section=Experiment.*"},
+			       	 {"From 2-class to multiclass", "/exp7/index.php", "/exp7/index.php.*section=Experiment.*"},
+			       	 {"Data Clustering: K-means, MST based", "/exp10/index.php", "/exp10/index.php.*section=Experiment.*"}
+			       	]
 			       },
 			       {"emt",
-				[
-				 {"Coulomb's Law", "/Experiment.php.*code=C001", "/Experiment.php?tid.*code=C001"},
-				 {"Electrostatic Fields I", "/Experiment.php.*code=C002", "/Experiment.php?tid.*code=C002"},
-				 {"Electrostatic Fields II", "/Experiment.php.*code=C003", "/Experiment.php?tid.*code=C003"},
-				 {"Boundary Conditions", "/Experiment.php.*code=C004", "/Experiment.php?tid.*code=C004"},
-				 {"Electric Field in Material Space", "/Experiment.php.*code=C005", "/Experiment.php?tid.*code=C005"},
-				 {"Magnetostatic Fields", "/Experiment.php.*code=C006", "/Experiment.php?tid.*code=C006"},
-				 {"Application of Faraday's Laws", "/Experiment.php.*code=C007", "/Experiment.php?tid.*code=C007"},
-				 {"Wave Propagation", "/Experiment.php.*code=C008", "/Experiment.php?tid.*code=C008"},
-				 {"Distance and Altitude Measurement", "/Experiment.php.*code=C009", "/Experiment.php?tid.*code=C009"},
-				 {"Plane Waves - Reflection and Refraction", "/Experiment.php.*code=C010", "/Experiment.php?tid.*code=C010"}
-				]
+			       	[
+			       	 {"Coulomb's Law", "/Experiment.php.*code=C001", "/Experiment.php*.tid=T005.*code=C001"},
+			       	 {"Electrostatic Fields I", "/Experiment.php.*code=C002", "/Experiment.php*.tid=T005.*code=C002"},
+			       	 {"Electrostatic Fields II", "/Experiment.php.*code=C003", "/Experiment.php*.tid=T005.*code=C003"},
+			       	 {"Boundary Conditions", "/Experiment.php.*code=C004", "/Experiment.php*.tid=T005.*code=C004"},
+			       	 {"Electric Field in Material Space", "/Experiment.php.*code=C005", "/Experiment.php*.tid=T005.*code=C005"},
+			       	 {"Magnetostatic Fields", "/Experiment.php.*code=C006", "/Experiment.php*.tid=T005.*code=C006"},
+			       	 {"Application of Faraday's Laws", "/Experiment.php.*code=C007", "/Experiment.php*.tid=T005.*code=C007"},
+			       	 {"Wave Propagation", "/Experiment.php.*code=C008", "/Experiment.php*.tid=T005.*code=C008"},
+			       	 {"Distance and Altitude Measurement", "/Experiment.php.*code=C009", "/Experiment.php*.tid=T005.*code=C009"},
+			       	 {"Plane Waves - Reflection and Refraction", "/Experiment.php.*code=C010", "/Experiment.php*.tid=T005.*code=C010"}
+			       	]
 			       },
 			       {"cse29",
+			       	[
+			       	 {"Breaking the Shift Cipher", "/exp1/index.php", "/exp1/index.php.*section=Experiment.*"},
+			       	 {"Breaking the Mono-alphabetic Substitution Cipher", "/exp2/index.php", "/exp2/index.php.*section=Experiment.*"},
+			       	 {"Vernam Cipher and Perfect secrecy", "/exp3/index.php", "/exp3/index.php.*section=Experiment.*"},
+			       	 {"Message Authentication Code (CBC-MAC)", "/exp5/index.php", "/exp5/index.php.*section=Experiment.*"},
+			       	 {"Cryptographic Hash Functions and Applications(HMAC)", "/exp6/index.php", "/exp6/index.php.*section=Experiment.*"},
+			       	 {"From DES to 3-DES", "/exp7/index.php", "/exp7/index.php.*section=Experiment.*"},
+			       	 {"AES and Modes of Operation", "/exp8/index.php", "/exp8/index.php.*section=Experiment.*"},
+			       	 {"Diffie-Hellman Key Establishment", "/exp9/index.php", "/exp9/index.php.*section=Experiment.*"},
+			       	 {"Public-Key Cryptosystems (PKCSv1.5)", "/exp10/index.php", "/exp10/index.php.*section=Experiment.*"},
+			       	 {"Digital Signatures Scheme", "/exp11/index.php", "/exp11/index.php.*section=Experiment.*"}
+			       	]
+			       },
+			       {"cse22",
+			       	[
+			       	 {"Parallel and distributed processing - I: Interactive activation and competition models ", "/exp1/index.html", "/exp1/applet/index.html"},
+			       	 {"Parallel and distributed processing - II: Constraint satisfaction neural network models", "/exp2/index.html", "/exp2/applet/index.html"},
+			       	 {"Perceptron learning", "/exp3/index.html", "/exp3/perceptron.php"},
+			       	 {"Multilayer feedforward neural networks", "/exp4/index.html", "/exp4/mlffnn.php"},
+			       	 {"Hopfield model for pattern storage task", "/exp5/index.html", ""},
+			       	 {"Hopfield model with stochastic update", "/exp6/index.html", ""},
+			       	 {"Competitive learning neural networks", "/exp7/index.html", "/exp7/clnn.php"},
+			       	 {"Solution of optimization problems", "/exp8/index.html", "/exp8/som.php"},
+			       	 {"Hopfield models for solution to optimization problems", "/exp9/index.html", "/exp9/graphbipartition.php"},
+			       	 {"Deterministic, stochastic and mean-field annealing of Hopfield models", "/exp10/index.html", "/exp10/weightedmatching.php"}
+			       	]
+			       },
+			       {"cse11",
+			       	[
+			       	 {"Representation of Integers and their Arithmetic", "/Integers/index.php", "/Integers/IntegerArithmetic.swf"},
+			       	 {"Floating Point Numbers Representation", "/FloatingPointNumbers/index.php", "/FloatingPointNumbers/v4.swf"},
+			       	 {"Cache Organizations", "/CacheOrganizations/index.php", "/CacheOrganizations/index.php.*section=Experiment.*"},
+			       	 {"Locality Analysis of programs using Cachegrind Tool", "/Localityanalysis/index.php", "/LocalityAnalysis/index.php.*section=Experiment"},
+			       	 {"Tiling Matrix Multiplication", "/TilingMatrix/index.php", "/TilingMatrix/index.php.*section=Experiment"},
+			       	 {"Virtual Memory", "/VirtualMemory/index.php", "/VirtualMemory/index.php.*section=Experiment.*"},
+			       	 {"MIPS Assembly Language Programming", "/MIPS1/index.php", "/MIPS1/index.php.*section=Experiment.*"},
+			       	 {"Implementing Procedures using MIPS ISA", "/MIPS2/index.php", "/MIPS2/index.php.*section=Experiment.*"},
+			       	 {"ARM Assembly Language Programming", "/ARM1/index.php", "/ARM1/index.php.*section=Experiment.*"},
+			       	 {"Implementing Procedures using ARM ISA", "/ARM2/index.php", "/ARM2/index.php.*section=Experiment.*"},
+			       	 {"Single Cycle", "/SingleCycle/index.php", "/SingleCycle/v19.swf"}
+			       	]
+			       },
+			       {"cse14",
+			       	[
+			       	 {"Schematic Design Of Transistor Level Inverter", "/Experiment.php.*code=C001", "/EXP_1sep2010/exp1/exp1.*"},
+			       	 {"Schematic Design Of Transistor Level NAND & NOR Gate", "/Experiment.php.*code=C002", "/EXP_1sep2010/exp2/exp2.*"},
+			       	 {"Schematic Design Of Transistor Level XOR & XNOR Gate", "/Experiment.php.*code=C003", "/EXP_1sep2010/exp3/exp3.*"},
+			       	 {"Schematic Design Of Pass Transistor Logic & Multiplexer.", "/Experiment.php.*code=C004", "/EXP_1sep2010/exp5/exp5_pass.*"},
+			       	 {"Schematic Design Of Pass Transistor Logic & Multiplexer.", "/Experiment.php.*code=C004", "/EXP_1sep2010/exp5/exp5_Pass_negative/exp5_Pass_negative.*"},
+			       	 {"Delay Estimation In Chain Of Inverters", "/Experiment.php.*code=C005", "/EXP_1sep2010/exp7/exp7_size.*"},
+			       	 {"Schematic Design Of D-Latch and D-Flip Flop", "/Experiment.php.*code=C006", "/EXP_1sep2010/exp6/exp6_latch_positive.*"},
+			       	 {"Schematic Design Of D-Latch and D-Flip Flop", "/Experiment.php.*code=C006", "/EXP_1sep2010/exp6/exp6_negative/exp6_flipflop_negative.*"},
+			       	 {"Spice Code Platform", "/Experiment.php.*code=C008", "/EXP_1sep2010/exp4/exp4.*"},
+			       	 {"Design Of D-Flip Flop Using Verilog", "/Experiment.php.*code=C009", "/EXP_1sep2010/exp9/exp9_flipflop_positive_verilog.*"},
+			       	 {"Design Of D-Flip Flop Using Verilog", "/Experiment.php.*code=C009", "/EXP_1sep2010/exp9/exp9_negative/exp9_flipflop_negative_verilog.*"},
+			       	 {"Design Of Digital Circuits Using Verilog", "/Experiment.php.*code=C0091", "/EXP_1sep2010/exp8/exp8.*"},
+			       	 {"Layout Design", "/Experiment.php.*code=C007", "/EXP_1sep2010/layout/exp1.*"}
+			       	]
+			       },
+			       {"ccnsb06",
+			       	[
+			       	 {"Instrumentation and Working Principles of Infra Red (IR) Spectroscopy Using Salt Plates.", "/exp6/index.php", "/exp6_10/IR_Powder_exp6.swf"},
+			       	 {"Instrumentation and Working Principles of Solutions Infra Red (IR) Spectroscopy", "/exp7/index.php", "/exp6_10/IR_Sol_exp7.swf"},
+			       	 {"Instrumentation and Working Principles Principles of Mass Spectroscopy", "/exp8/index.php", "/exp6_10/Mass_Spec_exp8.swf"},
+			       	 {"Determination of Molar Mass of Simple Compounds Using Mass Spectroscopy", "/exp9/index.php", "/exp6_10/Mass_Spec_exp9.swf"},
+			       	 {"Nuclear Magnetic Resosnace Spectrocopy and Evaulation of Simple 1H NMR Spectra of Select Organic Compounds", "/exp5/index.php", "/exp5/NMR.swf"},
+			       	 {"Identification of Unknown Components Using Spectroscopic Techniques", "/exp10/index.php", "/exp6_10/Experiment10.swf"},
+			       	 {"Principles of Electron Paramagnetic Resonance Spectroscopy", "/exp1/index.php", "/exp1/ve_exp1.html"},
+			       	 {"Electron Paramagnetic Resonance Spectral Studies of Select Organic Free Radicals", "/exp2/index.php", "/exp2/ve_exp2.html"}
+			       	]
+			       },
+			       {"eerc01",
+			       	[
+			       	 {"Tensile Test", "/exp1/index.php", "/exp1/Animation.*"},
+			       	 {"Compression Test", "/exp2/index.php", "/exp2/Animation.*"},
+			       	 {"Shear Test", "/exp3/index.php", "/exp3/Animation.*"},
+			       	 {"Torsion Test", "/exp4/index.php", "/exp4/Animation.*"},
+			       	 {"Impact Test", "/exp5/index.php", "/exp5/Animation.*"},
+			       	 {"Creep Test", "/exp6/index.php", "/exp6/Animation.*"},
+			       	 {"Fatigue Test", "/exp7/index.php", "/exp7/Animation.*"},
+			       	 {"Compression Test on Spring", "/exp8/index.php", "/exp8/Animation.*"},
+			       	 {"Principal Stresses", "/exp9/index.php", "/exp9/Animation.*"},
+			       	 {"Rockwell-Hardness", "/exp10/index.php", "/exp10/Animation.*"}
+			       	]
+			       },
+			       {"eerc03",
+			       	[
+			       	 {"Bernoulli's Experiment", "/exp1/index.php", "/exp1/.*Bernoullis.*"},
+			       	 {"Venturi Meter Experiment", "/exp5/index.php", "/exp5/.*Venturi.*"},
+			       	 {"Orifices Experiment", "/exp6/index.php", "/exp6/.*Orifice.*"},
+			       	 {"Mouthpieces Experiment", "/exp7/index.php", "/exp7/.*Mouth.*"},
+			       	 {"Weirs Experiment", "/exp8/index.php", "/exp8/.*Weirs.*"},
+			       	 {"Channels Experiment", "/exp9/index.php", "/exp9/.*Channels.*"},
+			       	 {"Reynold's Experiment", "/exp10/index.php", "/exp10/.*Reynolds.*"},
+			       	 {"Vortices's Experiment", "/exp11/index.php", "/exp11/.*Vortices.*"},
+			       	 {"Jets Experiment", "/exp12/index.php", "/exp12/.*Jets.*"},
+			       	 {"Turbines Experiment", "/exp13/index.php", "/exp13/.*Turbines.*"}
+			       	]
+			       },
+			       {"phy14",
+			       	[
+			       	 {"Measurement of Dipole Moment", "/exp1/index.html", "/exp1/.*dipolemoment.html.*.*"},
+			       	 {"Millikan's Experiment", "/exp2/index.html", "/exp2/.*millikansexp.html.*"},
+			       	 {"Photoelectric Effect", "/exp3/index.html", "/exp3/.*photoelectric.html.*"},
+			       	 {"Inversion of Cane Sugar", "/exp4/index.html", "/exp4/.*opticalrotation.html.*"},
+			       	 {"Heat of Neutralization", "/exp5/index.html", "/exp5/.*calorimeter.html.*"},
+			       	 {"Acid-Base Indicators", "/exp6/index.html", "/exp6/.*phscale.html.*"},
+			       	 {"Geiger Muller Counter", "/exp7/index.html", "/exp7/.*geigermuller.html.*"},
+			       	 {"Young's Modulus", "/exp8/index.html", "/exp8/.*youungmodulus.html.*"},
+			       	 {"Surface Tension", "/exp9/index.html", "/exp9/.*surfacetension.html."}
+			       	]
+			       },
+			       {"ps",
+			       	[
+			       	 {"Numerical Representation", "/exp1/index.php", "/exp1/lab.html"},
+			       	 {"Beauty of Numbers", "/exp2/index.php", "/exp2/lab.html"},
+			       	 {"More on Numbers", "/exp3/index.php", "/exp3/lab.html"},
+			       	 {"Factorials", "/exp4/index.php", "/exp4/lab.html"},
+			       	 {"String Operations", "/exp5/index.php", "/exp5/lab.html"},
+			       	 {"Recursion", "/exp6/index.php", "/exp6/lab.html"},
+			       	 {"Advanced Arithmatic", "/exp7/index.php", "/exp7/lab.html"},
+			       	 {"Searching and Sorting", "/exp8/index.php", "/exp8/lab.html"},
+			       	 {"Permutation", "/exp9/index.php", "/exp9/lab.html"},
+			       	 {"Sequences", "/exp10/index.php", "/exp10/lab.html"}
+			       	]
+			       },
+			       {"csc",
+			       	[
+			       	 {"Preparation of Sols", "/exp1/index.html", "/exp1/sol.*"},
+			       	 {"Preparation of Gels", "/exp2/index.html", "/exp2/gel_form.*"},
+			       	 {"Demonstration of the Preparation and Use of Association Colloids (Micelles)", "/exp3/index.html", "/exp3/clean.*"},
+			       	 {"Determination of Critical Micelle Concentration (CMC) of a Surfactant", "/exp14/index.html", "/exp14/cmc.*"},
+			       	 {"Demonstration of the Surface Tension Lowering of Water by Soaps/Detergents", "/exp4/index.html", "/exp4/surface.*"},
+			       	 {"Demonstration of Tyndall Effect or Tyndall Scattering in Colloidal Systems", "/exp5/index.html", "/exp5/Tyndal.*"},
+			       	 {"Gel Electrophoresis", "/exp7/index.html", "/exp7/Gel_total.*"},
+			       	 {"Demonstration of the Surface-Effect on Chemical Properties of Finely Divided Particles", "/exp8/index.html", "/exp8/surface.*"},
+			       	 {"Study of the Catalytic Effects of Finely Divided Particles", "/exp15/index.html", "/exp15/lab9.*"}
+			       	]
+			       },
+			       {"bsa",
+			       	[
+			       	 {"Single Span Beams", "/exp9/index.php", "/exp2/Animation.*"},
+			       	 {"Continuous Beams", "/exp9/index.php", "/exp3/Animation.*"},
+			       	 {"Column Analysis", "/exp9/index.php", "/exp4/Animation.*"},
+			       	 {"Portal Frames", "/exp9/index.php", "/exp5/Animation.*"},
+			       	 {"Plates", "/exp9/index.php", "/exp6/Animation.*"},
+			       	 {"Rigid Joints", "/exp9/index.php", "/exp1/Animation.*"},
+			       	 {"Arches", "/exp9/index.php", "/exp7/Animation.*"},
+			       	 {"Trusses", "/exp9/index.php", "/exp8/Animation.*"},
+			       	 {"Retaining Walls", "/exp9/index.php", "/exp9/Animation.*"},
+			       	 {"Plastic Hinge", "/exp9/index.php", "/exp10/Animation.*"}
+			       	]
+			       },
+			       {"cds",
+			       	[
+			       	 {"To determine the specific rotation of a sugar using a polarimeter.", "/exp1/index.html", "/exp1/swf.*"},
+			       	 {"To understand the effect of chiral substances on plane polarized light as a function of wavelength.", "/exp2/index.html", "/exp2/emanim_ord_refrac.*"},
+			       	 {"To understand the effect of chiral substances on plane polarized light as a function of wavelength.", "/exp2/index.html", "/exp2/part2_cd/emanim_cd_refrac.*"},
+			       	 {"To study the Optical Rotatory Dispersion (ORD) of some chiral substances", "/exp3/index.html", "/exp3/jmol.*"},
+			       	 {"To study the Circular Dichroism of some substances with chiral chromophores", "/exp4/index.html", "/exp4/exp.*"},
+			       	 {"To Study the operational details of a CD spectrometer", "/exp5/index.html", "/exp5/swf.*"},
+			       	 {"To Study the effect of Secondary Structure elements on CD spectrum of proteins", "/exp6/index.html", "/exp6/swf.*"},
+			       	 {"To deconvolute the CD spectrum of a given protein solution and to classify it in terms of its secondary structure elements", "/exp7/index.html", "/exp7/swf.*"},
+			       	 {"To Study the Thermal Stability of Proteins", "/exp8/index.html", "/exp8/experiment/index.*"},
+			       	 {"To Study The Effect of Chemical Denaturants on Protein Stability", "/exp9/index.html", "/exp9/experiment/index.*"},
+			       	 {"To study the comparison between protein unfolding and protein aggregation in the presence of chemical denaturing agents", "/exp10/index.html", "/exp10/experiment/index.*"}
+			       	]
+			       },
+			       {"smfe",
+			       	[
+			       	 {"Water Content", "/exp1/index.php", "/exp1/Animation/.*"},
+			       	 {"Unit Weight", "/exp2/index.php", "/exp2/Animation/.*"},
+			       	 {"Specific Gravity", "/exp3/index.php", "/exp3/Animation/.*"},
+			       	 {"Grain Size Distribution", "/exp4/index.php", "/exp4/Animation/.*"},
+			       	 {"Attenberg Limits", "/exp5/index.php", "/exp5/Animation/.*"},
+			       	 {"Permeability", "/exp6/index.php", "/exp6/Animation/.*"},
+			       	 {"Compaction Test", "/exp7/index.php", "/exp7/Animation/.*"},
+			       	 {"Consolidation Test", "/exp8/index.php", "/exp8/Animation/.*"},
+			       	 {"Direct Shear Test", "/exp9/index.php", "/exp9/Animation/.*"},
+			       	 {"Triaxial Test", "/exp10/index.php", "/exp10/Animation/.*"}
+			       	]
+			       },
+			       {"ssp",
+			       	[
+			       	 {"Manual speech signal-to-symbol transformation", "/exp01/index.html", "/exp01/part.*"},
+			       	 {"Speech production mechanism", "/exp02/index.html", "/exp02/part.*"},
+			       	 {"Nature of Speech Signal", "/exp03/index.html", "/exp03/natureofspeech.php"},
+			       	 {"Basics of DSP", "/exp04/index.html", "/exp04/part.*"},
+			       	 {"Short-Time Spectrum Analysis of Speech", "/exp05/index.html", ""},
+			       	 {"Spectrographic Analysis of Speech", "/exp06/index.html", "/exp06/part.*"},
+			       	 {"Short-Time Cepstrum Analysis of Speech", "/exp07/index.html", ""},
+			       	 {"Linear Prediction Analysis of Speech", "/exp08/index.html", ""},
+			       	 {"Formant Synthesis", "/exp09/index.html", ""},
+			       	 {"Analysis by synthesis", "/exp10/index.html", ""}
+			       	]
+			       },
+			       {"ge",
+			       	[
+			       	 {"Free Swell Index", "/exp1/index.html", "/exp1/animation/fsi.html"},
+			       	 {"California Bearing Ratio Test", "/exp2/index.html", "/exp2/media/ve_cbr.*"},
+			       	 {"pH Test", "/exp3/index.html", "/exp2/media/ve_ph.*"},
+			       	 {"Determination of Total Soluble Solids", "/exp4/index.html", "exp4/media/ve_totalsolid.*"},
+			       	 {"Core Cutter Experiment", "/exp5/index.html", "/exp5/media/ve_coreCutter.*"},
+			       	 {"Vane Shear Test", "/exp6/index.html", "/exp6/media/shearing.*|/exp6/media/ve_vanshear.*"},
+			       	 {"Total Sulphate Test", "/exp7/index.html", "/exp7/media/ve_vanshear.*"},
+			       	 {"Standard Penetration Test", "/exp8/index.html", "/exp8/media/ve_vanshear.*"},
+			       	 {"Plate Load Test", "/exp9/index.html", "/exp9/media/ve_plateload.*"}
+			       	]
+			       },
+			       {"mi",
+			       	[
+			       	 {"Internuclear forces in a diatomic molecule", "/exp1/index.html", "/latest_project/bin/magnet1.html"},
+			       	 {"Internuclear forces in a diatomic molecule", "/exp1/index.html", "/latest_project/bin/magnet.html"},
+			       	 {"Molecular forces in a triatomic molecule", "/exp2/index.html", "/latest_project/bin/magnet1.html"},
+			       	 {"Dihedral forces in a quad-atomic molecule", "/exp3/index.html", "/latest_project/bin/magnet.html"},
+			       	 {"Interatomic van der Waals forces", "/exp4/index.html", "/suraj/Suraj/bin/Electrostatic.html"},
+			       	 {"van der Waals forces between molecules", "/exp5/index.html", "/suraj/Suraj/bin/Hexane_Vanderwall.html"},
+			       	 {"Interatomic electrostatic forces", "/exp6/index.html", "/suraj/Suraj/bin/Electrostatic.html"},
+			       	 {"Electrostatic forces between molecules", "/exp7/index.html", "/suraj/Suraj/bin/Electrostatic_Hexane.html"},
+			       	 {"Many-body forces in a polyatomic molecule", "/exp8/index.html", "/suraj/Suraj/bin/1.html"},
+			       	 {"Solvent viscous forces on a polyatomic molecule", "/exp9/index.html", "/suraj/Suraj/bin/ViscoseEnvironment.html"},
+			       	 {"Molecular separation using inter-atomic forces: Column chromatography", "/exp10/index.html", "/suraj/Suraj/bin/oilDrop.html"},
+			       	 {"Radiation forces on a dielectric particle", "/exp11/index.html", "/suraj/Suraj/bin/Laser.html"}
+			       	]
+			       },
+			       {"mas",
+			       	[
+			       	 {"Familiarization with the UV-Visible Absorption Spectroscopy", "/exp1/index.html", "/exp1/media/Principle.html|/exp1/media/instrument_animation.html|/exp1/media/1.html"},
+			       	 {"Solvent Effects on the UV-visible Absorption Spectra", "/exp2/index.html", "/exp2/media/2.html"},
+			       	 {"Sample Path Length Dependence of Absorbance (Lambert Law)", "/exp3/", "/exp3/media/length.html|/exp3/media/3.html"},
+			       	 {"Sample Concentration Dependence of Absorbance (Beer Law)", "/exp4/", "/exp4/media/concentration.html|/exp4/media/4.html"},
+			       	 {"Determination of the Molar Absorptivity of a Light Absorbing Molecule", "/exp5/index.html", "/exp5/media/5.html"},
+			       	 {"Verification of Beer-Lambert's law", "/exp6/", "/exp6/media/6.html"},
+			       	 {"Determination of unknown concentration of an analyte by using the Beer-Lambert Law", "/exp7/", "/exp7/media/7.html"},
+			       	 {"Simultaneous estimation method for multicomponent samples: Principle of additivity of absorbance", "/exp8/", "/exp8/media/8.html"},
+			       	 {"Effects of solution pH on the UV-visible absorption spectra", "/exp9/", "/exp9/media/9.html"},
+			       	 {"Gold Particle Catalyzed Reduction of Eosin by Sodium Borohydride", "/exp10/", "/exp10/media/10.html"}
+			       	]
+			       },
+			       {"mfs",
+			       	[
+			       	 {"Introduction to the fluorescence spectroscopy principle", "/exp1/index.html", "/exp1/media/1.html"},
+			       	 {"Familiarization with the fluorescence Instrumentation", "/exp2/index.html", "/exp2/media/2_a.html|/exp2/media/2_b.html"},
+			       	 {"Familiarization with Excitation and Emission Spectra, Mirror Image Relation and Stokes Shift", "/exp3/index.html", "/exp3/media/3.html"},
+			       	 {"Demonstration of Solvent Effects on Fluorescence Spectra of a Fluorophore", "/exp4/index.html", "/exp4/media/4.html"},
+			       	 {"Demonstration of pH Effect on Fluorescence Excitation and Emission Spectra of a Fluorophore", "/exp5/index.html", "/exp5/media/5.html"},
+			       	 {"Effects of Fluorophore Concentration on Fluorescence Spectra: Inner Filter Effects", "/exp6/index.html", "/exp6/media/6.html"},
+			       	 {"Relationship between the Concentration of a Fluorophore and its Fluorescence Intensity: Determination of Unknown Concentration of an Analyte", "/exp7/index.html", "/exp7/media/7.html"},
+			       	 {"Determination of Fluorescence Quantum Yield of a Fluorophore", "/exp8/index.html", "/exp8/media/8.html"},
+			       	 {"Fluorescence Quenching and Stern-Volmer Plot: Estimation of the Quenching Constant from Stern-Volmer Plot", "/exp9/index.html", "/exp9/media/9.html"},
+			       	 {"Effects of Excimer and Exciplex Formations on Fluorescence Emission", "/exp10/index.html", "/exp10/media/10_a.html|/exp10/media/10_b.html"}
+			       	]
+			       },
+			       {"nlp",
+			       	[
+			       	 {"Word Analysis", "/exp1/index.html", "/exp1/exp1.*.php.*"},
+			       	 {"Word Generation", "/exp2/index.html", " /exp2/exp2.php.*"},
+			       	 {"Morphology", "/exp3/index.html", ""},
+			       	 {"N-Grams", "/exp4/index.html", "/exp4/experiment9.*"},
+			       	 {"N-Grams Smoothing", "/exp5/index.html", "/exp5/experiment10.*"},
+			       	 {"POS Tagging - Hidden Markov Model", "/exp6/index.html", "/exp6/exp.*4.* "},
+			       	 {"POS Tagging - Viterbi Decoding", "/exp7/index.html", "/exp7/exp.*5.*"},
+			       	 {"Building POS Tagger", "/exp8/index.html", "/exp8/exp.*7.*"},
+			       	 {"Chunking", "/exp9/index.html", "/exp9/exp.*6.*"},
+			       	 {"Building Chunker", "/exp10/index.html", "/exp10/exp.*10.*"}
+			       	]
+			       },
+			       {"cl",
+			       	[
+			       	 {"Forming Sentences - 1", "/exp1/index.html", "/exp1/CL.*1.php"},
+			       	 {"Forming Sentences - 2", "/exp2/index.html", "/exp2/CL.*2.php"},
+			       	 {"Tokens and Types", "/exp3/index.html", "/exp3/CL.*3.php"},
+			       	 {"Heap's Law", "/exp4/index.html", "/exp4/CL.*4.php"},
+			       	 {"Dictionary Generation", "/exp5/index.html", "/exp5/CL.*5.php"},
+			       	 {"Coarse - grained POS Tagging", "/exp7/index.html", "/exp7/CL.*7.php"},
+			       	 {"Fine - grained POS Tagging", "/exp8/index.html", "/exp8/CL.*8.php"},
+			       	 {"Chunking", "/exp9/index.html", "/exp9/CL.*9.php"},
+			       	 {"Context Free Grammar", "/exp10/index.html", "/exp10/CL.*10.php"}
+			       	]
+			       },
+			       {"sd",
+			       	[
+			       	 {"Simple Harmonic Oscillator", "/exp1/index.html", "/exp1/exp1.html|/exp1/ve_pendulum.html"},
+			       	 {"Free vibration of S.D.O.F system", "/exp1/index.html", "/exp2/undamped_freevib.html|/exp2/dampfree.html|/exp2/ve_freevibbody.html"},
+			       	 {"Forced vibration of S.D.O.F system", "/exp3/index.html", "/exp3/undamped_force.html|/exp3/DampedForced.html|/exp3/ve_forcedvibbody.html"},
+			       	 {"Impulse Response of S.D.O.F system", "/exp4/index.html", "/exp4/Impulse.html|/exp4/ve_impulse.html"},
+			       	 {"Concept of Response Spectrum", "/exp5/index.html", "/exp5/responsespectrum.avi|/exp5/ve_responseSpecturm.html"},
+			       	 {"Vibration of M.D.O.F system", "/exp6/index.html", "/exp6/exp5.html|/exp6/ve_mdof.html"},
+			       	 {"Behaviour of Rigid Blocks", "/exp7/index.html", "/exp7/dem.htm|/exp7/ve_shakebody.html"},
+			       	 {"Torsional Response of Building", "/exp8/index.html", "/exp8/torsion6.html|/exp8/ve_torsion.html"},
+			       	 {"Continuous Systems", "/exp9/index.html", "/exp9/Coolingtowers.html|/exp9/ve_.*.html"},
+			       	 {"Vibration Control", "/exp10/index.html", "/exp10/vibration-control1.html|/exp10/tld.swf"}
+			       	]
+			       },
+			       {"bmi",
+			       	[
+			       	 {"ECG signal acquisition under incorrect electrode placement", "/exp1/index.php", "/exp1/index.php.*section=Experiment"},
+			       	 {"ECG Feature extraction and analysis", "/exp2/index.php", "/exp2/index.php.*section=Experiment"},
+			       	 {"ECG Acquisition and HRV (Heart Rate variability) analysis in time and frequency domain", "/exp3/index.php", "/exp3/index.php.*section=Experiment"},
+			       	 {"EEG Acquisition and Frequency components calculation", "/exp4/index.php", "/exp4/index.php.*section=Experiment"},
+			       	 {"EEG PSD Calculation", "/exp5/index.php", "/exp5/index.php.*section=Experiment"},
+			       	 {"EEG Approximate entropy calculation", "/exp6/index.php", "/exp6/index.php.*section=Experiment"},
+			       	 {"EEG Alpha RMS derivation", "/exp7/index.php", "/exp7/index.php.*section=Experiment"},
+			       	 {"Electromyography(EMG) Toolbox", "/exp8/index.php", "/exp8/index.php.*section=Experiment"}
+			       	]
+			       },
+			       {"bmsip",
+			       	[
+			       	 {"Digital Signal Processing Toolkit", "/exp1/index.php", "/exp1/index.php.*section=Experiment"},
+			       	 {"Bio-Medical Signal Processing Toolkit", "/exp2/index.php", "/exp2/index.php.*section=Experiment"},
+			       	 {"Image Processing Toolkit", "/exp3/index.php", "/exp3/index.php.*section=Experiment"}
+			       	]
+			       },
+			       %% {"em-iitr",
+			       %% 	[
+			       %% 	 {"Speed Control of DC motor by varying armature and field resistance", "/exp1/index.php", ""},
+			       %% 	 {"Speed control of DC motor by using Ward-Leonard Method of speed control", "/exp2/index.php", ""},
+			       %% 	 {"Load Characteristics of DC shunt generator", "/exp3/index.php", ""},
+			       %% 	 {"Magnetisation Characteristics of DC shunt generator", "/exp4/index.php", ""},
+			       %% 	 {"Determination of the efficiency of a dc motor by loss summation method(Swinburne's test)", "/exp5/index.php", ""},
+			       %% 	 {"Speed control of slipring Induction Motor", "/exp6/index.php", ""},
+			       %% 	 {"Determination of Transformer equivalent circuit from Open Circuit and Short Circuit Test", "/exp7/index.php", ""}
+			       %% 	]
+			       %% },
+			       {"sl-iitr",
+			       	[
+			       	 {"Carry out Fly Leveling using Auto Level", "/exp2/index.php", "/exp2/index.php.*section=Experiment"},
+			       	 {"Profile Leveling using Auto Level", "/exp3/index.php", "/exp3/index.php.*section=Experiment"},
+			       	 {"Observations of Vertical and Horizontal angles using Total Station", "/exp4/index.php", "/exp4/index.php.*section=Experiment"},
+			       	 {"Study of Plane Table and its Accessories", "/exp5/index.php", "/exp5/index.php.*section=Experiment"},
+			       	 {"Detail Plotting by Radiation Method", "/exp6/index.php", "/exp6/index.php.*section=Experiment"},
+			       	 {"Detail Plotting by Intersection Method", "/exp7/index.php", "/exp7/index.php.*section=Experiment"},
+			       	 {"Detail Plotting by Resection Method", "/exp8/index.php", "/exp8/index.php.*section=Experiment"},
+			       	 {"Carry out Contouring in the field", "/exp9/index.php", "/exp9/index.php.*section=Experiment"},
+			       	 {"Study of Global Positioning System (GPS) and its Accessories", "/exp10/index.php", "/exp10/index.php.*section=Experiment"},
+			       	 {"Observations using GPS", "/exp11/index.php", "/exp11/index.php.*section=Experiment"}
+			       	]
+			       },
+			       %% {"mrmsmtbs",
+			       %% 	[
+			       %% 	 {"Creep Transient Based on Material Selection (Pt/Mg)", "/exp1.html", ""},
+			       %% 	 {"Selection of Obstacle Distance (λ, grain boundary or precipitate)", "/exp2.html", ""},
+			       %% 	 {"Selection of Obstacle Density (ρ,number of grains/precipitate) ", "/exp3.html", ""},
+			       %% 	 {"Hardness & Modulus", "/modulus.html", ""},
+			       %% 	 {"Indent Depth", "/indent.*depth.html", ""},
+			       %% 	 {"Plastic Work ", "/plastic.html", ""},
+			       %% 	 {"Contact Angle Measurement ", "/Contact.*.html", ""},
+			       %% 	 {"Image the Cytoskeleton of Cells Proliferation On Biomaterial Surface.", "/fmbs.html", ""},
+			       %% 	 {"Image the Nucleus of Cells Proliferation On Biomaterial Surface. ", "/fmbs2.html", ""},
+			       %% 	 {"Ionic Conductivity YSZ Electrolyte Material For solid Oxide Fuel Cell.", "/Ic1.html", ""}
+			       %% 	]
+			       %% },
+			       %% {"va-iitk",
+			       %% 	[
+			       %% 	 {"To become familiar with the astronomical objects visible to naked eye in the night sky using the software Stellarium.", "/.*page=exp1", ""},
+			       %% 	 {"To become familiar with the Constellations in the night sky using the software Stellarium.", "/.*page=exp2", ""},
+			       %% 	 {"To identify the retrograde motion of Mars with respect to the Background stars.", "/.*page=exp3", ""},
+			       %% 	 {"To identify some of the prominent spectral lines in the spectrum of our sun.", "/.*page=exp4", ""},
+			       %% 	 {"To get familiar with the spectra of different stars.", "/.*page=exp5", ""},
+			       %% 	 {"To extract coordinates of a star assuming a telescope in equatorial mount. You will also learn the concept of sidereal time.", "/.*page=exp6", ""},
+			       %% 	 {"To measure astronomical distances using Cepheid variables.", "/.*page=exp7", ""},
+			       %% 	 {"To measure the Proper Motion of Barnard's Star.", "/.*page=exp8", ""},
+			       %% 	 {"To identify a Circumpolar Star.", "/.*page=exp9", ""},
+			       %% 	 {"To determine the distance and age of cluster using Colour Magnitude Diagram.", "/.*page=exp10", ""},
+			       %% 	 {"To determine Orbital Inclination of the planet Mars.", "/.*page=exp11", ""},
+			       %% 	 {"To measure planetary distances", "/.*page=exp12", ""},
+			       %% 	 {"To measure distance to the Moon", "/.*page=exp13", ""},
+			       %% 	 {"To determine observer's location by means of the stars", "/.*page=exp14", ""}
+			       %% 	]
+			       %% },
+			       %% {"ufls",
+			       %% 	[
+			       %% 	 {"", "/ultrafast.php", ""},
+			       %% 	 {"", "/measure.php", ""},
+			       %% 	 {"", "/confocal.php", ""},
+			       %% 	 {"", "/live.php", ""},
+			       %% 	 {"", "/optical.php", ""},
+			       %% 	 {"", "/thermal.php", ""}
+			       %% 	]
+			       %% },
+			       {"vlae",
+			       	[
+			       	 {"Determination of Young's Modulus and Poisson's Ratio", "/str1/object.html", "/str1/ap.html"},
+			       	 {"Determination of heat of combustion of aviation fuel", "/prop2/object.html", "/prop2/ap2.html"},
+			       	 {"Flow past a airfoil / wing using flow visualization", "/aerod1/object.html", "/aerod1/ap.html"},
+			       	 {"Aerodynamics forces and moments on a standard a/c model", "/aerod2/object.html", "/aerod2/ap.html"},
+			       	 {"Vibration testing of beams", "/str2/object.html", "/str2/ap.html"},
+			       	 {"Study of Full Gas turbine", "/flight1/object.html", "/flight1/ap.html"},
+			       	 {"Measurement of Airfoil sectional properties", "/prop3/object.html", "/prop3/ap.html"},
+			       	 {"Estimation of cruise and climb performance of aircraft", "/flight2/object.html", "/flight2/ap.html"},
+			       	 {"Buckling of columns", "/str3/object.html", "/str3/ap.html"},
+			       	 {"Performance and analysis of two stage axial fan", "/prop1/object.html", "/prop1/ap.html"},
+			       	 {"Aerodynamic forces and moments on a generic aircraft model", "/aerod3/object.html", "/aerod3/ap.html"},
+			       	 {"Estimation of drag polar of a glider ", "/flight3/object.html", "/flight3/ap.html"}
+			       	]
+			       },
+			       %% {"vcal",
+			       %% 	[
+			       %% 	 {"Measurement of Laminar Burning Velocity", "/aim1.html", ""},
+			       %% 	 {"Characterization of laminar premixed flame using chemiluminescence sensor", "/aim2.html", ""},
+			       %% 	 {"Numerical characterization of laminar premixed methane-air flames", "/aim3.html", ""},
+			       %% 	 {"Observations on flame height of a laminar jet diffusion flame", "/aim4.html", ""},
+			       %% 	 {"Measurement of turbulent inverse diffusion flame height", "/aim5.html", ""},
+			       %% 	 {"Visualization of swirling flow and flame in a burner", "/aim6.html", ""},
+			       %% 	 {"Flame spread over a solid fuel surface", "/aim7.html", ""},
+			       %% 	 {"Characterization of droplet combustion", "/aim8.html", ""},
+			       %% 	 {"Measurement of droplet size for an air-blast atomizer", "/aim9.html", ""}
+			       %% 	]
+			       %% },
+			       {"pev",
+			       	[
+			       	 {"Interspecific Competition and Coexistence", "/Interspecific_Competition_and_Coexistence/", "/index.php?exp_id=Interspecific_Competition_and_Coexistence"},
+			       	 {"Conserving an Endangered Species", "/conservingEndangeredSpecies/", "/index.php?exp_id=conservingEndangeredSpecies"},
+			       	 {"Effect of Interspecific Competition on Species Border", "/Interspecific%20Competition%20and%20Geographic%20Distributions/", "/index.php?exp_id=Interspecific%20Competition%20and%20Geographic%20Distributions"},
+			       	 {"Metapopulation Dynamics -Levins Model", "/Metapopulation_Dynamics/", "/index.php?exp_id=Metapopulation_Dynamics"},
+			       	 {"Parasitoid-Host Dynamics", "/Parasitoid_Host_Dynamics/", "/index.php?exp_id=Parasitoid_Host_Dynamics"},
+			       	 {"Spread of a Pest Population - Population Invasion", "/Spread_Pest_Population_invasion/", "/index.php?exp_id=Spread_Pest_Population_invasion"}
+			       	]
+			       },
+			       {"pevii",
+			       	[
+			       	 {"Optimal Foraging with Minimal Time: A Case of Searching Predators", "/OptimalForAging/", "/index.php?exp_id=OptimalForAging.*"},
+			       	 {"Optimal Pollinators", "/OptimalForaging_Pollinators/", "/index.php?exp_id=OptimalForaging_Pollinators.*"},
+			       	 {"Optimal Foraging: Sit-and-wait Predators that Maximize Energy", "/Optimal_foraging_Sit_and_wait_predators_that_maximize_energy/", "/index.php?exp_id=Optimal_foraging_Sit_and_wait_predators_that_maximize_energy.*"}
+			       	]
+			       },
+			       {"anthropology",
+			       	[
+			       	 {"Identification of Prehistoric handaxe", "/Theory_handaxe.html", "/Experiments/finalstone1.swf.*|/Experiments/finalstone2.swf.*|/Experiments/finalstone3.swf.*|/Experiments/finalstone4.swf.*"},
+			       	 {"Identification of finger prints patterns", "/Theory_finger.html", "/Simulator_finger.html.*"},
+			       	 {"Pottery-Virtual Reconstruction of Shapes", "/Theory_pot.html", "/Experiments/finalpottery1.swf.*|/Experiments/finalpottery2.swf.*|/Experiments/finalpottery3.swf.*|/Experiments/finalpottery4.swf.*"},
+			       	 {"Calculation of Indices", "/Theory_indices.html", "/Simulator_indices.html.*"},
+			       	 {"Obtain the main line formula", "/obtain_main_line_formula_theory.html", "/obtain_main_line_formula_simulator.html.*"},
+			       	 {"Skeleton - Assembling, Identification & labeling", "/Skeleton_Assembling_Identification_labeling_theory.html", "/Experiments/labelling.swf.*|/Experiments/finalskullpuzzl.swf.*"},
+			       	 {"Blood Group Techniques", "/blood_group_technique_theory.html", "/blood_group_technique_simulator.html.*"},
+			       	 {"Hunting, Fishing, Gathering Tools", "/hunting_fishing_tools_theory.html", "/Experiments/new1.swf.*|/Experiments/fishing/Untitled-1.swf.*"},
+			       	 {"Mendel's Law", "/mendels_law_theory.html", "/Experiments/mendel/punnett.swf.*"}
+			       	]
+			       },
+			       {"ergonomics",
+			       	[
+			       	 {"Static anthropometry, standing heights", "/Theory_static.html", "/Practical%20Experience_static.html.*"},
+			       	 {"Arm forward reaches, standing erect and forward bend", "/Theory_arm.html", "/Practical%20Experience_arm.html.*"},
+			       	 {"Sitting Antropometry, static heights", "/Theory_sitting.html", "/Practical%20Experience_sitting.html.*"},
+			       	 {"Horizontal work surface at around elbow height", "/Theory_4.html", "/Practical%20Experience_4.html.*"},
+			       	 {"Effective work platform height, standing", "/Theory_5.html", "/Practical%20Experience_5.html.*"},
+			       	 {"Effective vertical work surface", "/Theory_6.html", "/Practical%20Experience_6.html.*"},
+			       	 {"Hand dimension", "/Theory_7.html", "/Practical%20Experience_7.html.*"},
+			       	 {"Human dimensional consideration for general seating", "/Theory_8.html", "/Practical%20Experience_8.html.*"},
+			       	 {"Squatting posture", "/Theory_9.html", "/Practical%20Experience_9.html.*"},
+			       	 {"Body movement ranges", "/Theory_10.html", "/Practical%20Experience_10.html.*"}
+			       	]
+			       },
+			       {"vem",
+			       	[
+			       	 {"Magnetic Field Behaviour in Single Coil", "/Magnetic_Field_Behaviour_in_single_coil.html", "/Magnetic_Field_Behaviour_in_single_coil%28experiment1%29.html.*"},
+			       	 {"Magnetic Field Behaviour in Single Coil", "/Magnetic_Field_Behaviour_in_single_coil.html", "/Magnetic_Field_Behaviour_in_single_coil%28experiment2%29.html.*"},
+			       	 {"Rotating Magnetic Field Behaviour in two coils", "/Rotating%20Magnetic%20Field%20Behaviour%20in%20two%20coils.html", "/Rotating%20Magnetic%20Field%20Behaviour%20in%20two%20coils%28experiments%29.html.*"},
+			       	 {"Rotating Magnetic Field Behaviour in three coils", "/Rotating%20Magnetic%20Field%20Behaviour%20in%20three%20coils.html", "/Rotating_Magnetic_Field_Behaviour_in_three_coils%28experiments%29.html.*"},
+			       	 {"The DC Test for Stator Resistance", "/Introduction_DC.html", "/Experiment_DC.html.*"},
+			       	 {"No-Load Test", "/Introduction_Noload.html", "/Experiment_Noload.html.*"},
+			       	 {"Blocked-Rotor Test", "/Introduction_blockr.html", ""},
+			       	 {"Stator Resistance Starter", "/Stator%20Resistance%20Starter%28intro%29.html", "/Stator%20Resistance%20Starter%28experiment%29.html.*"},
+			       	 {"Auto Transformer Starting", "/Auto%20Transformer%20Starting%28intro%29.html", "/Auto%20Transformer%20Starting%28experiment%29.html.*"},
+			       	 {"Star-Delta Starting", "/Star%20Delta%20Starting%28intro%29.html", "/Star%20Delta%20Starting%28experiment%29.html.*"}
+			       	]
+			       },
+			       {"ve",
+			       	[
+			       	 {"Business Communication", "/Business%20Communication.html", "/Experiments/business1.html.*|/Experiments/business2.*|/Experiments/business3.html.*|/Experiments/business4.html.*|/Experiments/business5.html.*|/Experiments/business6.html.*"},
+			       	 {"Common Errors in English", "/Common%20Error.html", "/Experiments/commerror1.html.*|/Experiments/commerror2.html.*|/Experiments/commerror3.html.*|/Experiments/commerror4.html.*|/Experiments/commerror5.html.*|/Experiments/commerror6.html.*"},
+			       	 {"Communication Skills", "/Communication%20Skill.html", "/Experiments/cs1.html.*|/Experiments/cs2.html.*|/Experiments/cs3.html.*|/Experiments/cs4.html.*|/Experiments/cs5.html.*|/Experiments/cs6.html.*"},
+			       	 {"Grammar", "/Grammer.html", "/Experiments/adjectives.html.*|/Experiments/indefarticles.html.*|/Experiments/parajumble.html.*|/Experiments/preposition_quiz1.html.*|/Experiments/sentencejumble.html.*|/Experiments/spoterrors.html.*"},
+			       	 {"Technical Communication", "/Technical%20Communication.html", "/Experiments/tw1.html.*|/Experiments/tw2.html.*|/Experiments/tw3.html.*|/Experiments/tw4.html.*|/Experiments/tw5.html.*|/Experiments/tw6.html.*"},
+			       	 {"Vocabulary", "/Vocabulary.html", "/Experiments/antonym1.html.*|/Experiments/collectivenouns.html.*|/Experiments/compound.html.*|/Experiments/headword.html.*|/Experiments/matchsynonyms.html.*|/Experiments/selectword.html.*|/Experiments/synonym1.html.*|/Experiments/wordjumble2.html.*"},
+			       	 {"Reading and Comprehension", "/Reading%20and%20Comprehension.html", "/Experiments/rcread.html.*|/Experiments/RC1.html.*|/Experiments/rcread2.html.*|/Experiments/rc2.html.*|/Experiments/rcread3.html.*|/Experiments/rc3.html.*|/Experiments/rcread4.html.*|/Experiments/RC4.html.*|/Experiments/rcread5.html.*|/Experiments/RC5.html.*|/Experiments/rcread6.html.*|/Experiments/RC6.html.*"},
+			       	 {"Listening Skills", "/Listening%20Skills.html", "/Experiments/listen1.mp3.*|/Experiments/listening1.html.*|/Experiments/listen2.mp3.*|/Experiments/listening2.html.*|/Experiments/listen3.mp3.*|/Experiments/listening3.html.*|/Experiments/listen4.mp3.*|/Experiments/listening4.html.*|/Experiments/listen5.mp3.*|/Experiments/listening5.html.*|/Experiments/listen6.mp3.*|/Experiments/listening6.html.*"},
+			       	 {"Video Tutorial", "/Video%20Tutorial.html", "/Experiments/rskills.wmv.*|/Virtual%20Labs1%20-%20IIT%20Guwahati.html.*|/Experiments/spokenenglish.wmv.*|/Virtual%20Labs%20-%20IIT%20Guwahati.html.*"}
+			       	]
+			       },
+			       {"ssl",
+			       	[
+			       	 {"Signals and their properties", "/Signals.*and.*.html", "/Signals.*and.*simulator.*.html"},
+			       	 {"System and their property", "/Exp_2_Signals.*.html", "/Exp_2_Signals.*simulator.*.html"},
+			       	 {"Fourier analysis of signals", "/Signals_exp3.*.html", "/Signals_exp3.*Simulator.*.html"},
+			       	 {"Sampling and signal reconstruction.", "/Sampling.*29.html", "/Sampling.*simulator.*.html"},
+			       	 {"Analysis of LTI system response.", "/Signals.*05.*.html", "/Signals.*05.*simulator.*.html"}
+			       	]
+			       },
+			       %% {"ial",
+			       %% 	[
+			       %% 	 {"Study hardware and software platforms for DCS", "/Expt1/index.html", ""},
+			       %% 	 {"Simulate analog and digital function blocks", "/Expt2/index.html", "/Expt2/AnalogDigital.html.*"},
+			       %% 	 {"Study, understand and perform experiments on timers and counters", "/Expt3/index.html", "/Expt3/TimersCounters.html.*"},
+			       %% 	 {"Logic implementation for traffic Control Application", "/Expt4/index.html", "/Expt4/TrafficControl.html.*"},
+			       %% 	 {"Logic implementation for Bottle Filling Application", "/Expt5/index.html", "/Expt5/BottleFilling.html.*"},
+			       %% 	 {"Tune PID controller for heat exchanger using DCS", "/Expt6/index.html", "/Expt6/HeatExchange.html.*"},
+			       %% 	 {"FBD for autoclavable laboratory fermentor", "/Expt7/index.html", "/Expt7/FBD.html.*"},
+			       %% 	 {"Develop graphical user interface for the fermentor plant", "/Expt8/index.html", ""}
+			       %% 	]
+			       %% },
+			       {"sl-coep",
+			       	[
+			       	 {"Characterize the temperature sensor(RTD)", "/Rtd/index.html", "/Rtd/rtd.html.*"},
+			       	 {"Simulate the performance of Biosensor", "/Biosensor/index.html", "/Biosensor/biosensor.html.*"},
+			       	 {"Measurement of level in a tank using capacitive type level probe", "/Capacitance/index.html", "/Capacitance/capacitance.html.*"},
+			       	 {"Characterize of LVDT", "/LinearVariableDifferntialTransformer/index.html", "/LinearVariableDifferntialTransformer/lvdt.html.*"},
+			       	 {"Design a Orifice plate for typical application", "/Orifice/index.html", "/Orifice/orifice.html.*"},
+			       	 {"Simulate the performance of chemical sensor(PH)", "/PHCalculation/index.html", "/PHCalculation/phc.html.*"},
+			       	 {"characterize the strain gauge sensor", "/StrainGuage/index.html", "/StrainGuage/strainguage.html.*"},
+			       	 {"Characterize the temperature sensor(Thermocouple)", "/Thermocouple/index.html", "/Thermocouple/thermocouple.html.*"}
+			       	]
+			       },
+			       %% {"plc",
+			       %% 	[
+			       %% 	 {"Study hardware and software used in PLC", "/exp1/index.html", ""},
+			       %% 	 {"Implementation of Logic Gates", "/exp2/index.html", "/exp2/simulator2.html.*"},
+			       %% 	 {"Develop a ladder program for DOL Starter", "/exp3/index.html", "/exp3/simulator3.html.*"},
+			       %% 	 {"Develop an application using On-Delay Timer", "/exp4/index.html", "/exp4/simulator4.html.*"},
+			       %% 	 {"Develop an application using Off-Delay Timer", "/exp5/index.html", "/exp5/simulator5.html.*"},
+			       %% 	 {"Develop an application using Up-Down Counter", "/exp6/index.html", "/exp6/simulator6.html.*"},
+			       %% 	 {"Implementation Of PLC Arithmatic Instructions", "/exp7/index.html", "/exp7/simulator7.html.*"},
+			       %% 	 {"Study of PID controller instruction for a pilot plant", "/exp8/index.html", "/exp8/simulator8.html.*"}
+			       %% 	]
+			       %% },
+			       {"em-coep",
+			       	[
+			       	 {"Load Test On Separately Excited DC Motor", "/Exp1/index.html", "/Exp1/Experiment1.html.*"},
+			       	 {"Speed Control of Separately Excited DC Motor", "/Exp2/index.html", "/Exp2/Experiment2.html.*"},
+			       	 {"no load test on three phase induction motor", "/Exp3/index.html", "/Exp3/Experiment3.html.*"},
+			       	 {"blocked rotor test on three phase induction motor", "/Exp4/index.html", "/Exp4/Experiment4.html.*"},
+			       	 {"Open Circuit Test on Three Phase Alternator", "/Exp5/index.html", "/Exp5/Experiment5.html.*"},
+			       	 {"Short Circuit Test on Three Phase Alternator", "/Exp6/index.html", "/Exp6/Experiment6.html.*"},
+			       	 {"Load Test on Three Phase Alternator", "/Exp7/index.html", "/Exp7/Experiment7.html.*"},
+			       	 {"V and Inverted V curves of Synchronous Motor", "/Exp8/index.html", "/Exp8/Experiment8.html.*"}
+			       	]
+			       },
+			       {"va-coep",
+			       	[
+			       	 {"MI of Connecting Rod", "/MIofConnectingRod/index.html", "/MIofConnectingRod/MIofConnectingRod.html.*"},
+			       	 {"Impact test on cantilever Modal analysis", "/ImpactTestCantilever/index.html", "/ImpactTestCantilever/ImpactTestCantilever.html.*"},
+			       	 {"Sine Sweep of base excitation of cantilever", "/SineSweepCantilever/index.html", "/SineSweepCantilever/SineSweepCantilever.html.*"},
+			       	 {"Forced response of SDOF", "/HarmonicExcitationSDOF/index.html", "/HarmonicExcitationSDOF/HarmonicExcitationSDOF.html.*"},
+			       	 {"Free response of SDOF", "/NaturalVibrationSDOF/index.html", "/NaturalVibrationSDOF/NaturalVibrationSDOF.html.*"},
+			       	 {"Trifiliar Suspension", "/TrifiliarSuspension/index.html", "/TrifiliarSuspension/TrifiliarSuspension.html.*"},
+			       	 {"SDOF System - Arbitrary Excitation", "/ArbitraryExcitation/index.html", "/ArbitraryExcitation/ArbitraryExcitation.html.*"},
+			       	 {"Tuned Vibration Absorber", "/TunedVibrationAbsorber/index.html", "/TunedVibrationAbsorber/TunedVibrationAbsorber.html.*"}
+			       	]
+			       },
+			       {"mm-coep",
+			       	[
+			       	 {"To study pulsed-heating of materials", "/PulsedHeating/index.html", "/PulsedHeating/PulsedHeating.html.*"},
+			       	 {"To study erosion mechanism from Lazarenko's model", "/LazerankosErosionModel/index.html", "/LazerankosErosionModel/LazerankosErosionModel.html.*"},
+			       	 {"To study various thermal models for EDM", "/DibitontoVsSalonitis/index.html", "/DibitontoVsSalonitis/DibitontoVsSalonitis.html.*"},
+			       	 {"To study influence of process parameters on the Wire EDM", "/EDM/index.html", "/EDM/EDM.html.*"},
+			       	 {"Laser hardening using NdYAG laser system", "/YAGLaser/index.html", "/YAGLaser/YAGLaser.html.*"},
+			       	 {"Laser spot welding using NdYAG laser system", "/LaserSpotWelding/index.html", "/LaserSpotWelding/LaserSpotWelding.html.*"},
+			       	 {"Study of Electrochemical machining process", "/ECM/index.html", "/ECM/ECM.html.*"},
+			       	 {"Study the effect of process parameters in electrochemical grinding", "/ECG/index.html", "/ECG/ECG.html.*"}
+			       	]
+			       },
+			       %% {"fab",
+			       %% 	[
+			       %% 	 {"Computer Controlled Cutting of wooden object", "/exp1/index.html", "/exp1/woodcutting.html.*"},
+			       %% 	 {"3D Machining", "/exp2/index.html", "/exp2/roughing.html.*"},
+			       %% 	 {"PCB design & fabrication", "/exp3/index.html", "/exp3/pcb.html.*"},
+			       %% 	 {"Interface & Application Programming", "/exp4/index.html", "/exp4/interfaceprog.html.*"},
+			       %% 	 {"Digital Fabrication of Flexible Circuit board", "/exp5/index.html", "/exp5/flexibleCircuit.htm.*"},
+			       %% 	 {"3D scanning", "/exp6/index.html", "/exp6/scanning.html.*"},
+			       %% 	 {"Molding and Casting of Polyurethane parts.", "/exp7/index.html", ""},
+			       %% 	 {"Digital Fabrication and Project Development", "/exp8/index.html", ""}
+			       %% 	]
+			       %% },
+			       {"bmsp",
+			       	[
+			       	 {"To simulate Electrocardiogram Waveform", "/AbnormalECG/index.html", "/NormalECG/index.html.*|/AbnormalECG/AbnormalECG.html.*"},
+			       	 {"To simulate Electroencephalogram Signal", "/Electroencephalogram/index.html", "/Electroencephalogram/Electroencephalogram.html.*"},
+			       	 {"To simulate Electromyogram Signal", "/ElectromyogramSignal/index.html", "/ElectromyogramSignal/ElectromyogramSignal.html.*"},
+			       	 {"To Simulate Defibrillator", "/Defibrillator/index.html", "/Defibrillator/Defibrillator.html.*"},
+			       	 {"To simulate Pacemaker", "/PaceMaker/index.html", "/PaceMaker/PaceMaker.html.*|/SynchronousPaceMaker/index.html.*"},
+			       	 {"To simulate Haemodialysis Machine", "/HaemoDialysis/index.html", "/HaemoDialysis/HaemoDialysis.html.*"},
+			       	 {"To simulate Biopotential Amplifier", "/EMGAmplifier/index.html", "/EMGAmplifier/EMGAmplifier.html.*"},
+			       	 {"To simulate ECG Pulse missing detector", "/PulseMissingDetector/index.html", "/PulseMissingDetector/PulseMissingDetector.html.*"},
+			       	 {"To simulate 12 Lead Ecg Signals", "/LeadECG/index.html", "/LeadECG/LeadECG.html.*"}
+			       	]
+			       },
+			       {"he",
+			       	[
+			       	 {"Design and Implementation of Various Arithmetic Circuits", "/Experiment1/index.html", "/Experiment1/index1.html.*"},
+			       	 {"Design and Simulate Various Code Converters", "/Experiment2/index.html", "/Experiment2/index1.html.*"},
+			       	 {"Design and Simulation of Various Counters and Shift Registers", "/Experiment3/index.html", "/Experiment3/index1.html.*"},
+			       	 {"Design and Simulation of Arithmetic Logic Unit", "/Experiment4/index.html", "/Experiment4/index1.html.*"},
+			       	 {"Design and Simulation of Decoders, Encoders, Multiplexer and Demultiplexer", "/Experiment5/index.html", "/Experiment5/index1.html.*"},
+			       	 {"Design and Simulate Analog to Digital Converter and Digital to Analog Converter", "/Experiment6/index.html", "/Experiment6/index1.html.*"},
+			       	 {"Implementation of monostable and astable oscillator using IC 555", "/Experiment7/index.html", "/Experiment7/index1.html.*"}
+			       	]
+			       },
+			       {"ied",
+			       	[
+			       	 {"INTRODUCTION TO PROGRAMMABLE LOGIC CONTROLLER AND INTRODUCTION TO DIGITAL I/O INTERFACE TO PLC", "/INTRODUCTION.*TO.*PROGRAMMABLE.*LOGIC.*CONTROLLER.*AND.*INTRODUCTION.*TO.*DIGITAL.*INTERFACE.*TO.*PLC/index.html", "/INTRODUCTION.*TO.*PROGRAMMABLE.*LOGIC.*CONTROLLER.*AND.*INTRODUCTION.*TO.*DIGITAL.*INTERFACE.*TO.*PLC/index.html.*"},
+			       	 {"INTRODUCTION TO LADDER LOGIC", "/INTRODUCTION.*TO.*LADDER.*LOGIC/index.html", "/INTRODUCTION.*TO.*LADDER.*LOGIC/index.html.*"},
+			       	 {"PLC ON-DELAY TIMER INSTRUCTION", "/PLC.*On-Delay.*Timer.*Instruction/index.html", "/PLC.*On-Delay.*Timer.*Instruction/index.html.*"},
+			       	 {"PLC OFF-DELAY TIMER INSTRUCTION", "/PLC.*Off-Delay.*Timer.*Instruction/index.html", "/PLC.*Off-Delay.*Timer.*Instruction/index.html.*"},
+			       	 {"PLC RETENTIVE TIMER-ON INSTRUCTION", "/PLC.*Retentive.*Timer.*On.*Instruction/index.html", "/PLC.*Retentive.*Timer.*On.*Instruction/index.html.*"},
+			       	 {"PLC COUNT-UP INSTRUCTION", "/PLC.*COUNT-UP.*INSTRUCTION/index.html", "/PLC.*20COUNT-UP.*INSTRUCTION/index.html.*"},
+			       	 {"PLC COUNT - DOWN INSTRUCTION", "/PLC.*COUNT-DOWN.*INSTRUCTION/index.html", "/PLC.*COUNT-DOWN.*INSTRUCTION/index.html.*"},
+			       	 {"Garage Shutter Opening and Closing Using PLC", "/Garage.*Shutter.*Opening.*and.*Closing.*Using.*PLC/index.html", "/Garage.*Shutter.*Opening.*and.*Closing.*Using.*PLC/index.html.*"},
+			       	 {"Container Filling Process Using PLC", "/Container.*Filling.*Process.*Using.*PLC/index.html", "/Container.*Filling.*Process.*Using.*PLC/index.html.*"},
+			       	 {"Simultaneous output interlock using PLC", "/Simultaneous.*output.*interlock.*using.*PLC/index.html", "/Simultaneous.*output.*interlock.*using.*PLC/index.html.*"},
+			       	 {"Maximum Simultaneous Operations Limiter using PLC", "/Maximum.*Simultaneous.*Operations.*Limiter.*using.*PLC/index.html", "/Maximum.*Simultaneous.*Operations.*Limiter.*using.*PLC/index.html.*"},
+			       	 {"Motor forward and reverse direction control using PLC", "/Motor.*forward.*and.*reverse.*direction.*control.*using.*PLC/index.html", "/Motor.*forward.*and.*reverse.*direction.*control.*using.*PLC/index.html.*"}
+			       	]
+			       },
+			       %% {"sa",
+			       %% 	[
+			       %% 	 {"DCS (Yokogawa CENTUM CS 1000)", "/substationtheory/index.html", ""},
+			       %% 	 {"Substation Automation (Theory)", "/DCS/index.html", ""},
+			       %% 	 {"Circuit Breaker Status Indication from field input", "/exp1/index.html", ""},
+			       %% 	 {"Control of Group Operated Switches (GOS) from workstation", "/exp2/index.html", ""},
+			       %% 	 {"Monitoring Feeder parameter from workstation", "/exp3/index.html", ""},
+			       %% 	 {"Fault scenario simulation in a feeder", "/exp4/index.html", ""},
+			       %% 	 {"Fault scenario simulation in a Transformer /Bus", "/exp5/index.html", ""},
+			       %% 	 {"Load Transfer from one Feeder to other during Transformer Maintenance", "/exp6/index.html", ""},
+			       %% 	 {"Control Of Bus Voltages Through Onload Tap Changes", "/exp7/index.html", ""},
+			       %% 	 {"Development of 11KV/433 volts substation automation scheme using PLC for normal load operation", "/exp8/index.html", ""},
+			       %% 	 {"Development of 11KV/433 volts substation automation scheme using PLC for timer ON/OFF load control", "/exp9/index.html", ""},
+			       %% 	 {"Development of 11KV/433 volts substation automation scheme using PLC for cyclic ON/OFF load control", "/exp10/index.html", ""},
+			       %% 	 {"Autoreclosure And Sectionalizer Operation", "/exp11/index.html", ""}
+			       %% 	]
+			       %% },
+			       %% {"fm",
+			       %% 	[
+			       %% 	 {"Impact of Jet", "/exp1/index.html", ""}
+			       %% 	]
+			       %% },
+			       %% {"sm",
+			       %% 	[
+			       %% 	 {"Mohr's circle", "/exp1/index.html", ""},
+			       %% 	 {"Bending Stresses", "/exp2/index.html", ""},
+			       %% 	 {"Deflection in Cantilever", "/exp3/index.html", ""},
+			       %% 	 {"Deflection in Beam", "/exp4/index.html", ""}
+			       %% 	]
+			       %% },
+			       %% {"mm-nitk",
+			       %% 	[
+			       %% 	 {"Position analysis of Grashof four bar mechanism", "/exp1/index.html", ""},
+			       %% 	 {"Velocity analysis of Grashof four bar mechanism", "/exp2/index.html", ""},
+			       %% 	 {"Acceleration analysis of Grashof four bar mechanism", "/exp3/index.html", ""},
+			       %% 	 {"Position analysis of NonGrashof four bar mechanism", "/exp4/index.html", ""},
+			       %% 	 {"Velocity analysis of NonGrashof four bar mechanism", "/exp5/index.html", ""},
+			       %% 	 {"Acceleration analysis of NonGrashof four bar mechanism", "/exp6/index.html", ""},
+			       %% 	 {"Position analysis of Slider crank mechanism", "/exp7/index.html", ""},
+			       %% 	 {"Velocity analysis of Slider crank mechanism", "/exp8/index.html", ""},
+			       %% 	 {"Acceleration analysis of Slider crank mechanism", "/exp9/index.html", ""},
+			       %% 	 {"Position analysis of Slider crank mechanism with Offset", "/exp10/index.html", ""},
+			       %% 	 {"Position analysis of Scotch Yoke Mechanism", "/exp11/index.html", ""},
+			       %% 	 {"Velocity analysis of Scotch Yoke Mechanism", "/exp12/index.html", ""},
+			       %% 	 {"Acceleration analysis of Scotch Yoke Mechanism", "/exp13/index.html", ""},
+			       %% 	 {"Position analysis of Elliptical Trammel", "/exp14/index.html", ""},
+			       %% 	 {"Hart Straight Line Mechanism", "/exp15/index.html", ""},
+			       %% 	 {"Tchebichev Straight Line Mechanism", "/exp16/index.html", ""}
+			       %% 	]
+			       %% },
+			       %% {"mdmv",
+			       %% 	[
+			       %% 	 {"Free vibration of cantilever beam", "/exp1/index.html", ""},
+			       %% 	 {"Free vibration of simply supported beam", "/exp2/index.html", ""},
+			       %% 	 {"Free vibration of fixed beam", "/exp3/index.html", ""},
+			       %% 	 {"Forced vibration of SDOF system", "/exp4/index.html", ""},
+			       %% 	 {"Base Excitation", "/exp5/index.html", ""},
+			       %% 	 {"Rotating Unbalance", "/exp6/index.html", ""},
+			       %% 	 {"2DOF Forced vibration", "/exp7/index.html", ""},
+			       %% 	 {"Dynamic Vibration Absorber", "/exp8/index.html", ""}
+			       %% 	]
+			       %% },
+			       %% {"uorepc",
+			       %% 	[
+			       %% 	 {"Flow Through Pipes", "/exp1/index.html", ""},
+			       %% 	 {"Flow Through Fittings", "/exp2/index.html", ""},
+			       %% 	 {"Flow through orifice meter", "/exp3/index.html", ""},
+			       %% 	 {"Flow through Venturi meter", "/exp4/index.html", ""},
+			       %% 	 {"Flow through Packed Bed", "/exp5/index.html", ""},
+			       %% 	 {"Flow through Fluidized Bed", "/exp6/index.html", ""},
+			       %% 	 {"Reaction kinetic studies in a batch reactor", "/exp7/index.html", ""},
+			       %% 	 {"Reaction kinetic studies in a mixed flow reactor", "/exp8/index.html", ""},
+			       %% 	 {"Reaction kinetic studies in a plug flow reactor", "/exp9/index.html", ""}
+			       %% 	]
+			       %% },
+			       {"vssd",
+			       	[
+			       	 {"Vibration Characteristics of Aluminum Cantilever Beam using Piezoelectric Sensors", "/exp1.html", "/exp1.html.*"},
+			       	 {"Identification of High Frequency Modes of Beam in 'Free-Free' Condition using Electro-mechanical Impedance(EMI) Technique", "/exp2.html", "/exp2.html.*"},
+			       	 {"Forced Excitation of Steel Beam using Portable Shaker", "/exp3.html", "/exp3.html.*"},
+			       	 {"Photogrammetry for Displacement Measurement", "/exp4.html", "/exp4.html.*"},
+			       	 {"Modes of Vibrations of Beams under flexure", "/exp5.html", "/exp5.html.*"},
+			       	 {"Modes of vibration of Plates under flexure", "/exp6.html", "/exp6.html.*"},
+			       	 {"Damage Detection and Qualitative Quantification Using Electro-Mechanical Impedance (EMI) Technique", "/exp7.html", "/exp7.html.*"},
+			       	 {"Dynamics of Bandra Worli Sea Link Brigde", "/exp8.html", "/exp8m.*.html.*"},
+			       	 {"EXPERIMENT 9", "/exp9.html", "/Train.*Vehicle.html.*|/exp9_files/Tank/Tank.html"}
+			       	]
+			       },
+			       {"qnm",
+			       	[
+			       	 {"Infinite Capacity Markovian Models", "/experiment1.html", "/Experiment.*201/mm1.html.*|/exp9_files/Tank/Tank.html.*|/exp9_files/Tank/Tank.html"},
+			       	 {"Finite Capacity Markovian Models", "/experiment2.html", "/Experiment.*202/Layout.html.*"},
+			       	 {"Retrial Markovian Models for Bulk Arrival/Service", "/experiment3.html", "/Experiment.*203/Layout.html.*"},
+			       	 {"Infinite Capacity Non Markovian Models", "/experiment4.html", "/Experiment.*204/Exp4a.html.*|/Experiment.*204/Exp4b.html.*"},
+			       	 {"Finite Capacity Non Markovian Models", "/experiment5.html", "/Experiment.*205/Exp5a.html.*|/Experiment.*205/Exp5b.html.*"},
+			       	 {"Non Markovian Models for Bulk Arrival/Service", "/experiment6.html", "/Experiment.*206/Exp6.html.*"},
+			       	 {"Discrete time Experiments", "/experiment7.html", "/Experiment.*207/DT1.*.html.*"},
+			       	 {"Open Tandem Queue", "/experiment8.html", "/Experiment.*208/tandem.html.*"},
+			       	 {"Tandem Queue with feedback", "/experiment9.html", "/Experiment.*209/model2.html.*"},
+			       	 {"Open Queueing Network Experiment", "/experiment10.html", "/Experiment.*2010/opennetwork.html.*"},
+			       	 {"Closed Queueing Network Experiment", "/experiment11.html", "/Experiment.*2011/closednetwork.html.*"},
+			       	 {"Fluid Queue Experiments", "/experiment12.html", "/Experiment.*2012/12.*.html.*"}
+			       	]
+			       },
+			       {"eem",
+			       	[
+			       	 {"Measurement of VSWR on a line", "/exp1.html", "/exp1/Application.exe"},
+			       	 {"Determination of unknown impedance", "/exp2.html", "/exp2/Application.exe"},
+			       	 {"Relationship between guide λg and λ0", "/exp3.html", "/exp3/Application.exe"},
+			       	 {"Experiment of Microwave Cavity", "/exp4.html", "/exp4/Application.exe"},
+			       	 {"Microwave Coupler", "/exp5.html", "/exp5/Application.exe"},
+			       	 {"Radiation Pattern of Horn Antenna", "/exp7.html", "/exp7/Application.exe"},
+			       	 {"Antenna Gain measurement", "/exp8.html", "/exp8/Application.exe"}
+			       	]
+			       },
+			       {"msvs",
+			       	[
+			       	 {"Upsetting", "/upsetting_process.php", "/upsetting_simulation.php.*| /Hydraulic.php.*|/Mechanical.php.*"},
+			       	 {"Upsetting", "/upsetting_process.php", "/Upset_Experiment.php.*UPSETTING/Upset_Comp/Case.*"},
+			       	 {"Extrusion", "/Extrusion.php", "/Aluminium.php.*|/Titanium.php.*|/Extru_Experiment.php.*.mp4.*"},
+			       	 {"Extrusion", "/Extrusion.php", "/Extru_Experiment.php.*/SolidPipe.mp4.*"},
+			       	 {"Multi Step", "/MultiStep.php", "/MultiStep_Experiment.php.*/MSF.*.mp4.*"},
+			       	 {"Hammer Forging", "/Hammer_Forging.php", "/Hammer_Experiment.php.*/HammerForging.*.mp4.*"},
+			       	 {"Rolling Process", "/Rolling_process.php", "/Rolling.php.*|/RingRoll.php.*.mp4.*"},
+			       	 {"Thread Rolling", "/ThreadRolling.php", "/ThreadSimulation.php.*.mp4.*"},
+			       	 {"Wedge Rolling", "/WedgeRolling.php", "/WedgeSimulation.php.*mp4.*"},
+			       	 {"Sheet Metal", "/SheetMetal.php", "/SheetMetal_Experiment.php.*/Bending.*.mp4.*"},
+			       	 {"Orbital", "/Orbital.php", "/OrbitalSimulation.php.*.mp4.*"},
+			       	 {"Hydroforming", "/Hydroforming.php", "/HydroSimulation.php.*.mp4.*"},
+			       	 {"Stretch Forming", "/Stretchforming.php", "/StretchSimulation.php.*.mp4.*"},
+			       	 {"Cogging", "/Cogging.php", "/CoggingSimulation.php.*Cogging.*.mp4.*"},
+			       	 {"Swaging", "/Swaging.php", "/SwagingSimulation.php.*Swaging.*.mp4.*"},
+			       	 {"Reveting", "/Riveting.php", "/RivetingSimulation.php.*Riveting.*.mp4.*"},
+			       	 {"Quenching", "/Quenching.php", "/QuenchingSimulation.php.*Quenching.*.mp4.*"},
+			       	 {"rct", "/rct.php", "/RCT_Bench.php.*"},
+			       	 {"Defects", "/Defects.php", "/DefectSimulation.php.*Defects.*.mp4.*"}
+			       	]
+			       },
+			       {"vp",
+			       	[
+			       	 {"Experiment- 1", "/exp1.html", "/Sim_dcmotor.html.*|/syn_Sim.html.*|/Sim_DG_Set.html.*|/dynDcmotor.html.*"},
+			       	 {"Experiment - 2", "/exp2.html", "/Sim_2/phaseSequence.html.*|/Sim_2/SlipTest/index.html.*"},
+			       	 {"Experiment- 3", "/exp3.html", "/sim_3/OCC.html.*|/sim_3/SCC.html.*|/sim_3/comb/X2.html.*|/sim_3/comb/X0.html.*"},
+			       	 {"Experiment - 4", "/exp4.html", "/Sim_4/web/Exp4.html.*"},
+			       	 {"Experiment - 5", "/exp5.html", "/sim_5/web/Exp5.html.*"},
+			       	 {"Experiment - 6", "/exp6.html", "/sim_6/web/exp6.html.*"},
+			       	 {"Experiment - 6", "/exp6.html", "/sim_6a.*index.html.*"},
+			       	 {"Experiment - 7", "/exp7.html", "/Sim.*sim7.html.*"},
+			       	 {"Experiment - 8", "/exp8.html", "/Sim8.*Sim8.html.*"},
+			       	 {"Experiment - 9", "/exp9.html", "/Sim9.*index.html.*"}
+			       	]
+			       },
+			       %% {"vc",
+			       %% 	[
+			       %% 	 {"No name", "/.*page_id=83", "/.*page_id=108.*"},
+			       %% 	 {"", "/.*page_id=186", "/.*page_id=195.*"},
+			       %% 	 {"", "/.*page_id=200", "/.*page_id=209.*"},
+			       %% 	 {"", "/.*page_id=612", "/.*page_id=885.*"},
+			       %% 	 {"", "/.*page_id=748", "/.*page_id=899.*"},
+			       %% 	 {"", "/.*page_id=786", "/.*page_id=911.*"},
+			       %% 	 {"", "/.*page_id=939", "/.*page_id=968.*"},
+			       %% 	 {"", "/.*page_id=1028", "/.*page_id=1094.*"},
+			       %% 	 {"", "/.*page_id=1111", "/.*page_id=1169.*"}
+			       %% 	]
+			       %% },
+			       %% {"pe",
+			       %% 	[
+			       %% 	 {"An Overview of Virtual Proteomics Laboratory", "/exp1/index.html", ""},
+			       %% 	 {"Module I: An Overview of Gel-based Proteomics", "/exp2/index.html", ""},
+			       %% 	 {"Experiment-1: Gel-based Proteomics to Analyze Human Serum Proteome", "/exp3/index.html", "/exp3/index.html.*"},
+			       %% 	 {"Experiment-2: Gel-based proteomics to analyze bacterial proteome", "/exp4/index.html", "/exp4/index.html.*"},
+			       %% 	 {"Experiment-3: Gel-based Proteomics to Analyze Plant Proteome", "/exp5/index.html", "/exp5/index.html.*"},
+			       %% 	 {"Module II: An Overview of MALDI-TOF MS", "/exp6/index.html", ""},
+			       %% 	 {"Experiment-4: In-Gel Digestion of Proteins", "/exp7/index.html", "/exp7/index.html.*"},
+			       %% 	 {"Experiment-5: Sample Preparation for the MALDI-TOF MS Analysis", "/exp8/index.html", "/exp8/index.html.*"},
+			       %% 	 {"Experiment-6: MALDI-TOF Instrumentation and MS Analysis of Serum Proteins", "/exp9/index.html", "/exp9/index.html.*"},
+			       %% 	 {"Experiment-7: MS Data Analysis- Peptide Mass Fingerprinting (PMF)", "/exp10/index.html", "/exp10/index.html.*"},
+			       %% 	 {"Experiment-8: Determination of Molecular Weight of Intact Proteins using MALDI-TOF MS", "/exp11/index.html", "/exp11/index.html.*"},
+			       %% 	 {"Module III: An Overview of Bioinformatics", "/exp12/index.html", ""},
+			       %% 	 {"Experiment-9: Introduction to Bio-informatics Tools: Sequence Alignment", "/exp13/index.html", "/exp13/index.html.*"},
+			       %% 	 {"Experiment-10: Homology Modeling", "/exp14/index.html", "/exp14/index.html.*"},
+			       %% 	 {"Experiment-11: Protein Function Annotation", "/exp15/index.html", "/exp15/index.html.*"},
+			       %% 	 {"Experiment-12: Molecular Docking", "/exp16/index.html", "/exp16/index.html.*"}
+			       %% 	]
+			       %% },
+			       {"ce",
+			       	[
+			       	 {"Flow measurement by orificemeter and venturimeter", "/exp1/index.html", "/exp1/ori/ori1.php.*"},
+			       	 {"Gas Liquid Absorption", "/exp2/index.html", "/exp2/gla/gla1.php.*"},
+			       	 {"Two Phase Flow in Horizontal Tubes", "/exp3/index.html", "/exp3/2pf/2pf1.php.*"},
+			       	 {"Hydrodynamics of packed column", "/exp4/index.html", "/exp4/hpc/hpc1.php.*"},
+			       	 {"Nature of Flow", "/exp5/index.html", "/exp5/nof/nof1.php.*"},
+			       	 {"Adiabatic calorimetry", "/exp6/index.html", "/exp6/calo/cal1.php.*"},
+			       	 {"Flow through fittings", "/exp7/index.html", "/exp7/ftf/fm1.php.*"},
+			       	 {"Heat transfer in a double pipe heat exchanger", "/exp8/index.html", "/exp8/htl/htl.php.*"},
+			       	 {"Vapour Liquid Equilibrium", "/exp9/index.html", "/exp9/vle/vle.php.*"},
+			       	 {"Ebulliometric Determination of Vapour Pressure", "/exp10/index.html", "SensorLab/Rtd/index.html.*"}
+			       	]
+			       },
+			       {"ee",
+			       	[
+			       	 {"I-V characteristics and Fabrication of P-N junction diode", "/exp1/index.html", "/exp1/index.html"},
+			       	 {"I-V Characteristics of LED Diode", "/exp12/index.html", "/exp12/index.html"},
+			       	 {"Rectifier Circuits", "/exp2/index.html", "/exp2/simulator/SpiceHalfWave/halfwave.html.*|/exp2/simulator/SpiceBridge/bridge.html.*"},
+			       	 {"Wave Shaping Circuits using Diodes", "/exp3/index.html", "/exp3/index.html.*"},
+			       	 {"BJT characteristics", "/exp4/index.html", "/exp4/index.html"},
+			       	 {"BJT biasing and amplifier response", "/exp5/index.html", "/exp5/index.html"},
+			       	 {"RC Circuits", "/exp6/index.html", "/exp6/.*/SpiceHighPass.html.*|/exp6/.*/SpiceLowPass.html"},
+			       	 {"Wien Bridge Oscillator", "/exp7/index.html", ""},
+			       	 {"Non liner circuits using Opamps", "/exp9/index.html", ""},
+			       	 {"Active filters", "/exp10/index.html", "/exp10.*/SpiceOpampLPF.html|/exp10.*/SpiceOpampHPF.html|/exp10.*/SpiceOpampWBPF.html"},
+			       	 {"Monostable and Astable multivibrators using IC 555", "/exp11/index.html", ""}
+			       	]
+			       },
+			       {"cse04", 
+			       	[
+			       	 {"Numerical Representation", "/exp1/index.php", "/exp1/lab.html"},
+			       	 {"Beauty of Numbers", "/exp2/index.php", "/exp2/lab.html"},
+			       	 {"More on Numbers", "/exp3/index.php", "/exp3/lab.html"},
+			       	 {"Factorials", "/exp4/index.php", "/exp4/lab.html"},
+			       	 {"String Operations", "/exp5/index.php", "/exp5/lab.html"},
+			       	 {"Recursion", "/exp6/index.php", "/exp6/lab.html"},
+			       	 {"Advanced Arithmatic", "/exp7/index.php", "/exp7/lab.html"},
+			       	 {"Searching and sorting", "/exp8/index.php", "/exp8/lab.html"},
+			       	 {"Permutaion", "/exp9/index.php", "/exp9/lab.html"},
+			       	 {"Sequences", "/exp10/index.php", "/exp10/lab.html"}
+			       	]
+			       },
+			       %% {"cse06",
+			       %% 	[
+			       %% 	 {"Apriori (An association rule mining algorithm)", "", ""},
+			       %% 	 {"Sampling (An association rule mining algorithm)", "", ""},
+			       %% 	 {"Partition (An association rule mining algorithm)", "", ""},
+			       %% 	 {"Comparison of Association Rule Mining Algorithms", "", ""},
+			       %% 	 {"k-Means (A partitioning clustering algorithm)", "", ""},
+			       %% 	 {"Agglomerative Clustering (A hierachial clustering algorithm)", "", ""},
+			       %% 	 {"DBSCAN (A density-based clustering algorithm)", "", ""},
+			       %% 	 {"kNN (A nearest neighbour based classification algorithm)", "", ""},
+			       %% 	 {"Decision Tree (Classification algorithm)", "", ""},
+			       %% 	 {"Comparison of Classification algorithms", "", ""}
+			       %% 	] },
+			       %% {"cse07",
+			       %% 	[
+			       %% 	 {"", "", ""}
+			       %% 	]
+			       %% },
+			       %% {"cse09",
+			       %% 	[
+			       %% 	 {"File Management", "/exp1/index.html", ""},
+			       %% 	 {"Text Editor", "/exp2/index.html", ""},
+			       %% 	 {"File Content", "/exp3/index.html", ""},
+			       %% 	 {"File Permissions", "/exp4/index.html", ""},
+			       %% 	 {"Archival and Compression", "/exp5/index.html", ""},
+			       %% 	 {"Obtaining System Information", "/exp6/index.html", ""},
+			       %% 	 {"Pipes and Redirection", "/exp7/index.html", ""},
+			       %% 	 {"Searching", "/exp8/index.html", ""},
+			       %% 	 {"Basic Networking", "/exp9/index.html", ""}
+			       %% 	]
+			       %% },
+			       %% {"cse05",
+			       %% 	[
+			       %% 	 {"Design Inductive Data", "/html/topics/inductive-data-design/index.html", ""},
+			       %% 	 {"Programming with Inductive data", "/html/topics/inductive-data-prog/index.html", ""},
+			       %% 	 {"Higher Order functions", "/html/topics/higher-order/index.html", ""},
+			       %% 	 {"Arithmatic Interpreter", "/html/topics/arithmetic/index.html", ""},
+			       %% 	 {"Environment", "/html/topics/environment/index.html", ""},
+			       %% 	 {"Block structured language", "/html/topics/lexical/index.html", ""},
+			       %% 	 {"Language with closures", "/html/topics/closure/index.html", ""},
+			       %% 	 {"Language with recursive functions", "/html/topics/recursion/index.html", ""},
+			       %% 	 {"Language with Objects", "/html/topics/objects/index.html", ""}
+			       %% 	]
+			       %% },
+			       {"cse13",
+			       	[        
+			       		 {"Full Custom Design", "/full_custom/index.php", "/full_custom/practice_swing.*"},
+			       		 {"Semi Custom Design", "/semi_custom/index.php", "/semi_custom/exp.*"},
+			       		 {"Power Reduction Using Gated Clocking", "/Gated_Clocking/index.php", "/Gated_Clocking/exp1.*"},
+			       		 {"Ripple Carry Adder", "/ripple_carry_adder/index.php", "/ripple_carry_adder/exp.*"},
+			       		 {"Carry Look Ahead Adder", "/carry_look_ahead_adder/index.php", "/carry_look_ahead_adder/practise.*"},
+			       		 {"5-3 COMPRESSOR", "/5_3_compressor/index.php", "/5_3_compressor/exp.*"},
+			       		 {"Array Multiplier", "/array_multiplier/index.php", "/array_multiplier/exp1.html"},
+			       		 {"(8,4) Hamming Coder", "/hamming_coder/index.php", "/hamming_coder/exp1.html"},
+			       		 {"Linear Feedback Shift Register", "/lfsr/index.php", "/lfsr/LFSR.html"}
+			       	]
+			       },
+			       {"cse16",
+			       	[
+			       	 {"Manual speech signal-to-symbol transformation", "/exp01/index.html", "/exp01/index.html.*"},
+			       	 {"Speech production mechanism", "/exp02/index.html", "/exp02/index.html.*"},
+			       	 {"Nature of speech signal", "/exp03/index.html", "/exp03/index.html.*"},
+			       	 {"Basics of DSP", "/exp04/index.html", "/exp04/index.html.*"},
+			       	 {"Short-time spectrum analysis of speech", "/exp05/index.html", "/exp05/index.html.*"},
+			       	 {"Spectrographic analysis of speech", "/exp06/index.html", "/exp06/index.html.*"},
+			       	 {"Cepstral analysis of speech", "/exp07/index.html", "/exp07/index.html.*"},
+			       	 {"Linear prediction analysis of speech", "/exp08/index.html", "/exp08/index.html.*"},
+			       	 {"Formant synthesis", "/exp09/index.html", "/exp09/index.html.*"},
+			       	 {"Analysis-by-synthesis of speech", "/exp10/index.html", "/exp10/index.html.*"}
+			       	]
+			       },
+			       {"cse17",
+			       	[
+			       	 {"Sensor Modelling", "/sensormodelling/index.php", "/sensormodelling/index.php.*section=Experiment.*"},
+			       	 {"Velocity Modelling", "/velocitymodelling/index.php", "/velocitymodelling/index.php.*section=Experiment.*"},
+			       	 {"Mapping", "/mapping/index.php", "/mapping/index.php.*section=Experiment.*"},
+			       	 {"Localization", "/localization/index.php", "/localization/index.php.*section=Experiment.*"},
+			       	 {"Grid-based Navigation", "/gridbasednavigation/index.php", "/gridbasednavigation/index.php.*section=Experiment.*"},
+			       	 {"Forward Kinematics", "/forwardkinematics/index.php", "/forwardkinematics/index.php.*section=Experiment.*"},
+			       	 {"Scan Matching", "/scanmatching/index.php", "/scanmatching/index.php.*section=Experiment.*"},
+			       	 {"RRT-based Path Planning", "/rrtbasedpathplanning/index.php", "/rrtbasedpathplanning/index.php.*section=Experiment.*"},
+			       	 {"Exploration", "/exploration/index.php", "/exploration/index.php.*section=Experiment.*"},
+			       	 {"Monte Carlo Localization", "/montecarlolocalization/index.php", "/montecarlolocalization/index.php.*section=Experiment.*"}
+			       	]
+			       },
+			       {"cse21",
+			       	[
+			       	 {"EM Spectrum", "/exp1/index.php", "/exp1/index.php.*section=Experiment.*"},
+			       	 {"Black Body Radiation", "/exp2/index.php", "/exp2/index.php.*section=Experiment.*"},
+			       	 {"Reflectance of Natural objects in the Electromagnetic spectrum", "/exp3/index.php", "/exp3/index.php.*section=Experiment.*"},
+			       	 {"Capturing Area-wide reflectance effect of spatial resolution", "/exp4/index.php", "/exp4/index.php.*section=Experiment.*"},
+			       	 {"Data quantization levels and object extraction effects of Radiometric characteristics of the sensor", "/exp5/index.php", "/exp5/index.php.*section=Experiment.*"},
+			       	 {"Visual Analysis - Band Combination", "/exp6/index.php", "/exp6/index.php.*section=Experiment.*"},
+			       	 {"Band Algebra - Index based Analysis", "/exp7/index.php", "/exp7/index.php.*section=Experiment.*"}
+			       	]
+			       },
+			       {"cse24",
+			       	[
+			       	 {"Word Analysis", "/exp1/index.html", "/exp1/index.html.*"},
+			       	 {"Word Generation", "/exp2/index.html", "/exp2/index.html.*"},
+			       	 {"Morphology", "/exp3/index.html", "/exp3/index.html.*"},
+			       	 {"N-Grams", "/exp4/index.html", "/exp4/index.html.*"},
+			       	 {"N-Grams Smoothing", "/exp5/index.html", "/exp5/index.html.*"},
+			       	 {"POS Tagging: Hidden Markov Model", "/exp6/index.html", "/exp6/index.html.*"},
+			       	 {"POS Tagging: Viterbi Decoding", "/exp7/index.html", "/exp7/index.html.*"},
+			       	 {"Building POS Tagger", "/exp8/index.html", "/exp8/index.html.*"},
+			       	 {"Chunking", "/exp9/index.html", "/exp9/index.html.*"},
+			       	 {"Building Chunker", "/exp10/index.html", "/exp10/index.html.*"}
+			       	]
+			       },
+			       {"cse30",
+			       	[
+			       	 {"Design and characterization of common source amplifier with Resistive load (Transfer characteristics)", "/vlab3/myExp2_1_a/index.php", "/vlab3/myExp2_1_a/exp1.html"},
+			       	 {"Design and characterization of common source amplifier with Resistive load (Frequency Response)", "/vlab3/myExp2_1_b/index.php", "/vlab3/myExp2_1_b/exp1.html"},
+			       	 {"Design and characterization of common source amplifier with Diode connected load (Transfer characteristics)", "/vlab3/myExp2_2_a/index.php", "/vlab3/myExp2_2_a/exp1.html"},
+			       	 {"Design and characterization of common source amplifier with Diode connected load  (Frequency Response)", "/vlab3/myExp2_2_b/index.php", "/vlab3/myExp2_2_b/exp1.html"},
+			       	 {"Design and characterization of common source amplifier with Current source load  ( Transfer characteristics)", "/vlab3/myExp2_3_a/index.php", "/vlab3/myExp2_3_a/exp1.html"},
+			       	 {"Design and characterization of common source amplifier with Current source load (Frequency Response)", "/vlab3/myExp2_3_b/index.php", "/vlab3/myExp2_3_b/exp1.html"},
+			       	 {"Design and characterization of common gate amplifier (Transfer characteristics)", "/vlab3/myExp3_a/index.php", "/vlab3/myExp3_a/exp1.html"},
+			       	 {"Design and characterization of common gate amplifier (Frequency Response)", "/vlab3/myExp3_b/index.php", "/vlab3/myExp3_b/exp1.html"},
+			       	 {"Design and characterization of differential amplifier ( Transfer characteristics)", "/vlab3/myExp5_a/index.php", "/vlab3/myExp5_a/exp1.html"},
+			       	 {"Design and characterization of differential amplifier (Frequency Response)", "/vlab3/myExp5_b/index.php", "/vlab3/myExp5_b/exp1.html"},
+			       	 {"Design and characterization of differential to single-ended circuit( Transfer characteristics)", "/vlab3/myExp7_a/index.php", "/vlab3/myExp7_a/exp1.html"},
+			       	 {"Design and characterization of differential to single-ended circuit (Frequency Response)", "/vlab3/myExp7_b/index.php", "/vlab3/myExp7_b/exp1.html"},
+			       	 {"Design and characterization of basic current mirror", "/vlab3/myExp6_basic/index.php", "/vlab3/myExp6_basic/exp1.html"},
+			       	 {"Design and characterization of cascode current mirror", "/vlab3/myExp6_cascode/index.php", "/vlab3/myExp6_cascode/exp1.html"},
+			       	 {"Design and characterization of voltage mode buffer (Transfer characteristics)", "/vlab3/myExp9_a/index.php", "/vlab3/myExp9_a/exp1.html"},
+			       	 {"Design and characterization of voltage mode buffer (Frequency Response)", "/vlab3/myExp9_b/index.php", "/vlab3/myExp9_b/exp1.html"}
+			       	]
+			       },
+			       {"eerc02",
+			       	[
+			       	 {"Water Content Experiment", "/exp1/index.php", "/exp1/index.php.*section=Experiment.*"},
+			       	 {"Unit Weight Experiment", "/exp2/index.php", "/exp2/index.php.*section=Experiment.*"},
+			       	 {"Specific Gravity Experiment", "/exp3/index.php", "/exp3/index.php.*section=Experiment.*"},
+			       	 {"Grain Size Distribution Experiment", "/exp4/index.php", "/exp4/index.php.*section=Experiment.*"},
+			       	 {"Attenberg Limits Experiment", "/exp5/index.php", "/exp5/index.php.*section=Experiment.*"},
+			       	 {"Permeability Experiment", "/exp6/index.php", "/exp6/index.php.*section=Experiment.*"},
+			       	 {"Compaction Test Experiment", "/exp7/index.php", "/exp7/index.php.*section=Experiment.*"},
+			       	 {"Consolidation Test Experiment", "/exp8/index.php", "/exp8/index.php.*section=Experiment.*"},
+			       	 {"Direct Shear Test Experiment", "/exp9/index.php", "/exp9/index.php.*section=Experiment.*"},
+			       	 {"Triaxial Test Experiment", "/exp10/index.php", "/exp10/index.php.*section=Experiment.*"}
+			       	]
+			       },
+			       {"eerc04",
+			       	[
+			       	 {"Rijid Joints Experiment", "/exp1/index.php", "/exp1/index.php.*section=Experiment.*"},
+			       	 {"Single Span Beams Experiment", "/exp2/index.php", "/exp2/index.php.*section=Experiment.*"},
+			       	 {"Continuous Beams Experiment", "/exp3/index.php", "/exp3/index.php.*section=Experiment.*"},
+			       	 {"Column Analysis Experiment", "/exp4/index.php", "/exp4/index.php.*section=Experiment.*"},
+			       	 {"Portal Frames Experiment", "/exp5/index.php", "/exp5/index.php.*section=Experiment.*"},
+			       	 {"Plates Experiment", "/exp6/index.php", "/exp6/index.php.*section=Experiment.*"},
+			       	 {"Arches Experiment", "/exp7/index.php", "/exp7/index.php.*section=Experiment.*"},
+			       	 {"Trusses Experiment", "/exp8/index.php", "/exp8/index.php.*section=Experiment.*"},
+			       	 {"Retaining Walls Experiment", "/exp9/index.php", "/exp9/index.php.*section=Experiment.*"},
+			       	 {"Plastic Hinge Experiment", "/exp10/index.php", "/exp10/index.php.*section=Experiment.*"}
+			       	]
+			       },
+			       {"eerc05",
+			       	[
+			       	 {"Free Swell Index Experiment", "/exp1/index.html", "/exp1/animation/fsi.swf"},
+			       	 {"", "", "/exp1/animation/ve_fsi.html"},
+			       	 {"California Bearing Ratio Test (CBR Test)", "/exp2/index.html", "/exp2/media/ve_cbr.html"},
+			       	 {"pH Test", "/exp3/index.html", "/exp3/media/ve_ph.html"},
+			       	 {"Determination of Total Soluble Solids", "/exp4/index.html", "/exp4/media/ve_totalsolid.html"},
+			       	 {"Core Cutter Experiment", "/exp5/index.html", "/exp5/media/ve_coreCutter.html"},
+			       	 {"Vane Shear Test", "/exp6/index.html", "/exp6/media/shearing.swf"},
+			       	 {"", "", "/exp6/media/ve_vanshear.html"},
+			       	 {"Total Sulphate Test", "/exp7/index.html", "/exp7/media/ve_vanshear.html"},
+			       	 {"Standard Penetration Test", "/exp8/index.html", "/exp8/media/ve_vanshear.html"},
+			       	 {"Plate Load Test", "/exp9/index.html", "/exp9/media/ve_plateload.html"}
+			       	]
+			       },
+			       {"cse10",
+			       	[
+			       	 {"Ripple Carry Adder", "/rca_design.html", "/simulator.jnlp|/coaSimulator.jar|/Simulator.jar|/win.jnlp"},
+			       	 {"Carry-look-ahead adder", "/cla_design.html", "/simulator.jnlp|/coaSimulator.jar|/Simulator.jar|/win.jnlp"},
+			       	 {"Registers and Counters", "/reg_cnt_design.html", "/simulator.jnlp|/coaSimulator.jar|/Simulator.jar|/win.jnlp"},
+			       	 {"Wallace Tree Adder", "/wta.html", "/coaSimulator.jar|/simulator.jnlp|/Simulator.jar|/win.jnlp"},
+			       	 {"Combinational Multipliers", "/cmult.html", "/coaSimulator.jar|/simulator.jnlp|/Simulator.jar|/win.jnlp"},
+			       	 {"Booth's Multiplier", "/booth.html", "/coaSimulator.jar|/simulator.jnlp|/Simulator.jar|/win.jnlp"},
+			       	 {"Arithmetic Logic Unit", "/alu.html", "/coaSimulator.jar|/simulator.jnlp|/Simulator.jar|/win.jnlp"},
+			       	 {"Memory Design", "/memory.html", "/coaSimulator.jar|/simulator.jnlp|/Simulator.jar|/win.jnlp"},
+			       	 {"Associative cache Design", "/ac.html", "/coaSimulator.jar|/simulator.jnlp|/Simulator.jar|/win.jnlp"},
+			       	 {"Direct Mapped cache Design", "/dmc.html", "/coaSimulator.jar|/simulator.jnlp|/Simulator.jar|/win.jnlp"},
+			       	 {"CPU Design", "/comp.html", "/coaSimulator.jar|/simulator.jnlp|/Simulator.jar|/win.jnlp"}
+			       	]
+			       },
+			       {"cse23",
+			       	[
+			       	 {"Forming Sentences - 1", "/exp1/index.html", "/exp1/CLExperiment1.php"},
+			       	 {"Forming Sentences - 2", "/exp2/index.html", "/exp2/CLExperiment2.php"},
+			       	 {"Tokens and Types", "/exp3/index.html", "/exp3/CLExperiment3.php"},
+			       	 {"Heap's Law", "/exp4/index.html", "/exp4/CLExperiment4.php"},
+			       	 {"Dictionary Generation", "/exp5/index.html", "/exp5/CLExperiment7.php"},
+			       	 {"Coarse-grained POS Tagging", "/exp7/index.html", "/exp7/CLExperiment5.php"},
+			       	 {"Fine-grained POS Tagging", "/exp8/index.html", "/exp8/CLExperiment5.php"},
+			       	 {"Chunking", "/exp9/index.html", "/exp9/experiment6.php"},
+			       	 {"Context Free Grammar", "/exp10/index.html", "/exp10/CLExperiment10.php"}
+			       	]
+			       },
+			       %% {"civil13",
+			       %% 	[
+			       %% 	 {"", "", ""}
+			       %% 	]
+			       %% },
+			       {"ccnsb01",
+			       	[
+			       	 {"Introduction to the fluorescence spectroscopy principle", "/exp1/index.html", "/exp1/media/1.html"},
+			       	 {"Familiarization with the fluorescence instrumentation", "/exp2/index.html", "/exp2/media/*.html.*|/exp2/media/*.html.*"},
+			       	 {"Familiarization with excitation and emission spectra, Mirror Image relation and Stokes Shift", "/exp3/index.html", "/exp3/media/3.html"},
+			       	 {"Demonstration of solvent effects on fluorescence spectra", "/exp4/index.html", "/exp4/media/4.html"},
+			       	 {"Demonstration of pH effects on fluorescence spectra", "/exp5/index.html", "/exp5/media/5.html"},
+			       	 {"Effects of concentration (optical density) of a fluorophore on emission spectra", "/exp6/index.html", "/exp6/media/6.html"},
+			       	 {"Determination of unknown concentration of an analyte in solution", "/exp7/index.html", "/exp7/media/7.html"},
+			       	 {"Determination of fluorescence quantum yield of a fluorophore", "/exp8/index.html", "/exp8/media/8.html"},
+			       	 {"Fluorescence Quenching and Stern-Volmer plot: Estimation of the quenching constant from Stern-Volmer plot", "/exp9/index.html", "/exp9/media/9.html"},
+			       	 {"Effects of excimer and exciplex formations on fluorescence emission spectra", "/exp10/index.html", "/exp10/media/*.html.*|/exp10/media/*.html.*"}
+			       	]
+			       },
+			       {"ccnsb02",
+			       	[
+			       	 {"Preparation of Sols", "/exp1/index.html", "/exp1/sol.html"},
+			       	 {"Preparation of Gels", "/exp2/index.html", "/exp2/gel_form.html"},
+			       	 {"Preparation of Association Colloid - Micelles and Cleansing Actions of Soaps and Detergents", "/exp3/index.html", "/exp3/clean.html"},
+			       	 {"Surface Tension and its Modification", "/exp4/index.html", "/exp4/surface.html"},
+			       	 {"Demonstration of Tyndall Effect", "/exp5/index.html", "/exp5/Tyndal.html"},
+			       	 {"Gel Electrophoresis", "/exp7/index.html", "/exp7/Gel_elec.html"},
+			       	 {"Demonstration of Surface Effects on Chemical Properties of Finely Divided Particles", "/exp8/index.html", "/exp8/surface.html"},
+			       	 {"Design Method of Dynamic Light Scattering for Particle Size Measurements", "/exp13/index.html", "/exp13/experiment_zp.html"},
+			       	 {"Determination of Critical Micelle Concentration(CMC)", "/exp14/index.html", "/exp14/cmc.html"},
+			       	 {"Kinetic Study of Colloidal Gold Particle Formation and Gold Particle Catalyzed Reduction of Eosin by Sodium Borohydride", "/exp15/index.html", "/exp15/lab9.html"}
+			       	]
+			       },
+			       {"ccnsb03",
+			       	[
+			       	 {"Familiarization with the UV-Visible Absorption Spectroscopy:", "/exp1/index.html", "/exp1/media/1.html"},
+			       	 {"Solvent effects on absorption spectra", "/exp2/index.html", "/exp2/media/2.html"},
+			       	 {"Effects of sample path length", "/exp3/", "/exp3/media/3.html"},
+			       	 {"Effects of sample concentration", "/exp4/", "/exp4/media/4.html"},
+			       	 {"Determination of molar absorptivity", "/exp5/index.html", "/exp5/media/5.html"},
+			       	 {"Verification of Beer-Lambert Law", "/exp6/", "/exp6/media/6.html"},
+			       	 {"Determination of unknown concentration of a light absorbing analyte", "/exp7/", "/exp7/media/7.html"},
+			       	 {"Simultaneous estimation method for multicomponent samples: Principle of additivity of absorbance", "/exp8/", "/exp8/media/8.html"},
+			       	 {"pH effects on absorption spectra: pKa determination by spectrophotometric method", "/exp9/", "/exp9/media/9.html"},
+			       	 {"Study of kinetics of a reaction by using spectrophotometric method", "/exp10/", "/exp10/media/10.html"}
+			       	]
+			       },
+			       {"ccnsb04",
+			       	[
+			       	 {"Geometry Optimization of Molecules", "/exp1/index.php", "/exp1/nr.html|/exp1/sd.html"},
+			       	 {"UV-Visible Spectroscopy of Conjugated Molecules", "/exp2/index.php", "/exp2/experiment/"},
+			       	 {"Vib-rotational Spectroscopy of Hydrogen Chloride", "/exp3/index.php", "/exp3/experiment/index.php"},
+			       	 {"Geometry Optimization using ab initio quantum calcuations", "/exp4/index.php", "/exp4/experiment/index.php"},
+			       	 {"Calculation of Vibrational Frequency of Molecules and Visualization of Normal Modes", "/exp5/index.php", "/exp5/experiment/index.php"},
+			       	 {"Eigen systems: Geometrical Intepretation", "/exp7/index.php", "/exp7/experiment/index.php"},
+			       	 {"Huckel Molecular Orbital Theory", "/exp8/index.php", "/exp8/experiment/index.php"},
+			       	 {"Conformational Analysis of 1,2-dichloroethane", "/exp9/index.php", "/exp9/experiment/index.php"},
+			       	 {"Transition State Calculation for a SN2 reaction", "/exp10/index.php", "/exp10/experiment/index.php"}
+			       	]
+			       },
+			       {"ccnsb05",
+			       	[
+			       	 {"determine the specific rotation of a sugar using a polarimeter.", "/exp1/index.html", "/exp1/swf.html"},
+			       	 {"understand the effect of chiral substances on plane polarized light as a function of wavelength.", "/exp2/index.html", "/exp2/emanim_ord_refrac.html|/exp2/part2_cd/emanim_cd_refrac.html"},
+			       	 {"study the Optical Rotatory Dispersion (ORD) of some chiral substances.", "/exp3/index.html", "/exp3/jmol/.*"},
+			       	 {"study the Circular Dichroism of some substances with chiral chromophores.", "/exp4/index.html", "/exp4/exp/.*"},
+			       	 {"Study the operational details of a CD spectrometer.", "/exp5/index.html", "/exp5/swf.html"},
+			       	 {"Study the effect of Secondary Structure elements on CD spectrum of proteins.", "/exp6/index.html", "/exp6/swf.html"},
+			       	 {"deconvolute the CD spectrum of a given protein solution and classify it in terms of its secondary structure elements.", "/exp7/index.html", "/exp7/swf.html"},
+			       	 {"study the thermal stability of proteins.", "/exp8/index.html", "/exp8/experiment/index.html"},
+			       	 {"study the effect of chemical denaturants on protein stability.", "/exp9/index.html", "/exp9/experiment/index.html"},
+			       	 {"study the comparison between protein unfolding and protein aggregation in the presence of chemical denaturing agents.", "/exp10/index.html", "/exp10/experiment/index.html"}
+			       	]
+			       },
+			       {"ccnsb07",
+			       	[
+			       	 {"Internuclear forces in a diatomic molecule: Optical and magnetic tweezer experiments", "/exp1/index.html", "/latest_project/bin/magnet1.html|/latest_project/bin/magnet.html"},
+			       	 {"Molecular forces in a triatomic molecule: A magnetic tweezer experiment", "/exp2/index.html", "/latest_project/bin/magnet1.html"},
+			       	 {"Dihedral forces in a quad-atomic molecule: A magnetic tweezer experiment", "/exp3/index.html", "/latest_project/bin/magnet.html"},
+			       	 {"Interatomic van der Waals forces", "/exp4/index.html", "/suraj/Suraj/bin/Electrostatic.html"},
+			       	 {"van der Waals forces between molecules", "/exp5/index.html", "/suraj/Suraj/bin/Hexane_Vanderwall.html"},
+			       	 {"Interatomic electrostatic forces", "/exp6/index.html", "/suraj/Suraj/bin/Electrostatic.html"},
+			       	 {"Electrostatic forces between molecules", "/exp7/index.html", "/suraj/Suraj/bin/Electrostatic_Hexane.html"},
+			       	 {"Many-body forces in a polyatomic molecule", "/exp8/index.html", "/suraj/Suraj/bin/1.html"},
+			       	 {"Solvent viscous forces on a polyatomic molecule", "/exp9/index.html", "/suraj/Suraj/bin/ViscosEnvironment.html"},
+			       	 {"Molecular seperation using interatomic forces: Column chromatography", "/exp10/index.html", "/suraj/Suraj/bin/oilDrop.html"},
+			       	 {"Radiation forces on a dielectric particle", "/exp11/index.html", "/suraj/Suraj/bin/Laser.html"}
+			       	]
+			       },
+			       %% {"mech01",
+			       %% 	[
+			       %% 	 {" Conduction analysis of Single Material Slab", "", ""},
+			       %% 	 {"    Conduction analysis of Single Material Sphere", "", ""},
+			       %% 	 {"    Conduction analysis of Single Material Cylinder", "", ""},
+			       %% 	 {"    Conduction analysis of Double Material Slab", "", ""},
+			       %% 	 {"    Conduction analysis of Double Material Sphere", "", ""},
+			       %% 	 {"    Conduction analysis of Double Material Cylinder", "", ""},
+			       %% 	 {"    To determine the overall heat transfer coefficient (U) in the parallel flow heat exchanger.", "", ""},
+			       %% 	 {"    To determine the overall heat transfer coefficient (U) in the counter flow heat exchanger.", "", ""},
+			       %% 	 {"    To investigate the Lambert’s distance law", "", ""},
+			       %% 	 {"    To investigate the Lambert’s direction law (cosine law) ", "", ""}
+			       %% 	]
+			       %% },
+			       {"eee06",
 				[
-				 {"Breaking the Shift Cipher", "/exp1/index.php", "/exp1/index.php.*section=Experiment.*"},
-				 {"Breaking the Mono-alphabetic Substitution Cipher", "/exp2/index.php", "/exp2/index.php.*section=Experiment.*"},
-				 {"Vernam Cipher and Perfect secrecy", "/exp3/index.php", "/exp3/index.php.*section=Experiment.*"},
-				 {"Message Authentication Code (CBC-MAC)", "/exp5/index.php", "/exp5/index.php.*section=Experiment.*"},
-				 {"", "/exp6/index.php", "/exp6/index.php.*section=Experiment.*"},
-				 {"", "/exp7/index.php", "/exp7/index.php.*section=Experiment.*"},
-				 {"", "/exp8/index.php", "/exp8/index.php.*section=Experiment.*"},
-				 {"", "/exp9/index.php", "/exp9/index.php.*section=Experiment.*"},
-				 {"", "/exp10/index.php", "/exp10/index.php.*section=Experiment.*"},
-				 {"", "/exp11/index.php", "/exp11/index.php.*section=Experiment.*"}
+				 {"study the Synchronization of alternator with infinite bus bar.", "/build/Dreamweaver/exp1.html", "/build/Dreamweaver/Sim_dcmotor.html|/build/Dreamweaver/syn_Sim.html|/build/Dreamweaver/Sim_DG_Set.html|/build/Dreamweaver/dynDcmotor.html"},
+				 {"determine the direct axis reactance (Xd) and quadrature axis reactance (Xq) of synchronous machine.", "/build/Dreamweaver/exp2.html", "/build/Dreamweaver/Sim_2/phaseSequence.html|/build/Dreamweaver/Sim_2/SlipTest/index.html"},
+				 {"determine positive sequence, negative sequence and zero sequence reactances of an alternator.", "/build/Dreamweaver/exp3.html", "/build/Dreamweaver/sim_3/OCC.html|/build/Dreamweaver/sim_3/SCC.html|/build/Dreamweaver/sim_3/comb/X2.html|/build/Dreamweaver/sim_3/comb/X0.html"},
+				 {"measure the dielectric Strength of transformer oil.", "/build/Dreamweaver/exp4.html", "/build/Dreamweaver/Sim_4/web/Exp4.html"},
+				 {"Study the effect of different shape of electrodes on dielectric (air) breakdown.", "/build/Dreamweaver/exp5.html", "/build/Dreamweaver/sim_5/web/Exp5.html"},
+				 {"Study the gas actuated Buchholz relay for oil filled transformer.", "/build/Dreamweaver/exp6.html", "/build/Dreamweaver/sim_6/web/exp6.html|/build/Dreamweaver/sim_6a/web/index.html"},
+				 {"Study the over-current relay and the effect of PSM and TSM.", "/build/Dreamweaver/exp7.html", "/build/Dreamweaver/Sim%207/web/sim7.html"},
+				 {"determine the sub-transient (xd’’), transient (xd’) and steady state reactance (xd) of a synchronous machine.", "/build/Dreamweaver/exp8.html", "/build/Dreamweaver/Sim8/web/Sim8.html"},
+				 {"Study the Ferranti Effect of a transmission line/cable.", "/build/Dreamweaver/exp9.html", "/build/Dreamweaver/Sim9/web/index.html"}
 				]
 			       }
+			      ]
+       ).
 
-				 
 
-			      ]).
 				 
 -define(Base2_lab_id_exp_info_list, ?Lab_id_exp_info_list).
 
