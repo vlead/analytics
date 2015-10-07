@@ -1705,17 +1705,17 @@ TRACE {{2015,9,25},{15,5,11}} analytics:base2_main/0: File_list after negative f
 			       	 {"Image Processing Toolkit", "/exp3/index.php", "/exp3/index.php.*section=Experiment"}
 			       	]
 			       },
-			       %% {"em-iitr",
-			       %% 	[
-			       %% 	 {"Speed Control of DC motor by varying armature and field resistance", "/exp1/index.php", ""},
-			       %% 	 {"Speed control of DC motor by using Ward-Leonard Method of speed control", "/exp2/index.php", ""},
-			       %% 	 {"Load Characteristics of DC shunt generator", "/exp3/index.php", ""},
-			       %% 	 {"Magnetisation Characteristics of DC shunt generator", "/exp4/index.php", ""},
-			       %% 	 {"Determination of the efficiency of a dc motor by loss summation method(Swinburne's test)", "/exp5/index.php", ""},
-			       %% 	 {"Speed control of slipring Induction Motor", "/exp6/index.php", ""},
-			       %% 	 {"Determination of Transformer equivalent circuit from Open Circuit and Short Circuit Test", "/exp7/index.php", ""}
-			       %% 	]
-			       %% },
+			       {"em-iitr",
+			       	[
+			       	 {"Speed Control of DC motor by varying armature and field resistance", "/exp1/index.php", ""},
+			       	 {"Speed control of DC motor by using Ward-Leonard Method of speed control", "/exp2/index.php", ""},
+			       	 {"Load Characteristics of DC shunt generator", "/exp3/index.php", ""},
+			       	 {"Magnetisation Characteristics of DC shunt generator", "/exp4/index.php", ""},
+			       	 {"Determination of the efficiency of a dc motor by loss summation method(Swinburne's test)", "/exp5/index.php", ""},
+			       	 {"Speed control of slipring Induction Motor", "/exp6/index.php", ""},
+			       	 {"Determination of Transformer equivalent circuit from Open Circuit and Short Circuit Test", "/exp7/index.php", ""}
+			       	]
+			       },
 			       {"sl-iitr",
 			       	[
 			       	 {"Carry out Fly Leveling using Auto Level", "/exp2/index.php", "/exp2/index.php.*section=Experiment"},
@@ -1730,48 +1730,48 @@ TRACE {{2015,9,25},{15,5,11}} analytics:base2_main/0: File_list after negative f
 			       	 {"Observations using GPS", "/exp11/index.php", "/exp11/index.php.*section=Experiment"}
 			       	]
 			       },
-			       %% {"mrmsmtbs",
-			       %% 	[
-			       %% 	 {"Creep Transient Based on Material Selection (Pt/Mg)", "/exp1.html", ""},
-			       %% 	 {"Selection of Obstacle Distance (λ, grain boundary or precipitate)", "/exp2.html", ""},
-			       %% 	 {"Selection of Obstacle Density (ρ,number of grains/precipitate) ", "/exp3.html", ""},
-			       %% 	 {"Hardness & Modulus", "/modulus.html", ""},
-			       %% 	 {"Indent Depth", "/indent.*depth.html", ""},
-			       %% 	 {"Plastic Work ", "/plastic.html", ""},
-			       %% 	 {"Contact Angle Measurement ", "/Contact.*.html", ""},
-			       %% 	 {"Image the Cytoskeleton of Cells Proliferation On Biomaterial Surface.", "/fmbs.html", ""},
-			       %% 	 {"Image the Nucleus of Cells Proliferation On Biomaterial Surface. ", "/fmbs2.html", ""},
-			       %% 	 {"Ionic Conductivity YSZ Electrolyte Material For solid Oxide Fuel Cell.", "/Ic1.html", ""}
-			       %% 	]
-			       %% },
-			       %% {"va-iitk",
-			       %% 	[
-			       %% 	 {"To become familiar with the astronomical objects visible to naked eye in the night sky using the software Stellarium.", "/.*page=exp1", ""},
-			       %% 	 {"To become familiar with the Constellations in the night sky using the software Stellarium.", "/.*page=exp2", ""},
-			       %% 	 {"To identify the retrograde motion of Mars with respect to the Background stars.", "/.*page=exp3", ""},
-			       %% 	 {"To identify some of the prominent spectral lines in the spectrum of our sun.", "/.*page=exp4", ""},
-			       %% 	 {"To get familiar with the spectra of different stars.", "/.*page=exp5", ""},
-			       %% 	 {"To extract coordinates of a star assuming a telescope in equatorial mount. You will also learn the concept of sidereal time.", "/.*page=exp6", ""},
-			       %% 	 {"To measure astronomical distances using Cepheid variables.", "/.*page=exp7", ""},
-			       %% 	 {"To measure the Proper Motion of Barnard's Star.", "/.*page=exp8", ""},
-			       %% 	 {"To identify a Circumpolar Star.", "/.*page=exp9", ""},
-			       %% 	 {"To determine the distance and age of cluster using Colour Magnitude Diagram.", "/.*page=exp10", ""},
-			       %% 	 {"To determine Orbital Inclination of the planet Mars.", "/.*page=exp11", ""},
-			       %% 	 {"To measure planetary distances", "/.*page=exp12", ""},
-			       %% 	 {"To measure distance to the Moon", "/.*page=exp13", ""},
-			       %% 	 {"To determine observer's location by means of the stars", "/.*page=exp14", ""}
-			       %% 	]
-			       %% },
-			       %% {"ufls",
-			       %% 	[
-			       %% 	 {"", "/ultrafast.php", ""},
-			       %% 	 {"", "/measure.php", ""},
-			       %% 	 {"", "/confocal.php", ""},
-			       %% 	 {"", "/live.php", ""},
-			       %% 	 {"", "/optical.php", ""},
-			       %% 	 {"", "/thermal.php", ""}
-			       %% 	]
-			       %% },
+			       {"mrmsmtbs",
+			       	[
+			       	 {"Creep Transient Based on Material Selection (Pt/Mg)", "/exp1.html", ""},
+			       	 {"Selection of Obstacle Distance (λ, grain boundary or precipitate)", "/exp2.html", ""},
+			       	 {"Selection of Obstacle Density (ρ,number of grains/precipitate) ", "/exp3.html", ""},
+			       	 {"Hardness & Modulus", "/modulus.html", ""},
+			       	 {"Indent Depth", "/indent.*depth.html", ""},
+			       	 {"Plastic Work ", "/plastic.html", ""},
+			       	 {"Contact Angle Measurement ", "/Contact.*.html", ""},
+			       	 {"Image the Cytoskeleton of Cells Proliferation On Biomaterial Surface.", "/fmbs.html", ""},
+			       	 {"Image the Nucleus of Cells Proliferation On Biomaterial Surface. ", "/fmbs2.html", ""},
+			       	 {"Ionic Conductivity YSZ Electrolyte Material For solid Oxide Fuel Cell.", "/Ic1.html", ""}
+			       	]
+			       },
+			       {"va-iitk",
+			       	[
+			       	 {"To become familiar with the astronomical objects visible to naked eye in the night sky using the software Stellarium.", "/.*page=exp1", ""},
+			       	 {"To become familiar with the Constellations in the night sky using the software Stellarium.", "/.*page=exp2", ""},
+			       	 {"To identify the retrograde motion of Mars with respect to the Background stars.", "/.*page=exp3", ""},
+			       	 {"To identify some of the prominent spectral lines in the spectrum of our sun.", "/.*page=exp4", ""},
+			       	 {"To get familiar with the spectra of different stars.", "/.*page=exp5", ""},
+			       	 {"To extract coordinates of a star assuming a telescope in equatorial mount. You will also learn the concept of sidereal time.", "/.*page=exp6", ""},
+			       	 {"To measure astronomical distances using Cepheid variables.", "/.*page=exp7", ""},
+			       	 {"To measure the Proper Motion of Barnard's Star.", "/.*page=exp8", ""},
+			       	 {"To identify a Circumpolar Star.", "/.*page=exp9", ""},
+			       	 {"To determine the distance and age of cluster using Colour Magnitude Diagram.", "/.*page=exp10", ""},
+			       	 {"To determine Orbital Inclination of the planet Mars.", "/.*page=exp11", ""},
+			       	 {"To measure planetary distances", "/.*page=exp12", ""},
+			       	 {"To measure distance to the Moon", "/.*page=exp13", ""},
+			       	 {"To determine observer's location by means of the stars", "/.*page=exp14", ""}
+			       	]
+			       },
+			       {"ufls",
+			       	[
+			       	 {"Ultrafast", "/ultrafast.php", ""},
+			       	 {"Measure", "/measure.php", ""},
+			       	 {"Confocal", "/confocal.php", ""},
+			       	 {"Live", "/live.php", ""},
+			       	 {"Optical", "/optical.php", ""},
+			       	 {"Thermal", "/thermal.php", ""}
+			       	]
+			       },
 			       {"vlae",
 			       	[
 			       	 {"Determination of Young's Modulus and Poisson's Ratio", "/str1/object.html", "/str1/ap.html"},
@@ -1788,19 +1788,19 @@ TRACE {{2015,9,25},{15,5,11}} analytics:base2_main/0: File_list after negative f
 			       	 {"Estimation of drag polar of a glider ", "/flight3/object.html", "/flight3/ap.html"}
 			       	]
 			       },
-			       %% {"vcal",
-			       %% 	[
-			       %% 	 {"Measurement of Laminar Burning Velocity", "/aim1.html", ""},
-			       %% 	 {"Characterization of laminar premixed flame using chemiluminescence sensor", "/aim2.html", ""},
-			       %% 	 {"Numerical characterization of laminar premixed methane-air flames", "/aim3.html", ""},
-			       %% 	 {"Observations on flame height of a laminar jet diffusion flame", "/aim4.html", ""},
-			       %% 	 {"Measurement of turbulent inverse diffusion flame height", "/aim5.html", ""},
-			       %% 	 {"Visualization of swirling flow and flame in a burner", "/aim6.html", ""},
-			       %% 	 {"Flame spread over a solid fuel surface", "/aim7.html", ""},
-			       %% 	 {"Characterization of droplet combustion", "/aim8.html", ""},
-			       %% 	 {"Measurement of droplet size for an air-blast atomizer", "/aim9.html", ""}
-			       %% 	]
-			       %% },
+			       {"vcal",
+			       	[
+			       	 {"Measurement of Laminar Burning Velocity", "/aim1.html", ""},
+			       	 {"Characterization of laminar premixed flame using chemiluminescence sensor", "/aim2.html", ""},
+			       	 {"Numerical characterization of laminar premixed methane-air flames", "/aim3.html", ""},
+			       	 {"Observations on flame height of a laminar jet diffusion flame", "/aim4.html", ""},
+			       	 {"Measurement of turbulent inverse diffusion flame height", "/aim5.html", ""},
+			       	 {"Visualization of swirling flow and flame in a burner", "/aim6.html", ""},
+			       	 {"Flame spread over a solid fuel surface", "/aim7.html", ""},
+			       	 {"Characterization of droplet combustion", "/aim8.html", ""},
+			       	 {"Measurement of droplet size for an air-blast atomizer", "/aim9.html", ""}
+			       	]
+			       },
 			       {"pev",
 			       	[
 			       	 {"Interspecific Competition and Coexistence", "/Interspecific_Competition_and_Coexistence/", "/index.php?exp_id=Interspecific_Competition_and_Coexistence"},
@@ -1881,18 +1881,18 @@ TRACE {{2015,9,25},{15,5,11}} analytics:base2_main/0: File_list after negative f
 			       	 {"Analysis of LTI system response.", "/Signals.*05.*.html", "/Signals.*05.*simulator.*.html"}
 			       	]
 			       },
-			       %% {"ial",
-			       %% 	[
-			       %% 	 {"Study hardware and software platforms for DCS", "/Expt1/index.html", ""},
-			       %% 	 {"Simulate analog and digital function blocks", "/Expt2/index.html", "/Expt2/AnalogDigital.html.*"},
-			       %% 	 {"Study, understand and perform experiments on timers and counters", "/Expt3/index.html", "/Expt3/TimersCounters.html.*"},
-			       %% 	 {"Logic implementation for traffic Control Application", "/Expt4/index.html", "/Expt4/TrafficControl.html.*"},
-			       %% 	 {"Logic implementation for Bottle Filling Application", "/Expt5/index.html", "/Expt5/BottleFilling.html.*"},
-			       %% 	 {"Tune PID controller for heat exchanger using DCS", "/Expt6/index.html", "/Expt6/HeatExchange.html.*"},
-			       %% 	 {"FBD for autoclavable laboratory fermentor", "/Expt7/index.html", "/Expt7/FBD.html.*"},
-			       %% 	 {"Develop graphical user interface for the fermentor plant", "/Expt8/index.html", ""}
-			       %% 	]
-			       %% },
+			       {"ial",
+			       	[
+			       	 {"Study hardware and software platforms for DCS", "/Expt1/index.html", ""},
+			       	 {"Simulate analog and digital function blocks", "/Expt2/index.html", "/Expt2/AnalogDigital.html.*"},
+			       	 {"Study, understand and perform experiments on timers and counters", "/Expt3/index.html", "/Expt3/TimersCounters.html.*"},
+			       	 {"Logic implementation for traffic Control Application", "/Expt4/index.html", "/Expt4/TrafficControl.html.*"},
+			       	 {"Logic implementation for Bottle Filling Application", "/Expt5/index.html", "/Expt5/BottleFilling.html.*"},
+			       	 {"Tune PID controller for heat exchanger using DCS", "/Expt6/index.html", "/Expt6/HeatExchange.html.*"},
+			       	 {"FBD for autoclavable laboratory fermentor", "/Expt7/index.html", "/Expt7/FBD.html.*"},
+			       	 {"Develop graphical user interface for the fermentor plant", "/Expt8/index.html", ""}
+			       	]
+			       },
 			       {"sl-coep",
 			       	[
 			       	 {"Characterize the temperature sensor(RTD)", "/Rtd/index.html", "/Rtd/rtd.html.*"},
@@ -1905,18 +1905,18 @@ TRACE {{2015,9,25},{15,5,11}} analytics:base2_main/0: File_list after negative f
 			       	 {"Characterize the temperature sensor(Thermocouple)", "/Thermocouple/index.html", "/Thermocouple/thermocouple.html.*"}
 			       	]
 			       },
-			       %% {"plc",
-			       %% 	[
-			       %% 	 {"Study hardware and software used in PLC", "/exp1/index.html", ""},
-			       %% 	 {"Implementation of Logic Gates", "/exp2/index.html", "/exp2/simulator2.html.*"},
-			       %% 	 {"Develop a ladder program for DOL Starter", "/exp3/index.html", "/exp3/simulator3.html.*"},
-			       %% 	 {"Develop an application using On-Delay Timer", "/exp4/index.html", "/exp4/simulator4.html.*"},
-			       %% 	 {"Develop an application using Off-Delay Timer", "/exp5/index.html", "/exp5/simulator5.html.*"},
-			       %% 	 {"Develop an application using Up-Down Counter", "/exp6/index.html", "/exp6/simulator6.html.*"},
-			       %% 	 {"Implementation Of PLC Arithmatic Instructions", "/exp7/index.html", "/exp7/simulator7.html.*"},
-			       %% 	 {"Study of PID controller instruction for a pilot plant", "/exp8/index.html", "/exp8/simulator8.html.*"}
-			       %% 	]
-			       %% },
+			       {"plc",
+			       	[
+			       	 {"Study hardware and software used in PLC", "/exp1/index.html", ""},
+			       	 {"Implementation of Logic Gates", "/exp2/index.html", "/exp2/simulator2.html.*"},
+			       	 {"Develop a ladder program for DOL Starter", "/exp3/index.html", "/exp3/simulator3.html.*"},
+			       	 {"Develop an application using On-Delay Timer", "/exp4/index.html", "/exp4/simulator4.html.*"},
+			       	 {"Develop an application using Off-Delay Timer", "/exp5/index.html", "/exp5/simulator5.html.*"},
+			       	 {"Develop an application using Up-Down Counter", "/exp6/index.html", "/exp6/simulator6.html.*"},
+			       	 {"Implementation Of PLC Arithmatic Instructions", "/exp7/index.html", "/exp7/simulator7.html.*"},
+			       	 {"Study of PID controller instruction for a pilot plant", "/exp8/index.html", "/exp8/simulator8.html.*"}
+			       	]
+			       },
 			       {"em-coep",
 			       	[
 			       	 {"Load Test On Separately Excited DC Motor", "/Exp1/index.html", "/Exp1/Experiment1.html.*"},
@@ -1953,18 +1953,18 @@ TRACE {{2015,9,25},{15,5,11}} analytics:base2_main/0: File_list after negative f
 			       	 {"Study the effect of process parameters in electrochemical grinding", "/ECG/index.html", "/ECG/ECG.html.*"}
 			       	]
 			       },
-			       %% {"fab",
-			       %% 	[
-			       %% 	 {"Computer Controlled Cutting of wooden object", "/exp1/index.html", "/exp1/woodcutting.html.*"},
-			       %% 	 {"3D Machining", "/exp2/index.html", "/exp2/roughing.html.*"},
-			       %% 	 {"PCB design & fabrication", "/exp3/index.html", "/exp3/pcb.html.*"},
-			       %% 	 {"Interface & Application Programming", "/exp4/index.html", "/exp4/interfaceprog.html.*"},
-			       %% 	 {"Digital Fabrication of Flexible Circuit board", "/exp5/index.html", "/exp5/flexibleCircuit.htm.*"},
-			       %% 	 {"3D scanning", "/exp6/index.html", "/exp6/scanning.html.*"},
-			       %% 	 {"Molding and Casting of Polyurethane parts.", "/exp7/index.html", ""},
-			       %% 	 {"Digital Fabrication and Project Development", "/exp8/index.html", ""}
-			       %% 	]
-			       %% },
+			       {"fab",
+			       	[
+			       	 {"Computer Controlled Cutting of wooden object", "/exp1/index.html", "/exp1/woodcutting.html.*"},
+			       	 {"3D Machining", "/exp2/index.html", "/exp2/roughing.html.*"},
+			       	 {"PCB design & fabrication", "/exp3/index.html", "/exp3/pcb.html.*"},
+			       	 {"Interface & Application Programming", "/exp4/index.html", "/exp4/interfaceprog.html.*"},
+			       	 {"Digital Fabrication of Flexible Circuit board", "/exp5/index.html", "/exp5/flexibleCircuit.htm.*"},
+			       	 {"3D scanning", "/exp6/index.html", "/exp6/scanning.html.*"},
+			       	 {"Molding and Casting of Polyurethane parts.", "/exp7/index.html", ""},
+			       	 {"Digital Fabrication and Project Development", "/exp8/index.html", ""}
+			       	]
+			       },
 			       {"bmsp",
 			       	[
 			       	 {"To simulate Electrocardiogram Waveform", "/AbnormalECG/index.html", "/NormalECG/index.html.*|/AbnormalECG/AbnormalECG.html.*"},
@@ -2005,81 +2005,81 @@ TRACE {{2015,9,25},{15,5,11}} analytics:base2_main/0: File_list after negative f
 			       	 {"Motor forward and reverse direction control using PLC", "/Motor.*forward.*and.*reverse.*direction.*control.*using.*PLC/index.html", "/Motor.*forward.*and.*reverse.*direction.*control.*using.*PLC/index.html.*"}
 			       	]
 			       },
-			       %% {"sa",
-			       %% 	[
-			       %% 	 {"DCS (Yokogawa CENTUM CS 1000)", "/substationtheory/index.html", ""},
-			       %% 	 {"Substation Automation (Theory)", "/DCS/index.html", ""},
-			       %% 	 {"Circuit Breaker Status Indication from field input", "/exp1/index.html", ""},
-			       %% 	 {"Control of Group Operated Switches (GOS) from workstation", "/exp2/index.html", ""},
-			       %% 	 {"Monitoring Feeder parameter from workstation", "/exp3/index.html", ""},
-			       %% 	 {"Fault scenario simulation in a feeder", "/exp4/index.html", ""},
-			       %% 	 {"Fault scenario simulation in a Transformer /Bus", "/exp5/index.html", ""},
-			       %% 	 {"Load Transfer from one Feeder to other during Transformer Maintenance", "/exp6/index.html", ""},
-			       %% 	 {"Control Of Bus Voltages Through Onload Tap Changes", "/exp7/index.html", ""},
-			       %% 	 {"Development of 11KV/433 volts substation automation scheme using PLC for normal load operation", "/exp8/index.html", ""},
-			       %% 	 {"Development of 11KV/433 volts substation automation scheme using PLC for timer ON/OFF load control", "/exp9/index.html", ""},
-			       %% 	 {"Development of 11KV/433 volts substation automation scheme using PLC for cyclic ON/OFF load control", "/exp10/index.html", ""},
-			       %% 	 {"Autoreclosure And Sectionalizer Operation", "/exp11/index.html", ""}
-			       %% 	]
-			       %% },
-			       %% {"fm",
-			       %% 	[
-			       %% 	 {"Impact of Jet", "/exp1/index.html", ""}
-			       %% 	]
-			       %% },
-			       %% {"sm",
-			       %% 	[
-			       %% 	 {"Mohr's circle", "/exp1/index.html", ""},
-			       %% 	 {"Bending Stresses", "/exp2/index.html", ""},
-			       %% 	 {"Deflection in Cantilever", "/exp3/index.html", ""},
-			       %% 	 {"Deflection in Beam", "/exp4/index.html", ""}
-			       %% 	]
-			       %% },
-			       %% {"mm-nitk",
-			       %% 	[
-			       %% 	 {"Position analysis of Grashof four bar mechanism", "/exp1/index.html", ""},
-			       %% 	 {"Velocity analysis of Grashof four bar mechanism", "/exp2/index.html", ""},
-			       %% 	 {"Acceleration analysis of Grashof four bar mechanism", "/exp3/index.html", ""},
-			       %% 	 {"Position analysis of NonGrashof four bar mechanism", "/exp4/index.html", ""},
-			       %% 	 {"Velocity analysis of NonGrashof four bar mechanism", "/exp5/index.html", ""},
-			       %% 	 {"Acceleration analysis of NonGrashof four bar mechanism", "/exp6/index.html", ""},
-			       %% 	 {"Position analysis of Slider crank mechanism", "/exp7/index.html", ""},
-			       %% 	 {"Velocity analysis of Slider crank mechanism", "/exp8/index.html", ""},
-			       %% 	 {"Acceleration analysis of Slider crank mechanism", "/exp9/index.html", ""},
-			       %% 	 {"Position analysis of Slider crank mechanism with Offset", "/exp10/index.html", ""},
-			       %% 	 {"Position analysis of Scotch Yoke Mechanism", "/exp11/index.html", ""},
-			       %% 	 {"Velocity analysis of Scotch Yoke Mechanism", "/exp12/index.html", ""},
-			       %% 	 {"Acceleration analysis of Scotch Yoke Mechanism", "/exp13/index.html", ""},
-			       %% 	 {"Position analysis of Elliptical Trammel", "/exp14/index.html", ""},
-			       %% 	 {"Hart Straight Line Mechanism", "/exp15/index.html", ""},
-			       %% 	 {"Tchebichev Straight Line Mechanism", "/exp16/index.html", ""}
-			       %% 	]
-			       %% },
-			       %% {"mdmv",
-			       %% 	[
-			       %% 	 {"Free vibration of cantilever beam", "/exp1/index.html", ""},
-			       %% 	 {"Free vibration of simply supported beam", "/exp2/index.html", ""},
-			       %% 	 {"Free vibration of fixed beam", "/exp3/index.html", ""},
-			       %% 	 {"Forced vibration of SDOF system", "/exp4/index.html", ""},
-			       %% 	 {"Base Excitation", "/exp5/index.html", ""},
-			       %% 	 {"Rotating Unbalance", "/exp6/index.html", ""},
-			       %% 	 {"2DOF Forced vibration", "/exp7/index.html", ""},
-			       %% 	 {"Dynamic Vibration Absorber", "/exp8/index.html", ""}
-			       %% 	]
-			       %% },
-			       %% {"uorepc",
-			       %% 	[
-			       %% 	 {"Flow Through Pipes", "/exp1/index.html", ""},
-			       %% 	 {"Flow Through Fittings", "/exp2/index.html", ""},
-			       %% 	 {"Flow through orifice meter", "/exp3/index.html", ""},
-			       %% 	 {"Flow through Venturi meter", "/exp4/index.html", ""},
-			       %% 	 {"Flow through Packed Bed", "/exp5/index.html", ""},
-			       %% 	 {"Flow through Fluidized Bed", "/exp6/index.html", ""},
-			       %% 	 {"Reaction kinetic studies in a batch reactor", "/exp7/index.html", ""},
-			       %% 	 {"Reaction kinetic studies in a mixed flow reactor", "/exp8/index.html", ""},
-			       %% 	 {"Reaction kinetic studies in a plug flow reactor", "/exp9/index.html", ""}
-			       %% 	]
-			       %% },
+			       {"sa",
+			       	[
+			       	 {"DCS (Yokogawa CENTUM CS 1000)", "/substationtheory/index.html", ""},
+			       	 {"Substation Automation (Theory)", "/DCS/index.html", ""},
+			       	 {"Circuit Breaker Status Indication from field input", "/exp1/index.html", ""},
+			       	 {"Control of Group Operated Switches (GOS) from workstation", "/exp2/index.html", ""},
+			       	 {"Monitoring Feeder parameter from workstation", "/exp3/index.html", ""},
+			       	 {"Fault scenario simulation in a feeder", "/exp4/index.html", ""},
+			       	 {"Fault scenario simulation in a Transformer /Bus", "/exp5/index.html", ""},
+			       	 {"Load Transfer from one Feeder to other during Transformer Maintenance", "/exp6/index.html", ""},
+			       	 {"Control Of Bus Voltages Through Onload Tap Changes", "/exp7/index.html", ""},
+			       	 {"Development of 11KV/433 volts substation automation scheme using PLC for normal load operation", "/exp8/index.html", ""},
+			       	 {"Development of 11KV/433 volts substation automation scheme using PLC for timer ON/OFF load control", "/exp9/index.html", ""},
+			       	 {"Development of 11KV/433 volts substation automation scheme using PLC for cyclic ON/OFF load control", "/exp10/index.html", ""},
+			       	 {"Autoreclosure And Sectionalizer Operation", "/exp11/index.html", ""}
+			       	]
+			       },
+			       {"fm",
+			       	[
+			       	 {"Impact of Jet", "/exp1/index.html", ""}
+			       	]
+			       },
+			       {"sm",
+			       	[
+			       	 {"Mohr's circle", "/exp1/index.html", ""},
+			       	 {"Bending Stresses", "/exp2/index.html", ""},
+			       	 {"Deflection in Cantilever", "/exp3/index.html", ""},
+			       	 {"Deflection in Beam", "/exp4/index.html", ""}
+			       	]
+			       },
+			       {"mm-nitk",
+			       	[
+			       	 {"Position analysis of Grashof four bar mechanism", "/exp1/index.html", ""},
+			       	 {"Velocity analysis of Grashof four bar mechanism", "/exp2/index.html", ""},
+			       	 {"Acceleration analysis of Grashof four bar mechanism", "/exp3/index.html", ""},
+			       	 {"Position analysis of NonGrashof four bar mechanism", "/exp4/index.html", ""},
+			       	 {"Velocity analysis of NonGrashof four bar mechanism", "/exp5/index.html", ""},
+			       	 {"Acceleration analysis of NonGrashof four bar mechanism", "/exp6/index.html", ""},
+			       	 {"Position analysis of Slider crank mechanism", "/exp7/index.html", ""},
+			       	 {"Velocity analysis of Slider crank mechanism", "/exp8/index.html", ""},
+			       	 {"Acceleration analysis of Slider crank mechanism", "/exp9/index.html", ""},
+			       	 {"Position analysis of Slider crank mechanism with Offset", "/exp10/index.html", ""},
+			       	 {"Position analysis of Scotch Yoke Mechanism", "/exp11/index.html", ""},
+			       	 {"Velocity analysis of Scotch Yoke Mechanism", "/exp12/index.html", ""},
+			       	 {"Acceleration analysis of Scotch Yoke Mechanism", "/exp13/index.html", ""},
+			       	 {"Position analysis of Elliptical Trammel", "/exp14/index.html", ""},
+			       	 {"Hart Straight Line Mechanism", "/exp15/index.html", ""},
+			       	 {"Tchebichev Straight Line Mechanism", "/exp16/index.html", ""}
+			       	]
+			       },
+			       {"mdmv",
+			       	[
+			       	 {"Free vibration of cantilever beam", "/exp1/index.html", ""},
+			       	 {"Free vibration of simply supported beam", "/exp2/index.html", ""},
+			       	 {"Free vibration of fixed beam", "/exp3/index.html", ""},
+			       	 {"Forced vibration of SDOF system", "/exp4/index.html", ""},
+			       	 {"Base Excitation", "/exp5/index.html", ""},
+			       	 {"Rotating Unbalance", "/exp6/index.html", ""},
+			       	 {"2DOF Forced vibration", "/exp7/index.html", ""},
+			       	 {"Dynamic Vibration Absorber", "/exp8/index.html", ""}
+			       	]
+			       },
+			       {"uorepc",
+			       	[
+			       	 {"Flow Through Pipes", "/exp1/index.html", ""},
+			       	 {"Flow Through Fittings", "/exp2/index.html", ""},
+			       	 {"Flow through orifice meter", "/exp3/index.html", ""},
+			       	 {"Flow through Venturi meter", "/exp4/index.html", ""},
+			       	 {"Flow through Packed Bed", "/exp5/index.html", ""},
+			       	 {"Flow through Fluidized Bed", "/exp6/index.html", ""},
+			       	 {"Reaction kinetic studies in a batch reactor", "/exp7/index.html", ""},
+			       	 {"Reaction kinetic studies in a mixed flow reactor", "/exp8/index.html", ""},
+			       	 {"Reaction kinetic studies in a plug flow reactor", "/exp9/index.html", ""}
+			       	]
+			       },
 			       {"vssd",
 			       	[
 			       	 {"Vibration Characteristics of Aluminum Cantilever Beam using Piezoelectric Sensors", "/exp1.html", "/exp1.html.*"},
@@ -2157,39 +2157,39 @@ TRACE {{2015,9,25},{15,5,11}} analytics:base2_main/0: File_list after negative f
 			       	 {"Experiment - 9", "/exp9.html", "/Sim9.*index.html.*"}
 			       	]
 			       },
-			       %% {"vc",
-			       %% 	[
-			       %% 	 {"No name", "/.*page_id=83", "/.*page_id=108.*"},
-			       %% 	 {"", "/.*page_id=186", "/.*page_id=195.*"},
-			       %% 	 {"", "/.*page_id=200", "/.*page_id=209.*"},
-			       %% 	 {"", "/.*page_id=612", "/.*page_id=885.*"},
-			       %% 	 {"", "/.*page_id=748", "/.*page_id=899.*"},
-			       %% 	 {"", "/.*page_id=786", "/.*page_id=911.*"},
-			       %% 	 {"", "/.*page_id=939", "/.*page_id=968.*"},
-			       %% 	 {"", "/.*page_id=1028", "/.*page_id=1094.*"},
-			       %% 	 {"", "/.*page_id=1111", "/.*page_id=1169.*"}
-			       %% 	]
-			       %% },
-			       %% {"pe",
-			       %% 	[
-			       %% 	 {"An Overview of Virtual Proteomics Laboratory", "/exp1/index.html", ""},
-			       %% 	 {"Module I: An Overview of Gel-based Proteomics", "/exp2/index.html", ""},
-			       %% 	 {"Experiment-1: Gel-based Proteomics to Analyze Human Serum Proteome", "/exp3/index.html", "/exp3/index.html.*"},
-			       %% 	 {"Experiment-2: Gel-based proteomics to analyze bacterial proteome", "/exp4/index.html", "/exp4/index.html.*"},
-			       %% 	 {"Experiment-3: Gel-based Proteomics to Analyze Plant Proteome", "/exp5/index.html", "/exp5/index.html.*"},
-			       %% 	 {"Module II: An Overview of MALDI-TOF MS", "/exp6/index.html", ""},
-			       %% 	 {"Experiment-4: In-Gel Digestion of Proteins", "/exp7/index.html", "/exp7/index.html.*"},
-			       %% 	 {"Experiment-5: Sample Preparation for the MALDI-TOF MS Analysis", "/exp8/index.html", "/exp8/index.html.*"},
-			       %% 	 {"Experiment-6: MALDI-TOF Instrumentation and MS Analysis of Serum Proteins", "/exp9/index.html", "/exp9/index.html.*"},
-			       %% 	 {"Experiment-7: MS Data Analysis- Peptide Mass Fingerprinting (PMF)", "/exp10/index.html", "/exp10/index.html.*"},
-			       %% 	 {"Experiment-8: Determination of Molecular Weight of Intact Proteins using MALDI-TOF MS", "/exp11/index.html", "/exp11/index.html.*"},
-			       %% 	 {"Module III: An Overview of Bioinformatics", "/exp12/index.html", ""},
-			       %% 	 {"Experiment-9: Introduction to Bio-informatics Tools: Sequence Alignment", "/exp13/index.html", "/exp13/index.html.*"},
-			       %% 	 {"Experiment-10: Homology Modeling", "/exp14/index.html", "/exp14/index.html.*"},
-			       %% 	 {"Experiment-11: Protein Function Annotation", "/exp15/index.html", "/exp15/index.html.*"},
-			       %% 	 {"Experiment-12: Molecular Docking", "/exp16/index.html", "/exp16/index.html.*"}
-			       %% 	]
-			       %% },
+			       {"vc",
+			       	[
+			       	 {"Exp-1", "/.*page_id=83", "/.*page_id=108.*"},
+			       	 {"Exp-2", "/.*page_id=186", "/.*page_id=195.*"},
+			       	 {"Exp-3", "/.*page_id=200", "/.*page_id=209.*"},
+			       	 {"Exp-4", "/.*page_id=612", "/.*page_id=885.*"},
+			       	 {"Exp-5", "/.*page_id=748", "/.*page_id=899.*"},
+			       	 {"Exp-6", "/.*page_id=786", "/.*page_id=911.*"},
+			       	 {"Exp-7", "/.*page_id=939", "/.*page_id=968.*"},
+			       	 {"Exp-8", "/.*page_id=1028", "/.*page_id=1094.*"},
+			       	 {"Exp-9", "/.*page_id=1111", "/.*page_id=1169.*"}
+			       	]
+			       },
+			       {"pe",
+			       	[
+			       	 {"An Overview of Virtual Proteomics Laboratory", "/exp1/index.html", ""},
+			       	 {"Module I: An Overview of Gel-based Proteomics", "/exp2/index.html", ""},
+			       	 {"Experiment-1: Gel-based Proteomics to Analyze Human Serum Proteome", "/exp3/index.html", "/exp3/index.html.*"},
+			       	 {"Experiment-2: Gel-based proteomics to analyze bacterial proteome", "/exp4/index.html", "/exp4/index.html.*"},
+			       	 {"Experiment-3: Gel-based Proteomics to Analyze Plant Proteome", "/exp5/index.html", "/exp5/index.html.*"},
+			       	 {"Module II: An Overview of MALDI-TOF MS", "/exp6/index.html", ""},
+			       	 {"Experiment-4: In-Gel Digestion of Proteins", "/exp7/index.html", "/exp7/index.html.*"},
+			       	 {"Experiment-5: Sample Preparation for the MALDI-TOF MS Analysis", "/exp8/index.html", "/exp8/index.html.*"},
+			       	 {"Experiment-6: MALDI-TOF Instrumentation and MS Analysis of Serum Proteins", "/exp9/index.html", "/exp9/index.html.*"},
+			       	 {"Experiment-7: MS Data Analysis- Peptide Mass Fingerprinting (PMF)", "/exp10/index.html", "/exp10/index.html.*"},
+			       	 {"Experiment-8: Determination of Molecular Weight of Intact Proteins using MALDI-TOF MS", "/exp11/index.html", "/exp11/index.html.*"},
+			       	 {"Module III: An Overview of Bioinformatics", "/exp12/index.html", ""},
+			       	 {"Experiment-9: Introduction to Bio-informatics Tools: Sequence Alignment", "/exp13/index.html", "/exp13/index.html.*"},
+			       	 {"Experiment-10: Homology Modeling", "/exp14/index.html", "/exp14/index.html.*"},
+			       	 {"Experiment-11: Protein Function Annotation", "/exp15/index.html", "/exp15/index.html.*"},
+			       	 {"Experiment-12: Molecular Docking", "/exp16/index.html", "/exp16/index.html.*"}
+			       	]
+			       },
 			       {"ce",
 			       	[
 			       	 {"Flow measurement by orificemeter and venturimeter", "/exp1/index.html", "/exp1/ori/ori1.php.*"},
@@ -2251,32 +2251,32 @@ TRACE {{2015,9,25},{15,5,11}} analytics:base2_main/0: File_list after negative f
 			       %% 	 {"", "", ""}
 			       %% 	]
 			       %% },
-			       %% {"cse09",
-			       %% 	[
-			       %% 	 {"File Management", "/exp1/index.html", ""},
-			       %% 	 {"Text Editor", "/exp2/index.html", ""},
-			       %% 	 {"File Content", "/exp3/index.html", ""},
-			       %% 	 {"File Permissions", "/exp4/index.html", ""},
-			       %% 	 {"Archival and Compression", "/exp5/index.html", ""},
-			       %% 	 {"Obtaining System Information", "/exp6/index.html", ""},
-			       %% 	 {"Pipes and Redirection", "/exp7/index.html", ""},
-			       %% 	 {"Searching", "/exp8/index.html", ""},
-			       %% 	 {"Basic Networking", "/exp9/index.html", ""}
-			       %% 	]
-			       %% },
-			       %% {"cse05",
-			       %% 	[
-			       %% 	 {"Design Inductive Data", "/html/topics/inductive-data-design/index.html", ""},
-			       %% 	 {"Programming with Inductive data", "/html/topics/inductive-data-prog/index.html", ""},
-			       %% 	 {"Higher Order functions", "/html/topics/higher-order/index.html", ""},
-			       %% 	 {"Arithmatic Interpreter", "/html/topics/arithmetic/index.html", ""},
-			       %% 	 {"Environment", "/html/topics/environment/index.html", ""},
-			       %% 	 {"Block structured language", "/html/topics/lexical/index.html", ""},
-			       %% 	 {"Language with closures", "/html/topics/closure/index.html", ""},
-			       %% 	 {"Language with recursive functions", "/html/topics/recursion/index.html", ""},
-			       %% 	 {"Language with Objects", "/html/topics/objects/index.html", ""}
-			       %% 	]
-			       %% },
+			       {"cse09",
+			       	[
+			       	 {"File Management", "/exp1/index.html", ""},
+			       	 {"Text Editor", "/exp2/index.html", ""},
+			       	 {"File Content", "/exp3/index.html", ""},
+			       	 {"File Permissions", "/exp4/index.html", ""},
+			       	 {"Archival and Compression", "/exp5/index.html", ""},
+			       	 {"Obtaining System Information", "/exp6/index.html", ""},
+			       	 {"Pipes and Redirection", "/exp7/index.html", ""},
+			       	 {"Searching", "/exp8/index.html", ""},
+			       	 {"Basic Networking", "/exp9/index.html", ""}
+			       	]
+			       },
+			       {"cse05",
+			       	[
+			       	 {"Design Inductive Data", "/html/topics/inductive-data-design/index.html", ""},
+			       	 {"Programming with Inductive data", "/html/topics/inductive-data-prog/index.html", ""},
+			       	 {"Higher Order functions", "/html/topics/higher-order/index.html", ""},
+			       	 {"Arithmatic Interpreter", "/html/topics/arithmetic/index.html", ""},
+			       	 {"Environment", "/html/topics/environment/index.html", ""},
+			       	 {"Block structured language", "/html/topics/lexical/index.html", ""},
+			       	 {"Language with closures", "/html/topics/closure/index.html", ""},
+			       	 {"Language with recursive functions", "/html/topics/recursion/index.html", ""},
+			       	 {"Language with Objects", "/html/topics/objects/index.html", ""}
+			       	]
+			       },
 			       {"cse13",
 			       	[        
 			       		 {"Full Custom Design", "/full_custom/index.php", "/full_custom/practice_swing.*"},
@@ -3239,11 +3239,48 @@ count_experiment_usage_for_lab_for_month(Process_folder, Lab1, File1, Experiment
 get_experiment_usage_for_lab_for_month_helper(Process_folder, Lab1, File1, Experiment1) ->
     {Exp_name, Visit_regexp, Simul_regexp} = Experiment1,
     {ok, Input1} = file:open(Process_folder ++ "/" ++ Lab1 ++ "/" ++ File1, [read]),
-    {ok, MP1} = re:compile(Visit_regexp),
-    {ok, MP2} = re:compile(Simul_regexp),
-    {Exp_visit, Sim_visit, Usage}=get_usage_from_file(Input1, MP1, MP2, []),
-    file:close(Input1),
-    #exp_data{name=Exp_name, exp_visit=Exp_visit, sim_visit=Sim_visit, usage=Usage}.
+    if
+	Simul_regexp =:= "" ->
+	    {ok, MP1} = re:compile(Visit_regexp),
+	    {Exp_visit, Sim_visit, Usage}=get_usage_from_file_only_with_theory(Input1, MP1, []),
+	    file:close(Input1),
+	    #exp_data{name=Exp_name, exp_visit=Exp_visit, sim_visit=Sim_visit, usage=Usage}	    ;
+	true ->
+	    {ok, MP1} = re:compile(Visit_regexp),
+	    {ok, MP2} = re:compile(Simul_regexp),
+	    {Exp_visit, Sim_visit, Usage}=get_usage_from_file_with_theory_and_sim(Input1, MP1, MP2, []),
+	    file:close(Input1),
+	    #exp_data{name=Exp_name, exp_visit=Exp_visit, sim_visit=Sim_visit, usage=Usage}
+    end.
+
+
+%%% Helper for get_experiment_usage_for_lab_for_month_helper/4
+%%% function This function takes a file handler for input along with
+%%% a compiled regular expresssions.  It finally returns
+%%% {<experiment_visit>, <sim_visit>, <usage>} for the file for the
+%%% month.
+get_usage_from_file_only_with_theory(Input1, MP1, Result) ->    
+    case file:read_line(Input1) of
+	eof ->
+	    get_usage_from_day_wise_ip_list(Result);
+
+	{ok, Data} ->
+	    Tokens=string:tokens(Data, " "),
+	    Request_ip=lists:nth(1, Tokens),
+	    Request_date1 = lists:nth(4, Tokens),
+	    Request_day1=string:substr(Request_date1, 2, 2),
+	    Request_uri=lists:nth(7, Tokens),
+	    case re:run(Request_uri, MP1) of
+		{match, _} ->
+		    Result2=update_day_ip_simulation_visit(Result, Request_day1, Request_ip),
+		    Result3=update_day_ip_experiment_visit(Result2, Request_day1, Request_ip),
+		    get_usage_from_file_only_with_theory(Input1, MP1, Result3);
+		nomatch ->
+		    get_usage_from_file_only_with_theory(Input1, MP1, Result)
+	    end
+    end.
+
+
 
 
 %%% Helper for get_experiment_usage_for_lab_for_month_helper/4
@@ -3251,7 +3288,7 @@ get_experiment_usage_for_lab_for_month_helper(Process_folder, Lab1, File1, Exper
 %%% two compiled regular expresssions.  It finally returns
 %%% {<experiment_visit>, <sim_visit>, <usage>} for the file for the
 %%% month.
-get_usage_from_file(Input1, MP1, MP2, Result) ->    
+get_usage_from_file_with_theory_and_sim(Input1, MP1, MP2, Result) ->    
     case file:read_line(Input1) of
 	eof ->
 	    get_usage_from_day_wise_ip_list(Result);
@@ -3265,14 +3302,14 @@ get_usage_from_file(Input1, MP1, MP2, Result) ->
 	    case re:run(Request_uri, MP2) of
 		{match, _} ->
 		    Result2=update_day_ip_simulation_visit(Result, Request_day1, Request_ip),
-		    get_usage_from_file(Input1, MP1, MP2, Result2);
+		    get_usage_from_file_with_theory_and_sim(Input1, MP1, MP2, Result2);
 		nomatch ->
 		    case re:run(Request_uri, MP1) of
 			{match, _} ->
 			    Result2=update_day_ip_experiment_visit(Result, Request_day1, Request_ip),
-			    get_usage_from_file(Input1, MP1, MP2, Result2);
+			    get_usage_from_file_with_theory_and_sim(Input1, MP1, MP2, Result2);
 			nomatch ->
-			    get_usage_from_file(Input1, MP1, MP2, Result)
+			    get_usage_from_file_with_theory_and_sim(Input1, MP1, MP2, Result)
 		    end
 	    end
     end.
