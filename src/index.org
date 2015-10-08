@@ -12,19 +12,57 @@
   The purpose of the document is to show the analytics of all
   virtual-labs on vlab web page.
 
-  *Note* : At the time of writing this document, vlab web page
-  is [[http://www.vlabs.ac.in][www.vlabs.ac.in]]  
+  *Note*: At the time of writing this document, vlab web page is
+  [[http://www.vlabs.ac.in][www.vlabs.ac.in]]
 
 * Requirements
 ** Apache combined log format
    Apache combined log format is as follows:
-   TODO
+   #+BEGIN_EXAMPLE
+   10.4.8.52 - - [08/Feb/2014:18:43:07 +0530] "GET /labs/cse01/index.php HTTP/1.1" 200 3241 "http://virtual-labs.ac.in/labs/cse01/" "Mozilla/5.0 (Linux; U; Android 4.1.2; en-in; Q500 Build/JZO54K) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30"
+   #+END_EXAMPLE
+
+   Combined log is defined as:
+   #+BEGIN_EXAMPLE
+   LogFormat "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-agent}i\"" combined
+   #+END_EXAMPLE
+   Here:
+   - %h :: IP address of the client
+   - %l :: Ident information of the client.  Highly unreliable and
+           should not be used except on internal networks.  Apache
+           needs to be configured to look for indent information.
+   - %u :: User ID of person based on HTTP authentication (if enabled)
+   - %t :: Time when server /finished/ processing the request in
+           [day/month/year:hour:minute:second zone] format
+   - \"%r\" :: Request line from client in double quotes
+   - %>s :: Response status code
+   - %b :: Number of bytes returned to client excluding response
+           headers.  In case response size is 0, the field contains
+           -.  
+   - \"%{Referer}i\" :: Referrer URL from where client landed on current
+        page within double quotes
+   - \"%{User-agent}i\" :: User agent of client as reported by client
+        in double quotes.
 
 ** About bots and non 2** response code
-   TODO
+   Most bots set /User-agent/ in HTTP request appropriately.  Thus we
+   can search for strings: 
+   - bot :: Related to Googlebot, bingbot, etc.
+   - Anonymouse.org :: Used for anonymous browsing.  Often used by
+                       VLEAD team itself to check if site is opening
+                       from outside.
+   - nagios :: Used for monitoring the health of the web server.
+   and exclude those lines from analytics
 
 ** Example log lines
-   TODO 
+   In next few sections Hits, Visits and Usage would be explained with
+   help of an example.  A few log lines which can help explain
+   difference between Hist, Visits and Usage are listed below.  All
+   the three terms will be defined with help of these example lines in
+   future sections.
+   #+BEGIN_EXAMPLE
+   #+END_EXAMPLE
+
 ** Hits after removing bots and non 2** response code
    TODO
 
