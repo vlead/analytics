@@ -94,29 +94,121 @@
 ** Example log lines
    In next few sections Hits, Visits and Usage would be explained with
    help of an example.  A few log lines which can help explain
-   difference between Hist, Visits and Usage are listed below.  All
+   difference between Hits, Visits and Usage are listed below.  All
    the three terms will be defined with help of these example lines in
    future sections.
    #+BEGIN_EXAMPLE
+   10.4.8.52 - - [08/Feb/2014:18:43:07 +0530] "GET /labs/cse01/index.php HTTP/1.1" 200 3241 "http://virtual-labs.ac.in/labs/cse01/" "Mozilla/5.0 (Linux; U; Android 4.1.2; en-in; Q500 Build/JZO54K) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30"
+   10.4.8.52 - - [26/Jan/2014:05:26:22 +0530] "GET /labs/cse01/exp9/MinimumSpanningTree.swf HTTP/1.1" 304 - "http://web.iiit.ac.in/~sharada.mohanty/content/graph-visualisation-using-flash" "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36"
+   10.4.8.52 - - [20/Feb/2014:14:53:59 +0530] "GET /labs/cse01/images/manual.jpg HTTP/1.1" 200 2009 "http://deploy.virtual-labs.ac.in/labs/cse01/index.php" "Mozilla/5.0 (X11; Linux i686; rv:7.0.1) Gecko/20100101 Firefox/7.0.1"
+   10.4.8.52 - - [08/Feb/2014:18:43:07 +0530] "GET /labs/cse01/css/default.css HTTP/1.1" 200 3338 "http://deploy.virtual-labs.ac.in/labs/cse01/index.php" "Mozilla/5.0 (Linux; U; Android 4.1.2; en-in; Q500 Build/JZO54K) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30"
+   10.4.12.236 - - [09/Feb/2014:13:46:18 +0530] "GET /labs/cse01/exp2/index.php HTTP/1.1" 200 3591 "http://deploy.virtual-labs.ac.in/labs/cse01/index.php?section=List%20of%20experiments" "Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1700.107 Safari/537.36"
+   10.4.12.236 - - [09/Feb/2014:13:47:55 +0530] "GET /labs/cse01/exp2/index.php?section=Simulation HTTP/1.1" 200 3232 "http://deploy.virtual-labs.ac.in/labs/cse01/exp2/index.php?section=Theory" "Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1700.107 Safari/537.36"
+   10.4.12.236 - - [20/Feb/2014:14:11:43 +0530] "GET /labs/cse01/exp1/index.php?section=Objective HTTP/1.1" 200 3252 "http://deploy.virtual-labs.ac.in/labs/cse01/exp1/index.php?section=Theory" "Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; InfoPath.2)"
+   10.4.12.236 - - [20/Feb/2014:14:11:54 +0530] "GET /labs/cse01/exp1/index.php?section=Quizzes HTTP/1.1" 200 4018 "http://deploy.virtual-labs.ac.in/labs/cse01/exp1/index.php?section=Objective" "Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; InfoPath.2)"
+   10.4.12.236 - - [20/Feb/2014:14:12:08 +0530] "GET /labs/cse01/exp1/index.php?section=Simulation HTTP/1.1" 200 3240 "http://deploy.virtual-labs.ac.in/labs/cse01/exp1/index.php" "Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; InfoPath.2)"
+   10.4.8.52 - - [20/Feb/2014:20:57:59 +0530] "GET /labs/cse01/exp1/index.php HTTP/1.1" 200 3981 "http://deploy.virtual-labs.ac.in/labs/cse01/index.php?section=List%20of%20experiments" "Mozilla/5.0 (Windows NT 5.1; rv:27.0) Gecko/20100101 Firefox/27.0"
+   10.4.8.52 - - [08/Feb/2014:18:51:05 +0530] "GET /labs/cse01/exp1/UnarySystem.html HTTP/1.1" 200 642 "http://deploy.virtual-labs.ac.in/labs/cse01/exp1/index.php?section=Simulation" "Mozilla/5.0 (Linux; U; Android 4.1.2; en-in; Q500 Build/JZO54K) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30"
+   196.12.53.130 - - [04/Mar/2014:14:24:02 +0530] "GET /labs/cse01/index.php HTTP/1.1" 400 400 "-" "Mozilla/5.0 (Windows NT 6.1; rv:12.0) Gecko/20100101 Firefox/12.0"
+   10.4.8.52 - - [24/Jun/2014:16:33:22 +0530] "GET /build/index.php HTTP/1.1" 404 250 "http://deploy.virtual-labs.ac.in/labs/cse01/index.php" "Mozilla/5.0 (Windows NT 6.1; rv:26.0) Gecko/20100101 Firefox/26.0"
+   10.4.8.52 - - [24/Jun/2014:16:33:24 +0530] "GET /build/index.php HTTP/1.1" 502 500 "http://deploy.virtual-labs.ac.in/labs/cse01/index.php" "Mozilla/5.0 (Windows NT 6.1; rv:26.0) Gecko/20100101 Firefox/26.0"
+   10.4.8.52 - - [24/Jun/2014:16:33:29 +0530] "GET /build/index.php HTTP/1.1" 503 414 "http://deploy.virtual-labs.ac.in/labs/cse01/index.php" "Mozilla/5.0 (Windows NT 6.1; rv:26.0) Gecko/20100101 Firefox/26.0"
+   66.249.79.3 - - [02/Jan/2015:20:16:46 +0530] "GET /labs/cse01/exp8/index.php?section=Simulation HTTP/1.1" 200 3277 "-" "Mozilla/5.0 (iPhone; CPU iPhone OS 6_0 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/6.0 Mobile/10A5376e Safari/8536.25 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"
+   10.4.8.52 - - [03/Jan/2015:17:55:42 +0530] "GET /labs/cse01/exp8/index.php?section=Simulation HTTP/1.1" 200 3277 "-" "Mozilla/5.0 (compatible; bingbot/2.0; +http://www.bing.com/bingbot.htm)"
+
    #+END_EXAMPLE
 
 ** Hits after removing bots and non 2** response code
-   TODO
-
+   Each line in a log file of a particular lab is a single Hit after
+   removing bots and non 2** response code.
+	       	
+   The following example shows the sample log lines of =cse01= lab
+   with 10 hits.
+   #+BEGIN_EXAMPLE
+   10.4.8.52 - - [08/Feb/2014:18:43:07 +0530] "GET /labs/cse01/index.php HTTP/1.1" 200 3241 "http://virtual-labs.ac.in/labs/cse01/" "Mozilla/5.0 (Linux; U; Android 4.1.2; en-in; Q500 Build/JZO54K) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30"
+   10.4.8.52 - - [08/Feb/2014:18:43:07 +0530] "GET /labs/cse01/css/default.css HTTP/1.1" 200 3338 "http://deploy.virtual-labs.ac.in/labs/cse01/index.php" "Mozilla/5.0 (Linux; U; Android 4.1.2; en-in; Q500 Build/JZO54K) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30"
+   10.4.8.52 - - [20/Feb/2014:14:53:59 +0530] "GET /labs/cse01/images/manual.jpg HTTP/1.1" 200 2009 "http://deploy.virtual-labs.ac.in/labs/cse01/index.php" "Mozilla/5.0 (X11; Linux i686; rv:7.0.1) Gecko/20100101 Firefox/7.0.1"
+   10.4.12.236 - - [09/Feb/2014:13:46:18 +0530] "GET /labs/cse01/exp2/index.php HTTP/1.1" 200 3591 "http://deploy.virtual-labs.ac.in/labs/cse01/index.php?section=List%20of%20experiments" "Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1700.107 Safari/537.36"
+   10.4.12.236 - - [09/Feb/2014:13:47:55 +0530] "GET /labs/cse01/exp2/index.php?section=Simulation HTTP/1.1" 200 3232 "http://deploy.virtual-labs.ac.in/labs/cse01/exp2/index.php?section=Theory" "Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1700.107 Safari/537.36"
+   10.4.12.236 - - [20/Feb/2014:14:11:43 +0530] "GET /labs/cse01/exp1/index.php?section=Objective HTTP/1.1" 200 3252 "http://deploy.virtual-labs.ac.in/labs/cse01/exp1/index.php?section=Theory" "Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; InfoPath.2)"
+   10.4.12.236 - - [20/Feb/2014:14:11:54 +0530] "GET /labs/cse01/exp1/index.php?section=Quizzes HTTP/1.1" 200 4018 "http://deploy.virtual-labs.ac.in/labs/cse01/exp1/index.php?section=Objective" "Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; InfoPath.2)"
+   10.4.12.236 - - [20/Feb/2014:14:12:08 +0530] "GET /labs/cse01/exp1/index.php?section=Simulation HTTP/1.1" 200 3240 "http://deploy.virtual-labs.ac.in/labs/cse01/exp1/index.php" "Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; InfoPath.2)"
+   10.4.8.52 - - [20/Feb/2014:20:57:59 +0530] "GET /labs/cse01/exp1/index.php HTTP/1.1" 200 3981 "http://deploy.virtual-labs.ac.in/labs/cse01/index.php?section=List%20of%20experiments" "Mozilla/5.0 (Windows NT 5.1; rv:27.0) Gecko/20100101 Firefox/27.0"
+   10.4.8.52 - - [08/Feb/2014:18:51:05 +0530] "GET /labs/cse01/exp1/UnarySystem.html HTTP/1.1" 200 642 "http://deploy.virtual-labs.ac.in/labs/cse01/exp1/index.php?section=Simulation" "Mozilla/5.0 (Linux; U; Android 4.1.2; en-in; Q500 Build/JZO54K) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30"
+   #+END_EXAMPLE
+     
 ** Visits
 *** Following extensions are removed from hit URLs before
     considering a hit as a visit:
     - png
     - jpg
     - jpeg
-    TODO
+    - pdf
+    - doc
+    - js, etc.
+  
+    The following example shows the sample log lines of =cse01= lab
+    with 8 visits.
+    #+BEGIN_EXAMPLE
+    10.4.8.52 - - [08/Feb/2014:18:43:07 +0530] "GET /labs/cse01/index.php HTTP/1.1" 200 3241 "http://virtual-labs.ac.in/labs/cse01/" "Mozilla/5.0 (Linux; U; Android 4.1.2; en-in; Q500 Build/JZO54K) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30"
+    10.4.12.236 - - [09/Feb/2014:13:46:18 +0530] "GET /labs/cse01/exp2/index.php HTTP/1.1" 200 3591 "http://deploy.virtual-labs.ac.in/labs/cse01/index.php?section=List%20of%20experiments" "Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1700.107 Safari/537.36"
+    10.4.12.236 - - [09/Feb/2014:13:47:55 +0530] "GET /labs/cse01/exp2/index.php?section=Simulation HTTP/1.1" 200 3232 "http://deploy.virtual-labs.ac.in/labs/cse01/exp2/index.php?section=Theory" "Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1700.107 Safari/537.36"
+    10.4.12.236 - - [20/Feb/2014:14:11:43 +0530] "GET /labs/cse01/exp1/index.php?section=Objective HTTP/1.1" 200 3252 "http://deploy.virtual-labs.ac.in/labs/cse01/exp1/index.php?section=Theory" "Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; InfoPath.2)"
+    10.4.12.236 - - [20/Feb/2014:14:11:54 +0530] "GET /labs/cse01/exp1/index.php?section=Quizzes HTTP/1.1" 200 4018 "http://deploy.virtual-labs.ac.in/labs/cse01/exp1/index.php?section=Objective" "Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; InfoPath.2)"
+    10.4.12.236 - - [20/Feb/2014:14:12:08 +0530] "GET /labs/cse01/exp1/index.php?section=Simulation HTTP/1.1" 200 3240 "http://deploy.virtual-labs.ac.in/labs/cse01/exp1/index.php" "Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; InfoPath.2)"
+    10.4.8.52 - - [20/Feb/2014:20:57:59 +0530] "GET /labs/cse01/exp1/index.php HTTP/1.1" 200 3981 "http://deploy.virtual-labs.ac.in/labs/cse01/index.php?section=List%20of%20experiments" "Mozilla/5.0 (Windows NT 5.1; rv:27.0) Gecko/20100101 Firefox/27.0"
+    10.4.8.52 - - [08/Feb/2014:18:51:05 +0530] "GET /labs/cse01/exp1/UnarySystem.html HTTP/1.1" 200 642 "http://deploy.virtual-labs.ac.in/labs/cse01/exp1/index.php?section=Simulation" "Mozilla/5.0 (Linux; U; Android 4.1.2; en-in; Q500 Build/JZO54K) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30"
+    #+END_EXAMPLE
 
 ** Structure of virtual-labs in terms of theory and simulation
 ** Usage
    Based on above visits we look at visit date, source IP, URL to get
    theory visit and simulation visit.  Then usage is calculated as
    follows:
-   TODO
+       	1) A Visit to the experiment of a lab and a Visit to the
+           simulation of the same lab. Considering both visits
+           are from same <ip-address>.
+       	2) If a user visits an experiment page and the
+           simulation page with minimum of 'x' time
+           and maximum of 1 day, then it is counted as a usage.
+       	3) The Order in which the user visited the experiment
+           page or simulation page is not considered.(Either the
+           experiment page visited first or simulation page or
+           vice versa).
+	4) The lab existing with multiple simulations per experiment,
+           In such cases visit to any one simulation (among many) will
+           be considered as usage.
+	5) The labs, which are deployed with only simulations, then a
+           visit to the simulation is itself considered as usage.
+	6) The labs, with-out simulations are not considered as
+           usage. (Although hits and visits will be calculated)
+	7) The number of users accessing a lab from the same
+           <ip-address> (either from the same Institute or College),
+           then the minimum number of the experiment page visits and
+           simulation page visits is considered as usage.
+	8) The labs with tasks instead of simulations, then each visit
+           to a task is counted as usage.
+
+	 The following example shows the sample log lines of =cse01=
+         lab with one Usage.
+         #+BEGIN_EXAMPLE
+         10.4.8.52 - - [08/Feb/2014:18:43:07 +0530] "GET /labs/cse01/index.php HTTP/1.1" 200 3241 "http://virtual-labs.ac.in/labs/cse01/" "Mozilla/5.0 (Linux; U; Android 4.1.2; en-in; Q500 Build/JZO54K) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30"
+	 10.4.12.236 - - [09/Feb/2014:13:46:18 +0530] "GET /labs/cse01/exp2/index.php HTTP/1.1" 200 3591 "http://deploy.virtual-labs.ac.in/labs/cse01/index.php?section=List%20of%20experiments" "Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1700.107 Safari/537.36"
+	 10.4.12.236 - - [09/Feb/2014:13:47:55 +0530] "GET /labs/cse01/exp2/index.php?section=Simulation HTTP/1.1" 200 3232 "http://deploy.virtual-labs.ac.in/labs/cse01/exp2/index.php?section=Theory" "Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1700.107 Safari/537.36"
+	 10.4.12.236 - - [20/Feb/2014:14:11:43 +0530] "GET /labs/cse01/exp1/index.php?section=Objective HTTP/1.1" 200 3252 "http://deploy.virtual-labs.ac.in/labs/cse01/exp1/index.php?section=Theory" "Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; InfoPath.2)"
+	 10.4.12.236 - - [20/Feb/2014:14:11:54 +0530] "GET /labs/cse01/exp1/index.php?section=Quizzes HTTP/1.1" 200 4018 "http://deploy.virtual-labs.ac.in/labs/cse01/exp1/index.php?section=Objective" "Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; InfoPath.2)"
+	 10.4.12.236 - - [20/Feb/2014:14:12:08 +0530] "GET /labs/cse01/exp1/index.php?section=Simulation HTTP/1.1" 200 3240 "http://deploy.virtual-labs.ac.in/labs/cse01/exp1/index.php" "Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; InfoPath.2)"
+	 10.4.8.52 - - [20/Feb/2014:20:57:59 +0530] "GET /labs/cse01/exp1/index.php HTTP/1.1" 200 3981 "http://deploy.virtual-labs.ac.in/labs/cse01/index.php?section=List%20of%20experiments" "Mozilla/5.0 (Windows NT 5.1; rv:27.0) Gecko/20100101 Firefox/27.0"
+	 10.4.8.52 - - [11/Feb/2014:17:26:23 +0530] "GET /labs/cse01/exp1/UnarySystem.html HTTP/1.1" 200 642 "http://deploy.virtual-labs.ac.in/labs/cse01/exp1/index.php?section=Simulation" "Mozilla/5.0 (Windows NT 5.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1700.107 Safari/537.36"
+	 10.4.8.52 - - [08/Feb/2014:18:51:05 +0530] "GET /labs/cse01/exp1/UnarySystem.html HTTP/1.1" 200 642 "http://deploy.virtual-labs.ac.in/labs/cse01/exp1/index.php?section=Simulation" "Mozilla/5.0 (Linux; U; Android 4.1.2; en-in; Q500 Build/JZO54K) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30"
+	 10.4.12.236 - - [08/Feb/2014:22:20:34 +0530] "GET /labs/cse01/exp1/index.php HTTP/1.1" 200 3981 "http://deploy.virtual-labs.ac.in/labs/cse01/index.php?section=List%20of%20experiments" "Mozilla/5.0 (Windows NT 6.2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/28.0.1478.0 Safari/537.36"
+	 #+END_EXAMPLE	
+   *Note* : Hits, Visits and Usage is calculated from the logs of the
+            labs which are hosted on IIIT-H Infrastrure and AWS. Labs
+            on IIIT-H are not at Level-5, hence these labs are running
+            on Individual containers.  The labs which are at level-5
+            are hosted on AWS.
+
 ** Month-wise experiment-wise usage
    TODO
 ** Total usage of lab across all experiments for a given month
@@ -124,15 +216,41 @@
 ** Total usage of lab across all months
    TODO
 ** Total usage of all virtual-labs
-   TODO 
+   Get the Total Number of Hits, Visits and Usage of all the
+   virtual-labs.
 ** Adding a new Lab for analytics
-   TODO
+   The process to be defined on how to maintain analytics when:
+   - A New lab gets Deployed/Hosted.
 ** Stopping analytics for a lab
-   TODO
+   The process to be defined on how to maintain analytics when:
+   - An Existing lab gets Deleted/Removed.
 ** Changing analytics program code / experiment information, etc.
    TODO
 
-** OLD Hits, Visits and Usage based on apache combined logs
+** Displaying of Analytics on Vlabs Web page
+   The following are the requirements for displaying of Analytics on vlabs web page:
+   1) The vlabs landing page should display numbers for: Labs, Experiments, Visits, and Usage.
+      *Note*: only "Visits" and "Usage" will be provided by analytics service model.      
+   2) Upon clicking on Usage, it should open a web page with Analytics of
+      all labs.  
+   3) Analytics of Top 5 labs among all labs should be display
+       first. Rest of the labs analytics will be displayed according to
+       the institutes.
+   4) The web page that opens upon clicking Usage will have the
+      following: 
+      - Theme of the web page should match with vlabs web page.  
+      - Analytics of top 10 labs need to displayed on analytics web
+        page with Lab Name, Institute Name, Hits, Visits and Usage.
+      - On clicking view more labs hyperlink, it should display
+        analytics of all labs including top 10 labs with Lab Name,
+        Institute Name, Hits, Visits and Usage.
+      - All the Lab Analytics should be sorted according to usage.
+      - Hide all Lab Analytics whose usage is less than 100.  Also
+        mention the same on page itself.
+      - Analytics by months of the year Month.
+      - Another table should be displayed to show the workshop analytics.
+
+** COMMENT OLD Hits, Visits and Usage based on apache combined logs
    1) Get the Total Number of Hits, Visits and Usage of all the
       virtual-labs.  If a User visits the lab page, then the server
       access log records all requests processed by the server.
