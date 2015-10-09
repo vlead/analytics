@@ -283,7 +283,28 @@
           Month -> Hits -> Visits -> Usage -> Average time spent
 * Design
 ** Details of input information and output of log analysis
-*** Apache combined log format
+*** Restructuring of logs
+    Log files are created for various virtual-hosts and rotated every
+    week.  Thus for each lab there could be several log files contains
+    logs worth one week of lab usage.  Further since initially on base
+    machines several labs were hosted together, it is possible to have
+    logs of many labs in one single log file.
+
+    In case a single file has logs of many labs, then logs for each
+    lab are separated using lab-ID (Eg cse01).  If a single log file
+    contains only logs of particular lab then all logs from that file
+    are treated appropriately.
+
+    Before any analysis is done first bot and non ok response lines
+    are removed.  For removing bots 'User-agent field' is searched for
+    strings such as nagios or bot.  Then for non-ok response code any
+    response that does not starts with 2 is treated as non-hit.  
+
+    After all bot and non-hit lines are removed, the remaining logs
+    are split as per each lab using lab-ID.  Thus even if a lab's logs
+    are spread across various files, they are all combined in one
+    single larger log file with name lab-ID. 
+
 *** Logic for hits
 *** Logic for visits
 *** Logic for usage
