@@ -16,7 +16,40 @@
   [[http://www.vlabs.ac.in][www.vlabs.ac.in]]
 
 * Requirements
+** Stakeholder requirements
+   Stakeholder requirements are to get following information about
+   each lab ::
+   - Hits :: Number of web requests
+   - Visits :: Number of web requests for web pages  
+   - Usage :: Number of usages of simulations
+
+** Constraints without implementing session
+   At present sessions or logins have not been implemented uniformly
+   across all virtual-labs.  Hence all analytics is being done using
+   web server logs.  This limits the amount of information that can be
+   collected.
+
+   For example, if two students in the same college use the same proxy
+   server for browsing Internet then their public IP would be same.
+   In this case the web server logs cannot be used to differentiate
+   between the activities of two students.  Thus, the exact
+   requirements cannot be satisfied with the log analysis.
+
+   Approximate analysis using logs can be done as follows:
+   - All log lines that resulted into successful response (2**) and
+     were not requested by bots are considered as hits
+   - All log lines for web pages (php, html, jsp, etc.) are treated as
+     visits
+   - Each experiment has many theory sections and a simulation
+     section.  If a student visits theory section followed by
+     simulation within a certain time interval then it can be treated
+     as usage of the lab. 
+
 ** Apache combined log format
+   Since the analytics will be done based on web server logs it is
+   important to understand information available as part of web server
+   logs.
+
    Apache combined log format is as follows:
    #+BEGIN_EXAMPLE
    10.4.8.52 - - [08/Feb/2014:18:43:07 +0530] "GET /labs/cse01/index.php HTTP/1.1" 200 3241 "http://virtual-labs.ac.in/labs/cse01/" "Mozilla/5.0 (Linux; U; Android 4.1.2; en-in; Q500 Build/JZO54K) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30"
@@ -53,6 +86,10 @@
                        from outside.
    - nagios :: Used for monitoring the health of the web server.
    and exclude those lines from analytics
+   
+   This is an important requirement to ensure that we do not get wrong
+   analytics output because of bot usage getting added to real human
+   end-user usage.
 
 ** Example log lines
    In next few sections Hits, Visits and Usage would be explained with
@@ -244,224 +281,6 @@
 
        c) Analytics by months of the year
           Month -> Hits -> Visits -> Usage -> Average time spent
-
-* Base2 http logs
-** Apache configuration on base2 http container
-   All labs hosted on base machines were reverse-proxied
-   (Proxy-passed) via http (CTID: 12159) container on base2
-   (10.4.12.22) machine.  Thus, all http logs of labs hosted on IIIT
-   infrastructure are available on http container.
-
-   apache configuration on http container is mainly done using
-   following config files:
-   - /etc/httpd/conf/httpd.conf :: This is default apache
-	configuration file without having anything specific to a lab. 
-   - /etc/httpd/conf.d/virtualhosts.conf :: This file has many lab
-	virtualhosts with names such as 
-     - cse04-iiith.virtual-labs.ac.in
-     - eerc05-iiith.virtual-labs.ac.in
-     - mech01-iitg.virtual-labs.ac.in
-     - eee06-dei.virtual-labs.ac.in 
-     All the logs for all these virtualhosts go into one single log
-     file with name 'deploy.virtual-labs.ac.in-access_log' in
-     combined format.
-   - /etc/httpd/conf.d/vlabs-virtual-hosts.conf :: This file has many
-	different virtual-hosts.  Some of them are:
-     - vlabs.ac.in :: Main virtual-labs website being redirected to
-		      vlab.co.in
-     - mail.vlabs.ac.in, uir.vlabs.ac.in :: Obsolete.  Perhaps
-	  these should have been removed.
-     - deploy1.vlabs.ac.in :: Purpose is not clear.
-     - http.vlabs.ac.in :: For http container
-     - gateone.cse09.vlabs.ac.in :: For Linux lab
-     - alipi.iiit.ac.in :: For alipi project
-     - cse12.vlabs.ac.in :: For cse12 lab.  The logs in this case
-	  go directly to cse12.vlabs.ac.in-access_log in combined
-	  format
-     - civil11.vlabs.ac.in :: For civil11 lab.  The logs in this
-	  case go directly to civil11.vlabs.ac.in-access_log in
-	  combined format
-     - nitk.vlabs.ac.in :: Perhaps for all nitk labs.  The logs in
-	  this case go directly to nitk.vlabs.ac.in-access_log in
-	  combined format.
-     - www.vlabs.ca.in :: Interesting configuration such as:
-       #+BEGIN_EXAMPLE
-       # Pass Proxy for cse28
-       <Location /cse28/>
-	   ProxyPass http://cse08.vlabs.ac.in/ant/ant/
-       </Location>
-       #+END_EXAMPLE
-     - cpl.vlabs.ac.in, hybrid-electronic.vlabs.ac.in, etc. :: Many
-	  such lab virtual-hosts with lab names.  The logs go to
-	  cpl.virtual-labs.ac.in-access_log or
-	  hybrid-electronic.virtual-labs.ac.in-access_log etc. in
-	  combined format.  The list of such virtual-hosts is:
-
-	  1. cpl.virtual-labs.ac.in
-	  2. hybrid-electronic.virtual-labs.ac.in
-	  3. virtual-english.virtual-labs.ac.in
-	  4. cdpeslab.virtual-labs.ac.in
-	  5. mmlaboratory.virtual-labs.ac.in
-	  6. industrial-automation.virtual-labs.ac.in
-	  7. nlp.virtual-labs.ac.in
-	  8. dld.virtual-labs.ac.in
-	  9. computer-graphics.virtual-labs.ac.in
-	  10. pattern-recognition.virtual-labs.ac.in
-	  11. cryptography.virtual-labs.ac.in
-	  12. ds.virtual-labs.ac.in
-	  13. image-processing.virtual-labs.ac.in
-	  14. emt.virtual-labs.ac.in
-
-	  In each of this case the logs go to <fqdn>-access_log file.
-	
-    - /etc/httpd/conf.d/virtual-labs-virtual-hosts.conf :: Repeated
-	 configuration of virtual-hosts from vlabs-virtual-hosts.conf
-	 file.  However few virtual-hosts are different such as:
-
-	 1. microwave.virtual-labs.ac.in
-	 2. eee07.virtual-labs.ac.in
-	 3. music.virtual-labs.ac.in
-	 4. eee06.virtual-labs.ac.in
-	 5. mech26.virtual-labs.ac.in
-	 6. mech08.virtual-labs.ac.in
-	 7. phy01.virtual-labs.ac.in
-	 8. chs13.virtual-labs.ac.in
-	 9. aerospaceengg.virtual-labs.ac.in
-	 10. combustion.virtual-labs.ac.in
-
-	 In each of this case the logs go to <fqdn>-access_log file.
-	
-** Cron and awstats configuration on base2 http container
-   With help of /etc/cron.hourly/00awstats
-   deploy.virtual-labs.ac.in-access.log file is split into various
-   smaller log files so that they can be processed by awstats.  These
-   files are:
-   #+BEGIN_EXAMPLE
-   cse01.virtual-labs.ac.in-access_log
-   cse02.virtual-labs.ac.in-access_log
-   cse03.virtual-labs.ac.in-access_log
-   cse04.virtual-labs.ac.in-access_log
-   cse05.virtual-labs.ac.in-access_log
-   cse06.virtual-labs.ac.in-access_log
-   cse07.virtual-labs.ac.in-access_log
-   cse08.virtual-labs.ac.in-access_log
-   cse09.virtual-labs.ac.in-access_log
-   cse10.virtual-labs.ac.in-access_log
-   cse11.virtual-labs.ac.in-access_log
-   cse12.virtual-labs.ac.in-access_log
-   cse13.virtual-labs.ac.in-access_log
-   cse14.virtual-labs.ac.in-access_log
-   cse15.virtual-labs.ac.in-access_log
-   cse16.virtual-labs.ac.in-access_log
-   cse17.virtual-labs.ac.in-access_log
-   cse18.virtual-labs.ac.in-access_log
-   cse19.virtual-labs.ac.in-access_log
-   cse20.virtual-labs.ac.in-access_log
-   cse21.virtual-labs.ac.in-access_log
-   cse22.virtual-labs.ac.in-access_log
-   cse23.virtual-labs.ac.in-access_log
-   cse24.virtual-labs.ac.in-access_log
-   cse25.virtual-labs.ac.in-access_log
-   cse26.virtual-labs.ac.in-access_log
-   cse27.virtual-labs.ac.in-access_log
-   cse28.virtual-labs.ac.in-access_log
-   cse29.virtual-labs.ac.in-access_log
-   cse30.virtual-labs.ac.in-access_log
-   ece01.virtual-labs.ac.in-access_log
-   ece02.virtual-labs.ac.in-access_log
-   ece03.virtual-labs.ac.in-access_log
-   ece04.virtual-labs.ac.in-access_log
-   ece05.virtual-labs.ac.in-access_log
-   ece06.virtual-labs.ac.in-access_log
-   ece07.virtual-labs.ac.in-access_log
-   ece08.virtual-labs.ac.in-access_log
-   ece09.virtual-labs.ac.in-access_log
-   ece10.virtual-labs.ac.in-access_log
-   ece11.virtual-labs.ac.in-access_log
-   bio15.virtual-labs.ac.in-access_log
-   bio16.virtual-labs.ac.in-access_log
-   ccnsb01.virtual-labs.ac.in-access_log
-   ccnsb02.virtual-labs.ac.in-access_log
-   ccnsb03.virtual-labs.ac.in-access_log
-   ccnsb04.virtual-labs.ac.in-access_log
-   ccnsb05.virtual-labs.ac.in-access_log
-   ccnsb06.virtual-labs.ac.in-access_log
-   ccnsb07.virtual-labs.ac.in-access_log
-   chem01.virtual-labs.ac.in-access_log
-   civil09.virtual-labs.ac.in-access_log
-   civil13.virtual-labs.ac.in-access_log
-   civil15.virtual-labs.ac.in-access_log
-   civil16.virtual-labs.ac.in-access_log
-   engg01.virtual-labs.ac.in-access_log
-   hss01.virtual-labs.ac.in-access_log
-   hss02.virtual-labs.ac.in-access_log
-   hss03.virtual-labs.ac.in-access_log
-   mech01.virtual-labs.ac.in-access_log
-   mech04.virtual-labs.ac.in-access_log
-   mech17.virtual-labs.ac.in-access_log
-   mech18.virtual-labs.ac.in-access_log
-   phy14.virtual-labs.ac.in-access_log
-   phy19.virtual-labs.ac.in-access_log
-   sample1.virtual-labs.ac.in-access_log
-   sample13.virtual-labs.ac.in-access_log
-   sample16.virtual-labs.ac.in-access_log
-   sample2.virtual-labs.ac.in-access_log
-   sample20.virtual-labs.ac.in-access_log
-   sample21.virtual-labs.ac.in-access_log
-   ece18.virtual-labs.ac.in-access_log
-   ece19.virtual-labs.ac.in-access_log
-   ece21.virtual-labs.ac.in-access_log
-   ece26.virtual-labs.ac.in-access_log
-   eee03.virtual-labs.ac.in-access_log
-   eee05.virtual-labs.ac.in-access_log
-   eee07.virtual-labs.ac.in-access_log
-   eee08.virtual-labs.ac.in-access_log
-   eee09.virtual-labs.ac.in-access_log
-   eee10.virtual-labs.ac.in-access_log
-   eee12.virtual-labs.ac.in-access_log
-   eerc01.virtual-labs.ac.in-access_log
-   eerc02.virtual-labs.ac.in-access_log
-   eerc03.virtual-labs.ac.in-access_log
-   eerc04.virtual-labs.ac.in-access_log
-   emt.virtual-labs.ac.in-access_log    
-   #+END_EXAMPLE
-
-** Important logs files on base2 http container
-   Based on apache configuration following log files are important
-   and need to be processed:
-   1. deploy.virtual-labs.ac.in-access_log (For many different labs)
-   2. cse12.vlabs.ac.in-access_log
-   3. civil11.vlabs.ac.in-access_log
-   4. nitk.vlabs.ac.in-access_log (For many nitk labs)
-   5. cpl.virtual-labs.ac.in-access_log
-   6. hybrid-electronic.virtual-labs.ac.in-access_log
-   7. virtual-english.virtual-labs.ac.in-access_log
-   8. cdpeslab.virtual-labs.ac.in-access_log
-   9. mmlaboratory.virtual-labs.ac.in-access_log
-   10. industrial-automation.virtual-labs.ac.in-access_log
-   11. nlp.virtual-labs.ac.in-access_log
-   12. dld.virtual-labs.ac.in-access_log
-   13. computer-graphics.virtual-labs.ac.in-access_log
-   14. pattern-recognition.virtual-labs.ac.in-access_log
-   15. cryptography.virtual-labs.ac.in-access_log
-   16. ds.virtual-labs.ac.in-access_log
-   17. image-processing.virtual-labs.ac.in-access_log
-   18. microwave.virtual-labs.ac.in-access_log
-   19. music.virtual-labs.ac.in-access_log
-   20. eee06.virtual-labs.ac.in-access_log
-   21. mech26.virtual-labs.ac.in-access_log
-   22. mech08.virtual-labs.ac.in-access_log
-   23. phy01.virtual-labs.ac.in-access_log
-   24. chs13.virtual-labs.ac.in-access_log
-   25. aerospaceengg.virtual-labs.ac.in-access_log
-   26. combustion.virtual-labs.ac.in-access_log
-       
-   Following files are created by virtual-hosts configuration of
-   apache but are unfortunately overwritten by cron.  So these cannot
-   be used:
-   1. eee07.virtual-labs.ac.in-access_log
-   2. emt.virtual-labs.ac.in-access_log
-* AWS http logs
 * Design
 ** Details of input information and output of log analysis
 *** Apache combined log format
@@ -469,6 +288,240 @@
 *** Logic for visits
 *** Logic for usage
 *** Integration of analytics program and web service
+** Things to take care of in future
+*** Time between visits under minutes
+*** Graphs
+*** Display analytics per experiment on vlabs.ac.in webpages
+* Clusters and logs
+  The virtual-labs are hosted on two separate clusters:
+  - Base2
+  - AWS
+  /Soon Baadal cluster would be added and labs would be migrated from
+  AWS to Baadal./
+
+  Each of these clusters have different log file names and labs
+  hosted.  Some labs might have been hosted on Base2 initially and
+  later migrated to AWS.  Thus, logs from both clusters need to be
+  analysed and numbers need to be added for proper analysis results.
+** Base2 http logs
+*** Apache configuration on base2 http container
+    All labs hosted on base machines were reverse-proxied
+    (Proxy-passed) via http (CTID: 12159) container on base2
+    (10.4.12.22) machine.  Thus, all http logs of labs hosted on IIIT
+    infrastructure are available on http container.
+
+    apache configuration on http container is mainly done using
+    following config files:
+    - /etc/httpd/conf/httpd.conf :: This is default apache
+	 configuration file without having anything specific to a lab. 
+    - /etc/httpd/conf.d/virtualhosts.conf :: This file has many lab
+	 virtualhosts with names such as 
+      - cse04-iiith.virtual-labs.ac.in
+      - eerc05-iiith.virtual-labs.ac.in
+      - mech01-iitg.virtual-labs.ac.in
+      - eee06-dei.virtual-labs.ac.in 
+      All the logs for all these virtualhosts go into one single log
+      file with name 'deploy.virtual-labs.ac.in-access_log' in
+      combined format.
+    - /etc/httpd/conf.d/vlabs-virtual-hosts.conf :: This file has many
+	 different virtual-hosts.  Some of them are:
+      - vlabs.ac.in :: Main virtual-labs website being redirected to
+		       vlab.co.in
+      - mail.vlabs.ac.in, uir.vlabs.ac.in :: Obsolete.  Perhaps
+	   these should have been removed.
+      - deploy1.vlabs.ac.in :: Purpose is not clear.
+      - http.vlabs.ac.in :: For http container
+      - gateone.cse09.vlabs.ac.in :: For Linux lab
+      - alipi.iiit.ac.in :: For alipi project
+      - cse12.vlabs.ac.in :: For cse12 lab.  The logs in this case
+	   go directly to cse12.vlabs.ac.in-access_log in combined
+	   format
+      - civil11.vlabs.ac.in :: For civil11 lab.  The logs in this
+	   case go directly to civil11.vlabs.ac.in-access_log in
+	   combined format
+      - nitk.vlabs.ac.in :: Perhaps for all nitk labs.  The logs in
+	   this case go directly to nitk.vlabs.ac.in-access_log in
+	   combined format.
+      - www.vlabs.ca.in :: Interesting configuration such as:
+       	#+BEGIN_EXAMPLE
+       	# Pass Proxy for cse28
+       	<Location /cse28/>
+	    ProxyPass http://cse08.vlabs.ac.in/ant/ant/
+       	</Location>
+       	#+END_EXAMPLE
+      - cpl.vlabs.ac.in, hybrid-electronic.vlabs.ac.in, etc. :: Many
+	   such lab virtual-hosts with lab names.  The logs go to
+	   cpl.virtual-labs.ac.in-access_log or
+	   hybrid-electronic.virtual-labs.ac.in-access_log etc. in
+	   combined format.  The list of such virtual-hosts is:
+
+	   1. cpl.virtual-labs.ac.in
+	   2. hybrid-electronic.virtual-labs.ac.in
+	   3. virtual-english.virtual-labs.ac.in
+	   4. cdpeslab.virtual-labs.ac.in
+	   5. mmlaboratory.virtual-labs.ac.in
+	   6. industrial-automation.virtual-labs.ac.in
+	   7. nlp.virtual-labs.ac.in
+	   8. dld.virtual-labs.ac.in
+	   9. computer-graphics.virtual-labs.ac.in
+	   10. pattern-recognition.virtual-labs.ac.in
+	   11. cryptography.virtual-labs.ac.in
+	   12. ds.virtual-labs.ac.in
+	   13. image-processing.virtual-labs.ac.in
+	   14. emt.virtual-labs.ac.in
+
+	   In each of this case the logs go to <fqdn>-access_log file.
+	 
+     - /etc/httpd/conf.d/virtual-labs-virtual-hosts.conf :: Repeated
+	  configuration of virtual-hosts from vlabs-virtual-hosts.conf
+	  file.  However few virtual-hosts are different such as:
+
+	  1. microwave.virtual-labs.ac.in
+	  2. eee07.virtual-labs.ac.in
+	  3. music.virtual-labs.ac.in
+	  4. eee06.virtual-labs.ac.in
+	  5. mech26.virtual-labs.ac.in
+	  6. mech08.virtual-labs.ac.in
+	  7. phy01.virtual-labs.ac.in
+	  8. chs13.virtual-labs.ac.in
+	  9. aerospaceengg.virtual-labs.ac.in
+	  10. combustion.virtual-labs.ac.in
+
+	  In each of this case the logs go to <fqdn>-access_log file.
+	 
+*** Cron and awstats configuration on base2 http container
+    With help of /etc/cron.hourly/00awstats
+    deploy.virtual-labs.ac.in-access.log file is split into various
+    smaller log files so that they can be processed by awstats.  These
+    files are:
+    #+BEGIN_EXAMPLE
+    cse01.virtual-labs.ac.in-access_log
+    cse02.virtual-labs.ac.in-access_log
+    cse03.virtual-labs.ac.in-access_log
+    cse04.virtual-labs.ac.in-access_log
+    cse05.virtual-labs.ac.in-access_log
+    cse06.virtual-labs.ac.in-access_log
+    cse07.virtual-labs.ac.in-access_log
+    cse08.virtual-labs.ac.in-access_log
+    cse09.virtual-labs.ac.in-access_log
+    cse10.virtual-labs.ac.in-access_log
+    cse11.virtual-labs.ac.in-access_log
+    cse12.virtual-labs.ac.in-access_log
+    cse13.virtual-labs.ac.in-access_log
+    cse14.virtual-labs.ac.in-access_log
+    cse15.virtual-labs.ac.in-access_log
+    cse16.virtual-labs.ac.in-access_log
+    cse17.virtual-labs.ac.in-access_log
+    cse18.virtual-labs.ac.in-access_log
+    cse19.virtual-labs.ac.in-access_log
+    cse20.virtual-labs.ac.in-access_log
+    cse21.virtual-labs.ac.in-access_log
+    cse22.virtual-labs.ac.in-access_log
+    cse23.virtual-labs.ac.in-access_log
+    cse24.virtual-labs.ac.in-access_log
+    cse25.virtual-labs.ac.in-access_log
+    cse26.virtual-labs.ac.in-access_log
+    cse27.virtual-labs.ac.in-access_log
+    cse28.virtual-labs.ac.in-access_log
+    cse29.virtual-labs.ac.in-access_log
+    cse30.virtual-labs.ac.in-access_log
+    ece01.virtual-labs.ac.in-access_log
+    ece02.virtual-labs.ac.in-access_log
+    ece03.virtual-labs.ac.in-access_log
+    ece04.virtual-labs.ac.in-access_log
+    ece05.virtual-labs.ac.in-access_log
+    ece06.virtual-labs.ac.in-access_log
+    ece07.virtual-labs.ac.in-access_log
+    ece08.virtual-labs.ac.in-access_log
+    ece09.virtual-labs.ac.in-access_log
+    ece10.virtual-labs.ac.in-access_log
+    ece11.virtual-labs.ac.in-access_log
+    bio15.virtual-labs.ac.in-access_log
+    bio16.virtual-labs.ac.in-access_log
+    ccnsb01.virtual-labs.ac.in-access_log
+    ccnsb02.virtual-labs.ac.in-access_log
+    ccnsb03.virtual-labs.ac.in-access_log
+    ccnsb04.virtual-labs.ac.in-access_log
+    ccnsb05.virtual-labs.ac.in-access_log
+    ccnsb06.virtual-labs.ac.in-access_log
+    ccnsb07.virtual-labs.ac.in-access_log
+    chem01.virtual-labs.ac.in-access_log
+    civil09.virtual-labs.ac.in-access_log
+    civil13.virtual-labs.ac.in-access_log
+    civil15.virtual-labs.ac.in-access_log
+    civil16.virtual-labs.ac.in-access_log
+    engg01.virtual-labs.ac.in-access_log
+    hss01.virtual-labs.ac.in-access_log
+    hss02.virtual-labs.ac.in-access_log
+    hss03.virtual-labs.ac.in-access_log
+    mech01.virtual-labs.ac.in-access_log
+    mech04.virtual-labs.ac.in-access_log
+    mech17.virtual-labs.ac.in-access_log
+    mech18.virtual-labs.ac.in-access_log
+    phy14.virtual-labs.ac.in-access_log
+    phy19.virtual-labs.ac.in-access_log
+    sample1.virtual-labs.ac.in-access_log
+    sample13.virtual-labs.ac.in-access_log
+    sample16.virtual-labs.ac.in-access_log
+    sample2.virtual-labs.ac.in-access_log
+    sample20.virtual-labs.ac.in-access_log
+    sample21.virtual-labs.ac.in-access_log
+    ece18.virtual-labs.ac.in-access_log
+    ece19.virtual-labs.ac.in-access_log
+    ece21.virtual-labs.ac.in-access_log
+    ece26.virtual-labs.ac.in-access_log
+    eee03.virtual-labs.ac.in-access_log
+    eee05.virtual-labs.ac.in-access_log
+    eee07.virtual-labs.ac.in-access_log
+    eee08.virtual-labs.ac.in-access_log
+    eee09.virtual-labs.ac.in-access_log
+    eee10.virtual-labs.ac.in-access_log
+    eee12.virtual-labs.ac.in-access_log
+    eerc01.virtual-labs.ac.in-access_log
+    eerc02.virtual-labs.ac.in-access_log
+    eerc03.virtual-labs.ac.in-access_log
+    eerc04.virtual-labs.ac.in-access_log
+    emt.virtual-labs.ac.in-access_log    
+    #+END_EXAMPLE
+
+*** Important logs files on base2 http container
+    Based on apache configuration following log files are important
+    and need to be processed:
+    1. deploy.virtual-labs.ac.in-access_log (For many different labs)
+    2. cse12.vlabs.ac.in-access_log
+    3. civil11.vlabs.ac.in-access_log
+    4. nitk.vlabs.ac.in-access_log (For many nitk labs)
+    5. cpl.virtual-labs.ac.in-access_log
+    6. hybrid-electronic.virtual-labs.ac.in-access_log
+    7. virtual-english.virtual-labs.ac.in-access_log
+    8. cdpeslab.virtual-labs.ac.in-access_log
+    9. mmlaboratory.virtual-labs.ac.in-access_log
+    10. industrial-automation.virtual-labs.ac.in-access_log
+    11. nlp.virtual-labs.ac.in-access_log
+    12. dld.virtual-labs.ac.in-access_log
+    13. computer-graphics.virtual-labs.ac.in-access_log
+    14. pattern-recognition.virtual-labs.ac.in-access_log
+    15. cryptography.virtual-labs.ac.in-access_log
+    16. ds.virtual-labs.ac.in-access_log
+    17. image-processing.virtual-labs.ac.in-access_log
+    18. microwave.virtual-labs.ac.in-access_log
+    19. music.virtual-labs.ac.in-access_log
+    20. eee06.virtual-labs.ac.in-access_log
+    21. mech26.virtual-labs.ac.in-access_log
+    22. mech08.virtual-labs.ac.in-access_log
+    23. phy01.virtual-labs.ac.in-access_log
+    24. chs13.virtual-labs.ac.in-access_log
+    25. aerospaceengg.virtual-labs.ac.in-access_log
+    26. combustion.virtual-labs.ac.in-access_log
+       	
+    Following files are created by virtual-hosts configuration of
+    apache but are unfortunately overwritten by cron.  So these cannot
+    be used:
+    1. eee07.virtual-labs.ac.in-access_log
+    2. emt.virtual-labs.ac.in-access_log
+** AWS http logs
+
+* Implementation
 ** Design of program that processes logs to get analytics
    The entire process of getting final lab-wise analytics (hits, visits
    and usage) for base2 http container and aws is described below
@@ -922,11 +975,7 @@ TRACE {{2015,9,25},{15,5,11}} analytics:base2_main/0: File_list after negative f
 *** (STEP: combine_platforms) Combine final values of different platforms (AWS, Base2)
 *** (STEP: lab_totals) For each lab get totals for all duration by adding all month-wise values
 *** (STEP: all_total)Get total for entire vlabs by adding all lab total values
-** Things to take care of in future
-*** Time between visits under minutes
-*** Graphs
-*** Display analytics per experiment on vlabs.ac.in webpages
-* Implementation
+** Source code 
   The erlang program source is:
 #+BEGIN_SRC erlang :tangle analytics.erl
 -module(analytics).
