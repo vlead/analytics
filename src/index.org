@@ -401,10 +401,10 @@
 ** Details of input information and output of log analysis
 *** Restructuring of logs
     Log files are created for various virtual-hosts and rotated every
-    week.  Thus for each lab there could be several log files contains
-    logs worth one week of lab usage.  Further since initially on base
-    machines several labs were hosted together, it is possible to have
-    logs of many labs in one single log file.
+    week.  Thus for each lab there could be several log files each
+    containing logs for the given week.  Further since initially on
+    base machines several labs were hosted together, it is possible to
+    have logs of many labs in one single log file.
 
     In case a single file has logs of many labs, then logs for each
     lab are separated using lab-ID (Eg cse01).  If a single log file
@@ -3947,8 +3947,8 @@ main() ->
     Base_final_output=base2_main(),
     Aws_final_output=aws_main(),
 
-    %%Ensure that output folder exists and is empty
-    Command1=lists:flatten(io_lib:format("rm -rf ~s; mkdir -p ~s", [?Output_folder, ?Output_folder])),
+    %%Ensure that output folder exists
+    Command1=lists:flatten(io_lib:format("mkdir -p ~s", [?Output_folder])),
     os:cmd(Command1),
     
     %%(STEP: combine_platforms)
@@ -4085,3 +4085,4 @@ if __name__ == '__main__':
    TODO
 ** Re-running entire analytics program again for all logs
    TODO
+   
