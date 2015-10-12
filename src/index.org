@@ -3,17 +3,17 @@
 #+DATE:      2015-09-24 Thu
 #+PROPERTY: results output
 #+PROPERTY: exports code
-#+SETUPFILE: org-templates/level-0.org
 
 * Introduction
   This documentation describes the requirements, design and
   implementation of analytics service.
   
   The purpose of the document is to show the analytics of all
-  virtual-labs on vlab web page.
+  virtual-labs on vlabs web page.
 
-  *Note*: At the time of writing this document, vlab web page is
-  [[http://www.vlabs.ac.in][www.vlabs.ac.in]]
+  *Note*: At the time of writing this document, vlabs web page are
+  hosted at [[http://www.vlabs.ac.in][www.vlabs.ac.in]].  Most users visit vlab.co.in and not
+  vlabs.ac.in as vlabs.ac.in is not advertised as main page so far.
 
 * Requirements
 ** Stakeholder requirements
@@ -50,15 +50,16 @@
    important to understand information available as part of web server
    logs.
 
-   Apache combined log format is as follows:
+   Apache combined log is defined as:
+   #+BEGIN_EXAMPLE
+   LogFormat "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-agent}i\"" combined
+   #+END_EXAMPLE
+
+   Example combined log line is:
    #+BEGIN_EXAMPLE
    10.4.8.52 - - [08/Feb/2014:18:43:07 +0530] "GET /labs/cse01/index.php HTTP/1.1" 200 3241 "http://virtual-labs.ac.in/labs/cse01/" "Mozilla/5.0 (Linux; U; Android 4.1.2; en-in; Q500 Build/JZO54K) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30"
    #+END_EXAMPLE
 
-   Combined log is defined as:
-   #+BEGIN_EXAMPLE
-   LogFormat "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-agent}i\"" combined
-   #+END_EXAMPLE
    Here:
    - %h :: IP address of the client
    - %l :: Ident information of the client.  Highly unreliable and
@@ -161,6 +162,30 @@
     #+END_EXAMPLE
 
 ** Structure of virtual-labs in terms of theory and simulation
+   Each virtual-labs has multiple experiments, typically ten
+   experiments per lab.  For each experiment there are sections such
+   as:
+   - Introduction
+   - Theory
+   - Simulation
+   - References
+   - Feed-back
+   - Quiz
+
+   Visit to any of the sections other than "Simuation" is treated as a
+   theory visit.  Visit to Simulation is treated as a simulation visit
+   for the given experiment.  
+
+   At present URL for everything except simulation is same for most
+   labs.  Thus, looking at logs we cannot differentiate whether user
+   has seen Introduction section or theory section of a particular
+   experiment. 
+
+   Further for few labs we only have theory visit as they do not have
+   simulation.  Some of these labs have tasks which have same URL as
+   introduction or theory.  Thus visits to tasks page cannot be
+   differentiated from visit to introduction page.
+
 ** Usage
    Based on above visits we look at visit date, source IP, URL to get
    theory visit and simulation visit.  Then usage is calculated as
@@ -169,24 +194,17 @@
      of the same lab. Considering both visits are from same
      <ip-address>.
    + If a user visits an experiment page and the simulation page with
-     minimum of 'x' time and maximum of 1 day, then it is counted as a
-     usage.
+     on same day, then it is counted as a usage.  Note that users IP
+     should remain same during the two visits.
    + The Order in which the user visited the experiment page or
      simulation page is not considered.(Either the experiment page
      visited first or simulation page or vice versa).
-   + The lab existing with multiple simulations per experiment, In
-     such cases visit to any one simulation (among many) will be
-     considered as usage.
-   + The labs, which are deployed with only simulations, then a visit
-     to the simulation is itself considered as usage.
-   + The labs, with-out simulations are not considered as
-     usage. (Although hits and visits will be calculated)
-   + The number of users accessing a lab from the same <ip-address>
-     (either from the same Institute or College), then the minimum
-     number of the experiment page visits and simulation page visits
-     is considered as usage.
-   + The labs with tasks instead of simulations, then each visit to a
-     task is counted as usage.
+   + Some labs have multiple simulations per experiment.  In such
+     cases, visit to any simulation (among many) is considered as
+     simulation visit for usage.  Whether all simulations are visited
+     or not has not been checked.
+   + For labs which do not have simulation, simple theory visit is
+     directly treated as usage.
 
    The following example shows the sample log lines of =cse01= lab
    with one Usage.
@@ -202,38 +220,35 @@
    10.4.8.52 - - [08/Feb/2014:18:51:05 +0530] "GET /labs/cse01/exp1/UnarySystem.html HTTP/1.1" 200 642 "http://deploy.virtual-labs.ac.in/labs/cse01/exp1/index.php?section=Simulation" "Mozilla/5.0 (Linux; U; Android 4.1.2; en-in; Q500 Build/JZO54K) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30"
    10.4.12.236 - - [08/Feb/2014:22:20:34 +0530] "GET /labs/cse01/exp1/index.php HTTP/1.1" 200 3981 "http://deploy.virtual-labs.ac.in/labs/cse01/index.php?section=List%20of%20experiments" "Mozilla/5.0 (Windows NT 6.2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/28.0.1478.0 Safari/537.36"
    #+END_EXAMPLE	
-   *Note* : Hits, Visits and Usage is calculated from the logs of the
-            labs which are hosted on IIIT-H Infrastrure and AWS. Labs
-            on IIIT-H are not at Level-5, hence these labs are running
-            on Individual containers.  The labs which are at level-5
-            are hosted on AWS.
-** Month-wise experiment-wise usage
-   TODO
-** Total usage of lab across all experiments for a given month
-   TODO 
-** Total usage of lab across all months
-   TODO
-** Total usage of all virtual-labs
-   Get the Total Number of Hits, Visits and Usage of all the
-   virtual-labs.
-** Adding a new Lab for analytics
-   The process to be defined on how to maintain analytics when:
-   - A New lab gets Deployed/Hosted.
-** Stopping analytics for a lab
-   The process to be defined on how to maintain analytics when:
-   - An Existing lab gets Deleted/Removed.
-** Changing analytics program code / experiment information, etc.
-   TODO
 
+   *Note* : Hits, Visits and Usage is calculated from the logs of the
+            labs which are hosted on IIIT-H infrastructure and AWS.
+            Labs on IIIT-H are not at Level-5, hence these labs are
+            running on Individual containers.  The labs which are at
+            level-5  or higher are hosted on AWS.
+** Statistics required from analytics
+   Usage information collected is needed month-wise for proper
+   analysis or trend collection.  The hits and visits information is
+   also needed month-wise.
+
+   Once month-wise information is known totals for a given lab across
+   all time (Jan 2013 to present) are needed.
+
+   Further once totals for all labs are known total hits, visits and
+   usages for all virtual-labs hosted on a central platform are
+   calculated.
+   
 ** Displaying of Analytics on Vlabs Web page
-   The following are the requirements for displaying of Analytics on vlabs web page:
-   1) The vlabs landing page should display numbers for: Labs, Experiments, Visits, and Usage.
-      *Note*: only "Visits" and "Usage" will be provided by analytics service model.      
-   2) Upon clicking on Usage, it should open a web page with Analytics of
-      all labs.  
+   The following are the requirements for displaying of Analytics on
+   vlabs web page:
+   1) The vlabs landing page should display numbers for: Labs,
+      Experiments, Visits, and Usage.  *Note*: only "Visits" and
+      "Usage" will be provided by analytics service model.
+   2) Upon clicking on Usage, it should open a web page with Analytics
+      of all labs.
    3) Analytics of Top 5 labs among all labs should be display
-       first. Rest of the labs analytics will be displayed according to
-       the institutes.
+      first. Rest of the labs analytics will be displayed according to
+      the institutes.
    4) The web page that opens upon clicking Usage will have the
       following: 
       - Theme of the web page should match with vlabs web page.  
@@ -248,155 +263,15 @@
       - Analytics by months of the year Month.
       - Another table should be displayed to show the workshop analytics.
 
-** COMMENT OLD Hits, Visits and Usage based on apache combined logs
-   1) Get the Total Number of Hits, Visits and Usage of all the
-      virtual-labs.  If a User visits the lab page, then the server
-      access log records all requests processed by the server.
-
-      - HIT :: Each line in a log file of a particular lab is a single
-               Hit.
-	       	
-       The following example shows the sample log lines of =cse01= lab
-       with 4 hits.
-       #+BEGIN_EXAMPLE
-       10.4.8.52 - - [08/Feb/2014:18:43:07 +0530] "GET /labs/cse01/index.php HTTP/1.1" 200 3241 "http://virtual-labs.ac.in/labs/cse01/" "Mozilla/5.0 (Linux; U; Android 4.1.2; en-in; Q500 Build/JZO54K) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30"
-       10.4.8.52 - - [08/Feb/2014:18:43:07 +0530] "GET /labs/cse01/css/default.css HTTP/1.1" 200 3338 "http://deploy.virtual-labs.ac.in/labs/cse01/index.php" "Mozilla/5.0 (Linux; U; Android 4.1.2; en-in; Q500 Build/JZO54K) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30"
-       10.4.8.52 - - [26/Jan/2014:05:26:22 +0530] "GET /labs/cse01/exp9/MinimumSpanningTree.swf HTTP/1.1" 304 - "http://web.iiit.ac.in/~sharada.mohanty/content/graph-visualisation-using-flash" "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36"
-       10.4.8.52 - - [26/Jan/2014:05:32:48 +0530] "GET /labs/cse01/exp7/DFS_BFS.swf HTTP/1.1" 200 13567 "http://web.iiit.ac.in/~sharada.mohanty/content/graph-visualisation-using-flash" "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36"
-       #+END_EXAMPLE
-	       	
-      - Visit :: A Hit to a lab web page either html or php pages
-                 except js/css/images/pdf/doc files.
-
-       	The following example shows the sample log lines of =cse01= lab
-                 with 2 visits.
-       #+BEGIN_EXAMPLE
-       10.4.8.52 - - [08/Feb/2014:18:43:07 +0530] "GET /labs/cse01/index.php HTTP/1.1" 200 3241 "http://virtual-labs.ac.in/labs/cse01/" "Mozilla/5.0 (Linux; U; Android 4.1.2; en-in; Q500 Build/JZO54K) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30"
-       10.4.8.52 - - [08/Feb/2014:18:51:05 +0530] "GET /labs/cse01/exp1/UnarySystem.html HTTP/1.1" 200 642 "http://deploy.virtual-labs.ac.in/labs/cse01/exp1/index.php?section=Simulation" "Mozilla/5.0 (Linux; U; Android 4.1.2; en-in; Q500 Build/JZO54K) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30"
-       #+END_EXAMPLE
-
-       *Note* : Observe =GET /labs/cse01/= column to know the visit
-                 count.
-
-      - Usage :: 
-       	1) A Visit to the experiment of a lab and a Visit to the
-           simulation of the same lab. Considering both visits
-           are from same <ip-address>.
-       	2) If a user visits an experiment page and the
-           simulation page with minimum of 'x' amount of time
-           and maximum of 1 day, then it is counted as a usage.
-       	3) The Order in which the user visited the experiment
-           page or simulation page is not considered.(Either the
-           experiment page visited first or simulation page or
-           vice versa).
-
-	 The following example shows the sample log lines of =cse01=
-                 lab with one Usage.
-         #+BEGIN_EXAMPLE
-	 10.4.12.236 - - [09/Feb/2014:13:46:18 +0530] "GET /labs/cse01/exp2/index.php HTTP/1.1" 200 3591 "http://deploy.virtual-labs.ac.in/labs/cse01/index.php?section=List%20of%20experiments" "Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1700.107 Safari/537.36"
-	 10.4.12.236 - - [09/Feb/2014:13:47:55 +0530] "GET /labs/cse01/exp2/index.php?section=Simulation HTTP/1.1" 200 3232 "http://deploy.virtual-labs.ac.in/labs/cse01/exp2/index.php?section=Theory" "Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1700.107 Safari/537.36"
-         #+END_EXAMPLE	
-       
-
-            *Note* : Hits, Visits and Usage is calculated from the logs of
-            the labs which are hosted on IIIT-H Infrastrure and AWS. Labs on
-	    IIIT-H are not at Level-5, hence these labs are running on
-	    Individual containers.  The labs which are at level-5 are hosted
-	    on AWS.
-
-   2) Similarly, get the Total Number of Hits, Visits and Usage of each
-      virtual-lab.
-   3) Get the Number of Hits, visits and Usage from the respective
-      institues for the labs which are hosted across the
-      institutes(where ever the labs are hosted other than IIIT-H).
-       
-       *Note* : These numbers will be treated as 'constants' for total
-       usage calculation
-
-   4) The labs, which are deployed with only simulations, then a visit
-      to the simulation is itself considered as usage.
-   5) The labs, with-out simulations are not considered as usage. (Although
-      hits and visits will be calculated)
-   6) The number of users accessing a lab from the same <ip-address>
-      (either from the same Institute or College), then the minimum
-      number of the experiment page visits and simulation page visits
-      is considered as usage.
-   7) The log lines with HTTP response code 2** (success) will be
-      considered for calculating the hits, visits and usage.  The log
-      lines with HTTP response code 4** or 5** (error) will be
-      ignored.
-
-      The following example shows the sample log lines of =cse01= lab
-      with response code =2**= (Observe 6th column from the following
-      example). The logs with this response code should be considered
-      for hits, visits and usage calculation.
-      
-      #+BEGIN_EXAMPLE
-      10.4.8.52 - - [08/Feb/2014:18:43:07 +0530] "GET /labs/cse01/exp1/index.php HTTP/1.1" 200 3241 "http://virtual-labs.ac.in/labs/cse01/" "Mozilla/5.0 (Linux; U; Android 4.1.2; en-in; Q500 Build/JZO54K) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30"
-      10.4.8.52 - - [09/Feb/2014:13:46:18 +0530] "GET /labs/cse01/exp2/index.php HTTP/1.1" 200 3591 "http://deploy.virtual-labs.ac.in/labs/cse01/index.php?section=List%20of%20experiments" "Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1700.107 Safari/537.36"
-      #+END_EXAMPLE
-       
-      The following example shows the sample log lines of =cse01= lab
-      with response codes =4**= and =5**= (Observe 6th column from the following
-      example). The logs with this response codes should be ignored.
-
-      #+BEGIN_EXAMPLE
-      196.12.53.130 - - [04/Mar/2014:14:24:02 +0530] "GET /labs/cse01/index.php HTTP/1.1" 400 400 "-" "Mozilla/5.0 (Windows NT 6.1; rv:12.0) Gecko/20100101 Firefox/12.0"
-      10.4.8.52 - - [24/Jun/2014:16:33:22 +0530] "GET /build/index.php HTTP/1.1" 404 250 "http://deploy.virtual-labs.ac.in/labs/cse01/index.php" "Mozilla/5.0 (Windows NT 6.1; rv:26.0) Gecko/20100101 Firefox/26.0"
-      10.4.8.52 - - [24/Jun/2014:16:33:24 +0530] "GET /build/index.php HTTP/1.1" 502 500 "http://deploy.virtual-labs.ac.in/labs/cse01/index.php" "Mozilla/5.0 (Windows NT 6.1; rv:26.0) Gecko/20100101 Firefox/26.0"
-      10.4.8.52 - - [24/Jun/2014:16:33:29 +0530] "GET /build/index.php HTTP/1.1" 503 414 "http://deploy.virtual-labs.ac.in/labs/cse01/index.php" "Mozilla/5.0 (Windows NT 6.1; rv:26.0) Gecko/20100101 Firefox/26.0"
-      #+END_EXAMPLE
-   8) The log lines with bots (Googlebot, bingbot, etc.) are not 
-      considered for calculation of hits, visits and usage.
-
-      The following example shows the sample log lines of =cse01= lab
-      with Googlebot and bingbot. (Observe the last column from the following
-      example). The logs with this bots to be ignored.
-
-      #+BEGIN_EXAMPLE
-      66.249.79.3 - - [02/Jan/2015:20:16:46 +0530] "GET /labs/cse01/exp8/index.php?section=Simulation HTTP/1.1" 200 3277 "-" "Mozilla/5.0 (iPhone; CPU iPhone OS 6_0 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/6.0 Mobile/10A5376e Safari/8536.25 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"
-      10.4.8.52 - - [03/Jan/2015:17:55:42 +0530] "GET /labs/cse01/exp8/index.php?section=Simulation HTTP/1.1" 200 3277 "-" "Mozilla/5.0 (compatible; bingbot/2.0; +http://www.bing.com/bingbot.htm)"
-      #+END_EXAMPLE
-   9) The process to be defined on how to maintain analytics when:
-      - A New lab gets Deployed/Hosted.
-      - An Existing lab gets Deleted/Removed.
-   10) The lab existing with multiple simulations per experiment, In such cases
-       visit to any one simulation (among many) after visiting
-       experiment will be considered as usage.
-
-   11) The labs with tasks instead of simulations, then each visit
-       to a task is counted as usage.
-       
-       The following example shows the sample log lines of =cse09= lab
-       with simulation as tasks. (Observe the 5th column from the following
-       example). 
-
-       #+BEGIN_EXAMPLE
-       10.4.12.236 - - [09/Feb/2014:16:49:17 +0530] "GET /labs/cse09/exp1/tasks.html HTTP/1.1" 200 429 "http://deploy.virtual-labs.ac.in/labs/cse09/exp1/interaction-frame.html" "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36"
-       #+END_EXAMPLE
-
-   12)  The vlabs landing page should display numbers for: Labs, Experiments, Visits, and Usage.
-
-       	*Note*: only "Visits" and "Usage" will be provided by analytics service model.
-
-   13) Give a hyper link to the Usage. On click, it should open a web
-       page with Analytics of all labs.  Mention on this page: "All
-       data shown below is from January 20XX until today".
-
-   14) Analytics of Top 5 labs among all labs should be display
-       first. Rest of the labs analytics will be displayed according to
-       the institutes.
-
-   15) The web page that opens upon clicking Usage will have the following:
-
-       a) Analytics of top 10 labs: 
-          Labs-> Hits -> Visits -> Usage -> Average time spent
-
-       b) Analytics of institutions 
-          Institute -> Most popular lab -> Usage
-
-       c) Analytics by months of the year
-          Month -> Hits -> Visits -> Usage -> Average time spent
+** Processes to be accounted for
+   The process to be defined on how to maintain analytics when:
+   - A New lab gets Deployed/Hosted.
+   - An Existing lab gets Deleted/Removed.
+   - Logic of analytics program is changed in terms of what is
+     considered as a usage or experiment information for a lab
+     (number of experiments, simulation reg-exp, thoery reg-exp,
+     etc.).
+     
 * Design
 ** Details of input information and output of log analysis
 *** Restructuring of logs
@@ -802,7 +677,8 @@
    The entire process of getting final lab-wise analytics (hits, visits
    and usage) for base2 http container and aws is described below
 *** For each platform do the following
-**** (STEP:initialize) Ensure that necessary folder exist and are sane
+    For both Base2 and then for AWS each of the following steps are performed:
+**** (STEP: =initialize=) Ensure that necessary folder exist and are sane
      Following folders would be used for the entire analytics:
      - logs folder :: For file processing we would read log files
                       directly from where the rsync cron process copies
@@ -835,15 +711,17 @@
 		       	would be read by web service.  These files
                        	would not be in erlang term format so that they
                        	can be read by programs written in other
-                       	languages easily.  
+                       	languages easily.  Output folder is common for
+                        both AWS and base2 and contains totals from
+                        both clusters.
 
-**** (STEP:all_list) Prepare list of all log file names present on base2 http container log folder :Done:
-     First we look at folder where log files are copied from http
-     container of base2 by rsync cron job on analytics node and build a
-     list of all log-files present.
+**** (STEP: =all_list=) Prepare list of all log file names present on base2 http container log folder :Done:
+     First list of files in =logs_folder= is prepared.  This list will
+     be updated in future steps such that only relevant log files are
+     present in the list.
 
-**** (STEP:positive_filter) Filter irrelevant log files		       :Done:
-    Since base2 logs have both actual logs files created by apache and
+**** (STEP: =positive_filter=) Filter irrelevant log files 	       :Done:
+    Since on base2 logs have both actual logs files created by apache and
     temporary log files created by cron for awstats, we can't process
     all log files directly.  Thus, first logical step is to get only
     the relevant log files.  This can be done by removing all log
@@ -858,7 +736,7 @@
        deploy.virtual-labs.ac.in-access_log and
        deploy.vlabs.ac.in-access_log files
 
-The output of program after this step is:
+The output of program after this step for base2 cluster is:
 #+BEGIN_EXAMPLE
 TRACE {{2015,9,25},{13,21,20}} analytics:base2_main/0: File_list after positive filter on base2 is
 ["deploy.virtual-labs.ac.in-access_log-20130804",
@@ -975,7 +853,7 @@ TRACE {{2015,9,25},{13,21,20}} analytics:base2_main/0: File_list after positive 
 "combustion.virtual-labs.ac.in-access_log"]
 #+END_EXAMPLE       
     
-**** (STEP:negative_filter) Filter log files that are not usable       :Done:
+**** (STEP: =negative_filter=) Filter log files that are not usable    :Done:
     As part of this step we take relevant log files names and remove
     the names of log files that cannot be used.  This can be because
     URLs in log lines do not have lab name eg eee06 or we do not know
@@ -1072,7 +950,10 @@ TRACE {{2015,9,25},{13,21,20}} analytics:base2_main/0: File_list after positive 
          are visible in URL but there is no lab name.  Lab ID is also
          not known.
 
-The output of program after this steps is:
+    Note that all logs files on AWS cluster are treated as relevant.
+    Hence irrelevant list of log files on AWS is empty.
+
+The output of program after this step for base2 is:
 #+BEGIN_EXAMPLE
 TRACE {{2015,9,25},{15,5,11}} analytics:base2_main/0: File_list after negative filter on base2 is 
 ["deploy.virtual-labs.ac.in-access_log-20130804",
@@ -1111,95 +992,100 @@ TRACE {{2015,9,25},{15,5,11}} analytics:base2_main/0: File_list after negative f
  "combustion.virtual-labs.ac.in-access_log"]
 #+END_EXAMPLE
 
-**** (STEP:read_line_count) Read old line count stored from previous analysis :Done:
+**** (STEP: =read_line_count=) Read old line count stored from previous analysis :Done:
      If logs have been processed earlier then read how many lines of
      each log file has already been processed so that we do not process
      those lines again (=processed_lines=)
 
-     *Note that in the document =read= is used to refer to numbers / values read from previous files.  At the same time =get= is used to refer to numbers/values read from current process data.*
+     *Note that in the document =read= is used to refer to numbers / values read from previous files.  At the same time =get= is used to refer to numbers/values obtained from current process data.*
 
-**** (STEP:get_line_count) Get number of lines for each log file       :Done:
+**** (STEP: =get_line_count=) Get number of lines for each log file    :Done:
      In this step we get total number of lines for each log file which
-     is relevant and usable (=total_lines=)
+     is relevant and usable (=total_lines=).  Basically we do wc -l on
+     each log file.
 
-**** (STEP:compare_count) For each relevant log file compare how many new log lines are present wrt previous analysis :Done:
+**** (STEP: =compare_count=) For each relevant log file compare how many new log lines are present wrt previous analysis :Done:
      Subtract lines which have already been processed
      (=processed_lines=) from total number of log lines in each file
      (=total_lines=) to obtain count of new log lines (=new_lines=)
      that have been appended to each log file since last processing.
 
-**** (STEP:copy_lines) Copy new lines of relevant log files to a new folder (process) with same file name :Done:
+**** (STEP: =copy_lines=) Copy new lines of relevant log files to a new folder (process) with same file name :Done:
      Based on output of compare_count step only the =new_lines= from
      each log file are copied to =process_folder= with same filename.
      In future steps we will concentrate only on these new log lines.
    
-**** (STEP:update_line_count) Update count of log file lines processed in data folder :Done:
+**** (STEP: =update_line_count=) Update count of log file lines processed in data folder :Done:
      Since we are now going to process additional lines from each log
      file, we will change the count of =processed_lines= in
      =data_folder= so that we do not process these lines again in any
      next iteration.
      
-**** (STEP:remove_bot) Remove all log lines which are related to bot   :Done:
+**** (STEP: =remove_bot=) Remove all log lines which are related to bot :Done:
      Remove all log lines were browser identification matches regular
      expression =bot|Anonymouse.org|nagios=   This step is added to
      ensure that we do not process bot lines for hits, visits or usages.
      
-**** (STEP:remove_non_http_ok) Remove all log lines which do not return HTTP response code 2** :Done:
+**** (STEP: =remove_non_http_ok=) Remove all log lines which do not return HTTP response code 2** :Done:
      At this step we are removing all log lines that indicate HTTP
      response other than 2**.  This is done because 3**, 4**, 5** status code
      log lines should also be removed as they are not successful hits.
 
-**** (STEP:lab_id_log) Store all individual lab logs in single <lab-id>.log file in process folder :Done:
+**** (STEP: =lab_id_log=) Store all individual lab logs in single <lab-id>.log file in process folder :Done:
      The log files are stored based on name of virtual-host eg
      deploy.virtual-labs.ac.in.  As part of this step corresponding
      lines of a log file will be copied to file with name lab-id.  This
      way we will have all logs related to a particular lab in one
      single file with same name as lab-id.
 
-**** (STEP:month_wise) Split all log lines such that they are stored in respective month folders :Done:
+**** (STEP: =month_wise=) Split all log lines such that they are stored in respective month folders :Done:
      In this function we take all the files with lab-id names (with
      corresponding logs of that lab) and split them month wise.  These
      month-wise files are stored in =process_folder/lab-name= folder.
      Month-wise files are named in =YYYY-Mon= format.
 
-     This function assumes logs are in combined format and hence Dates
-     are in =[18/Aug/2013:09:06:47","+0530]= format.  If this
-     assumption is not met then the program will not work.
+     *This function assumes logs are in combined format and hence
+     dates should be in =[18/Aug/2013:09:06:47","+0530]= format.  If this assumption is not met then the program will not work.*
 
-**** (STEP:read_hit_count) Read hit count from data stored from previous analysis :Done:
+**** (STEP: =read_hit_count=) Read hit count from data stored from previous analysis :Done:
      During previous analysis we would have got hit counts, visit
      counts, usage counts, etc. information for each lab for each month
      for each experiment.  This information is read back so that we can
      update this information based on new log lines and write back to
-     the original file later.
+     the original file later.  This information is read from and
+     written back to =data_folder=.
 
-**** (STEP:get_hit_count) Get hit count (month-wise) from log files for each lab :Done:
+**** (STEP: =get_hit_count=) Get hit count (month-wise) from log files for each lab :Done:
      In this step we will read hit count for each lab for each month
-     and prepare a big list of lab-wise month-wise hits.
-**** (STEP:update_hit_count) Update hit count (month-wise) for each lab to data-folder stats :Done:
+     and prepare a big list of lab-wise month-wise hits.  Hit count is
+     nothing but number of lines in each month-wise lab-wise files
+     after bot and non-hit lines are removed.
+
+**** (STEP: =update_hit_count=) Update hit count (month-wise) for each lab to data-folder stats :Done:
      In this step we will update hit count for each lab for each month
      using lab-wise month-wise list prepared in previous steps
      =get_hit_count= and =read_hit_count=.  This information would be
      stored in the =data-folder= for overall statistics (analytics).
-**** (STEP:remove_non_visit) Remove all log lines that are not HTML for each month for each lab :Done:
+
+**** (STEP: =remove_non_visit=) Remove all log lines that are not HTML for each month for each lab :Done:
      As part of this step log lines (hits) related to all non-HTML
      requests such as css, js, png, jpg, pdf, etc. will be removed from
      log file.  Thus the remaining log lines will correspond only to
      HTML request, ie visits.
 
-**** (STEP:get_visit_count) Get visit count (month-wise) from log files for each lab :Done:
+**** (STEP: =get_visit_count=) Get visit count (month-wise) from log files for each lab :Done:
      Once all non-visit related log lines are removed from each
      month-wise lab-wise file, then the remaining lines are all
-     visits.  Hence counting number of lines in remaining file gives
-     number of visits for each lab (month-wise).
+     visits.  Hence counting number of lines in remaining file (=wc
+     -l=) gives number of visits for each lab (month-wise).
 
-**** (STEP:update_visit_count) Update visit count (month-wise) for each lab to data-folder stats :Done:
+**** (STEP: =update_visit_count=) Update visit count (month-wise) for each lab to data-folder stats :Done:
      The visit count is also added to values read in =read_hit_count=
      step above.  The new visit values are then written to data-folder
      as analytics output and for reference on next execution of this
      analytics program.
 
-**** (STEP:count_usage) For each lab for each experiment get usage (month-wise) :Done:
+**** (STEP: =count_usage=) For each lab for each experiment get usage (month-wise) :Done:
      In this step for each lab, for each experiment, for each month we
      count how many times experiment was visited in terms of theory,
      introduction, etc.  This count is required for calculating usage
@@ -1240,19 +1126,54 @@ TRACE {{2015,9,25},{15,5,11}} analytics:base2_main/0: File_list after negative f
      simulation URL is matched for a given log line, then the same line
      is not matched for theory again to avoid problems.
 
-**** (STEP:update_usage) Update usage information by adding read usages and by including hits, visit information calculated above :Done:
+     Further few labs do not have simulation page and have only
+     theory/tasks page.  In such cases simulation reg-exp is left
+     empty "".  Whenever simulation reg-exp is empty each visited to
+     theory reg-exp is counted as both theory visit as well as
+     simulation visit (ie one usage).
+     
+**** (STEP: =update_usage=) Update usage information by adding read usages and by including hits, visit information calculated above :Done:
      In this step we need to combine usage information counted in
      =count_usage= step and add the values to usage values from
      previous analysis collected during =read_hit_count= step.  
 
      This step is as complex as =count_usage= because we need to
      combine information lab-wise month-wise experiment-wise from two
-     complex lists.
-*** (STEP: combine_platforms) Combine final values of different platforms (AWS, Base2)
-*** (STEP: lab_totals) For each lab get totals for all duration by adding all month-wise values
-*** (STEP: all_total)Get total for entire vlabs by adding all lab total values
-** Source code 
-  The erlang program source is:
+     complex lists.  It is possible that a given experiment or an
+     entire lab is not present in one of the two lists.  Further few
+     months might be unique and few months might be duplicated in each
+     list.  Further a same month for a same lab experiments might be
+     duplicated or unique across two lists.  Thus, careful merge of
+     two very complex lists, which is a fairly complex operation, is
+     carried out as part of this step.
+
+*** (STEP: =combine_platforms=) Combine final values of different platforms (AWS, Base2)
+    Once we have hits, visits and usage information for both AWS and
+    base2, this information is combined to obtain totals for all vlabs
+    across all platforms.  Note that complexity of this step is again
+    same as =update_usage= step done for each platform independently. 
+
+*** (STEP: =lab_totals=) For each lab get totals for all duration by adding all month-wise values
+    One totals from all clusters are collected, totals for each lab
+    across all duration is calculated.  These totals are written to
+    =lab_total.txt= file in =output_folder= so that web service can
+    read lab-wise information from this space separated text file in
+    easy manner.  
+    
+*** (STEP: =all_total=)Get total for entire vlabs by adding all lab total values
+    One totals for all labs are calculated in =all_totals= step, a
+    total across all_labs is performed and stored in =all_total.txt=
+    file in =output_folder= for lab service to display.  This
+    all_total is displayed directly on vlabs.ac.in landing page
+    whereas lab-wise totals are displayed on follow-up analytics page.
+
+** Erlang source code for anlaytics
+  The erlang program source is captured below.  There is 1:1
+  correspondence between steps described in previous section and
+  various functions called from main/1 function defined near the end
+  of this program.  The program also contains various lab-specific
+  and cluster specific inputs which are discussed in processes
+  section later on in this same document. 
 #+BEGIN_SRC erlang :tangle analytics.erl
 -module(analytics).
 %-compile(export_all).
@@ -1265,10 +1186,10 @@ TRACE {{2015,9,25},{15,5,11}} analytics:base2_main/0: File_list after negative f
 %-define(TRACE(Format_string, Values), void).
 
 
--define(Base2_log_folder_path, "base2-http-logs").
+-define(Base2_log_folder_path, "/root/base2-http-logs").
 %-define(Base2_log_folder_path, "test-logs").
 
--define(Aws_log_folder_path, "aws-http-logs").
+-define(Aws_log_folder_path, "/root/aws-http-logs").
 %-define(Aws_log_folder_path, "test-logs").
 
 
@@ -2930,7 +2851,7 @@ TRACE {{2015,9,25},{15,5,11}} analytics:base2_main/0: File_list after negative f
 
 -define(Aws_process_folder, "aws-process").
 
--define(Output_folder, "output").
+-define(Output_folder, "/var/www/html/analytics").
 
 -define(Bot_regular_expression, "bot|Anonymouse.org|nagios").
 
@@ -4104,6 +4025,22 @@ main() ->
     
     ok.
 #+END_SRC
+** Python source code for web service
+   TODO 
+   @Madhavi should include her code here
+** Web service calls to be made from vlabs.ac.in pages
+   TODO
+   Example web service calls to be made from vlabs.ac.in pages
+
+   @Madhavi should fill this section
+* Test cases
+  Not done.  This code is throw away as when sessions are implemented
+  we will not use web server logs for analytics.  Extensive manual
+  verification was done during development with small set of test
+  logs.  Further since code is written step wise, we can process each
+  step one at a time (the way we do in a debugger) and see output
+  after each step.  
+
 * COMMENT Display Analytics on Vlabs landing page
 #+BEGIN_SRC python :tangle app.py
 from flask import Flask, render_template, request, jsonify, make_response
@@ -4204,15 +4141,122 @@ if __name__ == '__main__':
 
 * Processes
 ** Installing erlang and cloning analytics sources
-   TODO
+   Erlang can be installed using =yum -y install erlang= after
+   epel-release has been enabled.
+
+   The analytics repo can be cloned from github using normal HTTPS or
+   SSH based cloning.  Running make on correct branch (master
+   later-on, speed for now) should result into correct code being
+   tangled into build/code folder.  
+
+   Compile the erlang program using 'erlc *.erl' command to verify
+   that it is compiling properly.  Ignore various warnings for TRACE
+   variables which are not used in production.
+
 ** Configuring analytics program
-   TODO
+   Following variables must be configured properly for the analytics
+   erlang program to work.  Also after these values are changed the
+   program should be recompiled using 'erlc *.erl' command.
+   - =Base2_log_folder_path= :: Location where base2 http logs
+        (/var/log/httpd on http container on base2) are copied
+        (rsynced) at regular intervals on analytics machine.
+        =/root/base2-http-logs= at time of this writing.
+   - =Aws_log_folder_path= :: Location where AWS reverseproxy apache
+        logs are copied at regular intervals on analytics machine.
+        =/root/aws-http-logs= at time of this writing.
+   - =Base2_relevant_file_names= :: Log files on base2 which have logs
+        related to labs and not related to say www.vlabs.ac.in,
+        vlead.vlabs.ac.in, outreach.vlabs.ac.in, etc.
+   - =Aws_relevant_file_names= :: Log files on AWS which have logs
+        related to labs and not related to say www.vlabs.ac.in,
+        vlead.vlabs.ac.in, outreach.vlabs.ac.in, etc.
+   - =Base2_unusable_log_files= :: These are log files that contain logs
+        related to labs, but the logs are not usable for various
+        reasons such as lab not organized in experiment format, too
+        less logs to account for, etc.
+   - =Aws_unusable_log_files= :: Analogous to =Base2_unusable_log_files=,
+        empty at time of this writing.
+   - =Base2_file_lab_id_regexp_list= :: This list contains association
+        between a log file and lab-id.  Also if a log file contains
+        information about more than one lab, then this list also
+        contains regular-expresions to filter out logs of one lab from
+        logs of other labs.
+   - =Aws_file_lab_id_regexp_list= :: Analogous to
+        =Base2_file_lab_id_regexp_list= for AWS cluster
+   - =Lab_id_exp_info_list= :: For each lab this list captures name of
+        experiment, theory visit URL reg-exp and simulation visit URL
+        reg-exp against a lab-ID.  This lab-ID should be same as
+        lab-ID mentioned in =Base2_file_lab_id_regexp_list= and
+        =Aws_file_lab_id_regexp_list= lists.
+   - =Base2_data_folder= :: Data folder where information from
+        previous analytics runs for base2 would be stored.
+   - =Base2_process_folder= :: Temporary folder where new log lines
+        are copied and analyised.  Thus, it is ensured that logs in
+        =Base2_log_folder_path= are only read but not modified
+        directly in =Base2_log_folder_path= folder.
+   - =Aws_data_folder= :: Same as =Base2_data_folder= for AWS cluster.
+   - =Aws_process_folder= :: Same as =Base2_process_folder= for AWS
+        cluster.
+   - =Output_folder= :: Folder where =Lab_total_file_name= and
+        =All_total_file_name= files should be created for web service
+        to read from.  At time of this writing the folder is
+        =/var/www/html/analytics=.
+   - =Bot_regular_expression= :: Regular expression to be matched
+        against user-agent in web server logs to determine whether
+        particular log line is because of a bot or not.
+   - =Non_visit_extension_list= :: List of extensions (lower-case,
+        case insensitive) to be matched against URLs to see if they
+        are not visited URLs.
+   - =Lab_total_file_name= :: File where lab totals should be written
+        in 
+	#+BEGIN_EXAMPLE
+	lab-id hits visits usages
+	#+END_EXAMPLE
+	format for python web service.  This file is created in
+        =Output_folder=.
+    - =All_total_file_name= :: File where final =hits visits usages=
+         would be written for python web service.  This file is
+         created in =Output_folder=.
 ** Running analytics program from shell in background
-   TODO
+   To run an erlang program in background its standard-input and
+   output *must* be redirected.  Thus to run the erlang program in
+   background use something similar to:
+   #+BEGIN_EXAMPLE
+   cd <program-folder>
+   erl -noshell -s analyics main -s init stop </dev/null >output.log 2>&1 &
+   #+END_EXAMPLE
+   
 ** Adding a new lab
-   TODO
+   To add a new lab following variables may need to be updated:
+   - =Base2_relevant_file_names=
+   - =Aws_relevant_file_names= 
+   - =Base2_file_lab_id_regexp_list=
+   - =Aws_file_lab_id_regexp_list=
+   - =Lab_id_exp_info_list=
+   Then recompile the program using 'erlc *.erl'.  
+
+   Note that if the lab already existed and the logs have already been
+   processed without including lab-information in erlang program then
+   rerun it using information discussed at [[Rerunning entire analytics
+   from scratch]]
+
 ** Removing a lab
-   TODO
-** Re-running entire analytics program again for all logs
-   TODO
+   If a lab is removed and its statistics wont change we can still
+   leave it in analytics program.  Since there would be no new log
+   lines and only new log lines are processed there is negligible
+   overhead of leaving the lab.
+
+   However if removing the analytics of a lab is important then remove
+   the lab and rerun it using steps discussed at [[Rerunning entire
+   analytics from scratch]]
+
+** Rerunning entire analytics from scratch
+   To rerun entire analytics from scratch:
+   - Modify .erl program appropriately
+   - Recompile using 'erlc *.erl'
+   - Stop cronjob from running once every hour
+   - Delete all base2-data, base2-process, aws-data, aws-process
+     folders
+   - Rerun analytics manually.  It may take 2-3 hours to complete 
+   - Continue cronjob to run every hour.
    
