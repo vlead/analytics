@@ -404,31 +404,153 @@
     week.  Thus for each lab there could be several log files each
     containing logs for the given week.  Further since initially on
     base machines several labs were hosted together, it is possible to
-    have logs of many labs in one single log file.
+    have logs of many labs in one single log file.  Also on base
+    machine a single large log file is not being rotated.
 
-    In case a single file has logs of many labs, then logs for each
-    lab are separated using lab-ID (Eg cse01).  If a single log file
-    contains only logs of particular lab then all logs from that file
-    are treated appropriately.
+    Thus, design has to account for multiple labs logs being collected
+    into one single large file.  Also we have to remember how many log
+    files of each file have been processed so that same information is
+    not processed again.
 
-    Before any analysis is done first bot and non ok response lines
-    are removed.  For removing bots 'User-agent field' is searched for
-    strings such as nagios or bot.  Then for non-ok response code any
-    response that does not starts with 2 is treated as non-hit.  
+    First information from previous analysis is referred to see how
+    many lines from each log file has already been processed.  The
+    remaining log lines are copied to a process folder with same name
+    as the original log file.  
 
-    After all bot and non-hit lines are removed, the remaining logs
-    are split as per each lab using lab-ID.  Thus even if a lab's logs
-    are spread across various files, they are all combined in one
-    single larger log file with name lab-ID. 
+    For example if log file a.txt has 100 lines but 90 log lines have
+    already been processed as part of previous analysis then a file
+    a.txt with remaining 10 lines is created in the process folder.
+
+    Among log lines in process folder first bot and non ok response
+    lines are removed.  For removing bots 'User-agent field' is
+    searched for strings such as nagios or bot.  Then for non-ok
+    response code any response that does not starts with 2 is treated
+    as non-hit.
+
+    After removing bot and non-success log lines, logs for each lab
+    are separated using lab-ID (Eg cse01).  This allows ensuring that
+    all logs of a lab from various log files are collated in one
+    single large log file.  This design allows apache to capture logs
+    of same lab into multiple files or capture logs of multiple labs
+    into same file without affecting the analysis output.
 
 *** Logic for hits
+    All non-bot and success log lines are treated as hits.  Thus, once
+    all log lines of a lab are accumulated in one single log file, the
+    number of lines in that file (=wc -l=) is treated as hits.
+
+    But for better analytics we want the hits, visits and usage
+    information per month.  Thus before counting number of lines
+    (hits) the log files for each lab are split month wise.  This is
+    done by creating a folder with lab name (eg cse01) and then by
+    creating mon-YYYY name files such as Jul-2015.  A file for
+    particular Mon-Year is created only if log line for particular
+    month and year combination is found in the logs being processes in
+    the current run.
+
+    Then hits are calculated for each lab for each month, using the
+    month wise files created for each lab in previous step.
+    
 *** Logic for visits
+    After hits are calculated all log lines which have URLs that end
+    with non-visit extensions such as .swf, .ppt, .doc, .mp3, .js,
+    .css, .png, .jpeg, .jpg etc. are removed.  The remaining lines are
+    treated as visits.
+    
+    Thus, after all log lines related to images, javascript, CSS,
+    etc. are removed the remaining lines in the log file (=wc -l=) are
+    treated as visits.  Since the files are already split month-wise,
+    month-wise visits for each labs are collected.
+
 *** Logic for usage
+    Once visits have been calculated a lab-wise experiment
+    regular-expression list which is provided as input (configuration)
+    to the program is used.  This reg-exp input has information on
+    what is the reg-exp for theory visit and simulation visit for each
+    experiment, along with the name of the experiment.  Thus, for each
+    lab we know name of all experiments, and corresponding to each
+    experiment its theory and simulation URLs.
+
+    Once month-wise visits information has been collected each log
+    file is processed multiple times, once for counting usage of each
+    experiment.  During a single processing cycle for a selected
+    experiment, all log lines are compared with simulation reg-exp
+    (URL).  If the log line matches simulation URL then count of
+    simulation visit for the lab for given day of the month from given
+    IP is increased.  If simulation URL is not matched then theory URL
+    is searched. If theory URL matches then count of theory visit for
+    given day of the month from given IP is increased.
+
+    Thus at the end of processing of all log lines we get theory and
+    simulation page visits for a given experiment, for a given lab and
+    for a given month.  Further the information is split for each day
+    1-31 separately.  For each day we have a list of theory and
+    simulation visiting IP addresses in a list.  The list of IP
+    addresses is intersected day-wise to find how many IPs visited
+    both theory URL and simulation URL on the same day.  The number of
+    items in intersection of IP sets for a given day is treated as
+    usage for the day.
+    
+    Please note that it is possible that a theory URL and a simulation
+    URL for a same experiment is visited more than once during the
+    same day from same IP.  In this case the usage would be greater
+    than one as each visit, even though originating from same source
+    IP, is treated differently. 
+
+*** Various totals
+    Once day-wise theory visits, simulation visits and usages are
+    known, these values are added for all days of the given month to
+    get totals for the month.   Thus we get total theory visit,
+    simulation visit and usages for a given month.  
+
+    The hits, visits and usage information for each lab, for each
+    month, for each experiment is collected together in logical
+    manner.  Then totals for a lab across all month are calculated.
+
+    Month-wise total hits, visits and usages for a lab are written in
+    a text file (=lab_total.txt=) in space separated way.  The hits,
+    visits and usages for all labs are added to get totals
+    (=all_total.txt=) for all virtual-labs across all time.  
+    
 *** Integration of analytics program and web service
+    A web service reads lab-wise totals (=lab_total.txt=) and
+    all-totals files (=all_total.txt=) and replies to various web
+    requests made by vlabs.ac.in landing pages (via AJAX).
+    
 ** Things to take care of in future
 *** Time between visits under minutes
+    At present usage is calculated if two visits to theory and
+    simulation page are made within the same day by same IP.  Also
+    order of visit, that is which page was visited first, is not
+    accounted for.
+
+    In future we should calculate time difference between simulation
+    visit and theory visit in minutes.  We should be able to take a
+    lower bound and upper bound as parameter and give usages, if
+    theory and simulation page visit time difference is between given
+    bounds.  Also we should check whether theory page was visited
+    before simulation page.
+
 *** Graphs
+    At present month-wise values are collected but not used.  In
+    future we should draw graphs of how usage of a particular
+    experiment or of a lab changes month-wise.  These graphs can be
+    viewed to understand lab-usage trends over time.
+
 *** Display analytics per experiment on vlabs.ac.in webpages
+    At present analytics is shown separately on a dedicated analytics
+    page.  Further experiment wise analytics are not shown.  In future
+    it is possible to show experiment related analytics on the
+    experiment page or list of experiments page for the given lab.
+    Further we can display experiment wise information for each lab on
+    the analytics page too.
+
+*** Test or QA visit is not separate from user visit
+    Devlopers and testers also visit theory and simulation pages
+    during development or after new version is deployed on production.
+    These visits (and hits)x should be separated from end-user visits
+    and should not be counted towards hits, visits or usages.
+
 * Clusters and logs
   The virtual-labs are hosted on two separate clusters:
   - Base2
@@ -657,7 +779,24 @@
     1. eee07.virtual-labs.ac.in-access_log
     2. emt.virtual-labs.ac.in-access_log
 ** AWS http logs
+   AWS logs are organized in much cleaner way than base2 logs due to
+   ansible based reverseproxy configuration.  On AWS logs for each lab
+   are stored in a separate dedicated log file.  All the lab log file
+   information is captured in two duplicated configuration files:
+   - /etc/httpd/conf.d/virtualhost.conf
+   - /etc/httpd/conf.d/virtualhosts.conf
+   where virtualhosts.conf has following additional virtual-hosts:
+   - ossec-server.vlabs.ac.in (For 80, 443)
+   - ps-iiith.vlabs.ac.in (For 80, 443)
+   - ssl-iitg.vlabs.ac.in (For 80, 443)
+   - outreach.vlabs.ac.in (For 80, 443)
+   and all other virtual-hosts are same.
 
+   Further all the configuration is captured in reverse-proxy model of
+   the systems-model project.  Lab-wise log file details are also
+   captured by ADS and available as part of data-services
+   (In-progress).
+   
 * Implementation
 ** Design of program that processes logs to get analytics
    The entire process of getting final lab-wise analytics (hits, visits
@@ -3966,15 +4105,6 @@ main() ->
     ok.
 #+END_SRC
 * COMMENT Display Analytics on Vlabs landing page
-#+BEGIN_SRC python :tangle all-total.txt
-cse01 1234 2345 3450
-cse02 2343 9979 8979
-cse03 3123 3343 3432
-#+END_SRC
-#+BEGIN_SRC python :tangle total.txt
-hits 1234 visits 5678 usage 2468
-#+END_SRC
-
 #+BEGIN_SRC python :tangle app.py
 from flask import Flask, render_template, request, jsonify, make_response
 from flask.ext.cache import Cache
