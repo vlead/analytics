@@ -1174,6 +1174,12 @@ TRACE {{2015,9,25},{15,5,11}} analytics:base2_main/0: File_list after negative f
   of this program.  The program also contains various lab-specific
   and cluster specific inputs which are discussed in processes
   section later on in this same document. 
+
+  Note that at present code functions are not properly documents using
+  -spec for dialyzer based checking.  Further various functions do not
+  have proper comments or vairable names.  This is not solved as
+  the code is throw-away and once we have sessions we will not use
+  this code anymore.  
 #+BEGIN_SRC erlang :tangle analytics.erl
 -module(analytics).
 %-compile(export_all).
