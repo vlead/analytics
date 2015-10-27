@@ -1192,10 +1192,10 @@ TRACE {{2015,9,25},{15,5,11}} analytics:base2_main/0: File_list after negative f
 %-define(TRACE(Format_string, Values), void).
 
 
--define(Base2_log_folder_path, "/root/base2-http-logs").
+-define(Base2_log_folder_path, "base2-http-logs").
 %-define(Base2_log_folder_path, "test-logs").
 
--define(Aws_log_folder_path, "/root/aws-http-logs").
+-define(Aws_log_folder_path, "aws-http-logs").
 %-define(Aws_log_folder_path, "test-logs").
 
 
@@ -1507,95 +1507,96 @@ TRACE {{2015,9,25},{15,5,11}} analytics:base2_main/0: File_list after negative f
 					}
 			       ]).
 
+
+
 -define(Aws_file_lab_id_regexp_list, [
-					  {"anthropology-iitg.virtual-labs.ac.in-access_log", [{".", "anthropology"}]},
-					  {"bmi-iitr.virtual-labs.ac.in-access_log", [{".", "bmi"}]},
-					  {"bmsip-iitr.virtual-labs.ac.in-access_log", [{".", "bmsip"}]},
-					  {"bmsp-coep.virtual-labs.ac.in-access_log", [{".", "bmsp"}]},
-					  {"bsa-iiith.virtual-labs.ac.in-access_log", [{".", "bsa"}]},
-					  {"ccnsb06-iiith.virtual-labs.ac.in-access_log", [{".", "ccnsb06"}]},
-					  {"cds-iiith.virtual-labs.ac.in-access_log", [{".", "cds"}]},
-					  {"ce-iitb.virtual-labs.ac.in-access_log", [{".", "ce"}]},
-					  {"cl-iiith.virtual-labs.ac.in-access_log", [{".", "cl"}]},
-					  {"csc-iiith.virtual-labs.ac.in-access_log", [{".", "csc"}]},
-					  {"cse01-iiith.virtual-labs.ac.in-access_log", [{".", "cse01"}]},
-					  {"cse02-iiith.virtual-labs.ac.in-access_log", [{".", "cse02"}]},
-					  {"cse11-iiith.virtual-labs.ac.in-access_log", [{".", "cse11"}]},
-					  {"cse14-iiith.virtual-labs.ac.in-access_log", [{".", "cse14"}]},
-					  {"cse15-iiith.virtual-labs.ac.in-access_log", [{".", "cse15"}]},
-					  {"cse18-iiith.virtual-labs.ac.in-access_log", [{".", "cse18"}]},
-					  {"cse19-iiith.virtual-labs.ac.in-access_log", [{".", "cse19"}]},
-					  {"cse20-iiith.virtual-labs.ac.in-access_log", [{".", "cse20"}]},
-					  {"cse22-iiith.virtual-labs.ac.in-access_log", [{".", "cse22"}]},
-					  {"cse29-iiith.virtual-labs.ac.in-access_log", [{".", "cse29"}]},
-					  {"cp-iiith.virtual-labs.ac.in-access_log", [{".", "cse02"}]}, %Same as cse02
-					  {"ee-iitb.virtual-labs.ac.in-access_log", [{".", "ee"}]},
-					  {"eem-iitd.virtual-labs.ac.in-access_log", [{".", "eem"}]},
-					  {"eerc01-iiith.virtual-labs.ac.in-access_log", [{".", "eerc01"}]},
-					  {"eerc03-iiith.virtual-labs.ac.in-access_log", [{".", "eerc03"}]},
-					  {"em-coep.virtual-labs.ac.in-access_log", [{".", "em-coep"}]},
-					  {"em-iitr.virtual-labs.ac.in-access_log", [{".", "em-iitr"}]},
-					  {"emt-iiith.virtual-labs.ac.in-access_log", [{".", "emt"}]},
-					  {"ergonomics-iitg.virtual-labs.ac.in-access_log", [{".", "ergonomics"}]},
-					  {"fab-coep.virtual-labs.ac.in-access_log", [{".", "fab"}]},
-					  {"fm-nitk.virtual-labs.ac.in-access_log", [{".", "fm"}]},
-					  {"ge-iiith.virtual-labs.ac.in-access_log", [{".", "ge"}]},
-					  {"he-coep.virtual-labs.ac.in-access_log", [{".", "he"}]},
-					  {"ial-coep.virtual-labs.ac.in-access_log", [{".", "ial"}]},
-					  {"ied-nitk.virtual-labs.ac.in-access_log", [{".", "ied"}]},
-					  {"mas-iiith.virtual-labs.ac.in-access_log", [{".", "mas"}]},
-					  {"mdmv-nitk.virtual-labs.ac.in-access_log", [{".", "mdmv"}]},
-					  {"mfs-iiith.virtual-labs.ac.in-access_log", [{".", "mfs"}]},
-					  {"mi-iiith.virtual-labs.ac.in-access_log", [{".", "mi"}]},
-					  {"mm-coep.virtual-labs.ac.in-access_log", [{".", "mm-coep"}]},
-					  {"mm-nitk.virtual-labs.ac.in-access_log", [{".", "mm-nitk"}]},
-					  {"mrmsmtbs-iitk.virtual-labs.ac.in-access_log", [{".", "mrmsmtbs"}]},
-					  {"msvs-dei.virtual-labs.ac.in-access_log", [{".", "msvs"}]},
-					  {"nlp-iiith.virtual-labs.ac.in-access_log", [{".", "nlp"}]},
-					  {"outreach.virtual-labs.ac.in-access_log", [{".", "outreach"}]},
-					  {"pe-iitb.virtual-labs.ac.in-access_log", [{".", "pe"}]},
-					  {"pev-au.virtual-labs.ac.in-access_log", [{".", "pev"}]},
-					  {"pevii-au.virtual-labs.ac.in-access_log", [{".", "pevii"}]},
-					  {"phy14-iiith.virtual-labs.ac.in-access_log", [{".", "phy14"}]},
-					  {"plc-coep.virtual-labs.ac.in-access_log", [{".", "plc"}]},
-					  {"ps-iiith.virtual-labs.ac.in-access_log", [{".", "ps"}]},
-					  {"qnm-iitd.virtual-labs.ac.in-access_log", [{".", "qnm"}]},
-					  {"sa-nitk.virtual-labs.ac.in-access_log", [{".", "sa"}]},
-					  {"sd-iiith.virtual-labs.ac.in-access_log", [{".", "sd"}]},
-					  {"sl-coep.virtual-labs.ac.in-access_log", [{".", "sl-coep"}]},
-					  {"sl-iitr.virtual-labs.ac.in-access_log", [{".", "sl-iitr"}]},
-					  {"smfe-iiith.virtual-labs.ac.in-access_log", [{".", "smfe"}]},
-					  {"sm-nitk.virtual-labs.ac.in-access_log", [{".", "sm"}]},
-					  {"ssl-iitg.virtual-labs.ac.in-access_log", [{".", "ssl"}]},
-					  {"ssp-iiith.virtual-labs.ac.in-access_log", [{".", "ssp"}]},
-					  {"ufls-iitk.virtual-labs.ac.in-access_log", [{".", "ufls"}]},
-					  {"uorepc-nitk.virtual-labs.ac.in-access_log", [{".", "uorepc"}]},
-					  {"va-coep.virtual-labs.ac.in-access_log", [{".", "va-coep"}]},
-					  {"va-iitk.virtual-labs.ac.in-access_log", [{".", "va-iitk"}]},
-					  {"vcal-iitk.virtual-labs.ac.in-access_log", [{".", "vcal"}]},
-					  {"vc-dei.virtual-labs.ac.in-access_log", [{".", "vc"}]},
-					  {"ve-iitg.virtual-labs.ac.in-access_log", [{".", "ve"}]},
-					  {"vem-iitg.virtual-labs.ac.in-access_log", [{".", "vem"}]},
-					  {"vlae-iitk.virtual-labs.ac.in-access_log", [{".", "vlae"}]},
-					  {"vp-dei.virtual-labs.ac.in-access_log", [{".", "vp"}]},
-					  {"vssd-iitd.virtual-labs.ac.in-access_log", [{".", "vssd"}]}
+				      {"anthropology-iitg.virtual-labs.ac.in-access_log", [{".", "hss03"}]},
+				      {"bmi-iitr.virtual-labs.ac.in-access_log", [{".", "biotech26"}]},
+				      {"bmsip-iitr.virtual-labs.ac.in-access_log", [{".", "eee23"}]},
+				      {"bmsp-coep.virtual-labs.ac.in-access_log", [{".", "bio16"}]},
+				      {"bsa-iiith.virtual-labs.ac.in-access_log", [{".", "eerc04"}]},
+				      {"ccnsb06-iiith.virtual-labs.ac.in-access_log", [{".", "ccnsb06"}]},
+				      {"cds-iiith.virtual-labs.ac.in-access_log", [{".", "ccnsb05"}]},
+				      {"ce-iitb.virtual-labs.ac.in-access_log", [{".", "chem01"}]},
+				      {"cl-iiith.virtual-labs.ac.in-access_log", [{".", "cse23"}]},
+				      {"csc-iiith.virtual-labs.ac.in-access_log", [{".", "ccnsb02"}]},
+				      {"cse01-iiith.virtual-labs.ac.in-access_log", [{".", "cse01"}]},
+				      {"cse02-iiith.virtual-labs.ac.in-access_log", [{".", "cse02"}]},
+				      {"cse11-iiith.virtual-labs.ac.in-access_log", [{".", "cse11"}]},
+				      {"cse14-iiith.virtual-labs.ac.in-access_log", [{".", "cse14"}]},
+				      {"cse15-iiith.virtual-labs.ac.in-access_log", [{".", "cse15"}]},
+				      {"cse18-iiith.virtual-labs.ac.in-access_log", [{".", "cse18"}]},
+				      {"cse19-iiith.virtual-labs.ac.in-access_log", [{".", "cse19"}]},
+				      {"cse20-iiith.virtual-labs.ac.in-access_log", [{".", "cse20"}]},
+				      {"cse22-iiith.virtual-labs.ac.in-access_log", [{".", "cse22"}]},
+				      {"cse29-iiith.virtual-labs.ac.in-access_log", [{".", "cse29"}]},
+				      {"cp-iiith.virtual-labs.ac.in-access_log", [{".", "cse02"}]}, %Same as cse02
+				      {"ee-iitb.virtual-labs.ac.in-access_log", [{".", "ece40"}]},
+				      {"eem-iitd.virtual-labs.ac.in-access_log", [{".", "ece08"}]},
+				      {"eerc01-iiith.virtual-labs.ac.in-access_log", [{".", "eerc01"}]},
+				      {"eerc03-iiith.virtual-labs.ac.in-access_log", [{".", "eerc03"}]},
+				      {"em-coep.virtual-labs.ac.in-access_log", [{".", "eee02"}]},
+				      {"em-iitr.virtual-labs.ac.in-access_log", [{".", "eee24"}]},
+				      {"emt-iiith.virtual-labs.ac.in-access_log", [{".", "emt"}]},
+				      {"ergonomics-iitg.virtual-labs.ac.in-access_log", [{".", "dsgn-engg04"}]},
+				      {"fab-coep.virtual-labs.ac.in-access_log", [{".", "mech18"}]},
+				      {"fm-nitk.virtual-labs.ac.in-access_log", [{".", "civil20"}]},
+				      {"ge-iiith.virtual-labs.ac.in-access_log", [{".", "eerc05"}]},
+				      {"he-coep.virtual-labs.ac.in-access_log", [{".", "ece19"}]},
+				      {"ial-coep.virtual-labs.ac.in-access_log", [{".", "eee09"}]},
+				      {"ied-nitk.virtual-labs.ac.in-access_log", [{".", "eee08"}]},
+				      {"mas-iiith.virtual-labs.ac.in-access_log", [{".", "ccnsb03"}]},
+				      {"mdmv-nitk.virtual-labs.ac.in-access_log", [{".", "mech21"}]},
+				      {"mfs-iiith.virtual-labs.ac.in-access_log", [{".", "ccnsb01"}]},
+				      {"mi-iiith.virtual-labs.ac.in-access_log", [{".", "ccnsb07"}]},
+				      {"mm-coep.virtual-labs.ac.in-access_log", [{".", "mech17"}]},
+				      {"mm-nitk.virtual-labs.ac.in-access_log", [{".", "mech05"}]},
+				      {"mrmsmtbs-iitk.virtual-labs.ac.in-access_log", [{".", "mech08"}]},
+				      {"msvs-dei.virtual-labs.ac.in-access_log", [{".", "mech26"}]},
+				      {"nlp-iiith.virtual-labs.ac.in-access_log", [{".", "cse24"}]},
+				      {"pe-iitb.virtual-labs.ac.in-access_log", [{".", "biotech25"}]},
+				      {"pev-au.virtual-labs.ac.in-access_log", [{".", "biotech18"}]},
+				      {"pevii-au.virtual-labs.ac.in-access_log", [{".", "biotech17"}]},
+				      {"phy14-iiith.virtual-labs.ac.in-access_log", [{".", "phy14"}]},
+				      {"plc-coep.virtual-labs.ac.in-access_log", [{".", "eee12"}]},
+				      {"ps-iiith.virtual-labs.ac.in-access_log", [{".", "cse04"}]},
+				      {"qnm-iitd.virtual-labs.ac.in-access_log", [{".", "ece21"}]},
+				      {"sa-nitk.virtual-labs.ac.in-access_log", [{".", "ee30"}]},
+				      {"sd-iiith.virtual-labs.ac.in-access_log", [{".", "eerc06"}]},
+				      {"sl-coep.virtual-labs.ac.in-access_log", [{".", "eee05"}]},
+				      {"sl-iitr.virtual-labs.ac.in-access_log", [{".", "civil15"}]},
+				      {"smfe-iiith.virtual-labs.ac.in-access_log", [{".", "eerc02"}]},
+				      {"sm-nitk.virtual-labs.ac.in-access_log", [{".", "civil07"}]},
+				      {"ssl-iitg.virtual-labs.ac.in-access_log", [{".", "ece10"}]},
+				      {"ssp-iiith.virtual-labs.ac.in-access_log", [{".", "cse16"}]},
+				      {"ufls-iitk.virtual-labs.ac.in-access_log", [{".", "chs13"}]},
+				      {"uorepc-nitk.virtual-labs.ac.in-access_log", [{".", "chem05"}]},
+				      {"va-coep.virtual-labs.ac.in-access_log", [{".", "mech04"}]},
+				      {"va-iitk.virtual-labs.ac.in-access_log", [{".", "phy01"}]},
+				      {"vcal-iitk.virtual-labs.ac.in-access_log", [{".", "mech48"}]},
+				      {"vc-dei.virtual-labs.ac.in-access_log", [{".", "chs12"}]},
+				      {"ve-iitg.virtual-labs.ac.in-access_log", [{".", "hss02"}]},
+				      {"vem-iitg.virtual-labs.ac.in-access_log", [{".", "eee10"}]},
+				      {"vlae-iitk.virtual-labs.ac.in-access_log", [{".", "aero03"}]},
+				      {"vp-dei.virtual-labs.ac.in-access_log", [{".", "eee06"}]},
+				      {"vssd-iitd.virtual-labs.ac.in-access_log", [{".", "civil16"}]}
 				     ]
        ).
 
 
 -define(Lab_id_exp_info_list, [
 			       {"cse01",
-				[
-				 {"Number Systems", "/exp1/index.php", "/exp1/UnarySystem.*|/exp1/RomanSystem.*| /exp1/BinarySystem.*"},
-				 {"Expression Evaluation", "/exp2/index.php", "/exp2/calc3.*"},
-				 {"Sorting Algorithm", "/exp3/index.php", "/exp3/quick.*|/exp3/merge.*|/exp3/insertion.*"},
-				 {"Polynomial Operations", "/exp4/index.php", "/exp4/polynomial.*"},
-				 {"Search Trees", "/exp5/index.php", "/exp5/binarySearchTree.*"},
-				 {"Expression Trees", "/exp6/index.php", "/exp6/exptree.*"},
-				 {"Graph Traversals", "/exp7/index.php", "/exp7/DFS_BFS.*"},
-				 {"Shortest Paths in Graphs", "/exp8/index.php", "/exp8/Dijkstra.*"},
-				 {"Spanning Trees in Graphs", "/exp9/index.php", "/exp9/MinimumSpanningTree.*"}
-				]
+			       	[
+			       	 {"Number Systems", "/exp1/index.php", "/exp1/UnarySystem.*|/exp1/RomanSystem.*| /exp1/BinarySystem.*"},
+			       	 {"Expression Evaluation", "/exp2/index.php", "/exp2/calc3.*"},
+			       	 {"Sorting Algorithm", "/exp3/index.php", "/exp3/quick.*|/exp3/merge.*|/exp3/insertion.*"},
+			       	 {"Polynomial Operations", "/exp4/index.php", "/exp4/polynomial.*"},
+			       	 {"Search Trees", "/exp5/index.php", "/exp5/binarySearchTree.*"},
+			       	 {"Expression Trees", "/exp6/index.php", "/exp6/exptree.*"},
+			       	 {"Graph Traversals", "/exp7/index.php", "/exp7/DFS_BFS.*"},
+			       	 {"Shortest Paths in Graphs", "/exp8/index.php", "/exp8/Dijkstra.*"},
+			       	 {"Spanning Trees in Graphs", "/exp9/index.php", "/exp9/MinimumSpanningTree.*"}
+			       	]
 			       },
 			       {"cse02",
 			       	[
@@ -1794,7 +1795,7 @@ TRACE {{2015,9,25},{15,5,11}} analytics:base2_main/0: File_list after negative f
 			       	 {"Surface Tension", "/exp9/index.html", "/exp9/.*surfacetension.html."}
 			       	]
 			       },
-			       {"ps",
+			       {"cse04",
 			       	[
 			       	 {"Numerical Representation", "/exp1/index.php", "/exp1/lab.html"},
 			       	 {"Beauty of Numbers", "/exp2/index.php", "/exp2/lab.html"},
@@ -1808,7 +1809,7 @@ TRACE {{2015,9,25},{15,5,11}} analytics:base2_main/0: File_list after negative f
 			       	 {"Sequences", "/exp10/index.php", "/exp10/lab.html"}
 			       	]
 			       },
-			       {"csc",
+			       {"ccnsb02",
 			       	[
 			       	 {"Preparation of Sols", "/exp1/index.html", "/exp1/sol.*"},
 			       	 {"Preparation of Gels", "/exp2/index.html", "/exp2/gel_form.*"},
@@ -1821,21 +1822,21 @@ TRACE {{2015,9,25},{15,5,11}} analytics:base2_main/0: File_list after negative f
 			       	 {"Study of the Catalytic Effects of Finely Divided Particles", "/exp15/index.html", "/exp15/lab9.*"}
 			       	]
 			       },
-			       {"bsa",
+			       {"eerc04",
 			       	[
-			       	 {"Single Span Beams", "/exp9/index.php", "/exp2/Animation.*"},
-			       	 {"Continuous Beams", "/exp9/index.php", "/exp3/Animation.*"},
-			       	 {"Column Analysis", "/exp9/index.php", "/exp4/Animation.*"},
-			       	 {"Portal Frames", "/exp9/index.php", "/exp5/Animation.*"},
-			       	 {"Plates", "/exp9/index.php", "/exp6/Animation.*"},
-			       	 {"Rigid Joints", "/exp9/index.php", "/exp1/Animation.*"},
-			       	 {"Arches", "/exp9/index.php", "/exp7/Animation.*"},
-			       	 {"Trusses", "/exp9/index.php", "/exp8/Animation.*"},
+			       	 {"Single Span Beams", "/exp2/index.php", "/exp2/Animation.*"},
+			       	 {"Continuous Beams", "/exp3/index.php", "/exp3/Animation.*"},
+			       	 {"Column Analysis", "/exp4/index.php", "/exp4/Animation.*"},
+			       	 {"Portal Frames", "/exp5/index.php", "/exp5/Animation.*"},
+			       	 {"Plates", "/exp6/index.php", "/exp6/Animation.*"},
+			       	 {"Rigid Joints", "/exp1/index.php", "/exp1/Animation.*"},
+			       	 {"Arches", "/exp7/index.php", "/exp7/Animation.*"},
+			       	 {"Trusses", "/exp8/index.php", "/exp8/Animation.*"},
 			       	 {"Retaining Walls", "/exp9/index.php", "/exp9/Animation.*"},
-			       	 {"Plastic Hinge", "/exp9/index.php", "/exp10/Animation.*"}
+			       	 {"Plastic Hinge", "/exp10/index.php", "/exp10/Animation.*"}
 			       	]
 			       },
-			       {"cds",
+			       {"ccnsb05",
 			       	[
 			       	 {"To determine the specific rotation of a sugar using a polarimeter.", "/exp1/index.html", "/exp1/swf.*"},
 			       	 {"To understand the effect of chiral substances on plane polarized light as a function of wavelength.", "/exp2/index.html", "/exp2/emanim_ord_refrac.*"},
@@ -1850,7 +1851,7 @@ TRACE {{2015,9,25},{15,5,11}} analytics:base2_main/0: File_list after negative f
 			       	 {"To study the comparison between protein unfolding and protein aggregation in the presence of chemical denaturing agents", "/exp10/index.html", "/exp10/experiment/index.*"}
 			       	]
 			       },
-			       {"smfe",
+			       {"eerc02",
 			       	[
 			       	 {"Water Content", "/exp1/index.php", "/exp1/Animation/.*"},
 			       	 {"Unit Weight", "/exp2/index.php", "/exp2/Animation/.*"},
@@ -1864,7 +1865,7 @@ TRACE {{2015,9,25},{15,5,11}} analytics:base2_main/0: File_list after negative f
 			       	 {"Triaxial Test", "/exp10/index.php", "/exp10/Animation/.*"}
 			       	]
 			       },
-			       {"ssp",
+			       {"cse16",
 			       	[
 			       	 {"Manual speech signal-to-symbol transformation", "/exp01/index.html", "/exp01/part.*"},
 			       	 {"Speech production mechanism", "/exp02/index.html", "/exp02/part.*"},
@@ -1878,36 +1879,7 @@ TRACE {{2015,9,25},{15,5,11}} analytics:base2_main/0: File_list after negative f
 			       	 {"Analysis by synthesis", "/exp10/index.html", ""}
 			       	]
 			       },
-			       {"ge",
-			       	[
-			       	 {"Free Swell Index", "/exp1/index.html", "/exp1/animation/fsi.html"},
-			       	 {"California Bearing Ratio Test", "/exp2/index.html", "/exp2/media/ve_cbr.*"},
-			       	 {"pH Test", "/exp3/index.html", "/exp2/media/ve_ph.*"},
-			       	 {"Determination of Total Soluble Solids", "/exp4/index.html", "exp4/media/ve_totalsolid.*"},
-			       	 {"Core Cutter Experiment", "/exp5/index.html", "/exp5/media/ve_coreCutter.*"},
-			       	 {"Vane Shear Test", "/exp6/index.html", "/exp6/media/shearing.*|/exp6/media/ve_vanshear.*"},
-			       	 {"Total Sulphate Test", "/exp7/index.html", "/exp7/media/ve_vanshear.*"},
-			       	 {"Standard Penetration Test", "/exp8/index.html", "/exp8/media/ve_vanshear.*"},
-			       	 {"Plate Load Test", "/exp9/index.html", "/exp9/media/ve_plateload.*"}
-			       	]
-			       },
-			       {"mi",
-			       	[
-			       	 {"Internuclear forces in a diatomic molecule", "/exp1/index.html", "/latest_project/bin/magnet1.html"},
-			       	 {"Internuclear forces in a diatomic molecule", "/exp1/index.html", "/latest_project/bin/magnet.html"},
-			       	 {"Molecular forces in a triatomic molecule", "/exp2/index.html", "/latest_project/bin/magnet1.html"},
-			       	 {"Dihedral forces in a quad-atomic molecule", "/exp3/index.html", "/latest_project/bin/magnet.html"},
-			       	 {"Interatomic van der Waals forces", "/exp4/index.html", "/suraj/Suraj/bin/Electrostatic.html"},
-			       	 {"van der Waals forces between molecules", "/exp5/index.html", "/suraj/Suraj/bin/Hexane_Vanderwall.html"},
-			       	 {"Interatomic electrostatic forces", "/exp6/index.html", "/suraj/Suraj/bin/Electrostatic.html"},
-			       	 {"Electrostatic forces between molecules", "/exp7/index.html", "/suraj/Suraj/bin/Electrostatic_Hexane.html"},
-			       	 {"Many-body forces in a polyatomic molecule", "/exp8/index.html", "/suraj/Suraj/bin/1.html"},
-			       	 {"Solvent viscous forces on a polyatomic molecule", "/exp9/index.html", "/suraj/Suraj/bin/ViscoseEnvironment.html"},
-			       	 {"Molecular separation using inter-atomic forces: Column chromatography", "/exp10/index.html", "/suraj/Suraj/bin/oilDrop.html"},
-			       	 {"Radiation forces on a dielectric particle", "/exp11/index.html", "/suraj/Suraj/bin/Laser.html"}
-			       	]
-			       },
-			       {"mas",
+			       {"ccnsb03",
 			       	[
 			       	 {"Familiarization with the UV-Visible Absorption Spectroscopy", "/exp1/index.html", "/exp1/media/Principle.html|/exp1/media/instrument_animation.html|/exp1/media/1.html"},
 			       	 {"Solvent Effects on the UV-visible Absorption Spectra", "/exp2/index.html", "/exp2/media/2.html"},
@@ -1921,21 +1893,7 @@ TRACE {{2015,9,25},{15,5,11}} analytics:base2_main/0: File_list after negative f
 			       	 {"Gold Particle Catalyzed Reduction of Eosin by Sodium Borohydride", "/exp10/", "/exp10/media/10.html"}
 			       	]
 			       },
-			       {"mfs",
-			       	[
-			       	 {"Introduction to the fluorescence spectroscopy principle", "/exp1/index.html", "/exp1/media/1.html"},
-			       	 {"Familiarization with the fluorescence Instrumentation", "/exp2/index.html", "/exp2/media/2_a.html|/exp2/media/2_b.html"},
-			       	 {"Familiarization with Excitation and Emission Spectra, Mirror Image Relation and Stokes Shift", "/exp3/index.html", "/exp3/media/3.html"},
-			       	 {"Demonstration of Solvent Effects on Fluorescence Spectra of a Fluorophore", "/exp4/index.html", "/exp4/media/4.html"},
-			       	 {"Demonstration of pH Effect on Fluorescence Excitation and Emission Spectra of a Fluorophore", "/exp5/index.html", "/exp5/media/5.html"},
-			       	 {"Effects of Fluorophore Concentration on Fluorescence Spectra: Inner Filter Effects", "/exp6/index.html", "/exp6/media/6.html"},
-			       	 {"Relationship between the Concentration of a Fluorophore and its Fluorescence Intensity: Determination of Unknown Concentration of an Analyte", "/exp7/index.html", "/exp7/media/7.html"},
-			       	 {"Determination of Fluorescence Quantum Yield of a Fluorophore", "/exp8/index.html", "/exp8/media/8.html"},
-			       	 {"Fluorescence Quenching and Stern-Volmer Plot: Estimation of the Quenching Constant from Stern-Volmer Plot", "/exp9/index.html", "/exp9/media/9.html"},
-			       	 {"Effects of Excimer and Exciplex Formations on Fluorescence Emission", "/exp10/index.html", "/exp10/media/10_a.html|/exp10/media/10_b.html"}
-			       	]
-			       },
-			       {"nlp",
+			       {"cse24",
 			       	[
 			       	 {"Word Analysis", "/exp1/index.html", "/exp1/exp1.*.php.*"},
 			       	 {"Word Generation", "/exp2/index.html", " /exp2/exp2.php.*"},
@@ -1949,7 +1907,7 @@ TRACE {{2015,9,25},{15,5,11}} analytics:base2_main/0: File_list after negative f
 			       	 {"Building Chunker", "/exp10/index.html", "/exp10/exp.*10.*"}
 			       	]
 			       },
-			       {"cl",
+			       {"cse23",
 			       	[
 			       	 {"Forming Sentences - 1", "/exp1/index.html", "/exp1/CL.*1.php"},
 			       	 {"Forming Sentences - 2", "/exp2/index.html", "/exp2/CL.*2.php"},
@@ -1962,7 +1920,7 @@ TRACE {{2015,9,25},{15,5,11}} analytics:base2_main/0: File_list after negative f
 			       	 {"Context Free Grammar", "/exp10/index.html", "/exp10/CL.*10.php"}
 			       	]
 			       },
-			       {"sd",
+			       {"eerc06",
 			       	[
 			       	 {"Simple Harmonic Oscillator", "/exp1/index.html", "/exp1/exp1.html|/exp1/ve_pendulum.html"},
 			       	 {"Free vibration of S.D.O.F system", "/exp1/index.html", "/exp2/undamped_freevib.html|/exp2/dampfree.html|/exp2/ve_freevibbody.html"},
@@ -1976,7 +1934,7 @@ TRACE {{2015,9,25},{15,5,11}} analytics:base2_main/0: File_list after negative f
 			       	 {"Vibration Control", "/exp10/index.html", "/exp10/vibration-control1.html|/exp10/tld.swf"}
 			       	]
 			       },
-			       {"bmi",
+			       {"biotech26",
 			       	[
 			       	 {"ECG signal acquisition under incorrect electrode placement", "/exp1/index.php", "/exp1/index.php.*section=Experiment"},
 			       	 {"ECG Feature extraction and analysis", "/exp2/index.php", "/exp2/index.php.*section=Experiment"},
@@ -1988,14 +1946,14 @@ TRACE {{2015,9,25},{15,5,11}} analytics:base2_main/0: File_list after negative f
 			       	 {"Electromyography(EMG) Toolbox", "/exp8/index.php", "/exp8/index.php.*section=Experiment"}
 			       	]
 			       },
-			       {"bmsip",
+			       {"eee23",
 			       	[
 			       	 {"Digital Signal Processing Toolkit", "/exp1/index.php", "/exp1/index.php.*section=Experiment"},
 			       	 {"Bio-Medical Signal Processing Toolkit", "/exp2/index.php", "/exp2/index.php.*section=Experiment"},
 			       	 {"Image Processing Toolkit", "/exp3/index.php", "/exp3/index.php.*section=Experiment"}
 			       	]
 			       },
-			       {"em-iitr",
+			       {"eee24",
 			       	[
 			       	 {"Speed Control of DC motor by varying armature and field resistance", "/exp1/index.php", ""},
 			       	 {"Speed control of DC motor by using Ward-Leonard Method of speed control", "/exp2/index.php", ""},
@@ -2006,7 +1964,7 @@ TRACE {{2015,9,25},{15,5,11}} analytics:base2_main/0: File_list after negative f
 			       	 {"Determination of Transformer equivalent circuit from Open Circuit and Short Circuit Test", "/exp7/index.php", ""}
 			       	]
 			       },
-			       {"sl-iitr",
+			       {"civil15",
 			       	[
 			       	 {"Carry out Fly Leveling using Auto Level", "/exp2/index.php", "/exp2/index.php.*section=Experiment"},
 			       	 {"Profile Leveling using Auto Level", "/exp3/index.php", "/exp3/index.php.*section=Experiment"},
@@ -2020,7 +1978,7 @@ TRACE {{2015,9,25},{15,5,11}} analytics:base2_main/0: File_list after negative f
 			       	 {"Observations using GPS", "/exp11/index.php", "/exp11/index.php.*section=Experiment"}
 			       	]
 			       },
-			       {"mrmsmtbs",
+			       {"mech08",
 			       	[
 			       	 {"Creep Transient Based on Material Selection (Pt/Mg)", "/exp1.html", ""},
 			       	 {"Selection of Obstacle Distance (λ, grain boundary or precipitate)", "/exp2.html", ""},
@@ -2034,7 +1992,7 @@ TRACE {{2015,9,25},{15,5,11}} analytics:base2_main/0: File_list after negative f
 			       	 {"Ionic Conductivity YSZ Electrolyte Material For solid Oxide Fuel Cell.", "/Ic1.html", ""}
 			       	]
 			       },
-			       {"va-iitk",
+			       {"phy01",
 			       	[
 			       	 {"To become familiar with the astronomical objects visible to naked eye in the night sky using the software Stellarium.", "/.*page=exp1", ""},
 			       	 {"To become familiar with the Constellations in the night sky using the software Stellarium.", "/.*page=exp2", ""},
@@ -2052,17 +2010,17 @@ TRACE {{2015,9,25},{15,5,11}} analytics:base2_main/0: File_list after negative f
 			       	 {"To determine observer's location by means of the stars", "/.*page=exp14", ""}
 			       	]
 			       },
-			       {"ufls",
+			       {"chs13",
 			       	[
-			       	 {"Ultrafast", "/ultrafast.php", ""},
-			       	 {"Measure", "/measure.php", ""},
-			       	 {"Confocal", "/confocal.php", ""},
-			       	 {"Live", "/live.php", ""},
-			       	 {"Optical", "/optical.php", ""},
-			       	 {"Thermal", "/thermal.php", ""}
+			       	 {"Ultrafast Laser Pulse Measurment", "/ultrafast.php", ""},
+			       	 {"Measure of Time-frequency bandwidth relation: Experimental demonstration of Heisenberg Uncertainity Principle", "/measure.php", ""},
+			       	 {"Confocal Microscopy: Principles & Experiments", "/confocal.php", ""},
+			       	 {"Live Cell Multiphoton Imaging: Principles & Experiments", "/live.php", ""},
+			       	 {"Optical Tweezer with Femtosecond Laser Pulses", "/optical.php", ""},
+			       	 {"Thermal Lens Spectroscopy with High Repetition Rate Lasers", "/thermal.php", ""}
 			       	]
 			       },
-			       {"vlae",
+			       {"aero03",
 			       	[
 			       	 {"Determination of Young's Modulus and Poisson's Ratio", "/str1/object.html", "/str1/ap.html"},
 			       	 {"Determination of heat of combustion of aviation fuel", "/prop2/object.html", "/prop2/ap2.html"},
@@ -2078,7 +2036,7 @@ TRACE {{2015,9,25},{15,5,11}} analytics:base2_main/0: File_list after negative f
 			       	 {"Estimation of drag polar of a glider ", "/flight3/object.html", "/flight3/ap.html"}
 			       	]
 			       },
-			       {"vcal",
+			       {"mech48",
 			       	[
 			       	 {"Measurement of Laminar Burning Velocity", "/aim1.html", ""},
 			       	 {"Characterization of laminar premixed flame using chemiluminescence sensor", "/aim2.html", ""},
@@ -2091,7 +2049,7 @@ TRACE {{2015,9,25},{15,5,11}} analytics:base2_main/0: File_list after negative f
 			       	 {"Measurement of droplet size for an air-blast atomizer", "/aim9.html", ""}
 			       	]
 			       },
-			       {"pev",
+			       {"biotech18",
 			       	[
 			       	 {"Interspecific Competition and Coexistence", "/Interspecific_Competition_and_Coexistence/", "/index.php?exp_id=Interspecific_Competition_and_Coexistence"},
 			       	 {"Conserving an Endangered Species", "/conservingEndangeredSpecies/", "/index.php?exp_id=conservingEndangeredSpecies"},
@@ -2101,14 +2059,14 @@ TRACE {{2015,9,25},{15,5,11}} analytics:base2_main/0: File_list after negative f
 			       	 {"Spread of a Pest Population - Population Invasion", "/Spread_Pest_Population_invasion/", "/index.php?exp_id=Spread_Pest_Population_invasion"}
 			       	]
 			       },
-			       {"pevii",
+			       {"biotech17",
 			       	[
 			       	 {"Optimal Foraging with Minimal Time: A Case of Searching Predators", "/OptimalForAging/", "/index.php?exp_id=OptimalForAging.*"},
 			       	 {"Optimal Pollinators", "/OptimalForaging_Pollinators/", "/index.php?exp_id=OptimalForaging_Pollinators.*"},
 			       	 {"Optimal Foraging: Sit-and-wait Predators that Maximize Energy", "/Optimal_foraging_Sit_and_wait_predators_that_maximize_energy/", "/index.php?exp_id=Optimal_foraging_Sit_and_wait_predators_that_maximize_energy.*"}
 			       	]
 			       },
-			       {"anthropology",
+			       {"hss03",
 			       	[
 			       	 {"Identification of Prehistoric handaxe", "/Theory_handaxe.html", "/Experiments/finalstone1.swf.*|/Experiments/finalstone2.swf.*|/Experiments/finalstone3.swf.*|/Experiments/finalstone4.swf.*"},
 			       	 {"Identification of finger prints patterns", "/Theory_finger.html", "/Simulator_finger.html.*"},
@@ -2121,7 +2079,7 @@ TRACE {{2015,9,25},{15,5,11}} analytics:base2_main/0: File_list after negative f
 			       	 {"Mendel's Law", "/mendels_law_theory.html", "/Experiments/mendel/punnett.swf.*"}
 			       	]
 			       },
-			       {"ergonomics",
+			       {"dsgn-engg04",
 			       	[
 			       	 {"Static anthropometry, standing heights", "/Theory_static.html", "/Practical%20Experience_static.html.*"},
 			       	 {"Arm forward reaches, standing erect and forward bend", "/Theory_arm.html", "/Practical%20Experience_arm.html.*"},
@@ -2135,7 +2093,7 @@ TRACE {{2015,9,25},{15,5,11}} analytics:base2_main/0: File_list after negative f
 			       	 {"Body movement ranges", "/Theory_10.html", "/Practical%20Experience_10.html.*"}
 			       	]
 			       },
-			       {"vem",
+			       {"eee10",
 			       	[
 			       	 {"Magnetic Field Behaviour in Single Coil", "/Magnetic_Field_Behaviour_in_single_coil.html", "/Magnetic_Field_Behaviour_in_single_coil%28experiment1%29.html.*"},
 			       	 {"Magnetic Field Behaviour in Single Coil", "/Magnetic_Field_Behaviour_in_single_coil.html", "/Magnetic_Field_Behaviour_in_single_coil%28experiment2%29.html.*"},
@@ -2149,7 +2107,7 @@ TRACE {{2015,9,25},{15,5,11}} analytics:base2_main/0: File_list after negative f
 			       	 {"Star-Delta Starting", "/Star%20Delta%20Starting%28intro%29.html", "/Star%20Delta%20Starting%28experiment%29.html.*"}
 			       	]
 			       },
-			       {"ve",
+			       {"hss02",
 			       	[
 			       	 {"Business Communication", "/Business%20Communication.html", "/Experiments/business1.html.*|/Experiments/business2.*|/Experiments/business3.html.*|/Experiments/business4.html.*|/Experiments/business5.html.*|/Experiments/business6.html.*"},
 			       	 {"Common Errors in English", "/Common%20Error.html", "/Experiments/commerror1.html.*|/Experiments/commerror2.html.*|/Experiments/commerror3.html.*|/Experiments/commerror4.html.*|/Experiments/commerror5.html.*|/Experiments/commerror6.html.*"},
@@ -2162,7 +2120,7 @@ TRACE {{2015,9,25},{15,5,11}} analytics:base2_main/0: File_list after negative f
 			       	 {"Video Tutorial", "/Video%20Tutorial.html", "/Experiments/rskills.wmv.*|/Virtual%20Labs1%20-%20IIT%20Guwahati.html.*|/Experiments/spokenenglish.wmv.*|/Virtual%20Labs%20-%20IIT%20Guwahati.html.*"}
 			       	]
 			       },
-			       {"ssl",
+			       {"ece10",
 			       	[
 			       	 {"Signals and their properties", "/Signals.*and.*.html", "/Signals.*and.*simulator.*.html"},
 			       	 {"System and their property", "/Exp_2_Signals.*.html", "/Exp_2_Signals.*simulator.*.html"},
@@ -2171,7 +2129,7 @@ TRACE {{2015,9,25},{15,5,11}} analytics:base2_main/0: File_list after negative f
 			       	 {"Analysis of LTI system response.", "/Signals.*05.*.html", "/Signals.*05.*simulator.*.html"}
 			       	]
 			       },
-			       {"ial",
+			       {"eee09",
 			       	[
 			       	 {"Study hardware and software platforms for DCS", "/Expt1/index.html", ""},
 			       	 {"Simulate analog and digital function blocks", "/Expt2/index.html", "/Expt2/AnalogDigital.html.*"},
@@ -2183,7 +2141,7 @@ TRACE {{2015,9,25},{15,5,11}} analytics:base2_main/0: File_list after negative f
 			       	 {"Develop graphical user interface for the fermentor plant", "/Expt8/index.html", ""}
 			       	]
 			       },
-			       {"sl-coep",
+			       {"eee05",
 			       	[
 			       	 {"Characterize the temperature sensor(RTD)", "/Rtd/index.html", "/Rtd/rtd.html.*"},
 			       	 {"Simulate the performance of Biosensor", "/Biosensor/index.html", "/Biosensor/biosensor.html.*"},
@@ -2195,7 +2153,7 @@ TRACE {{2015,9,25},{15,5,11}} analytics:base2_main/0: File_list after negative f
 			       	 {"Characterize the temperature sensor(Thermocouple)", "/Thermocouple/index.html", "/Thermocouple/thermocouple.html.*"}
 			       	]
 			       },
-			       {"plc",
+			       {"eee12",
 			       	[
 			       	 {"Study hardware and software used in PLC", "/exp1/index.html", ""},
 			       	 {"Implementation of Logic Gates", "/exp2/index.html", "/exp2/simulator2.html.*"},
@@ -2207,7 +2165,7 @@ TRACE {{2015,9,25},{15,5,11}} analytics:base2_main/0: File_list after negative f
 			       	 {"Study of PID controller instruction for a pilot plant", "/exp8/index.html", "/exp8/simulator8.html.*"}
 			       	]
 			       },
-			       {"em-coep",
+			       {"eee02",
 			       	[
 			       	 {"Load Test On Separately Excited DC Motor", "/Exp1/index.html", "/Exp1/Experiment1.html.*"},
 			       	 {"Speed Control of Separately Excited DC Motor", "/Exp2/index.html", "/Exp2/Experiment2.html.*"},
@@ -2219,7 +2177,7 @@ TRACE {{2015,9,25},{15,5,11}} analytics:base2_main/0: File_list after negative f
 			       	 {"V and Inverted V curves of Synchronous Motor", "/Exp8/index.html", "/Exp8/Experiment8.html.*"}
 			       	]
 			       },
-			       {"va-coep",
+			       {"mech04",
 			       	[
 			       	 {"MI of Connecting Rod", "/MIofConnectingRod/index.html", "/MIofConnectingRod/MIofConnectingRod.html.*"},
 			       	 {"Impact test on cantilever Modal analysis", "/ImpactTestCantilever/index.html", "/ImpactTestCantilever/ImpactTestCantilever.html.*"},
@@ -2231,7 +2189,7 @@ TRACE {{2015,9,25},{15,5,11}} analytics:base2_main/0: File_list after negative f
 			       	 {"Tuned Vibration Absorber", "/TunedVibrationAbsorber/index.html", "/TunedVibrationAbsorber/TunedVibrationAbsorber.html.*"}
 			       	]
 			       },
-			       {"mm-coep",
+			       {"mech17",
 			       	[
 			       	 {"To study pulsed-heating of materials", "/PulsedHeating/index.html", "/PulsedHeating/PulsedHeating.html.*"},
 			       	 {"To study erosion mechanism from Lazarenko's model", "/LazerankosErosionModel/index.html", "/LazerankosErosionModel/LazerankosErosionModel.html.*"},
@@ -2243,7 +2201,7 @@ TRACE {{2015,9,25},{15,5,11}} analytics:base2_main/0: File_list after negative f
 			       	 {"Study the effect of process parameters in electrochemical grinding", "/ECG/index.html", "/ECG/ECG.html.*"}
 			       	]
 			       },
-			       {"fab",
+			       {"mech18",
 			       	[
 			       	 {"Computer Controlled Cutting of wooden object", "/exp1/index.html", "/exp1/woodcutting.html.*"},
 			       	 {"3D Machining", "/exp2/index.html", "/exp2/roughing.html.*"},
@@ -2255,7 +2213,7 @@ TRACE {{2015,9,25},{15,5,11}} analytics:base2_main/0: File_list after negative f
 			       	 {"Digital Fabrication and Project Development", "/exp8/index.html", ""}
 			       	]
 			       },
-			       {"bmsp",
+			       {"bio16",
 			       	[
 			       	 {"To simulate Electrocardiogram Waveform", "/AbnormalECG/index.html", "/NormalECG/index.html.*|/AbnormalECG/AbnormalECG.html.*"},
 			       	 {"To simulate Electroencephalogram Signal", "/Electroencephalogram/index.html", "/Electroencephalogram/Electroencephalogram.html.*"},
@@ -2268,7 +2226,7 @@ TRACE {{2015,9,25},{15,5,11}} analytics:base2_main/0: File_list after negative f
 			       	 {"To simulate 12 Lead Ecg Signals", "/LeadECG/index.html", "/LeadECG/LeadECG.html.*"}
 			       	]
 			       },
-			       {"he",
+			       {"ece19",
 			       	[
 			       	 {"Design and Implementation of Various Arithmetic Circuits", "/Experiment1/index.html", "/Experiment1/index1.html.*"},
 			       	 {"Design and Simulate Various Code Converters", "/Experiment2/index.html", "/Experiment2/index1.html.*"},
@@ -2279,7 +2237,7 @@ TRACE {{2015,9,25},{15,5,11}} analytics:base2_main/0: File_list after negative f
 			       	 {"Implementation of monostable and astable oscillator using IC 555", "/Experiment7/index.html", "/Experiment7/index1.html.*"}
 			       	]
 			       },
-			       {"ied",
+			       {"eee08",
 			       	[
 			       	 {"INTRODUCTION TO PROGRAMMABLE LOGIC CONTROLLER AND INTRODUCTION TO DIGITAL I/O INTERFACE TO PLC", "/INTRODUCTION.*TO.*PROGRAMMABLE.*LOGIC.*CONTROLLER.*AND.*INTRODUCTION.*TO.*DIGITAL.*INTERFACE.*TO.*PLC/index.html", "/INTRODUCTION.*TO.*PROGRAMMABLE.*LOGIC.*CONTROLLER.*AND.*INTRODUCTION.*TO.*DIGITAL.*INTERFACE.*TO.*PLC/index.html.*"},
 			       	 {"INTRODUCTION TO LADDER LOGIC", "/INTRODUCTION.*TO.*LADDER.*LOGIC/index.html", "/INTRODUCTION.*TO.*LADDER.*LOGIC/index.html.*"},
@@ -2295,7 +2253,7 @@ TRACE {{2015,9,25},{15,5,11}} analytics:base2_main/0: File_list after negative f
 			       	 {"Motor forward and reverse direction control using PLC", "/Motor.*forward.*and.*reverse.*direction.*control.*using.*PLC/index.html", "/Motor.*forward.*and.*reverse.*direction.*control.*using.*PLC/index.html.*"}
 			       	]
 			       },
-			       {"sa",
+			       {"ee30",
 			       	[
 			       	 {"DCS (Yokogawa CENTUM CS 1000)", "/substationtheory/index.html", ""},
 			       	 {"Substation Automation (Theory)", "/DCS/index.html", ""},
@@ -2312,12 +2270,12 @@ TRACE {{2015,9,25},{15,5,11}} analytics:base2_main/0: File_list after negative f
 			       	 {"Autoreclosure And Sectionalizer Operation", "/exp11/index.html", ""}
 			       	]
 			       },
-			       {"fm",
+			       {"civil20",
 			       	[
 			       	 {"Impact of Jet", "/exp1/index.html", ""}
 			       	]
 			       },
-			       {"sm",
+			       {"civil07",
 			       	[
 			       	 {"Mohr's circle", "/exp1/index.html", ""},
 			       	 {"Bending Stresses", "/exp2/index.html", ""},
@@ -2325,7 +2283,7 @@ TRACE {{2015,9,25},{15,5,11}} analytics:base2_main/0: File_list after negative f
 			       	 {"Deflection in Beam", "/exp4/index.html", ""}
 			       	]
 			       },
-			       {"mm-nitk",
+			       {"mech05",
 			       	[
 			       	 {"Position analysis of Grashof four bar mechanism", "/exp1/index.html", ""},
 			       	 {"Velocity analysis of Grashof four bar mechanism", "/exp2/index.html", ""},
@@ -2345,7 +2303,7 @@ TRACE {{2015,9,25},{15,5,11}} analytics:base2_main/0: File_list after negative f
 			       	 {"Tchebichev Straight Line Mechanism", "/exp16/index.html", ""}
 			       	]
 			       },
-			       {"mdmv",
+			       {"mech21",
 			       	[
 			       	 {"Free vibration of cantilever beam", "/exp1/index.html", ""},
 			       	 {"Free vibration of simply supported beam", "/exp2/index.html", ""},
@@ -2357,7 +2315,7 @@ TRACE {{2015,9,25},{15,5,11}} analytics:base2_main/0: File_list after negative f
 			       	 {"Dynamic Vibration Absorber", "/exp8/index.html", ""}
 			       	]
 			       },
-			       {"uorepc",
+			       {"chem05",
 			       	[
 			       	 {"Flow Through Pipes", "/exp1/index.html", ""},
 			       	 {"Flow Through Fittings", "/exp2/index.html", ""},
@@ -2370,10 +2328,10 @@ TRACE {{2015,9,25},{15,5,11}} analytics:base2_main/0: File_list after negative f
 			       	 {"Reaction kinetic studies in a plug flow reactor", "/exp9/index.html", ""}
 			       	]
 			       },
-			       {"vssd",
+			       {"civil16",
 			       	[
 			       	 {"Vibration Characteristics of Aluminum Cantilever Beam using Piezoelectric Sensors", "/exp1.html", "/exp1.html.*"},
-			       	 {"Identification of High Frequency Modes of Beam in 'Free-Free' Condition using Electro-mechanical Impedance(EMI) Technique", "/exp2.html", "/exp2.html.*"},
+			       	 {"Identification of High Frequency Modes of Beam in Free-Free Condition using Electro-mechanical Impedance(EMI) Technique", "/exp2.html", "/exp2.html.*"},
 			       	 {"Forced Excitation of Steel Beam using Portable Shaker", "/exp3.html", "/exp3.html.*"},
 			       	 {"Photogrammetry for Displacement Measurement", "/exp4.html", "/exp4.html.*"},
 			       	 {"Modes of Vibrations of Beams under flexure", "/exp5.html", "/exp5.html.*"},
@@ -2383,7 +2341,7 @@ TRACE {{2015,9,25},{15,5,11}} analytics:base2_main/0: File_list after negative f
 			       	 {"EXPERIMENT 9", "/exp9.html", "/Train.*Vehicle.html.*|/exp9_files/Tank/Tank.html"}
 			       	]
 			       },
-			       {"qnm",
+			       {"ece21",
 			       	[
 			       	 {"Infinite Capacity Markovian Models", "/experiment1.html", "/Experiment.*201/mm1.html.*|/exp9_files/Tank/Tank.html.*|/exp9_files/Tank/Tank.html"},
 			       	 {"Finite Capacity Markovian Models", "/experiment2.html", "/Experiment.*202/Layout.html.*"},
@@ -2399,7 +2357,7 @@ TRACE {{2015,9,25},{15,5,11}} analytics:base2_main/0: File_list after negative f
 			       	 {"Fluid Queue Experiments", "/experiment12.html", "/Experiment.*2012/12.*.html.*"}
 			       	]
 			       },
-			       {"eem",
+			       {"ece08",
 			       	[
 			       	 {"Measurement of VSWR on a line", "/exp1.html", "/exp1/Application.exe"},
 			       	 {"Determination of unknown impedance", "/exp2.html", "/exp2/Application.exe"},
@@ -2410,7 +2368,7 @@ TRACE {{2015,9,25},{15,5,11}} analytics:base2_main/0: File_list after negative f
 			       	 {"Antenna Gain measurement", "/exp8.html", "/exp8/Application.exe"}
 			       	]
 			       },
-			       {"msvs",
+			       {"mech26",
 			       	[
 			       	 {"Upsetting", "/upsetting_process.php", "/upsetting_simulation.php.*| /Hydraulic.php.*|/Mechanical.php.*"},
 			       	 {"Upsetting", "/upsetting_process.php", "/Upset_Experiment.php.*UPSETTING/Upset_Comp/Case.*"},
@@ -2433,34 +2391,33 @@ TRACE {{2015,9,25},{15,5,11}} analytics:base2_main/0: File_list after negative f
 			       	 {"Defects", "/Defects.php", "/DefectSimulation.php.*Defects.*.mp4.*"}
 			       	]
 			       },
-			       {"vp",
+			       {"eee06",
 			       	[
-			       	 {"Experiment- 1", "/exp1.html", "/Sim_dcmotor.html.*|/syn_Sim.html.*|/Sim_DG_Set.html.*|/dynDcmotor.html.*"},
-			       	 {"Experiment - 2", "/exp2.html", "/Sim_2/phaseSequence.html.*|/Sim_2/SlipTest/index.html.*"},
-			       	 {"Experiment- 3", "/exp3.html", "/sim_3/OCC.html.*|/sim_3/SCC.html.*|/sim_3/comb/X2.html.*|/sim_3/comb/X0.html.*"},
-			       	 {"Experiment - 4", "/exp4.html", "/Sim_4/web/Exp4.html.*"},
-			       	 {"Experiment - 5", "/exp5.html", "/sim_5/web/Exp5.html.*"},
-			       	 {"Experiment - 6", "/exp6.html", "/sim_6/web/exp6.html.*"},
-			       	 {"Experiment - 6", "/exp6.html", "/sim_6a.*index.html.*"},
-			       	 {"Experiment - 7", "/exp7.html", "/Sim.*sim7.html.*"},
-			       	 {"Experiment - 8", "/exp8.html", "/Sim8.*Sim8.html.*"},
-			       	 {"Experiment - 9", "/exp9.html", "/Sim9.*index.html.*"}
+			       	 {"study the Synchronization of alternator with infinite bus bar", "/Dreamweaver/exp1.html", "/Sim_dcmotor.html.*|/syn_Sim.html.*|/Sim_DG_Set.html.*|/dynDcmotor.html.*"},
+			       	 {"determine the direct axis reactance (Xd) and quadrature axis reactance (Xq) of synchronous machine.", "/Dreamweaver/exp2.html", "/Sim_2/phaseSequence.html.*|/Sim_2/SlipTest/index.html.*"},
+			       	 {"determine positive sequence, negative sequence and zero sequence reactances of an alternator.", "/Dreamweaver/exp3.html", "/sim_3/OCC.html.*|/sim_3/SCC.html.*|/sim_3/comb/X2.html.*|/sim_3/comb/X0.html.*"},
+			       	 {"measure the dielectric Strength of transformer oil.", "/Dreamweaver/exp4.html", "/Sim_4/web/Exp4.html.*"},
+			       	 {"Study the effect of different shape of electrodes on dielectric (air) breakdown", "/Dreamweaver/exp5.html", "/sim_5/web/Exp5.html.*"},
+			       	 {"Study the gas actuated Buchholz relay for oil filled transformer", "/Dreamweaver/exp6.html", "/sim_6/web/exp6.html.*|/sim_6a.*index.html.*"},
+			       	 {"Study the over-current relay and the effect of PSM and TSM", "/Dreamweaver/exp7.html", "/Sim.*sim7.html.*"},
+			       	 {"determine the sub-transient (xd’’), transient (xd’) and steady state reactance (xd) of a synchronous machine", "/Dreamweaver/exp8.html", "/Sim8.*Sim8.html.*"},
+			       	 {"Study the Ferranti Effect of a transmission line/cable", "/Dreamweaver/exp9.html", "/Sim9.*index.html.*"}
 			       	]
 			       },
-			       {"vc",
+			       {"chs12",
 			       	[
-			       	 {"Exp-1", "/.*page_id=83", "/.*page_id=108.*"},
-			       	 {"Exp-2", "/.*page_id=186", "/.*page_id=195.*"},
-			       	 {"Exp-3", "/.*page_id=200", "/.*page_id=209.*"},
-			       	 {"Exp-4", "/.*page_id=612", "/.*page_id=885.*"},
-			       	 {"Exp-5", "/.*page_id=748", "/.*page_id=899.*"},
-			       	 {"Exp-6", "/.*page_id=786", "/.*page_id=911.*"},
-			       	 {"Exp-7", "/.*page_id=939", "/.*page_id=968.*"},
-			       	 {"Exp-8", "/.*page_id=1028", "/.*page_id=1094.*"},
-			       	 {"Exp-9", "/.*page_id=1111", "/.*page_id=1169.*"}
+			       	 {"Exp-1 (page 83)", "/.*page_id=83", "/.*page_id=108.*"},
+			       	 {"Exp-2 (page 186)", "/.*page_id=186", "/.*page_id=195.*"},
+			       	 {"Exp-3 (page 200)", "/.*page_id=200", "/.*page_id=209.*"},
+			       	 {"Exp-4 (page 612)", "/.*page_id=612", "/.*page_id=885.*"},
+			       	 {"Exp-5 (page 748)", "/.*page_id=748", "/.*page_id=899.*"},
+			       	 {"Exp-6 (page 786)", "/.*page_id=786", "/.*page_id=911.*"},
+			       	 {"Exp-7 (page 939)", "/.*page_id=939", "/.*page_id=968.*"},
+			       	 {"Exp-8 (page 1028)", "/.*page_id=1028", "/.*page_id=1094.*"},
+			       	 {"Exp-9 (page 1111)", "/.*page_id=1111", "/.*page_id=1169.*"}
 			       	]
 			       },
-			       {"pe",
+			       {"biotech25",
 			       	[
 			       	 {"An Overview of Virtual Proteomics Laboratory", "/exp1/index.html", ""},
 			       	 {"Module I: An Overview of Gel-based Proteomics", "/exp2/index.html", ""},
@@ -2480,7 +2437,7 @@ TRACE {{2015,9,25},{15,5,11}} analytics:base2_main/0: File_list after negative f
 			       	 {"Experiment-12: Molecular Docking", "/exp16/index.html", "/exp16/index.html.*"}
 			       	]
 			       },
-			       {"ce",
+			       {"chem01",
 			       	[
 			       	 {"Flow measurement by orificemeter and venturimeter", "/exp1/index.html", "/exp1/ori/ori1.php.*"},
 			       	 {"Gas Liquid Absorption", "/exp2/index.html", "/exp2/gla/gla1.php.*"},
@@ -2494,7 +2451,7 @@ TRACE {{2015,9,25},{15,5,11}} analytics:base2_main/0: File_list after negative f
 			       	 {"Ebulliometric Determination of Vapour Pressure", "/exp10/index.html", "SensorLab/Rtd/index.html.*"}
 			       	]
 			       },
-			       {"ee",
+			       {"ece40",
 			       	[
 			       	 {"I-V characteristics and Fabrication of P-N junction diode", "/exp1/index.html", "/exp1/index.html"},
 			       	 {"I-V Characteristics of LED Diode", "/exp12/index.html", "/exp12/index.html"},
@@ -2509,33 +2466,19 @@ TRACE {{2015,9,25},{15,5,11}} analytics:base2_main/0: File_list after negative f
 			       	 {"Monostable and Astable multivibrators using IC 555", "/exp11/index.html", ""}
 			       	]
 			       },
-			       {"cse04", 
+			       {"cse06",
 			       	[
-			       	 {"Numerical Representation", "/exp1/index.php", "/exp1/lab.html"},
-			       	 {"Beauty of Numbers", "/exp2/index.php", "/exp2/lab.html"},
-			       	 {"More on Numbers", "/exp3/index.php", "/exp3/lab.html"},
-			       	 {"Factorials", "/exp4/index.php", "/exp4/lab.html"},
-			       	 {"String Operations", "/exp5/index.php", "/exp5/lab.html"},
-			       	 {"Recursion", "/exp6/index.php", "/exp6/lab.html"},
-			       	 {"Advanced Arithmatic", "/exp7/index.php", "/exp7/lab.html"},
-			       	 {"Searching and sorting", "/exp8/index.php", "/exp8/lab.html"},
-			       	 {"Permutaion", "/exp9/index.php", "/exp9/lab.html"},
-			       	 {"Sequences", "/exp10/index.php", "/exp10/lab.html"}
-			       	]
-			       },
-			       %% {"cse06",
-			       %% 	[
-			       %% 	 {"Apriori (An association rule mining algorithm)", "", ""},
-			       %% 	 {"Sampling (An association rule mining algorithm)", "", ""},
-			       %% 	 {"Partition (An association rule mining algorithm)", "", ""},
-			       %% 	 {"Comparison of Association Rule Mining Algorithms", "", ""},
-			       %% 	 {"k-Means (A partitioning clustering algorithm)", "", ""},
-			       %% 	 {"Agglomerative Clustering (A hierachial clustering algorithm)", "", ""},
-			       %% 	 {"DBSCAN (A density-based clustering algorithm)", "", ""},
-			       %% 	 {"kNN (A nearest neighbour based classification algorithm)", "", ""},
-			       %% 	 {"Decision Tree (Classification algorithm)", "", ""},
-			       %% 	 {"Comparison of Classification algorithms", "", ""}
-			       %% 	] },
+			       	 {"Apriori (An association rule mining algorithm)", "", ""},
+			       	 {"Sampling (An association rule mining algorithm)", "", ""},
+			       	 {"Partition (An association rule mining algorithm)", "", ""},
+			       	 {"Comparison of Association Rule Mining Algorithms", "", ""},
+			       	 {"k-Means (A partitioning clustering algorithm)", "", ""},
+			       	 {"Agglomerative Clustering (A hierachial clustering algorithm)", "", ""},
+			       	 {"DBSCAN (A density-based clustering algorithm)", "", ""},
+			       	 {"kNN (A nearest neighbour based classification algorithm)", "", ""},
+			       	 {"Decision Tree (Classification algorithm)", "", ""},
+			       	 {"Comparison of Classification algorithms", "", ""}
+			       	] },
 			       %% {"cse07",
 			       %% 	[
 			       %% 	 {"", "", ""}
@@ -2568,30 +2511,16 @@ TRACE {{2015,9,25},{15,5,11}} analytics:base2_main/0: File_list after negative f
 			       	]
 			       },
 			       {"cse13",
-			       	[        
-			       		 {"Full Custom Design", "/full_custom/index.php", "/full_custom/practice_swing.*"},
-			       		 {"Semi Custom Design", "/semi_custom/index.php", "/semi_custom/exp.*"},
-			       		 {"Power Reduction Using Gated Clocking", "/Gated_Clocking/index.php", "/Gated_Clocking/exp1.*"},
-			       		 {"Ripple Carry Adder", "/ripple_carry_adder/index.php", "/ripple_carry_adder/exp.*"},
-			       		 {"Carry Look Ahead Adder", "/carry_look_ahead_adder/index.php", "/carry_look_ahead_adder/practise.*"},
-			       		 {"5-3 COMPRESSOR", "/5_3_compressor/index.php", "/5_3_compressor/exp.*"},
-			       		 {"Array Multiplier", "/array_multiplier/index.php", "/array_multiplier/exp1.html"},
-			       		 {"(8,4) Hamming Coder", "/hamming_coder/index.php", "/hamming_coder/exp1.html"},
-			       		 {"Linear Feedback Shift Register", "/lfsr/index.php", "/lfsr/LFSR.html"}
-			       	]
-			       },
-			       {"cse16",
-			       	[
-			       	 {"Manual speech signal-to-symbol transformation", "/exp01/index.html", "/exp01/index.html.*"},
-			       	 {"Speech production mechanism", "/exp02/index.html", "/exp02/index.html.*"},
-			       	 {"Nature of speech signal", "/exp03/index.html", "/exp03/index.html.*"},
-			       	 {"Basics of DSP", "/exp04/index.html", "/exp04/index.html.*"},
-			       	 {"Short-time spectrum analysis of speech", "/exp05/index.html", "/exp05/index.html.*"},
-			       	 {"Spectrographic analysis of speech", "/exp06/index.html", "/exp06/index.html.*"},
-			       	 {"Cepstral analysis of speech", "/exp07/index.html", "/exp07/index.html.*"},
-			       	 {"Linear prediction analysis of speech", "/exp08/index.html", "/exp08/index.html.*"},
-			       	 {"Formant synthesis", "/exp09/index.html", "/exp09/index.html.*"},
-			       	 {"Analysis-by-synthesis of speech", "/exp10/index.html", "/exp10/index.html.*"}
+			       	[     
+			       	      {"Full Custom Design", "/full_custom/index.php", "/full_custom/practice_swing.*"},
+			       	      {"Semi Custom Design", "/semi_custom/index.php", "/semi_custom/exp.*"},
+			       	      {"Power Reduction Using Gated Clocking", "/Gated_Clocking/index.php", "/Gated_Clocking/exp1.*"},
+			       	      {"Ripple Carry Adder", "/ripple_carry_adder/index.php", "/ripple_carry_adder/exp.*"},
+			       	      {"Carry Look Ahead Adder", "/carry_look_ahead_adder/index.php", "/carry_look_ahead_adder/practise.*"},
+			       	      {"5-3 COMPRESSOR", "/5_3_compressor/index.php", "/5_3_compressor/exp.*"},
+			       	      {"Array Multiplier", "/array_multiplier/index.php", "/array_multiplier/exp1.html"},
+			       	      {"(8,4) Hamming Coder", "/hamming_coder/index.php", "/hamming_coder/exp1.html"},
+			       	      {"Linear Feedback Shift Register", "/lfsr/index.php", "/lfsr/LFSR.html"}
 			       	]
 			       },
 			       {"cse17",
@@ -2617,20 +2546,6 @@ TRACE {{2015,9,25},{15,5,11}} analytics:base2_main/0: File_list after negative f
 			       	 {"Data quantization levels and object extraction effects of Radiometric characteristics of the sensor", "/exp5/index.php", "/exp5/index.php.*section=Experiment.*"},
 			       	 {"Visual Analysis - Band Combination", "/exp6/index.php", "/exp6/index.php.*section=Experiment.*"},
 			       	 {"Band Algebra - Index based Analysis", "/exp7/index.php", "/exp7/index.php.*section=Experiment.*"}
-			       	]
-			       },
-			       {"cse24",
-			       	[
-			       	 {"Word Analysis", "/exp1/index.html", "/exp1/index.html.*"},
-			       	 {"Word Generation", "/exp2/index.html", "/exp2/index.html.*"},
-			       	 {"Morphology", "/exp3/index.html", "/exp3/index.html.*"},
-			       	 {"N-Grams", "/exp4/index.html", "/exp4/index.html.*"},
-			       	 {"N-Grams Smoothing", "/exp5/index.html", "/exp5/index.html.*"},
-			       	 {"POS Tagging: Hidden Markov Model", "/exp6/index.html", "/exp6/index.html.*"},
-			       	 {"POS Tagging: Viterbi Decoding", "/exp7/index.html", "/exp7/index.html.*"},
-			       	 {"Building POS Tagger", "/exp8/index.html", "/exp8/index.html.*"},
-			       	 {"Chunking", "/exp9/index.html", "/exp9/index.html.*"},
-			       	 {"Building Chunker", "/exp10/index.html", "/exp10/index.html.*"}
 			       	]
 			       },
 			       {"cse30",
@@ -2683,14 +2598,12 @@ TRACE {{2015,9,25},{15,5,11}} analytics:base2_main/0: File_list after negative f
 			       },
 			       {"eerc05",
 			       	[
-			       	 {"Free Swell Index Experiment", "/exp1/index.html", "/exp1/animation/fsi.swf"},
-			       	 {"", "", "/exp1/animation/ve_fsi.html"},
+			       	 {"Free Swell Index Experiment", "/exp1/index.html", "/exp1/animation/fsi.swf|/exp1/animation/ve_fsi.html"},
 			       	 {"California Bearing Ratio Test (CBR Test)", "/exp2/index.html", "/exp2/media/ve_cbr.html"},
 			       	 {"pH Test", "/exp3/index.html", "/exp3/media/ve_ph.html"},
 			       	 {"Determination of Total Soluble Solids", "/exp4/index.html", "/exp4/media/ve_totalsolid.html"},
 			       	 {"Core Cutter Experiment", "/exp5/index.html", "/exp5/media/ve_coreCutter.html"},
-			       	 {"Vane Shear Test", "/exp6/index.html", "/exp6/media/shearing.swf"},
-			       	 {"", "", "/exp6/media/ve_vanshear.html"},
+			       	 {"Vane Shear Test", "/exp6/index.html", "/exp6/media/shearing.swf|/exp6/media/ve_vanshear.html"},
 			       	 {"Total Sulphate Test", "/exp7/index.html", "/exp7/media/ve_vanshear.html"},
 			       	 {"Standard Penetration Test", "/exp8/index.html", "/exp8/media/ve_vanshear.html"},
 			       	 {"Plate Load Test", "/exp9/index.html", "/exp9/media/ve_plateload.html"}
@@ -2709,19 +2622,6 @@ TRACE {{2015,9,25},{15,5,11}} analytics:base2_main/0: File_list after negative f
 			       	 {"Associative cache Design", "/ac.html", "/coaSimulator.jar|/simulator.jnlp|/Simulator.jar|/win.jnlp"},
 			       	 {"Direct Mapped cache Design", "/dmc.html", "/coaSimulator.jar|/simulator.jnlp|/Simulator.jar|/win.jnlp"},
 			       	 {"CPU Design", "/comp.html", "/coaSimulator.jar|/simulator.jnlp|/Simulator.jar|/win.jnlp"}
-			       	]
-			       },
-			       {"cse23",
-			       	[
-			       	 {"Forming Sentences - 1", "/exp1/index.html", "/exp1/CLExperiment1.php"},
-			       	 {"Forming Sentences - 2", "/exp2/index.html", "/exp2/CLExperiment2.php"},
-			       	 {"Tokens and Types", "/exp3/index.html", "/exp3/CLExperiment3.php"},
-			       	 {"Heap's Law", "/exp4/index.html", "/exp4/CLExperiment4.php"},
-			       	 {"Dictionary Generation", "/exp5/index.html", "/exp5/CLExperiment7.php"},
-			       	 {"Coarse-grained POS Tagging", "/exp7/index.html", "/exp7/CLExperiment5.php"},
-			       	 {"Fine-grained POS Tagging", "/exp8/index.html", "/exp8/CLExperiment5.php"},
-			       	 {"Chunking", "/exp9/index.html", "/exp9/experiment6.php"},
-			       	 {"Context Free Grammar", "/exp10/index.html", "/exp10/CLExperiment10.php"}
 			       	]
 			       },
 			       %% {"civil13",
@@ -2743,34 +2643,6 @@ TRACE {{2015,9,25},{15,5,11}} analytics:base2_main/0: File_list after negative f
 			       	 {"Effects of excimer and exciplex formations on fluorescence emission spectra", "/exp10/index.html", "/exp10/media/*.html.*|/exp10/media/*.html.*"}
 			       	]
 			       },
-			       {"ccnsb02",
-			       	[
-			       	 {"Preparation of Sols", "/exp1/index.html", "/exp1/sol.html"},
-			       	 {"Preparation of Gels", "/exp2/index.html", "/exp2/gel_form.html"},
-			       	 {"Preparation of Association Colloid - Micelles and Cleansing Actions of Soaps and Detergents", "/exp3/index.html", "/exp3/clean.html"},
-			       	 {"Surface Tension and its Modification", "/exp4/index.html", "/exp4/surface.html"},
-			       	 {"Demonstration of Tyndall Effect", "/exp5/index.html", "/exp5/Tyndal.html"},
-			       	 {"Gel Electrophoresis", "/exp7/index.html", "/exp7/Gel_elec.html"},
-			       	 {"Demonstration of Surface Effects on Chemical Properties of Finely Divided Particles", "/exp8/index.html", "/exp8/surface.html"},
-			       	 {"Design Method of Dynamic Light Scattering for Particle Size Measurements", "/exp13/index.html", "/exp13/experiment_zp.html"},
-			       	 {"Determination of Critical Micelle Concentration(CMC)", "/exp14/index.html", "/exp14/cmc.html"},
-			       	 {"Kinetic Study of Colloidal Gold Particle Formation and Gold Particle Catalyzed Reduction of Eosin by Sodium Borohydride", "/exp15/index.html", "/exp15/lab9.html"}
-			       	]
-			       },
-			       {"ccnsb03",
-			       	[
-			       	 {"Familiarization with the UV-Visible Absorption Spectroscopy:", "/exp1/index.html", "/exp1/media/1.html"},
-			       	 {"Solvent effects on absorption spectra", "/exp2/index.html", "/exp2/media/2.html"},
-			       	 {"Effects of sample path length", "/exp3/", "/exp3/media/3.html"},
-			       	 {"Effects of sample concentration", "/exp4/", "/exp4/media/4.html"},
-			       	 {"Determination of molar absorptivity", "/exp5/index.html", "/exp5/media/5.html"},
-			       	 {"Verification of Beer-Lambert Law", "/exp6/", "/exp6/media/6.html"},
-			       	 {"Determination of unknown concentration of a light absorbing analyte", "/exp7/", "/exp7/media/7.html"},
-			       	 {"Simultaneous estimation method for multicomponent samples: Principle of additivity of absorbance", "/exp8/", "/exp8/media/8.html"},
-			       	 {"pH effects on absorption spectra: pKa determination by spectrophotometric method", "/exp9/", "/exp9/media/9.html"},
-			       	 {"Study of kinetics of a reaction by using spectrophotometric method", "/exp10/", "/exp10/media/10.html"}
-			       	]
-			       },
 			       {"ccnsb04",
 			       	[
 			       	 {"Geometry Optimization of Molecules", "/exp1/index.php", "/exp1/nr.html|/exp1/sd.html"},
@@ -2782,20 +2654,6 @@ TRACE {{2015,9,25},{15,5,11}} analytics:base2_main/0: File_list after negative f
 			       	 {"Huckel Molecular Orbital Theory", "/exp8/index.php", "/exp8/experiment/index.php"},
 			       	 {"Conformational Analysis of 1,2-dichloroethane", "/exp9/index.php", "/exp9/experiment/index.php"},
 			       	 {"Transition State Calculation for a SN2 reaction", "/exp10/index.php", "/exp10/experiment/index.php"}
-			       	]
-			       },
-			       {"ccnsb05",
-			       	[
-			       	 {"determine the specific rotation of a sugar using a polarimeter.", "/exp1/index.html", "/exp1/swf.html"},
-			       	 {"understand the effect of chiral substances on plane polarized light as a function of wavelength.", "/exp2/index.html", "/exp2/emanim_ord_refrac.html|/exp2/part2_cd/emanim_cd_refrac.html"},
-			       	 {"study the Optical Rotatory Dispersion (ORD) of some chiral substances.", "/exp3/index.html", "/exp3/jmol/.*"},
-			       	 {"study the Circular Dichroism of some substances with chiral chromophores.", "/exp4/index.html", "/exp4/exp/.*"},
-			       	 {"Study the operational details of a CD spectrometer.", "/exp5/index.html", "/exp5/swf.html"},
-			       	 {"Study the effect of Secondary Structure elements on CD spectrum of proteins.", "/exp6/index.html", "/exp6/swf.html"},
-			       	 {"deconvolute the CD spectrum of a given protein solution and classify it in terms of its secondary structure elements.", "/exp7/index.html", "/exp7/swf.html"},
-			       	 {"study the thermal stability of proteins.", "/exp8/index.html", "/exp8/experiment/index.html"},
-			       	 {"study the effect of chemical denaturants on protein stability.", "/exp9/index.html", "/exp9/experiment/index.html"},
-			       	 {"study the comparison between protein unfolding and protein aggregation in the presence of chemical denaturing agents.", "/exp10/index.html", "/exp10/experiment/index.html"}
 			       	]
 			       },
 			       {"ccnsb07",
@@ -2812,7 +2670,7 @@ TRACE {{2015,9,25},{15,5,11}} analytics:base2_main/0: File_list after negative f
 			       	 {"Molecular seperation using interatomic forces: Column chromatography", "/exp10/index.html", "/suraj/Suraj/bin/oilDrop.html"},
 			       	 {"Radiation forces on a dielectric particle", "/exp11/index.html", "/suraj/Suraj/bin/Laser.html"}
 			       	]
-			       },
+			       }
 			       %% {"mech01",
 			       %% 	[
 			       %% 	 {" Conduction analysis of Single Material Slab", "", ""},
@@ -2826,22 +2684,11 @@ TRACE {{2015,9,25},{15,5,11}} analytics:base2_main/0: File_list after negative f
 			       %% 	 {"    To investigate the Lambert’s distance law", "", ""},
 			       %% 	 {"    To investigate the Lambert’s direction law (cosine law) ", "", ""}
 			       %% 	]
-			       %% },
-			       {"eee06",
-				[
-				 {"study the Synchronization of alternator with infinite bus bar.", "/build/Dreamweaver/exp1.html", "/build/Dreamweaver/Sim_dcmotor.html|/build/Dreamweaver/syn_Sim.html|/build/Dreamweaver/Sim_DG_Set.html|/build/Dreamweaver/dynDcmotor.html"},
-				 {"determine the direct axis reactance (Xd) and quadrature axis reactance (Xq) of synchronous machine.", "/build/Dreamweaver/exp2.html", "/build/Dreamweaver/Sim_2/phaseSequence.html|/build/Dreamweaver/Sim_2/SlipTest/index.html"},
-				 {"determine positive sequence, negative sequence and zero sequence reactances of an alternator.", "/build/Dreamweaver/exp3.html", "/build/Dreamweaver/sim_3/OCC.html|/build/Dreamweaver/sim_3/SCC.html|/build/Dreamweaver/sim_3/comb/X2.html|/build/Dreamweaver/sim_3/comb/X0.html"},
-				 {"measure the dielectric Strength of transformer oil.", "/build/Dreamweaver/exp4.html", "/build/Dreamweaver/Sim_4/web/Exp4.html"},
-				 {"Study the effect of different shape of electrodes on dielectric (air) breakdown.", "/build/Dreamweaver/exp5.html", "/build/Dreamweaver/sim_5/web/Exp5.html"},
-				 {"Study the gas actuated Buchholz relay for oil filled transformer.", "/build/Dreamweaver/exp6.html", "/build/Dreamweaver/sim_6/web/exp6.html|/build/Dreamweaver/sim_6a/web/index.html"},
-				 {"Study the over-current relay and the effect of PSM and TSM.", "/build/Dreamweaver/exp7.html", "/build/Dreamweaver/Sim%207/web/sim7.html"},
-				 {"determine the sub-transient (xd’’), transient (xd’) and steady state reactance (xd) of a synchronous machine.", "/build/Dreamweaver/exp8.html", "/build/Dreamweaver/Sim8/web/Sim8.html"},
-				 {"Study the Ferranti Effect of a transmission line/cable.", "/build/Dreamweaver/exp9.html", "/build/Dreamweaver/Sim9/web/index.html"}
-				]
-			       }
+			       %% }
+			       
 			      ]
        ).
+
 
 
 				 
@@ -2857,7 +2704,7 @@ TRACE {{2015,9,25},{15,5,11}} analytics:base2_main/0: File_list after negative f
 
 -define(Aws_process_folder, "aws-process").
 
--define(Output_folder, "/var/www/html/analytics").
+-define(Output_folder, "output").
 
 -define(Bot_regular_expression, "bot|Anonymouse.org|nagios").
 
@@ -4013,7 +3860,7 @@ main() ->
     Base_final_output=base2_main(),
     Aws_final_output=aws_main(),
 
-    %%Ensure that output folder exists
+    %%Ensure that output folder exists and is empty
     Command1=lists:flatten(io_lib:format("mkdir -p ~s", [?Output_folder])),
     os:cmd(Command1),
     
