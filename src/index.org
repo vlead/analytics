@@ -3879,13 +3879,197 @@ main() ->
     ok.
 #+END_SRC
 ** Python source code for web service
-   TODO 
-   @Madhavi should include her code here
-** Web service calls to be made from vlabs.ac.in pages
-   TODO
-   Example web service calls to be made from vlabs.ac.in pages
+   + For building the service, python-flask is used.
+   Flask is a micro web application framework written in Python.  more
+   details about flask can be found [[http://flask.pocoo.org/docs/0.10/][here]].
 
-   @Madhavi should fill this section
+   + This service, in its present state, will get the total number of
+     hits, visits and usage of all virutal labs. It exposes the
+     endpoints =/analytics= and =/analytics/labs=.  An "endpoint" is
+     an identifier that is used in determining what logical unit of
+     code should handle the request.
+#+BEGIN_SRC python :tangle app.py
+from flask import Flask, render_template, request, jsonify, make_response
+from flask.ext.cache import Cache
+import json
+#+END_SRC
+Create an instance of the class(Flask). The argument is the name of
+the application’s module or package.  This is needed so that Flask
+knows where to look for templates, static files, and so on.
+#+BEGIN_SRC python :tangle app.py
+app = Flask(__name__)
+#+END_SRC
+Define the cache config keys.
+#+BEGIN_SRC python :tangle app.py
+app.config['CACHE_TYPE'] = 'simple'
+#+END_SRC
+Register the cache instance and bind it to app. 
+#+BEGIN_SRC python :tangle app.py
+app.cache = Cache(app)
+#+END_SRC
+Use the =route()= decorator to tell Flask what URL should trigger the
+function.
+#+BEGIN_SRC python :tangle app.py
+@app.route('/analytics')
+#+END_SRC
+Cache this view for 1 hour. This is needed because the service must
+display the updated count every one hour.
+#+BEGIN_SRC python :tangle app.py
+@app.cache.cached(timeout=360)
+#+END_SRC
+ The function is given a name which is also used to generate URLs
+ for that particular function, and returns the value we want to
+ display in the browser.
+#+BEGIN_SRC python :tangle app.py
+def total_hits():
+#+END_SRC
+get the total visits from the =all_total.txt= file
+#+BEGIN_SRC python :tangle app.py
+    files_dir = "/var/www/html/analytics/"
+    result_file = files_dir+"all_total.txt"
+    with open(result_file, 'r') as f:
+      lines = f.read()
+      words = lines.split()
+    d = {}
+    d["hits"] = int (words[0])
+    d["visits"]=int (words[1])
+    d["usage"]=int (words[2])
+    hits = jsonify(d)
+#+END_SRC
+The =make_response()= function can be called instead of using a return
+   and will get a response object which can be used to attach headers.
+   =Access-Control-Allow-Origin= is a CORS (Cross-Origin Resource
+   Sharing) header.  When Site A tries to fetch content from Site B,
+   Site B can send an =Access-Control-Allow-Origin= response header to
+   tell the browser that the content of this page is accessible to
+   certain origins.  By default, Site B's pages are not accessible to
+   any other origin, using the =Access-Control-Allow-Origin= header
+   opens a door for cross-origin access by specific requesting
+   origins.  The server can give permission to include cookies by
+   setting the =Access-Control-Allow-Credentials= header.
+#+BEGIN_SRC python :tangle app.py
+    response = make_response(hits)
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    response.headers['Access-Control-Allow-Credentials'] = 'true'
+    return response
+#+END_SRC
+Similary, hits, visits and usage count of all labs will get from the following end point.
+#+BEGIN_SRC python :tangle app.py
+@app.route('/analytics/labs')
+@app.cache.cached(timeout=360)
+def lab_wise_total():
+    files_dir = "/var/www/html/analytics/"
+    result_file = files_dir+"output.txt"
+    rows = []
+    lab=[]
+    with open(result_file, 'r') as f:
+      lines = f.readlines()
+      for line in lines:
+         d={}
+         row = line.split(",")
+         if len(row)>0:
+                d["lab_id"]= row[0]
+                d["lab_name"]=row[1]
+                d["institute_name"]=row[2]
+                d["hits"]=int(row[3])
+                d["visits"]=int(row[4])
+                d["usage"]=int(row[5].strip())
+                lab.append(d)
+         else:
+                break
+
+    response = make_response(json.dumps(lab))
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    response.headers['Access-Control-Allow-Credentials'] = 'true'
+    return response
+
+#+END_SRC
+   Finally, use the =run()= function to run the local server with
+   our application. The if *__name__ == '__main__':* makes sure the
+   server only runs if the script is executed directly from the Python
+   interpreter and not used as an imported module.  
+#+BEGIN_SRC python :tangle app.py
+if __name__ == '__main__':
+  app.run(port=5000, debug=True)
+#+END_SRC
+
+** Create a =.wsgi= file
+    To run the application you need a =analytics.wsgi= file.  This
+    file contains the code =mod_wsgi= is executing on startup to get
+    the application object.  The object called application in that
+    file is then used as application.
+#+BEGIN_SRC  python :tangle analytics.wsgi
+import sys
+sys.path.insert (0,'/var/www/html/analytics/')
+
+import logging, sys
+logging.basicConfig(stream=sys.stderr)
+
+from app import app as application
+ #+END_SRC
+** Web service calls to be made from vlabs.ac.in pages
+   For presenting the data, AJAX (Asynchronous JavaScript and XML)and
+   HTML(HyperText Markup Language) is used.  AJAX allows web pages to
+   be updated asynchronously by exchanging small amounts of data with
+   the server. This means that it is possible to update parts of a web
+   page, without reloading the whole page. The code snippet below will
+   call the endpoint =/analytics= and =/analytics/labs=, where it will
+   return the total number of hits, visits and usage of all virtual
+   labs as a response and displays on browser.
+   #+BEGIN_SRC  
+   <script type="text/javascript" language="javascript">
+      window.onload = function() {
+      $.getJSON('http://stats.vlabs.ac.in/analytics', function(data) {
+      var visit = data["visits"] ;
+      $("#visits").html(visit.toString().slice(0,2)+","+visit.toString().slice(2,4)+","+visit.toString().slice(4,7));
+      //$("#usage").html(data["usage"]);
+      });
+      };
+      function myFunction() {
+      window.open("./analytics/usage.html");
+      }
+    </script>
+   #+END_SRC
+   *Note:* The above code need to be included under =<head>= tags of vlabs.ac.in =index.html= file.
+
+
+
+   A separate web page =usage.html=, for displaying the analytics has
+   been created in order to display the hits, visits and usage of top
+   10 labs and other virtual labs.
+   #+BEGIN_SRC 
+   <script>
+         
+  function generateTopLabs() {
+  $.getJSON('http://stats.vlabs.ac.in/analytics/labs', function(data) {
+  var sorted_data = _.sortBy(data, 'usage');
+  var reverse_data = sorted_data.reverse();
+  var slice_data = reverse_data.slice(0,9)
+  var data = { target: slice_data };
+  
+  var template = _.template( $("#tpl-html").text() );
+  $("#output").html( template(data) );
+  $("a").removeClass("btn-warning");
+  $("#html").addClass("btn-warning");
+  
+  });        
+  }
+  function generateAllLabs() {
+  $.getJSON('http://stats.vlabs.ac.in/analytics/labs', function(data) {
+  var sorted_data = _.sortBy(data, 'usage');
+  var reverse_data = sorted_data.reverse();
+  var all_data = { target:reverse_data };
+  
+  var template = _.template( $("#tpl-html").text() );
+  $("#output1").html( template(all_data) );
+  $("a").removeClass("btn-warning");
+  $("#html").addClass("btn-warning");
+	    
+  });        
+  }
+</script>
+   
+   #+END_SRC
 * Test cases
   Not done.  This code is throw away as when sessions are implemented
   we will not use web server logs for analytics.  Extensive manual
@@ -3893,104 +4077,6 @@ main() ->
   logs.  Further since code is written step wise, we can process each
   step one at a time (the way we do in a debugger) and see output
   after each step.  
-
-* COMMENT Display Analytics on Vlabs landing page
-#+BEGIN_SRC python :tangle app.py
-from flask import Flask, render_template, request, jsonify, make_response
-from flask.ext.cache import Cache
-import json
-
-app = Flask(__name__)
-
-app.config['CACHE_TYPE'] = 'simple'
-
-app.cache = Cache(app)
-
-@app.route('/analytics')
-@app.cache.cached(timeout=360)
-def total_hits():
-    files_dir = "/home/madhavi/Documents/speed/"
-    result_file = files_dir+"total.txt"
-    with open(result_file, 'r') as f:
-      lines = f.read()
-      words = lines.split()
-    d = {}
-    d["hits"] = int (words[1])
-    d["visits"]=int (words[3])
-    d["usage"]=int (words[5])
-    hits = jsonify(d)
-    response = make_response(hits)
-    response.headers['Access-Control-Allow-Origin'] = '*'
-    response.headers['Access-Control-Allow-Credentials'] = 'true'
-    return response
-
-@app.route('/analytics/labs')
-@app.cache.cached(timeout=360)
-def lab_wise_total():
-    files_dir = "/home/madhavi/Documents/speed/"
-    result_file = files_dir+"all-total.txt"
-    rows = []
-    d = {}
-    with open(result_file, 'r') as f:
-      lines = f.readlines()
-      for line in lines:
-         row = line.split()
-         lab_id = row[0]
-         d[lab_id]={}
-         d[lab_id]["hits"]=int (row[1])
-         d[lab_id]["visits"]=int (row[2])
-         d[lab_id]["usage"]=int (row[3])
-        
-    response = make_response(jsonify(d))
-    response.headers['Access-Control-Allow-Origin'] = '*'
-    response.headers['Access-Control-Allow-Credentials'] = 'true'
-    return response
-
-
-if __name__ == '__main__':
-  app.run(port=5000, debug=True)
-
-#+END_SRC
-#+BEGIN_SRC 
-<html>
-  <head>
-    <title>Analytics</title>
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-    <script type="text/javascript" language="javascript">
-      window.onload = function() {
-      $.getJSON('http://localhost:5000/analytics', function(data) {
-      $("#hits").html(data["hits"]);
-      $("#visits").html(data["visits"]);
-      $("#usage").html(data["usage"]);
-      });
-      $.getJSON('http://localhost:5000/analytics/labs', function(data) {
-      $("#cse01").html(data["cse01"]["hits"]);
-      $("#cse02").html(data["cse02"]["hits"]);
-      });
-      };
-      
-    </script>
-  </head>
-  <body>
-    <div id="hits" >
-     Hit
-    </div>
-    <div id="visits">
-      Visit
-    </div>
-    <div id="usage">
-      Usage
-    </div>
-<div id="cse01-hits">
-    </div>
-
-<div id="cse02-hits">
-      Computer Programming
-    </div>
-
-   </body>
-</html>
-#+END_SRC
 
 * Processes
 ** Installing erlang and cloning analytics sources
