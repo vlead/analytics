@@ -4216,7 +4216,7 @@ dsgn-engg04,Ergonomics Lab for Assessing Physical Aspects of Design,IIT-Guwahati
 chs13,Ultrafast Laser Spectroscopy,IIT-Kanpur
 ece03,Transducer and Instrumentation Virtual Lab,IIT-Kanpur
 ece18,RF Microwave Characterization Lab,IIT-Kanpur
-mech08,"Material Response to Microstructural, Mechanical, Thermal and Biological Stimuli",IIT-Kanpur
+mech08,Material Response to Microstructural, Mechanical, Thermal and Biological Stimuli,IIT-Kanpur
 phy01,Virtual Astrophysics Lab,IIT-Kanpur
 phy19,Virtual Laboratory on Oscillations,IIT-Kanpur
 civil19,Advanced Geotechnical Lab,IIT-Kanpur
