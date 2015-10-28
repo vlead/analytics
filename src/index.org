@@ -4280,6 +4280,38 @@ mech21,Machine Dynamics and Mechanical Vibrations,NIT-K
 Unknown,Advanced Communication,NIT-K
 Unknown,Substation Automation Lab,NIT-K
 #+END_SRC
+*** script to display analytics in specified format
+    To display lab-name and institute name along with the analytics of
+    each lab, the following script is used. It will read the lab
+    details from =labs-info.txt= file and reads the hits, visits and
+    usage values from =lab_total.txt= file and writes the analytics
+    against each lab in other =output.txt= file. Web service will read
+    the analytics data from =output.txt= file and displays on the
+    vlabs web page.
+#+BEGIN_SRC python :tangle script.py
+k=open("labs-info.txt")
+lines=k.readlines()
+k1=open("lab_total.txt")
+lines1=k1.readlines();
+d={}
+d1={}
+for line in lines:
+  temp=line.split(",")
+  d[temp[0].strip()]=temp[1].strip()
+  d1[temp[0].strip()]=temp[2].strip()
+
+str1=""
+for line1 in lines1:
+  temp=line1.split(" ");
+  if len(temp)>0:
+        name=d.get(temp[0])
+        name1=d1.get(temp[0])
+        str1=str1+temp[0]+","+str(name)+","+str(name1)+","+temp[1]+","+temp[2]+","+temp[3]
+        k2=open("output.txt","w")
+        k2.write(str1);
+  else:
+        break
+#+END_SRC
 * Test cases
   Not done.  This code is throw away as when sessions are implemented
   we will not use web server logs for analytics.  Extensive manual
