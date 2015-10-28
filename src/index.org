@@ -4075,44 +4075,44 @@ from app import app as application
    institute name, need to be updated in the =labs-info.txt= file in
    order to display the analytics on the vlabs web page.
 #+BEGIN_SRC python :tangle labs-info.txt
-Unknown,Bioinformatics Virtual Lab I,Amrita University
-Unknown,Virtual Optics Lab,Amrita University
-Unknown,Solid State Physics Virtual Lab,Amrita University
-Unknown,Bioinformatics Virtual Lab II,Amrita University
-Unknown,Bioinformatics Virtual Lab III,Amrita University
-Unknown,Systems Biology Virtual Lab,Amrita University
-Unknown,Computer-Aided Drug Design Virtual Lab,Amrita University
-Unknown,Ecology Virtual Lab,Amrita University
-Unknown,Biological Image processing Virtual Lab,Amrita University
-Unknown,Bio-inspired Robotics Virtual Lab (Remote Triggered),Amrita University
-Unknown,Virtual Biophysics Lab (Remote Triggered),Amrita University
-Unknown,Neurophysiology (pilot),Amrita University
-Unknown,Neuron Simulation Lab (pilot),Amrita University
-Unknown,Biochemistry Virtual Lab I,Amrita University
-Unknown,Biochemistry Virtual Lab II,Amrita University
-Unknown,Population Ecology Virtual Lab I,Amrita University
-Unknown,Population Ecology Virtual Lab II,Amrita University
-Unknown,Immunology Virtual Lab I,Amrita University
-Unknown,Immunology Virtual Lab II,Amrita University
-Unknown,Microbiology Virtual Lab I,Amrita University
-Unknown,Microbiology Virtual Lab II,Amrita University
-Unknown,Molecular biology Virtual Lab I,Amrita University
-Unknown,Molecular biology Virtual Lab II,Amrita University
-Unknown,Cell biology Virtual Lab I,Amrita University
-Unknown,Cell biology Virtual Lab II,Amrita University
-Unknown,Virtual Mechanics Lab/Nonlinear Dynamics,Amrita University
-Unknown,Virtual Advanced Mechanics Lab,Amrita University
-Unknown,Laser Optics Virtual Lab,Amrita University
-Unknown,Virtual Electricity and Magnetism Lab,Amrita University
-Unknown,Virtual Heat and Thermodynamics Lab,Amrita University
-Unknown,Virtual Modern Physics Lab,Amrita University
-Unknown,Virtual Harmonic Motion and Waves Lab,Amrita University
-Unknown,Virtual Physical Energy and Materials Science Lab,Amrita University
-Unknown,Physical Chemistry(Amrita),Amrita University
-Unknown,Organic Chemistry,Amrita University
-Unknown,Inorganic Chemistry,Amrita University
-Unknown,Electrochemistry,Amrita University
-Unknown,Virtual Wireless and Security,Amrita University
+biotech08,Bioinformatics Virtual Lab I,Amrita University
+phy-sc20,Virtual Optics Lab,Amrita University
+phy-sc21,Solid State Physics Virtual Lab,Amrita University
+biotech09,Bioinformatics Virtual Lab II,Amrita University
+biotech10,Bioinformatics Virtual Lab III,Amrita University
+biotech07,Systems Biology Virtual Lab,Amrita University
+biotech06,Computer-Aided Drug Design Virtual Lab,Amrita University
+biotech05,Ecology Virtual Lab,Amrita University
+biotech04,Biological Image processing Virtual Lab,Amrita University
+biotech11,Bio-inspired Robotics Virtual Lab (Remote Triggered),Amrita University
+biotech12,Virtual Biophysics Lab (Remote Triggered),Amrita University
+biotech20,Neurophysiology (pilot),Amrita University
+biotech19,Neuron Simulation Lab (pilot),Amrita University
+biotech01,Biochemistry Virtual Lab I,Amrita University
+biotech02,Biochemistry Virtual Lab II,Amrita University
+biotech18,Population Ecology Virtual Lab I,Amrita University
+biotech17,Population Ecology Virtual Lab II,Amrita University
+biotech16,Immunology Virtual Lab I,Amrita University
+biotech15,Immunology Virtual Lab II,Amrita University
+biotech14,Microbiology Virtual Lab I,Amrita University
+biotech13,Microbiology Virtual Lab II,Amrita University
+biotech03,Molecular biology Virtual Lab I,Amrita University
+biotech21,Molecular biology Virtual Lab II,Amrita University
+biotech22,Cell biology Virtual Lab I,Amrita University
+biotech23,Cell biology Virtual Lab II,Amrita University
+phy-sc22,Virtual Mechanics Lab/Nonlinear Dynamics,Amrita University
+phy-sc23,Virtual Advanced Mechanics Lab,Amrita University
+phy-sc24,Laser Optics Virtual Lab,Amrita University
+phy-sc25,Virtual Electricity and Magnetism Lab,Amrita University
+phy-sc26,Virtual Heat and Thermodynamics Lab,Amrita University
+phy-sc27,Virtual Modern Physics Lab,Amrita University
+phy-sc28,Virtual Harmonic Motion and Waves Lab,Amrita University
+phy-sc29,Virtual Physical Energy and Materials Science Lab,Amrita University
+chem06,Physical Chemistry(Amrita),Amrita University
+chem07,Organic Chemistry,Amrita University
+chem09,Inorganic Chemistry,Amrita University
+chem08,Electrochemistry,Amrita University
+cse31,Virtual Wireless and Security,Amrita University
 cse12,FPGA and Embedded System Lab,COEP
 bio16,Biomedical and Signal Processing Laboratory,COEP
 ece19,Hybrid Electronics,COEP
@@ -4172,16 +4172,16 @@ chem01,Chemical Engineering,IIT-Bombay
 civil09,Traffic Engineering,IIT-Bombay
 civil11,Virtual Satellite Image Processing and Analysis,IIT-Bombay
 civil13,Urban Transportation Systems Planning,IIT-Bombay
-Unknown,VLSI Design and Verification,IIT-Bombay
-Unknown,Virtual Proteomics Laboratory,IIT-Bombay
-Unknown,Single Board Heater System,IIT-Bombay
-Unknown,Power Systems Lab,IIT-Bombay
-ece04,"Electronic design using DSP, FPGA, CPLD and Micro Controllers",IIT-Bombay
-Unknown,Internet Based Virtual CNC Lab,IIT-Bombay
-Unknown,Control Systems/Magnetic Levitation System,IIT-Bombay
-Unknown,Mechanical Engineering Lab,IIT-Bombay
-Unknown,"Virtual Pulse, Switching and Analogue Circuits",IIT-Bombay
-Unknown,Satellite Modelling and Simulation,IIT-Bombay
+ece39,VLSI Design and Verification,IIT-Bombay
+biotech25,Virtual Proteomics Laboratory,IIT-Bombay
+ee32,Single Board Heater System,IIT-Bombay
+ee33,Power Systems Lab,IIT-Bombay
+ece04,Electronic design using DSP, FPGA, CPLD and Micro Controllers,IIT-Bombay
+mech45,Internet Based Virtual CNC Lab,IIT-Bombay
+chem-engg04,Control Systems/Magnetic Levitation System,IIT-Bombay
+mech46,Mechanical Engineering Lab,IIT-Bombay
+ece36,Virtual Pulse, Switching and Analogue Circuits,IIT-Bombay
+aero04,Satellite Modelling and Simulation,IIT-Bombay
 ece21,Virtual Queuing Networks Modelling,IIT-Delhi
 eee07,Virtual Power Electronics and Electric Drives Lab,IIT-Delhi
 civil16,Virtual Smart Structures and Dynamics Lab,IIT-Delhi
@@ -4200,85 +4200,85 @@ ece05,Digital VLSI Design Virtual Lab,IIT-Guwahati
 ece10,Signals and Systems Laboratory,IIT-Guwahati
 eee02,Electrical Machines Laboratory,IIT-Guwahati
 eee03,Electronic Instrumentation,IIT-Guwahati
-hss01,"Creative Design, Prototyping and Experiential Simulation Lab",IIT-Guwahati
+hss01,Creative Design, Prototyping and Experiential Simulation Lab,IIT-Guwahati
 hss02,Virtual English and Communication Lab,IIT-Guwahati
 hss03,Virtual Anthropology Lab,IIT-Guwahati
 mech01,Virtual Laboratory Experience in Fluid and Thermal Sciences,IIT-Guwahati
-ece11,"Systems, Communication and Control Laboratory",IIT-Guwahati
-Unknown,Remote Triggered Fiber Optics Communication Lab,IIT-Guwahati
-Unknown,Electro Mechanical Conversion,IIT-Guwahati
-Unknown,Virtual Lab for Mechanical Vibrations,IIT-Guwahati
-Unknown,Virtual Robotics Lab,IIT-Guwahati
-Unknown,Hydrodynamics and Transport phenomena in Packed Bed and Heat Exchangers,IIT-Guwahati
-Unknown,Binary Distillation,IIT-Guwahati
-Unknown,Virtual Interactive Lab,IIT-Guwahati
-Unknown,Ergonomics Lab for Assessing Physical Aspects of Design,IIT-Guwahati
+ece11,Systems, Communication and Control Laboratory,IIT-Guwahati
+ece29,Remote Triggered Fiber Optics Communication Lab,IIT-Guwahati
+ee27,Electro Mechanical Conversion,IIT-Guwahati
+mech33,Virtual Lab for Mechanical Vibrations,IIT-Guwahati
+mech35,Virtual Robotics Lab,IIT-Guwahati
+chem-engg02,Hydrodynamics and Transport phenomena in Packed Bed and Heat Exchangers,IIT-Guwahati
+chem-engg03,Binary Distillation,IIT-Guwahati
+ee34,Virtual Interactive Lab,IIT-Guwahati
+dsgn-engg04,Ergonomics Lab for Assessing Physical Aspects of Design,IIT-Guwahati
 chs13,Ultrafast Laser Spectroscopy,IIT-Kanpur
 ece03,Transducer and Instrumentation Virtual Lab,IIT-Kanpur
 ece18,RF Microwave Characterization Lab,IIT-Kanpur
 mech08,"Material Response to Microstructural, Mechanical, Thermal and Biological Stimuli",IIT-Kanpur
 phy01,Virtual Astrophysics Lab,IIT-Kanpur
 phy19,Virtual Laboratory on Oscillations,IIT-Kanpur
-Unknown,Advanced Geotechnical Lab,IIT-Kanpur
-Unknown,Acoustics Virtual Lab,IIT-Kanpur
-Unknown,General Purpose Production Shop Simulation Lab,IIT-Kanpur
-Unknown,Mechatronics Lab,IIT-Kanpur
-Unknown,"Nanocomposite, Fabrication, Biomaterials and Signal Processing Laboratory",IIT-Kanpur
-Unknown,Virtual Combustion and Automation Laboratory,IIT-Kanpur
-Unknown,Manufacturing Laboratory,IIT-Kanpur
-Unknown,In-flight Particle History Lab,IIT-Kanpur
-Unknown,Aerospace Virtual laboratory,IIT-Kanpur
-Unknown,Optical Device Characterizations,IIT-Kanpur
-Unknown,Low Temp Electrical Transport and Property Measurements,IIT-Kanpur
-Unknown,Mechanical Sciences - Liquid Crystal,IIT-Kanpur
-Unknown,Thermal Processing and Microstructural Characterization,IIT-Kanpur
-Unknown,Laser Based Flow Diagnostics Laboratory,IIT-Kanpur
-Unknown,Technology CAD (TCAD) Laboratory,IIT-Kharagpur
-Unknown,Fading Channels and Mobile Communications,IIT-Kharagpur
-Unknown,Soft Computing Tools in Engineering,IIT-Kharagpur
-Unknown,"Analog Signals, Network and Measurement Laboratory",IIT-Kharagpur
-Unknown,Real Time Embedded Systems Laboratory,IIT-Kharagpur
-Unknown,Kinematics and Dynamics of Mechanisms,IIT-Kharagpur
-Unknown,Model Based Fault Detection Lab,IIT-Kharagpur
-Unknown,Robotics Simulation Lab,IIT-Kharagpur
-Unknown,Virtual Lab for Multiphase Flow,IIT-Kharagpur
-Unknown,Condition Monitoring and Fault Simulation Lab,IIT-Kharagpur
-Unknown,Mechanical Systems and Signal Processing,IIT-Kharagpur
-Unknown,Mine Automation and Virtual Reality,IIT-Kharagpur
-Unknown,Chemical Process Dynamics,IIT-Kharagpur
-Unknown,Virtual High Voltage Lab,IIT-Kharagpur
-Unknown,Basic Electrical and Electronics Lab,IIT-Kharagpur
-Unknown,Microelectronics and VLSI Engineering,IIT-Kharagpur
-Unknown,Mechanisms and Robotics Lab,IIT-Kharagpur
-Unknown,Machinery Health Assessment Lab,IIT-Kharagpur
+civil19,Advanced Geotechnical Lab,IIT-Kanpur
+mech37,Acoustics Virtual Lab,IIT-Kanpur
+mech38,General Purpose Production Shop Simulation Lab,IIT-Kanpur
+mech39,Mechatronics Lab,IIT-Kanpur
+mech40,Nanocomposite, Fabrication, Biomaterials and Signal Processing Laboratory,IIT-Kanpur
+mech48,Virtual Combustion and Automation Laboratory,IIT-Kanpur
+mech41,Manufacturing Laboratory,IIT-Kanpur
+aero02,In-flight Particle History Lab,IIT-Kanpur
+aero03,Aerospace Virtual laboratory,IIT-Kanpur
+phy-sc30,Optical Device Characterizations,IIT-Kanpur
+phy-sc31,Low Temp Electrical Transport and Property Measurements,IIT-Kanpur
+mech43,Mechanical Sciences - Liquid Crystal,IIT-Kanpur
+mat-sc01,Thermal Processing and Microstructural Characterization,IIT-Kanpur
+mech44,Laser Based Flow Diagnostics Laboratory,IIT-Kanpur
+ece32,Technology CAD (TCAD) Laboratory,IIT-Kharagpur
+ece33,Fading Channels and Mobile Communications,IIT-Kharagpur
+civil18,Soft Computing Tools in Engineering,IIT-Kharagpur
+ee31,Analog Signals, Network and Measurement Laboratory,IIT-Kharagpur
+ee29,Real Time Embedded Systems Laboratory,IIT-Kharagpur
+mech42,Kinematics and Dynamics of Mechanisms,IIT-Kharagpur
+mech47,Model Based Fault Detection Lab,IIT-Kharagpur
+mech28,Robotics Simulation Lab,IIT-Kharagpur
+mech32,Virtual Lab for Multiphase Flow,IIT-Kharagpur
+mech31,Condition Monitoring and Fault Simulation Lab,IIT-Kharagpur
+mech30,Mechanical Systems and Signal Processing,IIT-Kharagpur
+mech27,Mine Automation and Virtual Reality,IIT-Kharagpur
+chem-engg01,Chemical Process Dynamics,IIT-Kharagpur
+ee26,Virtual High Voltage Lab,IIT-Kharagpur
+ee25,Basic Electrical and Electronics Lab,IIT-Kharagpur
+ece30,Microelectronics and VLSI Engineering,IIT-Kharagpur
+mech29,Mechanisms and Robotics Lab,IIT-Kharagpur
+mech34,Machinery Health Assessment Lab,IIT-Kharagpur
 cse08,Software Engineering,IIT-Kharagpur
 cse10,Computer Architecture and Organization,IIT-Kharagpur
 cse28,Advanced Network Technologies,IIT-Kharagpur
 cse03,Programming and Data Structure,IIT-Kharagpur
 ece06,Digital Signal Processing Lab,IIT-Kharagpur
 ece07,Digital Electronics Circuit Lab,IIT-Kharagpur
-Unknown,Advanced Pulse and Switching Lab,IIT-Kharagpur
-Unknown,Information System Analysis and Design virtual Lab,IIT-Kharagpur
-Unknown,Semiconductor Devices Laboratory,IIT-Kharagpur
-Unknown,Plant Metabolic Pathways Virtual Laboratory,IIT-Kharagpur
-Unknown,Structural Engineering Lab,IIT-Madras
-Unknown,"Electrical Machines, Power Electronics and Drives, Power Systems and Instrumentation",IIT-Madras
-Unknown,Virtual Circuits Laboratory,IIT-Madras
-Unknown,Virtual and Remote Robotic and Mechatronic Laboratory,IIT-Madras
+ece37,Advanced Pulse and Switching Lab,IIT-Kharagpur
+cse32,Information System Analysis and Design virtual Lab,IIT-Kharagpur
+ece38,Semiconductor Devices Laboratory,IIT-Kharagpur
+biotech24,Plant Metabolic Pathways Virtual Laboratory,IIT-Kharagpur
+civil17,Structural Engineering Lab,IIT-Madras
+ee28,Electrical Machines, Power Electronics and Drives, Power Systems and Instrumentation,IIT-Madras
+ece31,Virtual Circuits Laboratory,IIT-Madras
+mech36,Virtual and Remote Robotic and Mechatronic Laboratory,IIT-Madras
 ae01,Aerospace Structures Lab,IIT-Madras
 ece23,Digital Electronics,IIT-Roorkee
 eee01,Power Electronics,IIT-Roorkee
 civil15,Surveying Lab,IIT-Roorkee
 eee23,Biomedical Signal and Image Processing,IIT-Roorkee
 eee24,Machine Lab,IIT-Roorkee
-Unknown,Biomedical Instrumentation Lab,IIT-Roorkee
-chem05,"Unit Operations, Reaction Engineering and Process Control",NIT-K
+biotech26,Biomedical Instrumentation Lab,IIT-Roorkee
+chem05,Unit Operations, Reaction Engineering and Process Control,NIT-K
 civil07,Strength of Materials and Fluid Mechanics,NIT-K
 eee08,Industrial Electric Drives and Application of PLC,NIT-K
 mech05,Mechanics of Machine,NIT-K
 mech21,Machine Dynamics and Mechanical Vibrations,NIT-K
-Unknown,Advanced Communication,NIT-K
-Unknown,Substation Automation Lab,NIT-K
+ece34,Advanced Communication,NIT-K
+ee30,Substation Automation Lab,NIT-K
 #+END_SRC
 *** script to display analytics in specified format
     To display lab-name and institute name along with the analytics of
